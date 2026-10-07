@@ -91,31 +91,40 @@ docs/screens/                   ảnh nghiệm thu (Task 14)
 
 ### Task 1: Rebrand DS sang GramGolf (teal/navy) + Logo + app.json
 
+**Đọc trước:** `docs/ds/REBRAND.md` (phân tích đã kiểm chứng trên bản sao DS). Bản thử nghiệm sẵn ở `docs/ds/rebrand-prototype/`.
+
 **Files:**
-- Modify: nguồn token Brand của DS theo `docs/ds/REBRAND.md` (báo cáo phân tích theme — đọc trước; nêu chính xác file DTCG/compact cần sửa và test bị ảnh hưởng)
-- Regenerate: `packages/ds/src/generated/*` qua `pnpm -F @gr/ds build:tokens`
-- Modify: `packages/ds/src/audit/contrast.test.ts` (chỉ nếu ngưỡng tham chiếu màu cũ — giữ nguyên tiêu chí WCAG)
+- Create: `packages/ds/tokens/brand/{gramgolf.dtcg.json,gramgolf.semantic.light.dtcg.json,gramgolf.semantic.dark.dtcg.json}` (chép từ `docs/ds/rebrand-prototype/`)
+- Modify: `packages/ds/tokens/build.mjs` (theo `docs/ds/rebrand-prototype/build.mjs.proposed`: thêm 2 file brand vào `COLORS(scheme)`, lọc nguồn bằng `existsSync`)
+- Modify: `packages/ds/tokens/README.md` (mục "Lớp override brand GramGolf": file nào, vì sao không sửa `figma/`/`compact/`)
+- Regenerate: `packages/ds/src/generated/*` (`pnpm -F @gr/ds build:tokens`)
+- Modify: `packages/ds/src/audit/contrast.test.ts` (lặp `emphasis: ['neutral','brand']` — theo `contrast.test.ts.proposed`; cặp thấp còn lại vào `KNOWN_DESIGN` KÈM lý do, hoặc sửa token)
+- Modify: `packages/ds/src/theme/createTheme.test.ts` (assert brand step 9 = `'#14be96'`)
+- Modify: `packages/ds/src/theme/createTheme.ts` (bỏ `DARK_FIXUP` cho `'Color/Content/On-Accent/Default'` + comment liên quan; `packages/ds/src/ui/DockIcon/dockIconStyles.ts:26` comment)
+- Modify: `packages/ds/src/ui/BottomNavigation/bottomNavigationStyles.ts` (nhãn mục chọn `Accent-Solid` dùng `Color/Content/On-Accent/Default` thay `Content/Inverse/Strongest`)
+- Modify: `apps/golf/app/_layout.tsx` (`<ThemeProvider scheme="auto" emphasis="brand">`), `packages/ds/.storybook/preview.tsx` (emphasis brand mặc định; nếu dễ, thêm toolbar Neutral/Brand)
 - Create: `apps/golf/components/Logo.tsx`
-- Modify: `apps/golf/app.json`
-- Modify: `docs/ds/figma-debt.md` (thêm dòng F-mới: "Brand teal GramGolf chưa có trong Figma")
+- Modify: `apps/golf/app.json`, `apps/golf/app/(dev)/ds/index.tsx` (mục Brand hiển thị Logo)
+- Modify: `docs/ds/figma-debt.md` (dòng mới: "Brand GramGolf teal là override code-side `tokens/brand/` — Figma vẫn GR xanh cũ")
 
 **Interfaces:**
-- Produces: thang `Brand/1..12` + `Brand-Alpha/1..12` (light & dark) là teal, step 9 ≈ `#14BE96`; `Neutral/12` light ≈ navy `#0B2230` nếu báo cáo khuyến nghị tint navy. Mọi key token giữ nguyên tên.
-- Produces: `export function Logo(props: { size?: number; variant?: 'mark' | 'full'; tone?: 'brand' | 'onBrand' }): JSX.Element` — `mark` = biểu tượng chevron + G; `full` = biểu tượng + chữ "GramGolf" (dùng `<Text variant>` DS, không vẽ chữ bằng SVG). `tone='onBrand'` vẽ trắng/`On-Accent` cho nền teal. Màu lấy từ token (`Color/Content/Accent/...`, `Color/Content/Neutral/Strongest`), `size` mặc định `t.primitive('gr-dm-48')`.
+- Produces: thang `GR`/`GR-Alpha` (light+dark) = teal, step 9 `#14be96`; `On-Brand` = navy `#0b2230` (light Pressed = trắng trên step 11 `#03755b`); `Color/Content/Accent/Light` → Brand 11. Tên token KHÔNG đổi. App chạy `emphasis="brand"` → Button Primary teal chữ navy.
+- Quyết định: **không** tint Neutral sang navy ở đợt này (REBRAND §4 — chi phí cao, nửa vời); navy xuất hiện qua On-Brand, splash, chữ logo.
+- Produces: `export function Logo(props: { size?: number; variant?: 'mark' | 'full'; tone?: 'brand' | 'onBrand' }): JSX.Element` — `mark` = biểu tượng; `full` = biểu tượng + chữ "GramGolf" (`<Text variant>` DS, màu `Color/Content/Neutral/Strongest`, không vẽ chữ bằng SVG). `tone='brand'`: stroke `Color/Background/Accent/Solid/Default` (teal); `tone='onBrand'`: stroke `Color/Content/On-Accent/Default`. `size` mặc định `t.primitive('gr-dm-48')`.
 
-- [ ] **Step 1:** Đọc `docs/ds/REBRAND.md`. Sinh thang teal 12 bước (light + dark, solid + alpha) theo cách báo cáo chỉ định (giữ step 9 = `#14BE96`; light 1–2 gần trắng ngả teal, 11–12 teal đậm/navy-teal; dark là bản đảo tương ứng kiểu Radix). Ghi thang vào đúng file nguồn (KHÔNG sửa tay `src/generated/*`).
-- [ ] **Step 2:** `pnpm -F @gr/ds build:tokens`. Kiểm `git diff --stat packages/ds/src/generated` chỉ đổi giá trị màu GR/Brand (và Neutral nếu tint).
-- [ ] **Step 3:** `pnpm -F @gr/ds test`. Nếu `contrast.test.ts` fail ở cặp nền Brand/chữ: chỉnh **token foreground on-brand** theo khuyến nghị báo cáo (vd chữ trên nền Brand/9 dùng navy thay trắng) — không hạ ngưỡng WCAG. `figmaParity.test.ts` so khoá token (không so giá trị) → phải vẫn xanh; nếu so giá trị, cập nhật dump tương ứng và ghi nợ Figma.
-- [ ] **Step 4:** Viết `Logo.tsx` bằng `react-native-svg` (`Svg`, `Path`): 3 chevron xếp chồng hướng lên (mũi nhọn trên), chevron dưới cùng uốn thành chữ G (nét ngang vào trong ở góc phải dưới), stroke đều, viewBox `0 0 64 72`. Path tham khảo (stroke, `strokeWidth=6`, `fill="none"`, `strokeLinejoin="miter"`):
+- [ ] **Step 1:** Chép 3 file brand vào `packages/ds/tokens/brand/`; sửa `build.mjs` như bản proposed (đọc diff kỹ — chỉ 3 dòng đổi). `pnpm -F @gr/ds build:tokens`. Kiểm `git diff --stat packages/ds/src/generated` chỉ đổi giá trị màu, `keys.ts` không đổi.
+- [ ] **Step 2:** Áp `contrast.test.ts.proposed` (vòng `emphasis`). Chạy `pnpm -F @gr/ds test` → ghi lại các cặp fail. Sửa theo REBRAND §2: BottomNav label → On-Accent; bỏ DARK_FIXUP On-Accent; cập nhật `createTheme.test.ts`. Cặp còn lại (PageIndicator/Progress/Toggle — thành phần hình khối, không phải chữ) → thêm vào `KNOWN_DESIGN` với comment lý do + mã nợ `F-brand-*` trong `figma-debt.md`. KHÔNG hạ ngưỡng WCAG chữ.
+- [ ] **Step 3:** `_layout.tsx` + storybook preview: `emphasis="brand"`.
+- [ ] **Step 4:** Viết `Logo.tsx` bằng `react-native-svg` (`Svg`, `Path`, `fill="none"`, `strokeLinejoin="miter"`, stroke đều): 3 chevron xếp chồng hướng lên; chevron dưới uốn thành chữ G (nét ngang vào trong ở bên phải dưới). viewBox `0 0 64 72`, path khởi điểm:
   ```
   M8 30 L32 6 L56 30
   M8 44 L32 20 L56 44
   M44 46 L32 34 L8 58 L18 68 L46 68 L56 58 L56 52 L38 52
   ```
-  Chỉnh tay cho cân rồi chụp kiểm (Step 6). Ghi đầu file: `// Dựng lại từ ảnh logo 07/10/2026 — thay bằng SVG gốc khi có (NỢ BRAND).`
-- [ ] **Step 5:** `app.json`: `"name": "GramGolf"`, `"slug": "gramgolf"`, `"scheme": "gramgolf"`, thêm `"splash": { "backgroundColor": "#0B2230" }` (app.json không thuộc phạm vi luật literal).
-- [ ] **Step 6:** Kiểm trực quan: chạy web, chụp `/(dev)/ds/button` và `/(dev)/ds/tab` light+dark → nút Primary teal, chữ trên nút đọc rõ. Tạm thêm Logo vào cuối `apps/golf/app/(dev)/ds/index.tsx` (mục "Brand") để chụp; giữ lại mục này.
-- [ ] **Step 7:** `pnpm typecheck && pnpm test && pnpm check:literals` → xanh. Commit `feat(brand): rebrand DS sang GramGolf teal/navy + Logo`.
+  `strokeWidth` = `size/10` làm tròn. Chỉnh tay cho cân, so với ảnh logo (chevron dày đều, khoảng trống giữa các tầng bằng nhau). Ghi đầu file: `// Dựng lại từ ảnh logo 07/10/2026 — thay bằng SVG gốc khi có (NỢ BRAND).`
+- [ ] **Step 5:** `app.json`: `"name": "GramGolf"`, `"slug": "gramgolf"`, `"scheme": "gramgolf"`, `"splash": { "backgroundColor": "#0B2230" }`, `web.name` nếu có. Gallery index: thêm mục "Brand · Logo" hiển thị `Logo` 3 kiểu (mark, full, onBrand trên nền teal).
+- [ ] **Step 6:** Kiểm trực quan: chụp `/(dev)/ds/button`, `/(dev)/ds/toggle`, `/(dev)/ds/bottomnav`, `/(dev)/ds` (logo) light + dark → Primary teal chữ navy đọc rõ, không còn xanh lá cũ. Lưu `docs/screens/task1/`.
+- [ ] **Step 7:** `pnpm typecheck && pnpm test && pnpm check:literals` → xanh. Commit `feat(brand): rebrand DS sang GramGolf teal/navy (lớp override), emphasis brand, Logo`.
 
 ---
 
