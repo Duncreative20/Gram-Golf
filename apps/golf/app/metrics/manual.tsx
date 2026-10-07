@@ -78,7 +78,12 @@ export default function MetricsManual() {
       </ScrollView>
       <Divider />
       <View style={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
-        {submitted && invalid > 0 && <InlineMessage theme="Negative" text={`Chưa lưu: ${invalid} trường cần sửa.`} />}
+        {submitted && invalid > 0 && (
+          // InlineMessage không có role alert → bọc để trình đọc màn hình đọc ngay khi bấm Lưu (như Toast)
+          <View accessibilityRole="alert" accessibilityLiveRegion="polite">
+            <InlineMessage theme="Negative" text={`Chưa lưu: ${invalid} trường cần sửa.`} />
+          </View>
+        )}
         <Button text="Lưu" disabled={saved} onPress={save} />
       </View>
       <BottomSheet visible={picking} onClose={() => setPicking(false)} heading="Chọn ngày">
