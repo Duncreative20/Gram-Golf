@@ -1,0 +1,38 @@
+{
+  "name": "@gr/ds",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build:tokens": "node tokens/build.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "build:icons": "node icons/build.mjs",
+    "storybook": "storybook dev -p 6006 --no-open",
+    "storybook:build": "storybook build -o storybook-static"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "react-native-safe-area-context": "*",
+    "react-native-svg": "*"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "~10.6.0",
+    "@storybook/addon-docs": "~10.6.0",
+    "@storybook/react-native-web-vite": "~10.6.0",
+    "@types/react": "~19.1.10",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-svg": "15.15.4",
+    "react-native-web": "0.21.2",
+    "storybook": "~10.6.0",
+    "style-dictionary": "^5.0.0",
+    "typescript": "~5.9.2",
+    "vite": "^8.3.1",
+    "vitest": "^3.2.0"
+  }
+}

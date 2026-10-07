@@ -1,0 +1,46 @@
+{
+  "emphasis": {
+    "Emphasis": {
+      "Font-Weight": {
+        "DemiBold": {
+          "$type": "number",
+          "$value": 450,
+          "$extensions": {
+            "figma": {
+              "name": "Emphasis/Font-Weight/DemiBold"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": 380,
+          "$extensions": {
+            "figma": {
+              "name": "Emphasis/Font-Weight/Medium"
+            }
+          }
+        },
+        "Regular": {
+          "$type": "number",
+          "$value": 330,
+          "$extensions": {
+            "figma": {
+              "name": "Emphasis/Font-Weight/Regular"
+            }
+          }
+        }
+      },
+      "Border-Weight": {
+        "Active": {
+          "$type": "number",
+          "$value": 2,
+          "$extensions": {
+            "figma": {
+              "name": "Emphasis/Border-Weight/Active"
+            }
+          }
+        }
+      }
+    }
+  }
+}

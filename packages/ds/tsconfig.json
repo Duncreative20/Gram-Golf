@@ -1,0 +1,1 @@
+{ "extends": "../../tsconfig.base.json", "compilerOptions": { "types": ["react", "react-native"], "paths": { "@gr/ds": ["./src"] } }, "include": ["src", ".storybook"] }

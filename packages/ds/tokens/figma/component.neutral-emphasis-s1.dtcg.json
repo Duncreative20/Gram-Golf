@@ -1,0 +1,1571 @@
+{
+  "component": {
+    "Button-Primary": {
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Solid.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary/Background/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Solid.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary/Background/Hover"
+            }
+          }
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Solid.Pressed}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary/Background/Pressed"
+            }
+          }
+        }
+      },
+      "Content": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary/Content/Default"
+            }
+          }
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary/Content/Pressed"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary/Content/Hover"
+            }
+          }
+        }
+      }
+    },
+    "Button-Accent": {
+      "Content": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.On-Accent.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Accent/Content/Default"
+            }
+          }
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.On-Accent.Pressed}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Accent/Content/Pressed"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.On-Accent.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Accent/Content/Hover"
+            }
+          }
+        }
+      },
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Accent.Solid.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Accent/Background/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Accent.Solid.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Accent/Background/Hover"
+            }
+          }
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Accent.Solid.Pressed}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Accent/Background/Pressed"
+            }
+          }
+        }
+      }
+    },
+    "Checkbox": {
+      "Icon-Check": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Checkbox/Icon-Check/Default"
+            }
+          }
+        }
+      },
+      "Background": {
+        "Unselected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Ghost.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Checkbox/Background/Unselected/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Pale.Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Checkbox/Background/Unselected/Hover"
+              }
+            }
+          }
+        },
+        "Selected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Active.Neutral.Solid}",
+            "$extensions": {
+              "figma": {
+                "name": "Checkbox/Background/Selected/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Solid.Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Checkbox/Background/Selected/Hover"
+              }
+            }
+          }
+        }
+      },
+      "Border": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Neutral.Subtle.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Checkbox/Border/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Neutral.Subtle.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Checkbox/Border/Hover"
+            }
+          }
+        }
+      }
+    },
+    "Chip-Primary": {
+      "Background": {
+        "Unselected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Ghost.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip-Primary/Background/Unselected/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Ghost.Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip-Primary/Background/Unselected/Hover"
+              }
+            }
+          }
+        },
+        "Selected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Active.Neutral.Solid}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip-Primary/Background/Selected/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Solid.Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip-Primary/Background/Selected/Hover"
+              }
+            }
+          }
+        }
+      },
+      "Border": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Active.Neutral.Subtle}",
+          "$extensions": {
+            "figma": {
+              "name": "Chip-Primary/Border/Default"
+            }
+          }
+        },
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Active.Neutral.Solid}",
+          "$extensions": {
+            "figma": {
+              "name": "Chip-Primary/Border/Selected"
+            }
+          }
+        }
+      },
+      "Content": {
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Chip-Primary/Content/Selected"
+            }
+          }
+        }
+      }
+    },
+    "Radio-Button": {
+      "Icon-Radio": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Radio-Button/Icon-Radio/Default"
+            }
+          }
+        }
+      },
+      "Background": {
+        "Unselected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Surface.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Radio-Button/Background/Unselected/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Pale.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Radio-Button/Background/Unselected/Hover"
+              }
+            }
+          }
+        },
+        "Selected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Active.Neutral.Solid}",
+            "$extensions": {
+              "figma": {
+                "name": "Radio-Button/Background/Selected/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Solid.Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Radio-Button/Background/Selected/Hover"
+              }
+            }
+          }
+        }
+      },
+      "Border": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Neutral.Subtle.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Radio-Button/Border/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Neutral.Subtle.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Radio-Button/Border/Hover"
+            }
+          }
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Neutral.Subtle.Pressed}",
+          "$extensions": {
+            "figma": {
+              "name": "Radio-Button/Border/Pressed"
+            }
+          }
+        }
+      }
+    },
+    "Chip-Secondary": {
+      "Background": {
+        "Unselected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Ghost.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip-Secondary/Background/Unselected/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Ghost.Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip-Secondary/Background/Unselected/Hover"
+              }
+            }
+          }
+        },
+        "Selected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Surface.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip-Secondary/Background/Selected/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Ghost.Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip-Secondary/Background/Selected/Hover"
+              }
+            }
+          }
+        }
+      },
+      "Border": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Active.Neutral.Subtle}",
+          "$extensions": {
+            "figma": {
+              "name": "Chip-Secondary/Border/Default"
+            }
+          }
+        },
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Active.Neutral.Solid}",
+          "$extensions": {
+            "figma": {
+              "name": "Chip-Secondary/Border/Selected"
+            }
+          }
+        }
+      },
+      "Content": {
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Neutral.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Chip-Secondary/Content/Selected"
+            }
+          }
+        },
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Neutral.Base}",
+          "$extensions": {
+            "figma": {
+              "name": "Chip-Secondary/Content/Default"
+            }
+          }
+        }
+      }
+    },
+    "Segmented-Item-Primary": {
+      "Background": {
+        "Unselected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Flat.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented-Item-Primary/Background/Unselected/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Flat.Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented-Item-Primary/Background/Unselected/Hover"
+              }
+            }
+          }
+        },
+        "Selected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Active.Neutral.Subtle}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented-Item-Primary/Background/Selected/Default"
+              }
+            }
+          }
+        }
+      },
+      "Content": {
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Neutral.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Segmented-Item-Primary/Content/Selected"
+            }
+          }
+        }
+      },
+      "Border": {
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Active.Neutral.Subtle}",
+          "$extensions": {
+            "figma": {
+              "name": "Segmented-Item-Primary/Border/Selected"
+            }
+          }
+        }
+      }
+    },
+    "Segmented-Item-Secondary": {
+      "Background": {
+        "Unselected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Flat.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented-Item-Secondary/Background/Unselected/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Flat.Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented-Item-Secondary/Background/Unselected/Hover"
+              }
+            }
+          }
+        },
+        "Selected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Inverse.Solid.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented-Item-Secondary/Background/Selected/Default"
+              }
+            }
+          }
+        }
+      },
+      "Content": {
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Neutral.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Segmented-Item-Secondary/Content/Selected"
+            }
+          }
+        }
+      },
+      "Border": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Neutral.Subtle.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Segmented-Item-Secondary/Border/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Neutral.Subtle.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Segmented-Item-Secondary/Border/Hover"
+            }
+          }
+        },
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Active.Neutral.Solid}",
+          "$extensions": {
+            "figma": {
+              "name": "Segmented-Item-Secondary/Border/Selected"
+            }
+          }
+        }
+      }
+    },
+    "Tab": {
+      "Border": {
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Active.Neutral.Solid}",
+          "$extensions": {
+            "figma": {
+              "name": "Tab/Border/Selected"
+            }
+          }
+        }
+      },
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Flat.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Tab/Background/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Flat.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Tab/Background/Hover"
+            }
+          }
+        },
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Active.Neutral.Subtle}",
+          "$extensions": {
+            "figma": {
+              "name": "Tab/Background/Selected"
+            }
+          }
+        }
+      },
+      "Content": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Neutral.Light}",
+          "$extensions": {
+            "figma": {
+              "name": "Tab/Content/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Neutral.Base}",
+          "$extensions": {
+            "figma": {
+              "name": "Tab/Content/Hover"
+            }
+          }
+        },
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Neutral.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Tab/Content/Selected"
+            }
+          }
+        }
+      }
+    },
+    "Date-Picker-Item": {
+      "Background": {
+        "Unselected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Flat.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Date-Picker-Item/Background/Unselected/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Flat.Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Date-Picker-Item/Background/Unselected/Hover"
+              }
+            }
+          },
+          "Pressed": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Flat.Pressed}",
+            "$extensions": {
+              "figma": {
+                "name": "Date-Picker-Item/Background/Unselected/Pressed"
+              }
+            }
+          }
+        },
+        "Selected": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Active.Neutral.Solid}",
+            "$extensions": {
+              "figma": {
+                "name": "Date-Picker-Item/Background/Selected/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Solid.Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Date-Picker-Item/Background/Selected/Hover"
+              }
+            }
+          },
+          "Pressed": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Solid.Pressed}",
+            "$extensions": {
+              "figma": {
+                "name": "Date-Picker-Item/Background/Selected/Pressed"
+              }
+            }
+          }
+        },
+        "Selected-In-Range": {
+          "Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Active.Neutral.Subtle}",
+            "$extensions": {
+              "figma": {
+                "name": "Date-Picker-Item/Background/Selected-In-Range/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Neutral.Subtle.Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Date-Picker-Item/Background/Selected-In-Range/Hover"
+              }
+            }
+          }
+        }
+      },
+      "Border": {
+        "Today": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Active.Neutral.Subtle}",
+          "$extensions": {
+            "figma": {
+              "name": "Date-Picker-Item/Border/Today"
+            }
+          }
+        }
+      },
+      "Content": {
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Date-Picker-Item/Content/Selected"
+            }
+          }
+        },
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Neutral.Base}",
+          "$extensions": {
+            "figma": {
+              "name": "Date-Picker-Item/Content/Default"
+            }
+          }
+        },
+        "Disabled": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Disabled}",
+          "$extensions": {
+            "figma": {
+              "name": "Date-Picker-Item/Content/Disabled"
+            }
+          }
+        },
+        "Outside": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Disabled}",
+          "$extensions": {
+            "figma": {
+              "name": "Date-Picker-Item/Content/Outside"
+            }
+          }
+        }
+      }
+    },
+    "Tag": {
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Ghost.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Tag/Background/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Ghost.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Tag/Background/Hover"
+            }
+          }
+        }
+      },
+      "Border": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Neutral.Subtle.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Tag/Border/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Neutral.Subtle.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Tag/Border/Hover"
+            }
+          }
+        }
+      },
+      "Content": {
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Tag/Content/Selected"
+            }
+          }
+        }
+      }
+    },
+    "Toggle": {
+      "Bar": {
+        "Background": {
+          "Unselected": {
+            "Default": {
+              "$type": "color",
+              "$value": "{semantic.Color.Background.Neutral.Subtle.Default}",
+              "$extensions": {
+                "figma": {
+                  "name": "Toggle/Bar/Background/Unselected/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{semantic.Color.Background.Neutral.Subtle.Hover}",
+              "$extensions": {
+                "figma": {
+                  "name": "Toggle/Bar/Background/Unselected/Hover"
+                }
+              }
+            },
+            "Disabled": {
+              "$type": "color",
+              "$value": "{semantic.Color.Background.Subtle-Disabled}",
+              "$extensions": {
+                "figma": {
+                  "name": "Toggle/Bar/Background/Unselected/Disabled"
+                }
+              }
+            }
+          },
+          "Selected": {
+            "Default": {
+              "$type": "color",
+              "$value": "{semantic.Color.Background.Active.Neutral.Solid}",
+              "$extensions": {
+                "figma": {
+                  "name": "Toggle/Bar/Background/Selected/Default"
+                }
+              }
+            },
+            "Disabled": {
+              "$type": "color",
+              "$value": "{semantic.Color.Background.Solid-Disabled}",
+              "$extensions": {
+                "figma": {
+                  "name": "Toggle/Bar/Background/Selected/Disabled"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Dot": {
+        "Background": {
+          "Unselected-Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.White-Solid.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Toggle/Dot/Background/Unselected-Default"
+              }
+            }
+          },
+          "Selected-Default": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Inverse.Solid.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Toggle/Dot/Background/Selected-Default"
+              }
+            }
+          },
+          "Selected-Disabled": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Surface.Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Toggle/Dot/Background/Selected-Disabled"
+              }
+            }
+          },
+          "Unselected-Disabled": {
+            "$type": "color",
+            "$value": "{semantic.Color.Background.Subtle-Disabled}",
+            "$extensions": {
+              "figma": {
+                "name": "Toggle/Dot/Background/Unselected-Disabled"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Table-Cell": {
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Flat.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Table-Cell/Background/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Support.Neutral.Pale}",
+          "$extensions": {
+            "figma": {
+              "name": "Table-Cell/Background/Hover"
+            }
+          }
+        },
+        "Selected": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Support.Neutral.Pale}",
+          "$extensions": {
+            "figma": {
+              "name": "Table-Cell/Background/Selected"
+            }
+          }
+        },
+        "Color": {
+          "$type": "color",
+          "$value": "#ffffff",
+          "$extensions": {
+            "figma": {
+              "name": "Table-Cell/Background/Color"
+            }
+          }
+        }
+      }
+    },
+    "Button-Tertiary": {
+      "Content": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Neutral.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary/Content/Default"
+            }
+          }
+        }
+      },
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Ghost.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary/Background/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Ghost.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary/Background/Hover"
+            }
+          }
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Ghost.Pressed}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary/Background/Pressed"
+            }
+          }
+        },
+        "Disabled": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Subtle-Disabled}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary/Background/Disabled"
+            }
+          }
+        }
+      },
+      "Border": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Neutral.Subtle.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary/Border/Default"
+            }
+          }
+        },
+        "Disabled": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Disabled}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary/Border/Disabled"
+            }
+          }
+        }
+      },
+      "Shadow": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Shadow.Neutral.Light}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary/Shadow/Default"
+            }
+          }
+        }
+      }
+    },
+    "Bubble-Chat-You": {
+      "Content": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Bubble-Chat-You/Content/Default"
+            }
+          }
+        }
+      },
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Solid.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Bubble-Chat-You/Background/Default"
+            }
+          }
+        }
+      }
+    },
+    "Bubble-Chat-Others-Business": {
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Popover.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Bubble-Chat-Others-Business/Background/Default"
+            }
+          }
+        }
+      }
+    },
+    "Input": {
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Solid.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Background/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Ghost.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Background/Hover"
+            }
+          }
+        },
+        "Focused": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Ghost.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Background/Focused"
+            }
+          }
+        }
+      },
+      "Border": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Neutral.Subtle.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Border/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Neutral.Subtle.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Border/Hover"
+            }
+          }
+        }
+      },
+      "Shadow": {
+        "Base": {
+          "$type": "color",
+          "$value": "{semantic.Color.Shadow.Inverse.Base}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Shadow/Base"
+            }
+          }
+        },
+        "Strong": {
+          "$type": "color",
+          "$value": "{semantic.Color.Shadow.Inverse.Strong}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Shadow/Strong"
+            }
+          }
+        }
+      }
+    },
+    "Container": {
+      "Border": {
+        "$type": "color",
+        "$value": "{semantic.Color.Border.Container.Subtle}",
+        "$extensions": {
+          "figma": {
+            "name": "Container/Border"
+          }
+        }
+      }
+    },
+    "Popover": {
+      "Border": {
+        "$type": "color",
+        "$value": "{semantic.Color.Border.Popover.Subtle}",
+        "$extensions": {
+          "figma": {
+            "name": "Popover/Border"
+          }
+        }
+      },
+      "Background": {
+        "$type": "color",
+        "$value": "{semantic.Color.Background.Popover.Default}",
+        "$extensions": {
+          "figma": {
+            "name": "Popover/Background"
+          }
+        }
+      }
+    },
+    "Chart": {
+      "Sector": {
+        "Primary": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Support.Neutral.Deep}",
+          "$extensions": {
+            "figma": {
+              "name": "Chart/Sector/Primary"
+            }
+          }
+        },
+        "Secondary": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Support.Brand.Solid}",
+          "$extensions": {
+            "figma": {
+              "name": "Chart/Sector/Secondary"
+            }
+          }
+        }
+      }
+    },
+    "Button-Accent-Overlay": {
+      "Content": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Accent.Base}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Accent-Overlay/Content/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Accent.Base}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Accent-Overlay/Content/Hover"
+            }
+          }
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Accent.Base}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Accent-Overlay/Content/Pressed"
+            }
+          }
+        }
+      },
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Solid.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Accent-Overlay/Background/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Solid.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Accent-Overlay/Background/Hover"
+            }
+          }
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Solid.Pressed}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Accent-Overlay/Background/Pressed"
+            }
+          }
+        }
+      }
+    },
+    "Button-Primary-Overlay": {
+      "Content": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary-Overlay/Content/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary-Overlay/Content/Hover"
+            }
+          }
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary-Overlay/Content/Pressed"
+            }
+          }
+        }
+      },
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Overlay.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary-Overlay/Background/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Overlay.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary-Overlay/Background/Hover"
+            }
+          }
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Overlay.Pressed}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary-Overlay/Background/Pressed"
+            }
+          }
+        }
+      },
+      "Border": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Overlay.Subtle.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary-Overlay/Border/Default"
+            }
+          }
+        },
+        "Disabled": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Disabled}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Primary-Overlay/Border/Disabled"
+            }
+          }
+        }
+      }
+    },
+    "Button-Tertiary-Overlay": {
+      "Content": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Content.Inverse.Strongest}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary-Overlay/Content/Default"
+            }
+          }
+        }
+      },
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Overlay.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary-Overlay/Background/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Overlay.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary-Overlay/Background/Hover"
+            }
+          }
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Overlay.Pressed}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary-Overlay/Background/Pressed"
+            }
+          }
+        },
+        "Disabled": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Ghost-Disabled}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary-Overlay/Background/Disabled"
+            }
+          }
+        }
+      },
+      "Border": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Overlay.Subtle.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary-Overlay/Border/Default"
+            }
+          }
+        },
+        "Disabled": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Disabled}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary-Overlay/Border/Disabled"
+            }
+          }
+        }
+      },
+      "Shadow": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Shadow.Neutral.Light}",
+          "$extensions": {
+            "figma": {
+              "name": "Button-Tertiary-Overlay/Shadow/Default"
+            }
+          }
+        }
+      }
+    },
+    "Stepper-Control": {
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Ghost.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control/Background/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Ghost.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control/Background/Hover"
+            }
+          }
+        },
+        "Focused": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.Neutral.Ghost.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control/Background/Focused"
+            }
+          }
+        }
+      },
+      "Border": {
+        "Default": {
+          "$type": "color",
+          "$value": "#ffffff00",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control/Border/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "#ffffff00",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control/Border/Hover"
+            }
+          }
+        }
+      },
+      "Shadow": {
+        "Base": {
+          "$type": "color",
+          "$value": "{semantic.Color.Shadow.Inverse.Base}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control/Shadow/Base"
+            }
+          }
+        },
+        "Strong": {
+          "$type": "color",
+          "$value": "{semantic.Color.Shadow.Inverse.Strong}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control/Shadow/Strong"
+            }
+          }
+        }
+      }
+    },
+    "Input-Overlay": {
+      "Background": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Overlay.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Input-Overlay/Background/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Overlay.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Input-Overlay/Background/Hover"
+            }
+          }
+        },
+        "Focused": {
+          "$type": "color",
+          "$value": "{semantic.Color.Background.White-Overlay.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Input-Overlay/Background/Focused"
+            }
+          }
+        }
+      },
+      "Border": {
+        "Default": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Overlay.Subtle.Default}",
+          "$extensions": {
+            "figma": {
+              "name": "Input-Overlay/Border/Default"
+            }
+          }
+        },
+        "Hover": {
+          "$type": "color",
+          "$value": "{semantic.Color.Border.Overlay.Subtle.Hover}",
+          "$extensions": {
+            "figma": {
+              "name": "Input-Overlay/Border/Hover"
+            }
+          }
+        }
+      },
+      "Shadow": {
+        "Strong": {
+          "$type": "color",
+          "$value": "{semantic.Color.Shadow.Inverse.Strong}",
+          "$extensions": {
+            "figma": {
+              "name": "Input-Overlay/Shadow/Strong"
+            }
+          }
+        },
+        "Base": {
+          "$type": "color",
+          "$value": "{semantic.Color.Shadow.Inverse.Base}",
+          "$extensions": {
+            "figma": {
+              "name": "Input-Overlay/Shadow/Base"
+            }
+          }
+        }
+      }
+    }
+  }
+}

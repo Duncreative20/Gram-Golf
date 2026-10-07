@@ -1,0 +1,797 @@
+{
+  "typography": {
+    "Typography": {
+      "Font-Family": {
+        "Display": {
+          "$type": "fontFamily",
+          "$value": "MiSans Latin",
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Family/Display"
+            }
+          }
+        },
+        "Heading": {
+          "$type": "fontFamily",
+          "$value": "MiSans Latin",
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Family/Heading"
+            }
+          }
+        },
+        "Sans": {
+          "$type": "fontFamily",
+          "$value": "MiSans Latin",
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Family/Sans"
+            }
+          }
+        },
+        "Button": {
+          "$type": "fontFamily",
+          "$value": "MiSans Latin",
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Family/Button"
+            }
+          }
+        },
+        "Dev": {
+          "$type": "fontFamily",
+          "$value": "IBM Plex Sans",
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Family/Dev"
+            }
+          }
+        }
+      },
+      "Font-Size": {
+        "Display-1": {
+          "$type": "number",
+          "$value": 60,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Display-1"
+            }
+          }
+        },
+        "Display-2": {
+          "$type": "number",
+          "$value": 52,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Display-2"
+            }
+          }
+        },
+        "Display-3": {
+          "$type": "number",
+          "$value": 46,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Display-3"
+            }
+          }
+        },
+        "Display-4": {
+          "$type": "number",
+          "$value": 40,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Display-4"
+            }
+          }
+        },
+        "Heading-1": {
+          "$type": "number",
+          "$value": 36,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Heading-1"
+            }
+          }
+        },
+        "Heading-4": {
+          "$type": "number",
+          "$value": 24,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Heading-4"
+            }
+          }
+        },
+        "Subheading": {
+          "$type": "number",
+          "$value": 20,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Subheading"
+            }
+          }
+        },
+        "Body-Base": {
+          "$type": "number",
+          "$value": 16,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Body-Base"
+            }
+          }
+        },
+        "Body-Small": {
+          "$type": "number",
+          "$value": 15,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Body-Small"
+            }
+          }
+        },
+        "Caption": {
+          "$type": "number",
+          "$value": 12,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Caption"
+            }
+          }
+        },
+        "Label-Small": {
+          "$type": "number",
+          "$value": 10,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Label-Small"
+            }
+          }
+        },
+        "Button-Label-L": {
+          "$type": "number",
+          "$value": 16,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Button-Label-L"
+            }
+          }
+        },
+        "Button-Label-M": {
+          "$type": "number",
+          "$value": 16,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Button-Label-M"
+            }
+          }
+        },
+        "Button-Label-S": {
+          "$type": "number",
+          "$value": 16,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Button-Label-S"
+            }
+          }
+        },
+        "Button-Label-XS": {
+          "$type": "number",
+          "$value": 14,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Button-Label-XS"
+            }
+          }
+        },
+        "ALL-CAPS-M": {
+          "$type": "number",
+          "$value": 16,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/ALL-CAPS-M"
+            }
+          }
+        },
+        "ALL-CAPS-S": {
+          "$type": "number",
+          "$value": 14,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/ALL-CAPS-S"
+            }
+          }
+        },
+        "Heading-3": {
+          "$type": "number",
+          "$value": 28,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Heading-3"
+            }
+          }
+        },
+        "Button-Label-XL": {
+          "$type": "number",
+          "$value": 20,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Button-Label-XL"
+            }
+          }
+        },
+        "Heading-2": {
+          "$type": "number",
+          "$value": 32,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Heading-2"
+            }
+          }
+        },
+        "Body-Extra": {
+          "$type": "number",
+          "$value": 18,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Body-Extra"
+            }
+          }
+        },
+        "Display-Extra-1": {
+          "$type": "number",
+          "$value": 88,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Display-Extra-1"
+            }
+          }
+        },
+        "Display-Extra-2": {
+          "$type": "number",
+          "$value": 78,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Display-Extra-2"
+            }
+          }
+        },
+        "Display-Extra-3": {
+          "$type": "number",
+          "$value": 68,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Display-Extra-3"
+            }
+          }
+        },
+        "Label-Medium": {
+          "$type": "number",
+          "$value": 12,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Label-Medium"
+            }
+          }
+        },
+        "Label-Large": {
+          "$type": "number",
+          "$value": 12,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Label-Large"
+            }
+          }
+        },
+        "Body-XSmall": {
+          "$type": "number",
+          "$value": 14,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Font-Size/Body-XSmall"
+            }
+          }
+        }
+      },
+      "Line-Height": {
+        "Display-1": {
+          "$type": "number",
+          "$value": 68,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Display-1"
+            }
+          }
+        },
+        "Display-2": {
+          "$type": "number",
+          "$value": 60,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Display-2"
+            }
+          }
+        },
+        "Display-3": {
+          "$type": "number",
+          "$value": 52,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Display-3"
+            }
+          }
+        },
+        "Display-4": {
+          "$type": "number",
+          "$value": 48,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Display-4"
+            }
+          }
+        },
+        "Heading-1": {
+          "$type": "number",
+          "$value": 42,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Heading-1"
+            }
+          }
+        },
+        "Heading-4": {
+          "$type": "number",
+          "$value": 30,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Heading-4"
+            }
+          }
+        },
+        "Subheading": {
+          "$type": "number",
+          "$value": 26,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Subheading"
+            }
+          }
+        },
+        "Body-Base": {
+          "$type": "number",
+          "$value": 22,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Body-Base"
+            }
+          }
+        },
+        "Body-Small": {
+          "$type": "number",
+          "$value": 20,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Body-Small"
+            }
+          }
+        },
+        "Caption": {
+          "$type": "number",
+          "$value": 16,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Caption"
+            }
+          }
+        },
+        "Label-Small": {
+          "$type": "number",
+          "$value": 16,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Label-Small"
+            }
+          }
+        },
+        "Button-Label-L": {
+          "$type": "number",
+          "$value": 24,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Button-Label-L"
+            }
+          }
+        },
+        "Button-Label-M": {
+          "$type": "number",
+          "$value": 24,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Button-Label-M"
+            }
+          }
+        },
+        "Button-Label-S": {
+          "$type": "number",
+          "$value": 24,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Button-Label-S"
+            }
+          }
+        },
+        "Button-Label-XS": {
+          "$type": "number",
+          "$value": 16,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Button-Label-XS"
+            }
+          }
+        },
+        "ALL-CAPS-M": {
+          "$type": "number",
+          "$value": 20,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/ALL-CAPS-M"
+            }
+          }
+        },
+        "ALL-CAPS-S": {
+          "$type": "number",
+          "$value": 16,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/ALL-CAPS-S"
+            }
+          }
+        },
+        "Heading-3": {
+          "$type": "number",
+          "$value": 34,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Heading-3"
+            }
+          }
+        },
+        "Button-Label-XL": {
+          "$type": "number",
+          "$value": 32,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Button-Label-XL"
+            }
+          }
+        },
+        "Heading-2": {
+          "$type": "number",
+          "$value": 38,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Heading-2"
+            }
+          }
+        },
+        "Body-Extra": {
+          "$type": "number",
+          "$value": 24,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Body-Extra"
+            }
+          }
+        },
+        "Display-Extra-1": {
+          "$type": "number",
+          "$value": 100,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Display-Extra-1"
+            }
+          }
+        },
+        "Display-Extra-2": {
+          "$type": "number",
+          "$value": 88,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Display-Extra-2"
+            }
+          }
+        },
+        "Display-Extra-3": {
+          "$type": "number",
+          "$value": 72,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Display-Extra-3"
+            }
+          }
+        },
+        "Label-Medium": {
+          "$type": "number",
+          "$value": 18,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Label-Medium"
+            }
+          }
+        },
+        "Label-Large": {
+          "$type": "number",
+          "$value": 20,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Label-Large"
+            }
+          }
+        },
+        "Body-XSmall": {
+          "$type": "number",
+          "$value": 19,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Line-Height/Body-XSmall"
+            }
+          }
+        }
+      },
+      "Letter-Spacing": {
+        "Display-1": {
+          "$type": "number",
+          "$value": -3.4600000381469727,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Display-1"
+            }
+          }
+        },
+        "Display-2": {
+          "$type": "number",
+          "$value": -2.3499999046325684,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Display-2"
+            }
+          }
+        },
+        "Display-3": {
+          "$type": "number",
+          "$value": -2.119999885559082,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Display-3"
+            }
+          }
+        },
+        "Display-4": {
+          "$type": "number",
+          "$value": -1.7799999713897705,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Display-4"
+            }
+          }
+        },
+        "Heading-1": {
+          "$type": "number",
+          "$value": -1.6200000047683716,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Heading-1"
+            }
+          }
+        },
+        "Heading-4": {
+          "$type": "number",
+          "$value": -0.8600000143051147,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Heading-4"
+            }
+          }
+        },
+        "Subheading": {
+          "$type": "number",
+          "$value": -0.6700000166893005,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Subheading"
+            }
+          }
+        },
+        "Body-Base": {
+          "$type": "number",
+          "$value": -0.3700000047683716,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Body-Base"
+            }
+          }
+        },
+        "Body-Small": {
+          "$type": "number",
+          "$value": -0.33000001311302185,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Body-Small"
+            }
+          }
+        },
+        "Caption": {
+          "$type": "number",
+          "$value": -0.14000000059604645,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Caption"
+            }
+          }
+        },
+        "Label-Small": {
+          "$type": "number",
+          "$value": -0.11999999731779099,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Label-Small"
+            }
+          }
+        },
+        "Button-Label-L": {
+          "$type": "number",
+          "$value": -0.3700000047683716,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Button-Label-L"
+            }
+          }
+        },
+        "Button-Label-M": {
+          "$type": "number",
+          "$value": -0.3700000047683716,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Button-Label-M"
+            }
+          }
+        },
+        "Button-Label-S": {
+          "$type": "number",
+          "$value": -0.3700000047683716,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Button-Label-S"
+            }
+          }
+        },
+        "Button-Label-XS": {
+          "$type": "number",
+          "$value": -0.33000001311302185,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Button-Label-XS"
+            }
+          }
+        },
+        "ALL-CAPS-M": {
+          "$type": "number",
+          "$value": 0,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/ALL-CAPS-M"
+            }
+          }
+        },
+        "ALL-CAPS-S": {
+          "$type": "number",
+          "$value": 0,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/ALL-CAPS-S"
+            }
+          }
+        },
+        "Heading-3": {
+          "$type": "number",
+          "$value": -0.9800000190734863,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Heading-3"
+            }
+          }
+        },
+        "Button-Label-XL": {
+          "$type": "number",
+          "$value": -0.5,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Button-Label-XL"
+            }
+          }
+        },
+        "Heading-2": {
+          "$type": "number",
+          "$value": -1.100000023841858,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Heading-2"
+            }
+          }
+        },
+        "Body-Extra": {
+          "$type": "number",
+          "$value": -0.4099999964237213,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Body-Extra"
+            }
+          }
+        },
+        "Display-Extra-1": {
+          "$type": "number",
+          "$value": -4.960000038146973,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Display-Extra-1"
+            }
+          }
+        },
+        "Display-Extra-2": {
+          "$type": "number",
+          "$value": -4.590000152587891,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Display-Extra-2"
+            }
+          }
+        },
+        "Display-Extra-3": {
+          "$type": "number",
+          "$value": -3.8499999046325684,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Display-Extra-3"
+            }
+          }
+        },
+        "Body-Code": {
+          "$type": "number",
+          "$value": 0,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Body-Code"
+            }
+          }
+        },
+        "Label-Medium": {
+          "$type": "number",
+          "$value": 0,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Label-Medium"
+            }
+          }
+        },
+        "Label-Large": {
+          "$type": "number",
+          "$value": -0.14000000059604645,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Label-Large"
+            }
+          }
+        },
+        "Body-XSmall": {
+          "$type": "number",
+          "$value": -0.33000001311302185,
+          "$extensions": {
+            "figma": {
+              "name": "Typography/Letter-Spacing/Body-XSmall"
+            }
+          }
+        }
+      }
+    }
+  }
+}

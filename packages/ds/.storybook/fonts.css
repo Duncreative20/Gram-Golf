@@ -1,0 +1,8 @@
+/* MiSans Latin — tên family = tên file = fontFamily mà createTheme().text() trả về (fonts.ts). */
+@font-face { font-family: 'MiSansLatin-Regular'; src: url('../assets/fonts/MiSansLatin-Regular.ttf') format('truetype'); font-display: swap; }
+@font-face { font-family: 'MiSansLatin-Medium'; src: url('../assets/fonts/MiSansLatin-Medium.ttf') format('truetype'); font-display: swap; }
+@font-face { font-family: 'MiSansLatin-Demibold'; src: url('../assets/fonts/MiSansLatin-Demibold.ttf') format('truetype'); font-display: swap; }
+@font-face { font-family: 'MiSansLatin-Semibold'; src: url('../assets/fonts/MiSansLatin-Semibold.ttf') format('truetype'); font-display: swap; }
+@font-face { font-family: 'MiSansLatin-Bold'; src: url('../assets/fonts/MiSansLatin-Bold.ttf') format('truetype'); font-display: swap; }
+html, body, #storybook-root { height: 100%; margin: 0; }
+#storybook-root { display: flex; flex-direction: column; }

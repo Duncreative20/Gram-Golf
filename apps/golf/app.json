@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Golf Relax",
+    "slug": "golf-relax",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "golf",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-splash-screen",
+      "expo-status-bar"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

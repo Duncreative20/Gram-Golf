@@ -1,0 +1,2413 @@
+{
+  "component-size": {
+    "Element-Size": {
+      "Popular": {
+        "Base": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-20}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/Popular/Base"
+            }
+          }
+        },
+        "Large": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-32}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/Popular/Large"
+            }
+          }
+        },
+        "3XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-56}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/Popular/3XLarge"
+            }
+          }
+        },
+        "XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/Popular/XLarge"
+            }
+          }
+        },
+        "XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-12}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/Popular/XSmall"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-16}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/Popular/Small"
+            }
+          }
+        },
+        "2XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-48}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/Popular/2XLarge"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-24}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/Popular/Medium"
+            }
+          }
+        },
+        "2XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-8}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/Popular/2XSmall"
+            }
+          }
+        },
+        "3XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-6}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/Popular/3XSmall"
+            }
+          }
+        },
+        "4XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-4}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/Popular/4XSmall"
+            }
+          }
+        }
+      },
+      "File-Icon": {
+        "Width": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-28}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/File-Icon/Width"
+            }
+          }
+        },
+        "Height": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-36}",
+          "$extensions": {
+            "figma": {
+              "name": "Element-Size/File-Icon/Height"
+            }
+          }
+        }
+      }
+    },
+    "Input": {
+      "Spacing-Regt": {
+        "Large": {
+          "Inside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/Large/Inside-Field-Gap"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/Large/Vertical-Padding"
+              }
+            }
+          },
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/Large/Horizontal-Padding"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/Large/Outside-Field-Gap"
+              }
+            }
+          }
+        },
+        "Medium": {
+          "Inside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/Medium/Inside-Field-Gap"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/Medium/Vertical-Padding"
+              }
+            }
+          },
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/Medium/Horizontal-Padding"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/Medium/Outside-Field-Gap"
+              }
+            }
+          }
+        },
+        "Small": {
+          "Inside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/Small/Inside-Field-Gap"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/Small/Vertical-Padding"
+              }
+            }
+          },
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/Small/Horizontal-Padding"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/Small/Outside-Field-Gap"
+              }
+            }
+          }
+        },
+        "XLarge": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/XLarge/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/XLarge/Vertical-Padding"
+              }
+            }
+          },
+          "Inside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/XLarge/Inside-Field-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Regt/XLarge/Outside-Field-Gap"
+              }
+            }
+          }
+        }
+      },
+      "Size": {
+        "Large": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-56}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Size/Large"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-52}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Size/Medium"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-48}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Size/Small"
+            }
+          }
+        },
+        "XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-64}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Size/XLarge"
+            }
+          }
+        },
+        "Heading-H1": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-44}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Size/Heading-H1"
+            }
+          }
+        },
+        "Heading-H2": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Input/Size/Heading-H2"
+            }
+          }
+        }
+      },
+      "Spacing-Pill": {
+        "XLarge": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-24}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/XLarge/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-24}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/XLarge/Vertical-Padding"
+              }
+            }
+          },
+          "Inside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/XLarge/Inside-Field-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/XLarge/Outside-Field-Gap"
+              }
+            }
+          }
+        },
+        "Large": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-20}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/Large/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-20}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/Large/Vertical-Padding"
+              }
+            }
+          },
+          "Inside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/Large/Inside-Field-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/Large/Outside-Field-Gap"
+              }
+            }
+          }
+        },
+        "Medium": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/Medium/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/Medium/Vertical-Padding"
+              }
+            }
+          },
+          "Inside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/Medium/Inside-Field-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/Medium/Outside-Field-Gap"
+              }
+            }
+          }
+        },
+        "Small": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-20}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/Small/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/Small/Vertical-Padding"
+              }
+            }
+          },
+          "Inside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/Small/Inside-Field-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Input/Spacing-Pill/Small/Outside-Field-Gap"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Chip": {
+      "Spacing": {
+        "Medium": {
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/Medium/Gap"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/Medium/Vertical-Padding"
+              }
+            }
+          },
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-20}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/Medium/Horizontal-Padding"
+              }
+            }
+          },
+          "Customized-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/Medium/Customized-Padding"
+              }
+            }
+          },
+          "Minimum-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/Medium/Minimum-Padding"
+              }
+            }
+          }
+        },
+        "Small": {
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/Small/Gap"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/Small/Vertical-Padding"
+              }
+            }
+          },
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/Small/Horizontal-Padding"
+              }
+            }
+          },
+          "Customized-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-10}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/Small/Customized-Padding"
+              }
+            }
+          },
+          "Minimum-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/Small/Minimum-Padding"
+              }
+            }
+          }
+        },
+        "XSmall": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/XSmall/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/XSmall/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/XSmall/Gap"
+              }
+            }
+          },
+          "Customized-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-6}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/XSmall/Customized-Padding"
+              }
+            }
+          },
+          "Minimum-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Chip/Spacing/XSmall/Minimum-Padding"
+              }
+            }
+          }
+        }
+      },
+      "Size": {
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-44}",
+          "$extensions": {
+            "figma": {
+              "name": "Chip/Size/Medium"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Chip/Size/Small"
+            }
+          }
+        },
+        "XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-32}",
+          "$extensions": {
+            "figma": {
+              "name": "Chip/Size/XSmall"
+            }
+          }
+        }
+      }
+    },
+    "Badge": {
+      "Spacing": {
+        "Medium": {
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/Medium/Gap"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/Medium/Vertical-Padding"
+              }
+            }
+          },
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/Medium/Horizontal-Padding"
+              }
+            }
+          },
+          "Text-Wrapper-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-2}",
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/Medium/Text-Wrapper-Padding"
+              }
+            }
+          },
+          "Customize": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-2}",
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/Medium/Customize"
+              }
+            }
+          }
+        },
+        "Small": {
+          "Gap": {
+            "$type": "number",
+            "$value": 0,
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/Small/Gap"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-2}",
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/Small/Vertical-Padding"
+              }
+            }
+          },
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-6}",
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/Small/Horizontal-Padding"
+              }
+            }
+          },
+          "Text-Wrapper-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/Small/Text-Wrapper-Padding"
+              }
+            }
+          }
+        },
+        "XSmall": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-2}",
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/XSmall/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-2}",
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/XSmall/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-2}",
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/XSmall/Gap"
+              }
+            }
+          },
+          "Text-Wrapper-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Badge/Spacing/XSmall/Text-Wrapper-Padding"
+              }
+            }
+          }
+        }
+      },
+      "Size": {
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-32}",
+          "$extensions": {
+            "figma": {
+              "name": "Badge/Size/Medium"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-24}",
+          "$extensions": {
+            "figma": {
+              "name": "Badge/Size/Small"
+            }
+          }
+        },
+        "XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-20}",
+          "$extensions": {
+            "figma": {
+              "name": "Badge/Size/XSmall"
+            }
+          }
+        }
+      }
+    },
+    "Image-Size": {
+      "Small": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-40}",
+        "$extensions": {
+          "figma": {
+            "name": "Image-Size/Small"
+          }
+        }
+      },
+      "XLarge": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-72}",
+        "$extensions": {
+          "figma": {
+            "name": "Image-Size/XLarge"
+          }
+        }
+      },
+      "2XLarge": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-88}",
+        "$extensions": {
+          "figma": {
+            "name": "Image-Size/2XLarge"
+          }
+        }
+      },
+      "3XLarge": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-128}",
+        "$extensions": {
+          "figma": {
+            "name": "Image-Size/3XLarge"
+          }
+        }
+      },
+      "Medium": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-48}",
+        "$extensions": {
+          "figma": {
+            "name": "Image-Size/Medium"
+          }
+        }
+      },
+      "Large": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-56}",
+        "$extensions": {
+          "figma": {
+            "name": "Image-Size/Large"
+          }
+        }
+      },
+      "XSmall": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-32}",
+        "$extensions": {
+          "figma": {
+            "name": "Image-Size/XSmall"
+          }
+        }
+      },
+      "2XSmall": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-24}",
+        "$extensions": {
+          "figma": {
+            "name": "Image-Size/2XSmall"
+          }
+        }
+      },
+      "3XSmall": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-20}",
+        "$extensions": {
+          "figma": {
+            "name": "Image-Size/3XSmall"
+          }
+        }
+      }
+    },
+    "Tag": {
+      "Spacing": {
+        "Medium": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-6}",
+            "$extensions": {
+              "figma": {
+                "name": "Tag/Spacing/Medium/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Tag/Spacing/Medium/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-2}",
+            "$extensions": {
+              "figma": {
+                "name": "Tag/Spacing/Medium/Gap"
+              }
+            }
+          },
+          "Text-Wrapper-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Tag/Spacing/Medium/Text-Wrapper-Padding"
+              }
+            }
+          },
+          "Minimum-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Tag/Spacing/Medium/Minimum-Padding"
+              }
+            }
+          }
+        },
+        "Small": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Tag/Spacing/Small/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Tag/Spacing/Small/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-2}",
+            "$extensions": {
+              "figma": {
+                "name": "Tag/Spacing/Small/Gap"
+              }
+            }
+          },
+          "Text-Wrapper-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Tag/Spacing/Small/Text-Wrapper-Padding"
+              }
+            }
+          },
+          "Minimum-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Tag/Spacing/Small/Minimum-Padding"
+              }
+            }
+          }
+        }
+      },
+      "Size": {
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-32}",
+          "$extensions": {
+            "figma": {
+              "name": "Tag/Size/Medium"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-24}",
+          "$extensions": {
+            "figma": {
+              "name": "Tag/Size/Small"
+            }
+          }
+        }
+      }
+    },
+    "Checkbox": {
+      "Size": {
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-20}",
+          "$extensions": {
+            "figma": {
+              "name": "Checkbox/Size/Medium"
+            }
+          }
+        }
+      },
+      "Spacing": {
+        "Medium": {
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Checkbox/Spacing/Medium/Gap"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Radio-Button": {
+      "Size": {
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-20}",
+          "$extensions": {
+            "figma": {
+              "name": "Radio-Button/Size/Medium"
+            }
+          }
+        }
+      },
+      "Spacing": {
+        "Medium": {
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Radio-Button/Spacing/Medium/Gap"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Text-Area": {
+      "Spacing": {
+        "Large": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Text-Area/Spacing/Large/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Text-Area/Spacing/Large/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Text-Area/Spacing/Large/Gap"
+              }
+            }
+          }
+        },
+        "Medium": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Text-Area/Spacing/Medium/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Text-Area/Spacing/Medium/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Text-Area/Spacing/Medium/Gap"
+              }
+            }
+          }
+        },
+        "Small": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Text-Area/Spacing/Small/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Text-Area/Spacing/Small/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Text-Area/Spacing/Small/Gap"
+              }
+            }
+          }
+        }
+      },
+      "Size": {
+        "Large": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-160}",
+          "$extensions": {
+            "figma": {
+              "name": "Text-Area/Size/Large"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-128}",
+          "$extensions": {
+            "figma": {
+              "name": "Text-Area/Size/Medium"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-112}",
+          "$extensions": {
+            "figma": {
+              "name": "Text-Area/Size/Small"
+            }
+          }
+        }
+      }
+    },
+    "Select-Item": {
+      "Size": {
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-32}",
+          "$extensions": {
+            "figma": {
+              "name": "Select-Item/Size/Small"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Select-Item/Size/Medium"
+            }
+          }
+        }
+      }
+    },
+    "Button": {
+      "Size": {
+        "XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-64}",
+          "$extensions": {
+            "figma": {
+              "name": "Button/Size/XLarge"
+            }
+          }
+        },
+        "Large": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-56}",
+          "$extensions": {
+            "figma": {
+              "name": "Button/Size/Large"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-48}",
+          "$extensions": {
+            "figma": {
+              "name": "Button/Size/Medium"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Button/Size/Small"
+            }
+          }
+        },
+        "XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-32}",
+          "$extensions": {
+            "figma": {
+              "name": "Button/Size/XSmall"
+            }
+          }
+        },
+        "2XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-28}",
+          "$extensions": {
+            "figma": {
+              "name": "Button/Size/2XSmall"
+            }
+          }
+        }
+      },
+      "Spacing": {
+        "XLarge": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/XLarge/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/XLarge/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/XLarge/Gap"
+              }
+            }
+          },
+          "Text-Wrapper-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/XLarge/Text-Wrapper-Padding"
+              }
+            }
+          }
+        },
+        "Large": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/Large/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/Large/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": 0,
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/Large/Gap"
+              }
+            }
+          },
+          "Text-Wrapper-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/Large/Text-Wrapper-Padding"
+              }
+            }
+          }
+        },
+        "Medium": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/Medium/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/Medium/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": 0,
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/Medium/Gap"
+              }
+            }
+          },
+          "Text-Wrapper-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/Medium/Text-Wrapper-Padding"
+              }
+            }
+          }
+        },
+        "Small": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-10}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/Small/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/Small/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-2}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/Small/Gap"
+              }
+            }
+          },
+          "Text-Wrapper-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/Small/Text-Wrapper-Padding"
+              }
+            }
+          }
+        },
+        "XSmall": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/XSmall/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/XSmall/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-2}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/XSmall/Gap"
+              }
+            }
+          },
+          "Text-Wrapper-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Button/Spacing/XSmall/Text-Wrapper-Padding"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Segmented": {
+      "Spacing": {
+        "Medium": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented/Spacing/Medium/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented/Spacing/Medium/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented/Spacing/Medium/Gap"
+              }
+            }
+          },
+          "Text-Wrapper-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented/Spacing/Medium/Text-Wrapper-Padding"
+              }
+            }
+          }
+        },
+        "Small": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented/Spacing/Small/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented/Spacing/Small/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-2}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented/Spacing/Small/Gap"
+              }
+            }
+          },
+          "Text-Wrapper-Padding 2": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented/Spacing/Small/Text-Wrapper-Padding 2"
+              }
+            }
+          }
+        },
+        "XSmall": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented/Spacing/XSmall/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented/Spacing/XSmall/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": 0,
+            "$extensions": {
+              "figma": {
+                "name": "Segmented/Spacing/XSmall/Gap"
+              }
+            }
+          },
+          "Text-Wrapper-Padding 2": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Segmented/Spacing/XSmall/Text-Wrapper-Padding 2"
+              }
+            }
+          }
+        }
+      },
+      "Size": {
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Segmented/Size/Medium"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-32}",
+          "$extensions": {
+            "figma": {
+              "name": "Segmented/Size/Small"
+            }
+          }
+        },
+        "XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-24}",
+          "$extensions": {
+            "figma": {
+              "name": "Segmented/Size/XSmall"
+            }
+          }
+        }
+      },
+      "Item-Corner-Radius-Medium": {
+        "$type": "number",
+        "$value": "{radius.Corner-Radius.Rounded}",
+        "$extensions": {
+          "figma": {
+            "name": "Segmented/Item-Corner-Radius-Medium"
+          }
+        }
+      },
+      "Container-Corner-Radius-Medium": {
+        "$type": "number",
+        "$value": "{radius.Corner-Radius.Rounded}",
+        "$extensions": {
+          "figma": {
+            "name": "Segmented/Container-Corner-Radius-Medium"
+          }
+        }
+      }
+    },
+    "Toggle": {
+      "Item": {
+        "Size": {
+          "Medium": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-20}",
+            "$extensions": {
+              "figma": {
+                "name": "Toggle/Item/Size/Medium"
+              }
+            }
+          },
+          "Small": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Toggle/Item/Size/Small"
+              }
+            }
+          },
+          "Large": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-24}",
+            "$extensions": {
+              "figma": {
+                "name": "Toggle/Item/Size/Large"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Sidebar": {
+      "Default-Width": {
+        "$type": "number",
+        "$value": 280,
+        "$extensions": {
+          "figma": {
+            "name": "Sidebar/Default-Width"
+          }
+        }
+      },
+      "Small-Width": {
+        "$type": "number",
+        "$value": 240,
+        "$extensions": {
+          "figma": {
+            "name": "Sidebar/Small-Width"
+          }
+        }
+      }
+    },
+    "Global-Control-Bar": {
+      "Size": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-80}",
+        "$extensions": {
+          "figma": {
+            "name": "Global-Control-Bar/Size"
+          }
+        }
+      }
+    },
+    "Tab-Item": {
+      "Size": {
+        "Medium": {
+          "Min-Width": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-44}",
+            "$extensions": {
+              "figma": {
+                "name": "Tab-Item/Size/Medium/Min-Width"
+              }
+            }
+          },
+          "Height": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-48}",
+            "$extensions": {
+              "figma": {
+                "name": "Tab-Item/Size/Medium/Height"
+              }
+            }
+          },
+          "Icon-Top-Height": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-44}",
+            "$extensions": {
+              "figma": {
+                "name": "Tab-Item/Size/Medium/Icon-Top-Height"
+              }
+            }
+          }
+        },
+        "Small": {
+          "Min-Width": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-32}",
+            "$extensions": {
+              "figma": {
+                "name": "Tab-Item/Size/Small/Min-Width"
+              }
+            }
+          },
+          "Height": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-32}",
+            "$extensions": {
+              "figma": {
+                "name": "Tab-Item/Size/Small/Height"
+              }
+            }
+          },
+          "Icon-Top-Height": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-32}",
+            "$extensions": {
+              "figma": {
+                "name": "Tab-Item/Size/Small/Icon-Top-Height"
+              }
+            }
+          }
+        }
+      },
+      "Spacing": {
+        "Medium": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": 0,
+            "$extensions": {
+              "figma": {
+                "name": "Tab-Item/Spacing/Medium/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Tab-Item/Spacing/Medium/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Tab-Item/Spacing/Medium/Gap"
+              }
+            }
+          }
+        },
+        "Small": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": 0,
+            "$extensions": {
+              "figma": {
+                "name": "Tab-Item/Spacing/Small/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Tab-Item/Spacing/Small/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Tab-Item/Spacing/Small/Gap"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Table": {
+      "Cell": {
+        "Size": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-56}",
+          "$extensions": {
+            "figma": {
+              "name": "Table/Cell/Size"
+            }
+          }
+        }
+      },
+      "Header": {
+        "Size": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Table/Header/Size"
+            }
+          }
+        }
+      }
+    },
+    "Dashboard-Header": {
+      "Size": {
+        "Desktop": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-88}",
+          "$extensions": {
+            "figma": {
+              "name": "Dashboard-Header/Size/Desktop"
+            }
+          }
+        }
+      }
+    },
+    "Navigation-Mobile": {
+      "Top": {
+        "Icon-Size": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-24}",
+          "$extensions": {
+            "figma": {
+              "name": "Navigation-Mobile/Top/Icon-Size"
+            }
+          }
+        }
+      },
+      "Bottom": {
+        "Icon-Size": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-24}",
+          "$extensions": {
+            "figma": {
+              "name": "Navigation-Mobile/Bottom/Icon-Size"
+            }
+          }
+        }
+      }
+    },
+    "Navigation-Action": {
+      "Icon": {
+        "Spacing": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Navigation-Action/Icon/Spacing/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Navigation-Action/Icon/Spacing/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-24}",
+            "$extensions": {
+              "figma": {
+                "name": "Navigation-Action/Icon/Spacing/Gap"
+              }
+            }
+          }
+        }
+      },
+      "Size": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-48}",
+        "$extensions": {
+          "figma": {
+            "name": "Navigation-Action/Size"
+          }
+        }
+      },
+      "Text": {
+        "Spacing": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Navigation-Action/Text/Spacing/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Navigation-Action/Text/Spacing/Vertical-Padding"
+              }
+            }
+          },
+          "Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Navigation-Action/Text/Spacing/Gap"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Stepper-Control-Align-Left": {
+      "Size": {
+        "XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-64}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control-Align-Left/Size/XLarge"
+            }
+          }
+        },
+        "Large": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-56}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control-Align-Left/Size/Large"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-48}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control-Align-Left/Size/Medium"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control-Align-Left/Size/Small"
+            }
+          }
+        },
+        "Heading-H1": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-44}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control-Align-Left/Size/Heading-H1"
+            }
+          }
+        },
+        "Heading-H2": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control-Align-Left/Size/Heading-H2"
+            }
+          }
+        }
+      },
+      "Spacing": {
+        "XLarge": {
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/XLarge/Vertical-Padding"
+              }
+            }
+          },
+          "Button-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/XLarge/Button-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/XLarge/Outside-Field-Gap"
+              }
+            }
+          },
+          "Horizontal-Padding-Left": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-20}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/XLarge/Horizontal-Padding-Left"
+              }
+            }
+          },
+          "Horizontal-Padding-Right": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/XLarge/Horizontal-Padding-Right"
+              }
+            }
+          }
+        },
+        "Large": {
+          "Horizontal-Padding-Left": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Large/Horizontal-Padding-Left"
+              }
+            }
+          },
+          "Button-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Large/Button-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Large/Outside-Field-Gap"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Large/Vertical-Padding"
+              }
+            }
+          },
+          "Horizontal-Padding-Right": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Large/Horizontal-Padding-Right"
+              }
+            }
+          }
+        },
+        "Medium": {
+          "Horizontal-Padding-Left": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Medium/Horizontal-Padding-Left"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Medium/Vertical-Padding"
+              }
+            }
+          },
+          "Button-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Medium/Button-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Medium/Outside-Field-Gap"
+              }
+            }
+          },
+          "Horizontal-Padding-Right": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Medium/Horizontal-Padding-Right"
+              }
+            }
+          }
+        },
+        "Small": {
+          "Horizontal-Padding-Left": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Small/Horizontal-Padding-Left"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Small/Vertical-Padding"
+              }
+            }
+          },
+          "Button-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Small/Button-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Small/Outside-Field-Gap"
+              }
+            }
+          },
+          "Horizontal-Padding-Right": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Left/Spacing/Small/Horizontal-Padding-Right"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Stepper-Control-Align-Center": {
+      "Size": {
+        "XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-64}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control-Align-Center/Size/XLarge"
+            }
+          }
+        },
+        "Large": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-56}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control-Align-Center/Size/Large"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-48}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control-Align-Center/Size/Medium"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control-Align-Center/Size/Small"
+            }
+          }
+        },
+        "Heading-H1": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-44}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control-Align-Center/Size/Heading-H1"
+            }
+          }
+        },
+        "Heading-H2": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Stepper-Control-Align-Center/Size/Heading-H2"
+            }
+          }
+        }
+      },
+      "Spacing": {
+        "XLarge": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/XLarge/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/XLarge/Vertical-Padding"
+              }
+            }
+          },
+          "Button-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/XLarge/Button-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/XLarge/Outside-Field-Gap"
+              }
+            }
+          }
+        },
+        "Large": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/Large/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-16}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/Large/Vertical-Padding"
+              }
+            }
+          },
+          "Button-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/Large/Button-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/Large/Outside-Field-Gap"
+              }
+            }
+          }
+        },
+        "Medium": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/Medium/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-12}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/Medium/Vertical-Padding"
+              }
+            }
+          },
+          "Button-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/Medium/Button-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/Medium/Outside-Field-Gap"
+              }
+            }
+          }
+        },
+        "Small": {
+          "Horizontal-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/Small/Horizontal-Padding"
+              }
+            }
+          },
+          "Vertical-Padding": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/Small/Vertical-Padding"
+              }
+            }
+          },
+          "Button-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-4}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/Small/Button-Gap"
+              }
+            }
+          },
+          "Outside-Field-Gap": {
+            "$type": "number",
+            "$value": "{global-dimensions.gr-dm-8}",
+            "$extensions": {
+              "figma": {
+                "name": "Stepper-Control-Align-Center/Spacing/Small/Outside-Field-Gap"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,291 @@
+{
+  "radius": {
+    "Corner-Radius": {
+      "Base": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-12}",
+        "$extensions": {
+          "figma": {
+            "name": "Corner-Radius/Base"
+          }
+        }
+      },
+      "Large": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-16}",
+        "$extensions": {
+          "figma": {
+            "name": "Corner-Radius/Large"
+          }
+        }
+      },
+      "XGiant": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-36}",
+        "$extensions": {
+          "figma": {
+            "name": "Corner-Radius/XGiant"
+          }
+        }
+      },
+      "XLarge": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-20}",
+        "$extensions": {
+          "figma": {
+            "name": "Corner-Radius/XLarge"
+          }
+        }
+      },
+      "Small": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-8}",
+        "$extensions": {
+          "figma": {
+            "name": "Corner-Radius/Small"
+          }
+        }
+      },
+      "Action": {
+        "Large": {
+          "$type": "number",
+          "$value": 1000,
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Action/Large"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": 1000,
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Action/Medium"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": 1000,
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Action/Small"
+            }
+          }
+        },
+        "XSmall": {
+          "$type": "number",
+          "$value": 1000,
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Action/XSmall"
+            }
+          }
+        },
+        "XLarge": {
+          "$type": "number",
+          "$value": 1000,
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Action/XLarge"
+            }
+          }
+        },
+        "Focus-XLarge": {
+          "$type": "number",
+          "$value": 1000,
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Action/Focus-XLarge"
+            }
+          }
+        },
+        "Focus-Large": {
+          "$type": "number",
+          "$value": 1000,
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Action/Focus-Large"
+            }
+          }
+        },
+        "Focus-Medium": {
+          "$type": "number",
+          "$value": 1000,
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Action/Focus-Medium"
+            }
+          }
+        },
+        "Focus-Small": {
+          "$type": "number",
+          "$value": 1000,
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Action/Focus-Small"
+            }
+          }
+        },
+        "Focus-XSmall": {
+          "$type": "number",
+          "$value": 1000,
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Action/Focus-XSmall"
+            }
+          }
+        }
+      },
+      "Rounded": {
+        "$type": "number",
+        "$value": 1000,
+        "$extensions": {
+          "figma": {
+            "name": "Corner-Radius/Rounded"
+          }
+        }
+      },
+      "XSmall": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-4}",
+        "$extensions": {
+          "figma": {
+            "name": "Corner-Radius/XSmall"
+          }
+        }
+      },
+      "3XLarge": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-28}",
+        "$extensions": {
+          "figma": {
+            "name": "Corner-Radius/3XLarge"
+          }
+        }
+      },
+      "2XLarge": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-24}",
+        "$extensions": {
+          "figma": {
+            "name": "Corner-Radius/2XLarge"
+          }
+        }
+      },
+      "2XSmall": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-2}",
+        "$extensions": {
+          "figma": {
+            "name": "Corner-Radius/2XSmall"
+          }
+        }
+      },
+      "Input": {
+        "XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-16}",
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Input/XLarge"
+            }
+          }
+        },
+        "Large": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-16}",
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Input/Large"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-12}",
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Input/Medium"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-8}",
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Input/Small"
+            }
+          }
+        },
+        "Rounded": {
+          "$type": "number",
+          "$value": "{radius.Corner-Radius.Rounded}",
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Input/Rounded"
+            }
+          }
+        }
+      },
+      "Giant": {
+        "$type": "number",
+        "$value": "{global-dimensions.gr-dm-32}",
+        "$extensions": {
+          "figma": {
+            "name": "Corner-Radius/Giant"
+          }
+        }
+      },
+      "Stepper-Control": {
+        "XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-16}",
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Stepper-Control/XLarge"
+            }
+          }
+        },
+        "Large": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-16}",
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Stepper-Control/Large"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-12}",
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Stepper-Control/Medium"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-8}",
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Stepper-Control/Small"
+            }
+          }
+        },
+        "Rounded": {
+          "$type": "number",
+          "$value": "{radius.Corner-Radius.Rounded}",
+          "$extensions": {
+            "figma": {
+              "name": "Corner-Radius/Stepper-Control/Rounded"
+            }
+          }
+        }
+      }
+    }
+  }
+}

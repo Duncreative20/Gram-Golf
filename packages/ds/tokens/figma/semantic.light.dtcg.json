@@ -1,0 +1,3882 @@
+{
+  "semantic": {
+    "Color": {
+      "Content": {
+        "Neutral": {
+          "Strongest": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Neutral/Strongest"
+              }
+            }
+          },
+          "Base": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral-Alpha.11}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Neutral/Base"
+              }
+            }
+          },
+          "Light": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral-Alpha.10}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Neutral/Light"
+              }
+            }
+          }
+        },
+        "Accent": {
+          "Strongest": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Brand.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Accent/Strongest"
+              }
+            }
+          },
+          "Light": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Brand.10}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Accent/Light"
+              }
+            }
+          },
+          "Base": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Brand.11}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Accent/Base"
+              }
+            }
+          }
+        },
+        "Disabled": {
+          "$type": "color",
+          "$value": "{base-colors.Light.Neutral-Alpha.8}",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Content/Disabled"
+            }
+          }
+        },
+        "On-Accent": {
+          "Default": {
+            "$type": "color",
+            "$value": "{base-colors.Light.On-Brand-Default}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-Accent/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{base-colors.Light.On-Brand-Hover}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-Accent/Hover"
+              }
+            }
+          },
+          "Pressed": {
+            "$type": "color",
+            "$value": "{base-colors.Light.On-Brand-Pressed}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-Accent/Pressed"
+              }
+            }
+          }
+        },
+        "Inverse": {
+          "Strongest": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Inverse/Strongest"
+              }
+            }
+          },
+          "Base": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral-Alpha.11}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Inverse/Base"
+              }
+            }
+          },
+          "Light": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral-Alpha.10}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Inverse/Light"
+              }
+            }
+          }
+        },
+        "On-Brights": {
+          "$type": "color",
+          "$value": "#000000db",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Content/On-Brights"
+            }
+          }
+        },
+        "On-Colors": {
+          "$type": "color",
+          "$value": "{base-colors.White}",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Content/On-Colors"
+            }
+          }
+        },
+        "Positive": {
+          "Base": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Positive.11}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Positive/Base"
+              }
+            }
+          },
+          "Light": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Positive.10}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Positive/Light"
+              }
+            }
+          },
+          "Strongest": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Positive.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Positive/Strongest"
+              }
+            }
+          }
+        },
+        "Negative": {
+          "Light": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Negative.10}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Negative/Light"
+              }
+            }
+          },
+          "Base": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Negative.11}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Negative/Base"
+              }
+            }
+          },
+          "Strongest": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Negative.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Negative/Strongest"
+              }
+            }
+          }
+        },
+        "Warning": {
+          "Light": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Warning.10}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Warning/Light"
+              }
+            }
+          },
+          "Base": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Warning.11}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Warning/Base"
+              }
+            }
+          },
+          "Strongest": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Warning.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Warning/Strongest"
+              }
+            }
+          }
+        },
+        "Info": {
+          "Light": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Info.10}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Info/Light"
+              }
+            }
+          },
+          "Base": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Info.11}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Info/Base"
+              }
+            }
+          },
+          "Strongest": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Info.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Info/Strongest"
+              }
+            }
+          }
+        },
+        "Hyperlink": {
+          "Default": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Info.10}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Hyperlink/Default"
+              }
+            }
+          },
+          "Pressed": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Info.11}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Hyperlink/Pressed"
+              }
+            }
+          },
+          "Visited": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Info.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/Hyperlink/Visited"
+              }
+            }
+          }
+        },
+        "Placeholder": {
+          "$type": "color",
+          "$value": "{base-colors.Light.Neutral-Alpha.8}",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Content/Placeholder"
+            }
+          }
+        },
+        "On-Dark-Overlay": {
+          "Strongest": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral-Alpha.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-Dark-Overlay/Strongest"
+              }
+            }
+          },
+          "Base": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral-Alpha.11}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-Dark-Overlay/Base"
+              }
+            }
+          },
+          "Placeholder": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral-Alpha.9}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-Dark-Overlay/Placeholder"
+              }
+            }
+          },
+          "Disabled": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral-Alpha.7}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-Dark-Overlay/Disabled"
+              }
+            }
+          },
+          "Light": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral-Alpha.9}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-Dark-Overlay/Light"
+              }
+            }
+          }
+        },
+        "Support": {
+          "Orange": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Orange.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Orange/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Orange.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Orange/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Orange.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Orange/Base"
+                }
+              }
+            }
+          },
+          "Red": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Red.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Red/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Red.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Red/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Red.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Red/Base"
+                }
+              }
+            }
+          },
+          "Crimson": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Crimson.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Crimson/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Crimson.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Crimson/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Crimson.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Crimson/Base"
+                }
+              }
+            }
+          },
+          "Pink": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Pink.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Pink/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Pink.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Pink/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Pink.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Pink/Base"
+                }
+              }
+            }
+          },
+          "Plum": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Plum.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Plum/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Plum.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Plum/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Plum.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Plum/Base"
+                }
+              }
+            }
+          },
+          "Purple": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Purple.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Purple/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Purple.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Purple/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Purple.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Purple/Base"
+                }
+              }
+            }
+          },
+          "Violet": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Violet.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Violet/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Violet.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Violet/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Violet.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Violet/Base"
+                }
+              }
+            }
+          },
+          "Indigo": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Indigo.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Indigo/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Indigo.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Indigo/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Indigo.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Indigo/Base"
+                }
+              }
+            }
+          },
+          "Cyan": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Cyan.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Cyan/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Cyan.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Cyan/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Cyan.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Cyan/Base"
+                }
+              }
+            }
+          },
+          "Blue": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Blue.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Blue/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Blue.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Blue/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Blue.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Blue/Base"
+                }
+              }
+            }
+          },
+          "Teal": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Teal.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Teal/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Teal.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Teal/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Teal.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Teal/Base"
+                }
+              }
+            }
+          },
+          "Green": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Green.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Green/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Green.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Green/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Green.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Green/Base"
+                }
+              }
+            }
+          },
+          "Brown": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Brown.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Brown/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Brown.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Brown/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Brown.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Brown/Base"
+                }
+              }
+            }
+          },
+          "Yellow": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Yellow.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Yellow/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Yellow.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Yellow/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Yellow.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Yellow/Base"
+                }
+              }
+            }
+          },
+          "Golden": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Golden.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Golden/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Golden.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Golden/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Golden.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Golden/Base"
+                }
+              }
+            }
+          },
+          "Bronze": {
+            "Light": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Bronze.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Bronze/Light"
+                }
+              }
+            },
+            "Strongest": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Bronze.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Bronze/Strongest"
+                }
+              }
+            },
+            "Base": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Bronze.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Content/Support/Bronze/Base"
+                }
+              }
+            }
+          }
+        },
+        "On-White-Overlay": {
+          "Strongest": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral-Alpha.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-White-Overlay/Strongest"
+              }
+            }
+          },
+          "Base": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral-Alpha.11}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-White-Overlay/Base"
+              }
+            }
+          },
+          "Light": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral-Alpha.9}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-White-Overlay/Light"
+              }
+            }
+          },
+          "Placeholder": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral-Alpha.8}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-White-Overlay/Placeholder"
+              }
+            }
+          },
+          "Disabled": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral-Alpha.7}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Content/On-White-Overlay/Disabled"
+              }
+            }
+          }
+        }
+      },
+      "Background": {
+        "Accent": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Accent/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Accent/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Accent/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.4}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Accent/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Accent/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.6}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Accent/Subtle/Pressed"
+                }
+              }
+            }
+          },
+          "Flat": {
+            "Default": {
+              "$type": "color",
+              "$value": "#ffffff00",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Accent/Flat/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Accent/Flat/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Accent/Flat/Pressed"
+                }
+              }
+            }
+          },
+          "Ghost": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.White}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Accent/Ghost/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Accent/Ghost/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Accent/Ghost/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Canvas": {
+          "Alt": {
+            "$type": "color",
+            "$value": "{base-colors.White}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Canvas/Alt"
+              }
+            }
+          },
+          "Default": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral.2}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Canvas/Default"
+              }
+            }
+          },
+          "Accent": {
+            "$type": "color",
+            "$value": "{global-colors.GR-Light.GR.10}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Canvas/Accent"
+              }
+            }
+          }
+        },
+        "Surface": {
+          "Default": {
+            "$type": "color",
+            "$value": "{base-colors.White}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Surface/Default"
+              }
+            }
+          },
+          "Alt": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral.2}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Surface/Alt"
+              }
+            }
+          },
+          "Glass": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral-Alpha.10}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Surface/Glass"
+              }
+            }
+          },
+          "Overlay": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral-Alpha.7}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Surface/Overlay"
+              }
+            }
+          }
+        },
+        "Container": {
+          "$type": "color",
+          "$value": "{base-colors.Light.Neutral.1}",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Background/Container"
+            }
+          }
+        },
+        "Popover": {
+          "Default": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Popover}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Popover/Default"
+              }
+            }
+          },
+          "Overlay": {
+            "$type": "color",
+            "$value": "#000000db",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Popover/Overlay"
+              }
+            }
+          }
+        },
+        "Neutral": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.4}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Subtle/Pressed"
+                }
+              }
+            }
+          },
+          "Flat": {
+            "Default": {
+              "$type": "color",
+              "$value": "#ffffff00",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Flat/Default"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Flat/Pressed"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Flat/Hover"
+                }
+              }
+            }
+          },
+          "Ghost": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.White}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Ghost/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.1}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Ghost/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Ghost/Pressed"
+                }
+              }
+            }
+          },
+          "Pale": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Pale/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Pale/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.4}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Neutral/Pale/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Positive": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Positive/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Positive/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Positive/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Positive/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive-Alpha.4}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Positive/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Positive/Subtle/Pressed"
+                }
+              }
+            }
+          },
+          "Flat": {
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Positive/Flat/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Positive/Flat/Pressed"
+                }
+              }
+            },
+            "Default": {
+              "$type": "color",
+              "$value": "#ffffff00",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Positive/Flat/Default"
+                }
+              }
+            }
+          }
+        },
+        "Negative": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Negative/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Negative/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Negative/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Flat": {
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Negative/Flat/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Negative/Flat/Pressed"
+                }
+              }
+            },
+            "Default": {
+              "$type": "color",
+              "$value": "#ffffff00",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Negative/Flat/Default"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Negative/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative-Alpha.4}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Negative/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Negative/Subtle/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Warning": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Warning/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Warning/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Warning/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Flat": {
+            "Default": {
+              "$type": "color",
+              "$value": "#ffffff00",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Warning/Flat/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Warning/Flat/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Warning/Flat/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Warning/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning-Alpha.4}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Warning/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Warning/Subtle/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Info": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Info/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Info/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Info/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Info/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info-Alpha.4}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Info/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Info/Subtle/Pressed"
+                }
+              }
+            }
+          },
+          "Flat": {
+            "Default": {
+              "$type": "color",
+              "$value": "#ffffff00",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Info/Flat/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Info/Flat/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Info/Flat/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Overlay": {
+          "$type": "color",
+          "$value": "#00000040",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Background/Overlay"
+            }
+          }
+        },
+        "Active": {
+          "Accent": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Active/Accent/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Active/Accent/Subtle"
+                }
+              }
+            }
+          },
+          "Neutral": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Active/Neutral/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Active/Neutral/Subtle"
+                }
+              }
+            }
+          },
+          "Overlay": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Active/Overlay/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Active/Overlay/Subtle"
+                }
+              }
+            }
+          }
+        },
+        "Inverse": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.White}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Inverse/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Inverse/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Inverse/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Inverse/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral-Alpha.4}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Inverse/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Inverse/Subtle/Pressed"
+                }
+              }
+            }
+          },
+          "Flat": {
+            "Default": {
+              "$type": "color",
+              "$value": "#ffffff00",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Inverse/Flat/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Inverse/Flat/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Inverse/Flat/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Support": {
+          "Orange": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Orange.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Orange/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Orange-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Orange/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Orange.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Orange/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Orange.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Orange/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Orange-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Orange/Pale"
+                }
+              }
+            }
+          },
+          "Red": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Red.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Red/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Red-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Red/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Red.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Red/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Red.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Red/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Red-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Red/Pale"
+                }
+              }
+            }
+          },
+          "Crimson": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Crimson.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Crimson/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Crimson-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Crimson/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Crimson.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Crimson/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Crimson.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Crimson/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Crimson-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Crimson/Pale"
+                }
+              }
+            }
+          },
+          "Pink": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Pink.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Pink/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Pink-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Pink/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Pink.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Pink/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Pink.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Pink/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Pink-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Pink/Pale"
+                }
+              }
+            }
+          },
+          "Plum": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Plum.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Plum/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Plum-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Plum/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Plum.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Plum/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Plum.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Plum/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Plum-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Plum/Pale"
+                }
+              }
+            }
+          },
+          "Purple": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Purple.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Purple/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Purple-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Purple/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Purple.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Purple/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Purple.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Purple/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Purple-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Purple/Pale"
+                }
+              }
+            }
+          },
+          "Violet": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Violet.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Violet/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Violet-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Violet/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Violet.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Violet/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Violet.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Violet/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Violet-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Violet/Pale"
+                }
+              }
+            }
+          },
+          "Indigo": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Indigo.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Indigo/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Indigo-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Indigo/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Indigo.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Indigo/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Indigo.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Indigo/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Indigo-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Indigo/Pale"
+                }
+              }
+            }
+          },
+          "Cyan": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Cyan.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Cyan/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Cyan-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Cyan/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Cyan.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Cyan/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Cyan.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Cyan/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Cyan-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Cyan/Pale"
+                }
+              }
+            }
+          },
+          "Blue": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Blue.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Blue/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Blue-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Blue/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Blue.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Blue/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Blue.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Blue/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Blue-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Blue/Pale"
+                }
+              }
+            }
+          },
+          "Teal": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Teal.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Teal/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Teal-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Teal/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Teal.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Teal/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Teal.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Teal/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Teal-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Teal/Pale"
+                }
+              }
+            }
+          },
+          "Green": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Green.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Green/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Green-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Green/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Green.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Green/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Green.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Green/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Green-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Green/Pale"
+                }
+              }
+            }
+          },
+          "Brown": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Brown.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Brown/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Brown-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Brown/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Brown.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Brown/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Brown.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Brown/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Brown-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Brown/Pale"
+                }
+              }
+            }
+          },
+          "Yellow": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Yellow.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Yellow/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Yellow-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Yellow/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Yellow.4}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Yellow/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Yellow.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Yellow/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Yellow-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Yellow/Pale"
+                }
+              }
+            }
+          },
+          "Brand": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Brand/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Brand/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Brand/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Brand/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Brand/Pale"
+                }
+              }
+            }
+          },
+          "Neutral": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Neutral/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Neutral/Subtle"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Neutral/Soft"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Neutral/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Neutral/Pale"
+                }
+              }
+            }
+          },
+          "Golden": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Golden.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Golden/Solid"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Golden.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Golden/Soft"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Golden-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Golden/Subtle"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Golden.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Golden/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Golden-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Golden/Pale"
+                }
+              }
+            }
+          },
+          "Bronze": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Bronze.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Bronze/Solid"
+                }
+              }
+            },
+            "Soft": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Bronze.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Bronze/Soft"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Bronze-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Bronze/Subtle"
+                }
+              }
+            },
+            "Deep": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Bronze.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Bronze/Deep"
+                }
+              }
+            },
+            "Pale": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Bronze-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Background/Support/Bronze/Pale"
+                }
+              }
+            }
+          }
+        },
+        "White-Solid": {
+          "Default": {
+            "$type": "color",
+            "$value": "{base-colors.White}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/White-Solid/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral.2}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/White-Solid/Hover"
+              }
+            }
+          },
+          "Pressed": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral.3}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/White-Solid/Pressed"
+              }
+            }
+          }
+        },
+        "Black-Solid": {
+          "Default": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Black-Solid/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral.11}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Black-Solid/Hover"
+              }
+            }
+          },
+          "Pressed": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral.10}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Black-Solid/Pressed"
+              }
+            }
+          }
+        },
+        "White-Overlay": {
+          "Default": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral-Alpha.7}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/White-Overlay/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral-Alpha.8}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/White-Overlay/Hover"
+              }
+            }
+          },
+          "Pressed": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Neutral-Alpha.9}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/White-Overlay/Pressed"
+              }
+            }
+          }
+        },
+        "Black-Overlay": {
+          "Default": {
+            "$type": "color",
+            "$value": "{global-colors.GR-Light.Gray-Alpha.7}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Black-Overlay/Default"
+              }
+            }
+          },
+          "Hover": {
+            "$type": "color",
+            "$value": "#000000cc",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Black-Overlay/Hover"
+              }
+            }
+          },
+          "Pressed": {
+            "$type": "color",
+            "$value": "#000000e5",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Background/Black-Overlay/Pressed"
+              }
+            }
+          }
+        },
+        "Solid-Disabled": {
+          "$type": "color",
+          "$value": "{base-colors.Light.Neutral.3}",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Background/Solid-Disabled"
+            }
+          }
+        },
+        "Subtle-Disabled": {
+          "$type": "color",
+          "$value": "{base-colors.Light.Neutral-Alpha.3}",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Background/Subtle-Disabled"
+            }
+          }
+        },
+        "Flat-Disabled": {
+          "$type": "color",
+          "$value": "#ffffff00",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Background/Flat-Disabled"
+            }
+          }
+        },
+        "Ghost-Disabled": {
+          "$type": "color",
+          "$value": "#ffffff00",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Background/Ghost-Disabled"
+            }
+          }
+        },
+        "White-Disabled": {
+          "$type": "color",
+          "$value": "#ffffff24",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Background/White-Disabled"
+            }
+          }
+        },
+        "Inverse-Disabled": {
+          "$type": "color",
+          "$value": "#ffffff24",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Background/Inverse-Disabled"
+            }
+          }
+        }
+      },
+      "Border": {
+        "Disabled": {
+          "$type": "color",
+          "$value": "{base-colors.Light.Neutral.3}",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Border/Disabled"
+            }
+          }
+        },
+        "Neutral": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Neutral/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Neutral/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Neutral/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Neutral/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Neutral/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.4}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Neutral/Subtle/Pressed"
+                }
+              }
+            }
+          },
+          "Pale": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.3}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Neutral/Pale/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.4}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Neutral/Pale/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Neutral/Pale/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Positive": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Positive/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Positive/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Positive/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Positive/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive-Alpha.6}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Positive/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Positive-Alpha.7}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Positive/Subtle/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Negative": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Negative/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Negative/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Negative/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Negative/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative-Alpha.6}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Negative/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Negative-Alpha.7}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Negative/Subtle/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Warning": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Warning/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Warning/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Warning/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Warning/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning-Alpha.6}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Warning/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Warning-Alpha.7}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Warning/Subtle/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Info": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Info/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Info/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Info/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Info/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info-Alpha.6}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Info/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Info-Alpha.7}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Info/Subtle/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Overlay": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral.12}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Overlay/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Overlay/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Overlay/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral-Alpha.8}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Overlay/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral-Alpha.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Overlay/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral-Alpha.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Overlay/Subtle/Pressed"
+                }
+              }
+            }
+          },
+          "Pale": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral-Alpha.4}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Overlay/Pale/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Overlay/Pale/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Dark.Neutral-Alpha.6}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Overlay/Pale/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Accent": {
+          "Solid": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Accent/Solid/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.10}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Accent/Solid/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Accent/Solid/Pressed"
+                }
+              }
+            }
+          },
+          "Subtle": {
+            "Default": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Accent/Subtle/Default"
+                }
+              }
+            },
+            "Hover": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand-Alpha.6}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Accent/Subtle/Hover"
+                }
+              }
+            },
+            "Pressed": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand-Alpha.7}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Accent/Subtle/Pressed"
+                }
+              }
+            }
+          }
+        },
+        "Popover": {
+          "Subtle": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral-Alpha.3}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Border/Popover/Subtle"
+              }
+            }
+          },
+          "Solid": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Border/Popover/Solid"
+              }
+            }
+          }
+        },
+        "Container": {
+          "Subtle": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral-Alpha.3}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Border/Container/Subtle"
+              }
+            }
+          },
+          "Solid": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Border/Container/Solid"
+              }
+            }
+          }
+        },
+        "Inverse": {
+          "$type": "color",
+          "$value": "{base-colors.White}",
+          "$extensions": {
+            "figma": {
+              "name": "Color/Border/Inverse"
+            }
+          }
+        },
+        "Active": {
+          "Accent": {
+            "Subtle": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand-Alpha.6}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Active/Accent/Subtle"
+                }
+              }
+            },
+            "Solid": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Active/Accent/Solid"
+                }
+              }
+            }
+          },
+          "Neutral": {
+            "Subtle": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.6}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Active/Neutral/Subtle"
+                }
+              }
+            },
+            "Solid": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.11}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Active/Neutral/Solid"
+                }
+              }
+            }
+          },
+          "Overlay": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{base-colors.Overlay.White.2}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Active/Overlay/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{base-colors.Overlay.White.7}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Active/Overlay/Subtle"
+                }
+              }
+            }
+          }
+        },
+        "Support": {
+          "Orange": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Orange.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Orange/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Orange-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Orange/Subtle"
+                }
+              }
+            }
+          },
+          "Red": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Red.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Red/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Red-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Red/Subtle"
+                }
+              }
+            }
+          },
+          "Crimson": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Crimson.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Crimson/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Crimson-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Crimson/Subtle"
+                }
+              }
+            }
+          },
+          "Pink": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Pink.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Pink/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Pink-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Pink/Subtle"
+                }
+              }
+            }
+          },
+          "Plum": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Plum.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Plum/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Plum-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Plum/Subtle"
+                }
+              }
+            }
+          },
+          "Purple": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Purple.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Purple/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Purple-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Purple/Subtle"
+                }
+              }
+            }
+          },
+          "Violet": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Violet.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Violet/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Violet-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Violet/Subtle"
+                }
+              }
+            }
+          },
+          "Indigo": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Indigo.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Indigo/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Indigo-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Indigo/Subtle"
+                }
+              }
+            }
+          },
+          "Cyan": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Cyan.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Cyan/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Cyan-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Cyan/Subtle"
+                }
+              }
+            }
+          },
+          "Blue": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Blue.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Blue/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Blue-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Blue/Subtle"
+                }
+              }
+            }
+          },
+          "Teal": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Teal.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Teal/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Teal-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Teal/Subtle"
+                }
+              }
+            }
+          },
+          "Green": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Green.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Green/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Green-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Green/Subtle"
+                }
+              }
+            }
+          },
+          "Brown": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Brown.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Brown/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Brown-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Brown/Subtle"
+                }
+              }
+            }
+          },
+          "Yellow": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Yellow.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Yellow/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Yellow-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Yellow/Subtle"
+                }
+              }
+            }
+          },
+          "Golden": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Golden.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Golden/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Golden-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Golden/Subtle"
+                }
+              }
+            }
+          },
+          "Bronze": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Bronze.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Bronze/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{global-colors.GR-Light.Bronze-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Bronze/Subtle"
+                }
+              }
+            }
+          },
+          "Brand": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Brand/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Brand-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Brand/Subtle"
+                }
+              }
+            }
+          },
+          "Neutral": {
+            "Solid": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral.9}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Neutral/Solid"
+                }
+              }
+            },
+            "Subtle": {
+              "$type": "color",
+              "$value": "{base-colors.Light.Neutral-Alpha.5}",
+              "$extensions": {
+                "figma": {
+                  "name": "Color/Border/Support/Neutral/Subtle"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Shadow": {
+        "Neutral": {
+          "Strong": {
+            "$type": "color",
+            "$value": "#0000001f",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Shadow/Neutral/Strong"
+              }
+            }
+          },
+          "Base": {
+            "$type": "color",
+            "$value": "#00000014",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Shadow/Neutral/Base"
+              }
+            }
+          },
+          "Light": {
+            "$type": "color",
+            "$value": "#0000000a",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Shadow/Neutral/Light"
+              }
+            }
+          },
+          "Strongest": {
+            "$type": "color",
+            "$value": "#00000029",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Shadow/Neutral/Strongest"
+              }
+            }
+          }
+        },
+        "Inverse": {
+          "Strong": {
+            "$type": "color",
+            "$value": "#0000001f",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Shadow/Inverse/Strong"
+              }
+            }
+          },
+          "Base": {
+            "$type": "color",
+            "$value": "#00000014",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Shadow/Inverse/Base"
+              }
+            }
+          },
+          "Light": {
+            "$type": "color",
+            "$value": "#0000000a",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Shadow/Inverse/Light"
+              }
+            }
+          },
+          "Strongest": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Shadow/Inverse/Strongest"
+              }
+            }
+          },
+          "Stronger": {
+            "$type": "color",
+            "$value": "#00000073",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Shadow/Inverse/Stronger"
+              }
+            }
+          }
+        }
+      },
+      "Focus": {
+        "Accent": {
+          "Solid": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Brand.9}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Focus/Accent/Solid"
+              }
+            }
+          },
+          "Subtle": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Brand-Alpha.6}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Focus/Accent/Subtle"
+              }
+            }
+          }
+        },
+        "Neutral": {
+          "Solid": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Focus/Neutral/Solid"
+              }
+            }
+          },
+          "Subtle": {
+            "$type": "color",
+            "$value": "{base-colors.Light.Neutral-Alpha.7}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Focus/Neutral/Subtle"
+              }
+            }
+          }
+        },
+        "Overlay": {
+          "Solid": {
+            "$type": "color",
+            "$value": "{base-colors.Overlay.White.12}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Focus/Overlay/Solid"
+              }
+            }
+          },
+          "Subtle": {
+            "$type": "color",
+            "$value": "{base-colors.Overlay.White.7}",
+            "$extensions": {
+              "figma": {
+                "name": "Color/Focus/Overlay/Subtle"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Darkmode": {
+      "$type": "boolean",
+      "$value": false,
+      "$extensions": {
+        "figma": {
+          "name": "Darkmode"
+        }
+      }
+    }
+  }
+}

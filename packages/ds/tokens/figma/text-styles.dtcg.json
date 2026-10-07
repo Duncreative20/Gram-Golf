@@ -1,0 +1,666 @@
+{
+  "text-styles": {
+    "Display-Extra": {
+      "1": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 78,
+          "lineHeight": 88,
+          "letterSpacing": -4.4
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Display-Extra/1"
+          }
+        }
+      },
+      "2": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 68,
+          "lineHeight": 72,
+          "letterSpacing": -4
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Display-Extra/2"
+          }
+        }
+      },
+      "3": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 60,
+          "lineHeight": 68,
+          "letterSpacing": -3.4
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Display-Extra/3"
+          }
+        }
+      }
+    },
+    "Display": {
+      "1": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 52,
+          "lineHeight": 60,
+          "letterSpacing": -3
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Display/1"
+          }
+        }
+      },
+      "2": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 46,
+          "lineHeight": 52,
+          "letterSpacing": -2.08
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Display/2"
+          }
+        }
+      },
+      "3": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 40,
+          "lineHeight": 48,
+          "letterSpacing": -1.84
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Display/3"
+          }
+        }
+      },
+      "4": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 36,
+          "lineHeight": 44,
+          "letterSpacing": -1.6
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Display/4"
+          }
+        }
+      }
+    },
+    "Heading": {
+      "1": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 32,
+          "lineHeight": 38,
+          "letterSpacing": -1.44
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Heading/1"
+          }
+        }
+      },
+      "2": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 28,
+          "lineHeight": 34,
+          "letterSpacing": -0.96
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Heading/2"
+          }
+        }
+      },
+      "3": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 24,
+          "lineHeight": 30,
+          "letterSpacing": -0.84
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Heading/3"
+          }
+        }
+      },
+      "4": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 20,
+          "lineHeight": 26,
+          "letterSpacing": -0.72
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Heading/4"
+          }
+        }
+      },
+      "Subheading": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 18,
+          "lineHeight": 24,
+          "letterSpacing": -0.6
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Heading/Subheading"
+          }
+        }
+      }
+    },
+    "Body": {
+      "Extra": {
+        "Regular": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Regular",
+            "fontSize": 16,
+            "lineHeight": 22,
+            "letterSpacing": -0.36
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/Extra/Regular"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Medium",
+            "fontSize": 16,
+            "lineHeight": 22,
+            "letterSpacing": -0.36
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/Extra/Medium"
+            }
+          }
+        },
+        "DemiBold": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Demibold",
+            "fontSize": 16,
+            "lineHeight": 22,
+            "letterSpacing": -0.36
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/Extra/DemiBold"
+            }
+          }
+        }
+      },
+      "Base": {
+        "Regular": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Regular",
+            "fontSize": 14,
+            "lineHeight": 18,
+            "letterSpacing": -0.32
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/Base/Regular"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Medium",
+            "fontSize": 14,
+            "lineHeight": 18,
+            "letterSpacing": -0.32
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/Base/Medium"
+            }
+          }
+        },
+        "DemiBold": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Demibold",
+            "fontSize": 14,
+            "lineHeight": 18,
+            "letterSpacing": -0.32
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/Base/DemiBold"
+            }
+          }
+        }
+      },
+      "Small": {
+        "Regular": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Regular",
+            "fontSize": 13,
+            "lineHeight": 18,
+            "letterSpacing": -0.28
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/Small/Regular"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Medium",
+            "fontSize": 13,
+            "lineHeight": 18,
+            "letterSpacing": -0.28
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/Small/Medium"
+            }
+          }
+        },
+        "DemiBold": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Demibold",
+            "fontSize": 13,
+            "lineHeight": 18,
+            "letterSpacing": -0.28
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/Small/DemiBold"
+            }
+          }
+        }
+      },
+      "XSmall": {
+        "Regular": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "lineHeight": 17,
+            "letterSpacing": -0.28
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/XSmall/Regular"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Medium",
+            "fontSize": 12,
+            "lineHeight": 17,
+            "letterSpacing": -0.28
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/XSmall/Medium"
+            }
+          }
+        },
+        "DemiBold": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Demibold",
+            "fontSize": 12,
+            "lineHeight": 17,
+            "letterSpacing": -0.28
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/XSmall/DemiBold"
+            }
+          }
+        }
+      },
+      "Code": {
+        "Regular": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "IBM Plex Sans",
+            "fontStyle": "Light",
+            "fontSize": 13,
+            "lineHeight": 18,
+            "letterSpacing": 0
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/Code/Regular"
+            }
+          }
+        },
+        "DemiBold": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "IBM Plex Sans",
+            "fontStyle": "Medium",
+            "fontSize": 13,
+            "lineHeight": 18,
+            "letterSpacing": 0
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Body/Code/DemiBold"
+            }
+          }
+        }
+      }
+    },
+    "Caption": {
+      "Regular": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Regular",
+          "fontSize": 11,
+          "lineHeight": 16,
+          "letterSpacing": -0.12
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Caption/Regular"
+          }
+        }
+      },
+      "Medium": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Medium",
+          "fontSize": 11,
+          "lineHeight": 16,
+          "letterSpacing": -0.12
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Caption/Medium"
+          }
+        }
+      },
+      "DemiBold": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 11,
+          "lineHeight": 16,
+          "letterSpacing": -0.12
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Caption/DemiBold"
+          }
+        }
+      }
+    },
+    "Label": {
+      "Large": {
+        "Medium": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Medium",
+            "fontSize": 12,
+            "lineHeight": 16,
+            "letterSpacing": -0.14
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Label/Large/Medium"
+            }
+          }
+        },
+        "DemiBold": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Demibold",
+            "fontSize": 12,
+            "lineHeight": 16,
+            "letterSpacing": -0.14
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Label/Large/DemiBold"
+            }
+          }
+        }
+      },
+      "Medium": {
+        "Medium": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Medium",
+            "fontSize": 10,
+            "lineHeight": 14,
+            "letterSpacing": -0.12
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Label/Medium/Medium"
+            }
+          }
+        },
+        "DemiBold": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Demibold",
+            "fontSize": 10,
+            "lineHeight": 14,
+            "letterSpacing": -0.12
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Label/Medium/DemiBold"
+            }
+          }
+        }
+      },
+      "Small": {
+        "Medium": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Medium",
+            "fontSize": 9,
+            "lineHeight": 12,
+            "letterSpacing": -0.12
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Label/Small/Medium"
+            }
+          }
+        },
+        "DemiBold": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "MiSans Latin",
+            "fontStyle": "Demibold",
+            "fontSize": 9,
+            "lineHeight": 12,
+            "letterSpacing": -0.12
+          },
+          "$extensions": {
+            "figma": {
+              "name": "Label/Small/DemiBold"
+            }
+          }
+        }
+      }
+    },
+    "Button-Label": {
+      "XL": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 16,
+          "lineHeight": 24,
+          "letterSpacing": -0.4
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Button-Label/XL"
+          }
+        }
+      },
+      "L": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 14,
+          "lineHeight": 20,
+          "letterSpacing": -0.32
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Button-Label/L"
+          }
+        }
+      },
+      "M": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 14,
+          "lineHeight": 20,
+          "letterSpacing": -0.32
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Button-Label/M"
+          }
+        }
+      },
+      "S": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 14,
+          "lineHeight": 20,
+          "letterSpacing": -0.32
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Button-Label/S"
+          }
+        }
+      },
+      "XS": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Demibold",
+          "fontSize": 12,
+          "lineHeight": 12,
+          "letterSpacing": -0.28
+        },
+        "$extensions": {
+          "figma": {
+            "name": "Button-Label/XS"
+          }
+        }
+      }
+    },
+    "All-Caps": {
+      "M": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Regular",
+          "fontSize": 14,
+          "lineHeight": 16,
+          "letterSpacing": 0
+        },
+        "$extensions": {
+          "figma": {
+            "name": "All-Caps/M"
+          }
+        }
+      },
+      "S": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "MiSans Latin",
+          "fontStyle": "Regular",
+          "fontSize": 12,
+          "lineHeight": 16,
+          "letterSpacing": 0
+        },
+        "$extensions": {
+          "figma": {
+            "name": "All-Caps/S"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "breakpoints": {
+    "Margin-Comfortable": {
+      "$type": "number",
+      "$value": "{spacing.Spacing.Padding.Large}",
+      "$extensions": {
+        "figma": {
+          "name": "Margin-Comfortable"
+        }
+      }
+    },
+    "Gutter": {
+      "$type": "number",
+      "$value": "{spacing.Spacing.Gap.Small}",
+      "$extensions": {
+        "figma": {
+          "name": "Gutter"
+        }
+      }
+    },
+    "Viewport-Width": {
+      "$type": "number",
+      "$value": 390,
+      "$extensions": {
+        "figma": {
+          "name": "Viewport-Width"
+        }
+      }
+    },
+    "Viewport-Height": {
+      "$type": "number",
+      "$value": 844,
+      "$extensions": {
+        "figma": {
+          "name": "Viewport-Height"
+        }
+      }
+    },
+    "Modal-Padding": {
+      "$type": "number",
+      "$value": "{spacing.Spacing.Padding.Medium}",
+      "$extensions": {
+        "figma": {
+          "name": "Modal-Padding"
+        }
+      }
+    },
+    "Card-padding-medium": {
+      "$type": "number",
+      "$value": "{spacing.Spacing.Padding.Medium}",
+      "$extensions": {
+        "figma": {
+          "name": "Card-padding-medium"
+        }
+      }
+    },
+    "Margin-Small": {
+      "$type": "number",
+      "$value": "{spacing.Spacing.Padding.Medium}",
+      "$extensions": {
+        "figma": {
+          "name": "Margin-Small"
+        }
+      }
+    },
+    "Card-padding-small": {
+      "$type": "number",
+      "$value": "{spacing.Spacing.Padding.Small}",
+      "$extensions": {
+        "figma": {
+          "name": "Card-padding-small"
+        }
+      }
+    },
+    "Card-padding-xsmall": {
+      "$type": "number",
+      "$value": "{spacing.Spacing.Padding.XSmall}",
+      "$extensions": {
+        "figma": {
+          "name": "Card-padding-xsmall"
+        }
+      }
+    }
+  }
+}

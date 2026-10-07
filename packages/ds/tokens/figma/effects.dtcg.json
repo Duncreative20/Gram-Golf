@@ -1,0 +1,479 @@
+{
+  "effects": {
+    "Effect": {
+      "Container": {
+        "$type": "shadow",
+        "$value": [
+          {
+            "type": "DROP_SHADOW",
+            "color": "#0000000a",
+            "offsetX": 0,
+            "offsetY": 8,
+            "blur": 24,
+            "spread": -16
+          },
+          {
+            "type": "DROP_SHADOW",
+            "color": "#0000001f",
+            "offsetX": 0,
+            "offsetY": 12,
+            "blur": 32,
+            "spread": -16
+          }
+        ],
+        "$extensions": {
+          "figma": {
+            "name": "Effect/Container",
+            "blur": null
+          }
+        }
+      },
+      "Popover": {
+        "$type": "shadow",
+        "$value": [
+          {
+            "type": "DROP_SHADOW",
+            "color": "#0000000a",
+            "offsetX": 0,
+            "offsetY": 12,
+            "blur": 32,
+            "spread": -16
+          },
+          {
+            "type": "DROP_SHADOW",
+            "color": "#00000014",
+            "offsetX": 0,
+            "offsetY": 8,
+            "blur": 24,
+            "spread": -12
+          }
+        ],
+        "$extensions": {
+          "figma": {
+            "name": "Effect/Popover",
+            "blur": {
+              "type": "BACKGROUND_BLUR",
+              "radius": 40
+            }
+          }
+        }
+      },
+      "Overlay": {
+        "$type": "shadow",
+        "$value": [],
+        "$extensions": {
+          "figma": {
+            "name": "Effect/Overlay",
+            "blur": {
+              "type": "BACKGROUND_BLUR",
+              "radius": 2
+            }
+          }
+        }
+      },
+      "Input": {
+        "$type": "shadow",
+        "$value": [
+          {
+            "type": "INNER_SHADOW",
+            "color": "#00000014",
+            "offsetX": 0,
+            "offsetY": 0,
+            "blur": 1,
+            "spread": 0
+          }
+        ],
+        "$extensions": {
+          "figma": {
+            "name": "Effect/Input",
+            "blur": {
+              "type": "BACKGROUND_BLUR",
+              "radius": 15
+            }
+          }
+        }
+      },
+      "Liquid-glass": {
+        "$type": "shadow",
+        "$value": [],
+        "$extensions": {
+          "figma": {
+            "name": "Effect/Liquid-glass",
+            "blur": null
+          }
+        }
+      },
+      "Glass": {
+        "$type": "shadow",
+        "$value": [],
+        "$extensions": {
+          "figma": {
+            "name": "Effect/Glass",
+            "blur": null
+          }
+        }
+      }
+    },
+    "Shadow": {
+      "Action": {
+        "Basic": {
+          "$type": "shadow",
+          "$value": [
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000000a",
+              "offsetX": 0,
+              "offsetY": 1,
+              "blur": 1,
+              "spread": 1
+            }
+          ],
+          "$extensions": {
+            "figma": {
+              "name": "Shadow/Action/Basic",
+              "blur": null
+            }
+          }
+        },
+        "Tertiary": {
+          "$type": "shadow",
+          "$value": [
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000000a",
+              "offsetX": 0,
+              "offsetY": 1,
+              "blur": 1,
+              "spread": 0
+            }
+          ],
+          "$extensions": {
+            "figma": {
+              "name": "Shadow/Action/Tertiary",
+              "blur": {
+                "type": "BACKGROUND_BLUR",
+                "radius": 2
+              }
+            }
+          }
+        }
+      },
+      "Bottom": {
+        "Level-1": {
+          "$type": "shadow",
+          "$value": [
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000014",
+              "offsetX": 0,
+              "offsetY": 4,
+              "blur": 8,
+              "spread": -4
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000001f",
+              "offsetX": 0,
+              "offsetY": 1,
+              "blur": 4,
+              "spread": -2
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000000a",
+              "offsetX": 0,
+              "offsetY": 0,
+              "blur": 2,
+              "spread": 0
+            }
+          ],
+          "$extensions": {
+            "figma": {
+              "name": "Shadow/Bottom/Level-1",
+              "blur": null
+            }
+          }
+        },
+        "Level-2": {
+          "$type": "shadow",
+          "$value": [
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000001f",
+              "offsetX": 0,
+              "offsetY": 12,
+              "blur": 40,
+              "spread": -16
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000029",
+              "offsetX": 0,
+              "offsetY": 4,
+              "blur": 16,
+              "spread": -8
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000000a",
+              "offsetX": 0,
+              "offsetY": 0,
+              "blur": 2,
+              "spread": 0
+            }
+          ],
+          "$extensions": {
+            "figma": {
+              "name": "Shadow/Bottom/Level-2",
+              "blur": null
+            }
+          }
+        },
+        "Level-3": {
+          "$type": "shadow",
+          "$value": [
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000029",
+              "offsetX": 0,
+              "offsetY": 16,
+              "blur": 64,
+              "spread": -20
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000029",
+              "offsetX": 0,
+              "offsetY": 12,
+              "blur": 28,
+              "spread": -12
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000014",
+              "offsetX": 0,
+              "offsetY": 4,
+              "blur": 16,
+              "spread": -8
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000000a",
+              "offsetX": 0,
+              "offsetY": 0,
+              "blur": 2,
+              "spread": 0
+            }
+          ],
+          "$extensions": {
+            "figma": {
+              "name": "Shadow/Bottom/Level-3",
+              "blur": null
+            }
+          }
+        },
+        "Level-4": {
+          "$type": "shadow",
+          "$value": [
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000029",
+              "offsetX": 0,
+              "offsetY": 28,
+              "blur": 80,
+              "spread": -32
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000029",
+              "offsetX": 0,
+              "offsetY": 24,
+              "blur": 44,
+              "spread": -12
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000014",
+              "offsetX": 0,
+              "offsetY": 8,
+              "blur": 28,
+              "spread": -8
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000000a",
+              "offsetX": 0,
+              "offsetY": 0,
+              "blur": 2,
+              "spread": 0
+            }
+          ],
+          "$extensions": {
+            "figma": {
+              "name": "Shadow/Bottom/Level-4",
+              "blur": null
+            }
+          }
+        }
+      },
+      "Top": {
+        "Level-1": {
+          "$type": "shadow",
+          "$value": [
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000014",
+              "offsetX": 0,
+              "offsetY": -4,
+              "blur": 8,
+              "spread": -4
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000001f",
+              "offsetX": 0,
+              "offsetY": -1,
+              "blur": 4,
+              "spread": -2
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000000a",
+              "offsetX": 0,
+              "offsetY": 0,
+              "blur": 2,
+              "spread": 0
+            }
+          ],
+          "$extensions": {
+            "figma": {
+              "name": "Shadow/Top/Level-1",
+              "blur": null
+            }
+          }
+        },
+        "Level-2": {
+          "$type": "shadow",
+          "$value": [
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000001f",
+              "offsetX": 0,
+              "offsetY": -12,
+              "blur": 40,
+              "spread": -16
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000029",
+              "offsetX": 0,
+              "offsetY": -4,
+              "blur": 16,
+              "spread": -8
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000000a",
+              "offsetX": 0,
+              "offsetY": 0,
+              "blur": 2,
+              "spread": 0
+            }
+          ],
+          "$extensions": {
+            "figma": {
+              "name": "Shadow/Top/Level-2",
+              "blur": null
+            }
+          }
+        },
+        "Level-3": {
+          "$type": "shadow",
+          "$value": [
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000029",
+              "offsetX": 0,
+              "offsetY": -16,
+              "blur": 64,
+              "spread": -20
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000029",
+              "offsetX": 0,
+              "offsetY": -12,
+              "blur": 28,
+              "spread": -12
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000014",
+              "offsetX": 0,
+              "offsetY": -4,
+              "blur": 16,
+              "spread": -8
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000000a",
+              "offsetX": 0,
+              "offsetY": 0,
+              "blur": 2,
+              "spread": 0
+            }
+          ],
+          "$extensions": {
+            "figma": {
+              "name": "Shadow/Top/Level-3",
+              "blur": null
+            }
+          }
+        },
+        "Level-4": {
+          "$type": "shadow",
+          "$value": [
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000029",
+              "offsetX": 0,
+              "offsetY": -28,
+              "blur": 80,
+              "spread": -32
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000029",
+              "offsetX": 0,
+              "offsetY": -24,
+              "blur": 44,
+              "spread": -12
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#00000014",
+              "offsetX": 0,
+              "offsetY": -8,
+              "blur": 28,
+              "spread": -8
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": "#0000000a",
+              "offsetX": 0,
+              "offsetY": 0,
+              "blur": 2,
+              "spread": 0
+            }
+          ],
+          "$extensions": {
+            "figma": {
+              "name": "Shadow/Top/Level-4",
+              "blur": null
+            }
+          }
+        }
+      }
+    }
+  }
+}

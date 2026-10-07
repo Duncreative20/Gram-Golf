@@ -1,0 +1,208 @@
+{
+  "spacing": {
+    "Spacing": {
+      "Gap": {
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-12}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Gap/Small"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-16}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Gap/Medium"
+            }
+          }
+        },
+        "XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-8}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Gap/XSmall"
+            }
+          }
+        },
+        "2XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-4}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Gap/2XSmall"
+            }
+          }
+        },
+        "Large": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-24}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Gap/Large"
+            }
+          }
+        },
+        "XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-32}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Gap/XLarge"
+            }
+          }
+        },
+        "2XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Gap/2XLarge"
+            }
+          }
+        },
+        "3XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-48}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Gap/3XLarge"
+            }
+          }
+        },
+        "Giant": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-64}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Gap/Giant"
+            }
+          }
+        },
+        "XGiant": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-88}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Gap/XGiant"
+            }
+          }
+        },
+        "2XGiant": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-144}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Gap/2XGiant"
+            }
+          }
+        },
+        "3XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-2}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Gap/3XSmall"
+            }
+          }
+        }
+      },
+      "Padding": {
+        "3XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-2}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Padding/3XSmall"
+            }
+          }
+        },
+        "2XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-4}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Padding/2XSmall"
+            }
+          }
+        },
+        "XSmall": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-8}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Padding/XSmall"
+            }
+          }
+        },
+        "Small": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-12}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Padding/Small"
+            }
+          }
+        },
+        "Medium": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-16}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Padding/Medium"
+            }
+          }
+        },
+        "Large": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-20}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Padding/Large"
+            }
+          }
+        },
+        "2XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-32}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Padding/2XLarge"
+            }
+          }
+        },
+        "4XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-48}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Padding/4XLarge"
+            }
+          }
+        },
+        "3XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-40}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Padding/3XLarge"
+            }
+          }
+        },
+        "XLarge": {
+          "$type": "number",
+          "$value": "{global-dimensions.gr-dm-24}",
+          "$extensions": {
+            "figma": {
+              "name": "Spacing/Padding/XLarge"
+            }
+          }
+        }
+      }
+    }
+  }
+}

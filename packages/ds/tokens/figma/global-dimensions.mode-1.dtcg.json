@@ -1,0 +1,319 @@
+{
+  "global-dimensions": {
+    "gr-dm-2": {
+      "$type": "number",
+      "$value": 2,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-2"
+        }
+      }
+    },
+    "gr-dm-4": {
+      "$type": "number",
+      "$value": 4,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-4"
+        }
+      }
+    },
+    "gr-dm-8": {
+      "$type": "number",
+      "$value": 8,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-8"
+        }
+      }
+    },
+    "gr-dm-12": {
+      "$type": "number",
+      "$value": 12,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-12"
+        }
+      }
+    },
+    "gr-dm-16": {
+      "$type": "number",
+      "$value": 16,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-16"
+        }
+      }
+    },
+    "gr-dm-20": {
+      "$type": "number",
+      "$value": 20,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-20"
+        }
+      }
+    },
+    "gr-dm-24": {
+      "$type": "number",
+      "$value": 24,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-24"
+        }
+      }
+    },
+    "gr-dm-28": {
+      "$type": "number",
+      "$value": 28,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-28"
+        }
+      }
+    },
+    "gr-dm-32": {
+      "$type": "number",
+      "$value": 32,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-32"
+        }
+      }
+    },
+    "gr-dm-36": {
+      "$type": "number",
+      "$value": 36,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-36"
+        }
+      }
+    },
+    "gr-dm-40": {
+      "$type": "number",
+      "$value": 40,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-40"
+        }
+      }
+    },
+    "gr-dm-44": {
+      "$type": "number",
+      "$value": 44,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-44"
+        }
+      }
+    },
+    "gr-dm-48": {
+      "$type": "number",
+      "$value": 48,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-48"
+        }
+      }
+    },
+    "gr-dm-52": {
+      "$type": "number",
+      "$value": 52,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-52"
+        }
+      }
+    },
+    "gr-dm-56": {
+      "$type": "number",
+      "$value": 56,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-56"
+        }
+      }
+    },
+    "gr-dm-64": {
+      "$type": "number",
+      "$value": 64,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-64"
+        }
+      }
+    },
+    "gr-dm-72": {
+      "$type": "number",
+      "$value": 72,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-72"
+        }
+      }
+    },
+    "gr-dm-80": {
+      "$type": "number",
+      "$value": 80,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-80"
+        }
+      }
+    },
+    "gr-dm-88": {
+      "$type": "number",
+      "$value": 88,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-88"
+        }
+      }
+    },
+    "gr-dm-96": {
+      "$type": "number",
+      "$value": 96,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-96"
+        }
+      }
+    },
+    "gr-dm-112": {
+      "$type": "number",
+      "$value": 112,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-112"
+        }
+      }
+    },
+    "gr-dm-128": {
+      "$type": "number",
+      "$value": 128,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-128"
+        }
+      }
+    },
+    "gr-dm-144": {
+      "$type": "number",
+      "$value": 144,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-144"
+        }
+      }
+    },
+    "gr-dm-160": {
+      "$type": "number",
+      "$value": 160,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-160"
+        }
+      }
+    },
+    "gr-dm-184": {
+      "$type": "number",
+      "$value": 184,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-184"
+        }
+      }
+    },
+    "gr-dm-200": {
+      "$type": "number",
+      "$value": 200,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-200"
+        }
+      }
+    },
+    "gr-dm-240": {
+      "$type": "number",
+      "$value": 240,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-240"
+        }
+      }
+    },
+    "gr-dm-60": {
+      "$type": "number",
+      "$value": 60,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-60"
+        }
+      }
+    },
+    "gr-dm-68": {
+      "$type": "number",
+      "$value": 68,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-68"
+        }
+      }
+    },
+    "gr-dm-84": {
+      "$type": "number",
+      "$value": 84,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-84"
+        }
+      }
+    },
+    "gr-dm-76": {
+      "$type": "number",
+      "$value": 76,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-76"
+        }
+      }
+    },
+    "gr-dm-92": {
+      "$type": "number",
+      "$value": 92,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-92"
+        }
+      }
+    },
+    "gr-dm-100": {
+      "$type": "number",
+      "$value": 100,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-100"
+        }
+      }
+    },
+    "gr-dm-6": {
+      "$type": "number",
+      "$value": 6,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-6"
+        }
+      }
+    },
+    "gr-dm-10": {
+      "$type": "number",
+      "$value": 10,
+      "$extensions": {
+        "figma": {
+          "name": "gr-dm-10"
+        }
+      }
+    }
+  }
+}
