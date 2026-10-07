@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { Avatar, Button, Dialog, ListItem, Screen, Text, useTheme } from '@gr/ds';
 import type { Role } from '../../lib/domain';
 import { useStore } from '../../lib/store';
@@ -17,6 +17,7 @@ export default function DevSettings() {
   const t = useTheme();
   const { state, dispatch } = useStore();
   const [confirmReset, setConfirmReset] = useState(false);
+  if (!__DEV__) return <Redirect href="/" />; // D13: deep link ở bản release không được đổi tài khoản
   const section = (label: string) => (
     <Text variant="Label/Small/DemiBold" color="Color/Content/Neutral/Light" accessibilityRole="header" style={{ paddingHorizontal: t.layout('Margin-Small') }}>
       {label}

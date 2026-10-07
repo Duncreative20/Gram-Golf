@@ -28,5 +28,5 @@ export const parseNumberVN = (raw: string): number | null => {
   if (s === '' || !/^-?\d+(\.\d+)?$/.test(s)) return null;
   return Number(s);
 };
-/** Chữ tắt cho Avatar: chữ đầu của 2 từ cuối ("HLV Đỗ Minh Tuấn" → "MT"). */
-export const initials = (name: string) => name.trim().split(/\s+/).slice(-2).map((w) => w[0]!.toUpperCase()).join('');
+/** Chữ tắt cho Avatar: chữ đầu của 2 từ cuối ("HLV Đỗ Minh Tuấn" → "MT"); tên rỗng → "". */
+export const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(-2).map((w) => w.charAt(0).toUpperCase()).join('');

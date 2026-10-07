@@ -1,4 +1,4 @@
-import type { FitnessMetrics, SwingMetrics } from './domain';
+import type { FitnessMetrics, Profile, Role, SwingMetrics } from './domain';
 import { parseNumberVN } from './format';
 
 export interface FieldSpec<K extends string> { key: K; label: string; unit: string; min: number; max: number; digits: number }
@@ -49,4 +49,39 @@ export function validateClub(raw: ClubRaw) {
   const shaftWeightG = num('shaftWeightG', 30, 150, true);
   const bounceDeg = num('bounceDeg', 0, 20, true);
   return { errors, value: Object.keys(errors).length ? null : { brand: raw.brand.trim(), model: raw.model.trim(), shaftBrand: raw.shaftBrand.trim(), loftDeg: loftDeg!, lieDeg: lieDeg!, shaftWeightG, bounceDeg } };
+}
+
+export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export interface RegistrationRaw { name: string; email: string; phone: string; password: string; handicap: string; academy: string; yearsExperience: string }
+export type Registration = Pick<Profile, 'role' | 'name' | 'email' | 'phone' | 'handicap' | 'academy' | 'yearsExperience'>;
+/** Form đăng ký (B2). Mật khẩu chỉ kiểm, không nằm trong `value`. `profiles` để chặn email (không phân biệt hoa thường) / SĐT đã có. */
+export function validateRegistration(role: Role, raw: RegistrationRaw, profiles: Pick<Profile, 'email' | 'phone'>[]) {
+  const errors: Partial<Record<keyof RegistrationRaw, string>> = {};
+  const name = raw.name.trim().replace(/\s+/g, ' ');
+  const email = raw.email.trim();
+  const phone = raw.phone.replace(/\s/g, '');
+  if (!name) errors.name = 'Bắt buộc';
+  if (!email) errors.email = 'Bắt buộc';
+  else if (!EMAIL_RE.test(email)) errors.email = 'Email không hợp lệ';
+  else if (profiles.some((p) => p.email.toLowerCase() === email.toLowerCase())) errors.email = 'Email đã có tài khoản';
+  if (!phone) errors.phone = 'Bắt buộc';
+  else if (!/^0\d{9}$/.test(phone)) errors.phone = 'Gồm 10 số, bắt đầu bằng 0';
+  else if (profiles.some((p) => p.phone.replace(/\s/g, '') === phone)) errors.phone = 'Số điện thoại đã có tài khoản';
+  if (!raw.password) errors.password = 'Bắt buộc';
+  else if (raw.password.length < 8 || !/\d/.test(raw.password)) errors.password = 'Tối thiểu 8 ký tự, có ít nhất 1 chữ số';
+  const num = (k: 'handicap' | 'yearsExperience', max: number, integer: boolean) => {
+    const n = parseNumberVN(raw[k]);
+    if (n === null) errors[k] = raw[k].trim() ? 'Không phải số' : 'Bắt buộc';
+    else if (n < 0 || n > max || (integer && !Number.isInteger(n))) errors[k] = `${integer ? 'Số nguyên' : 'Trong khoảng'} 0–${max}`;
+    else return n;
+  };
+  const extra: Partial<Registration> = {};
+  if (role === 'player') extra.handicap = num('handicap', 54, false);
+  else {
+    extra.academy = raw.academy.trim();
+    if (!extra.academy) errors.academy = 'Bắt buộc';
+    extra.yearsExperience = num('yearsExperience', 60, true);
+  }
+  const value: Registration | null = Object.keys(errors).length ? null : { role, name, email, phone, ...extra };
+  return { errors, value };
 }

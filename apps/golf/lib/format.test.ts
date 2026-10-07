@@ -33,4 +33,8 @@ describe('format', () => {
     expect(initials('HLV Đỗ Minh Tuấn')).toBe('MT');
     expect(initials('  lan ')).toBe('L');
   });
+  it('chữ tắt an toàn với tên rỗng / toàn khoảng trắng', () => {
+    expect(initials('')).toBe('');
+    expect(initials('   ')).toBe('');
+  });
 });

@@ -52,7 +52,7 @@ export default function Profile() {
         visible={confirmSignOut}
         onRequestClose={() => setConfirmSignOut(false)}
         title="Đăng xuất?"
-        body="Bạn sẽ cần chọn lại tài khoản để tiếp tục."
+        body="Bạn sẽ cần đăng nhập lại để tiếp tục."
         primaryText="Đăng xuất"
         destructive
         onPrimary={() => {
