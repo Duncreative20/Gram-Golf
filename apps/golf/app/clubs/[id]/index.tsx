@@ -1,4 +1,4 @@
-import { useState, type PropsWithChildren } from 'react';
+import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { Button, Dialog, EmptyState, Icon, InlineMessage, ListItem, Screen, Tag, Text, useTheme } from '@gr/ds';
@@ -9,22 +9,10 @@ import { canViewPrivate, clubById, clubLabel, notesFor, prefsOf, profileById, se
 import { formatDate, formatDistance, formatSpeed, formatValue } from '../../../lib/format';
 import { CLUB_FIELDS } from '../../../lib/validation';
 import { StackHeader } from '../../../components/StackHeader';
+import { Section } from '../../../components/Section';
 
 // ponytail: mỗi danh sách chỉ hiện 3 mục gần nhất, chưa có màn lọc theo gậy — cần xem hết thì thêm bộ lọc gậy ở tab Thông số / Swing.
 const RECENT = 3;
-
-function Section({ title, caption, children }: PropsWithChildren<{ title: string; caption?: string }>) {
-  const t = useTheme();
-  return (
-    <View>
-      <View style={{ paddingHorizontal: t.layout('Margin-Small'), paddingBottom: t.space('Spacing/Padding/XSmall'), gap: t.space('Spacing/Gap/3XSmall') }}>
-        <Text variant="Heading/Subheading" accessibilityRole="header">{title}</Text>
-        {caption ? <Text variant="Body/Small/Regular" color="Color/Content/Neutral/Light">{caption}</Text> : null}
-      </View>
-      {children}
-    </View>
-  );
-}
 
 export default function ClubDetail() {
   const t = useTheme();

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { reduce } from './reducer';
 import { seedState, NOW } from './mock';
-import { canViewPrivate, validateInvite, activeCoaches, feed, roster, clubById, clubsOf } from './selectors';
+import { canViewPrivate, validateInvite, activeCoaches, feed, roster, clubById, clubsOf, pendingInvites } from './selectors';
 
 const s0 = () => seedState();
 
@@ -44,6 +44,14 @@ describe('kết nối HLV', () => {
     expect(canViewPrivate(s, 'c-tuan', 'p-minh')).toBe(false);
     expect(activeCoaches(s, 'p-minh').map((c) => [c.coach.id, c.connection.isPrimary])).toEqual([['c-ha', false]]);
     expect(roster(s, 'c-tuan').map((p) => p.id)).not.toContain('p-minh');
+  });
+  it('lời mời đang chờ chỉ gồm mã còn hiệu lực của đúng HLV; thu hồi → rời danh sách, nhập mã báo "revoked", không tạo kết nối', () => {
+    expect(pendingInvites(s0(), 'c-tuan', NOW).map((i) => i.code)).toEqual(['TUAN24']); // USED01 đã dùng
+    expect(pendingInvites(s0(), 'c-ha', NOW)).toEqual([]); // HAEXP1 hết hạn
+    const s = reduce(s0(), { type: 'revokeInvite', code: 'TUAN24' });
+    expect(pendingInvites(s, 'c-tuan', NOW)).toEqual([]);
+    expect(validateInvite(s, 'TUAN24', NOW, 'p-huy')).toBe('revoked');
+    expect(reduce(s, { type: 'acceptInvite', code: 'TUAN24', playerId: 'p-huy', at: NOW, id: 'cx', notificationId: 'n' })).toBe(s);
   });
   it('setPrimaryCoach chỉ để đúng 1 HLV chính', () => {
     const s = s0();

@@ -44,6 +44,19 @@ export const relativeTime = (iso: string, now: string) => {
   if (s < 7 * 86400) return `${Math.floor(s / 86400)} ngày trước`;
   return formatDate(iso);
 };
+/** Thời gian còn lại tới `iso` (hạn mã mời), làm tròn xuống: "Còn 6 ngày" / "Còn 23 giờ" / "Còn 45 phút"; tới hoặc quá hạn → "Hết hạn". */
+export const timeLeft = (iso: string, now: string) => {
+  const s = (Date.parse(iso) - Date.parse(now)) / 1000;
+  if (s <= 0) return 'Hết hạn';
+  if (s < 3600) return `Còn ${Math.max(1, Math.floor(s / 60))} phút`;
+  if (s < 86400) return `Còn ${Math.floor(s / 3600)} giờ`;
+  return `Còn ${Math.floor(s / 86400)} ngày`;
+};
+/** Tiền VND kiểu VN: "450.000 đ". */
+export const formatVnd = (n: number) => `${String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ`;
+/** Mã mời người dùng gõ/dán → mã chuẩn: dán cả link mời ("…/i/tuan24") thì lấy phần mã; in hoa, chỉ giữ A–Z 0–9, tối đa 6 ký tự. */
+export const parseInviteCode = (raw: string) =>
+  (raw.match(/\/i\/([a-z0-9]+)/i)?.[1] ?? raw).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
 /** "1,48" | "2.650" | " 12 " → số; trống/không hợp lệ → null. Dấu chấm và phẩy đều là thập phân (không có phân cách nghìn). */
 export const parseNumberVN = (raw: string): number | null => {
   const s = raw.trim().replace(',', '.');

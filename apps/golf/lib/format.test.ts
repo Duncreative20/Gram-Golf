@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM, initials, statDelta, formatValue, vnDay, withVnDay, formatSec } from './format';
+import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM, initials, statDelta, formatValue, vnDay, withVnDay, formatSec, timeLeft, formatVnd, parseInviteCode } from './format';
 
 describe('format', () => {
   it('mốc thời gian video: 1 chữ số thập phân kiểu VN + "s" (như "Ghi chú tại 1,3s")', () => {
@@ -73,5 +73,29 @@ describe('format', () => {
   it('chữ tắt an toàn với tên rỗng / toàn khoảng trắng', () => {
     expect(initials('')).toBe('');
     expect(initials('   ')).toBe('');
+  });
+  it('thời gian còn lại tới hạn mã mời: làm tròn xuống, tới đúng mốc là hết hạn', () => {
+    const now = '2026-10-07T08:00:00Z';
+    expect(timeLeft('2026-10-14T08:00:00Z', now)).toBe('Còn 7 ngày');
+    expect(timeLeft('2026-10-14T02:00:00Z', now)).toBe('Còn 6 ngày'); // 6 ngày 18 giờ
+    expect(timeLeft('2026-10-08T07:00:00Z', now)).toBe('Còn 23 giờ');
+    expect(timeLeft('2026-10-07T08:45:00Z', now)).toBe('Còn 45 phút');
+    expect(timeLeft('2026-10-07T08:00:30Z', now)).toBe('Còn 1 phút'); // dưới 1 phút không hiện "Còn 0 phút"
+    expect(timeLeft(now, now)).toBe('Hết hạn');
+    expect(timeLeft('2026-10-01T02:00:00Z', now)).toBe('Hết hạn');
+  });
+  it('tiền VND: phân cách nghìn bằng dấu chấm', () => {
+    expect(formatVnd(450000)).toBe('450.000 đ');
+    expect(formatVnd(1250000)).toBe('1.250.000 đ');
+    expect(formatVnd(900)).toBe('900 đ');
+    expect(formatVnd(0)).toBe('0 đ');
+  });
+  it('mã mời người dùng gõ/dán: in hoa, bỏ ký tự lạ, dán link mời cũng lấy được mã, tối đa 6 ký tự', () => {
+    expect(parseInviteCode('tuan24')).toBe('TUAN24');
+    expect(parseInviteCode(' tu-an 24 ')).toBe('TUAN24');
+    expect(parseInviteCode('https://gramgolf.app/i/tuan24')).toBe('TUAN24');
+    expect(parseInviteCode('Mã của mình: https://gramgolf.app/i/AB23CD nhé')).toBe('AB23CD');
+    expect(parseInviteCode('ABCDEFGH')).toBe('ABCDEF');
+    expect(parseInviteCode('')).toBe('');
   });
 });

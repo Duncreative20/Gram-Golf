@@ -1,4 +1,4 @@
-// Mảnh dùng chung của các màn nhập số liệu (nhập tay, CSV, ảnh chụp, QR).
+// Mảnh dùng chung của các màn nhập số liệu (nhập tay, CSV, ảnh chụp, QR); AlertMessage và SavedToast dùng cả ở màn khác (gậy, swing, kết nối HLV).
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { router } from 'expo-router';
@@ -37,14 +37,16 @@ export function AlertMessage(props: InlineMessageProps) {
   );
 }
 
-/** Toast thành công ở đáy màn rồi tự quay lại màn trước sau 1,2 s (mở thẳng URL, không có lịch sử → tab Thông số). */
-export function SavedToast({ title, caption }: { title: string; caption: string }) {
+const backToMetrics = () => (router.canGoBack() ? router.back() : router.replace('/(player)/metrics'));
+
+/** Toast thành công ở đáy màn; sau 1,2 s gọi `onDone` — mặc định quay lại màn trước (mở thẳng URL, không có lịch sử → tab Thông số). */
+export function SavedToast({ title, caption, onDone = backToMetrics }: { title: string; caption?: string; onDone?: () => void }) {
   const t = useTheme();
   useEffect(() => {
     // ponytail: Toast hiện trên màn vừa lưu rồi mới quay lại — app chưa có toast toàn cục; cần toast sống qua điều hướng thì nâng lên provider ở _layout.
-    const timer = setTimeout(() => (router.canGoBack() ? router.back() : router.replace('/(player)/metrics')), 1200);
+    const timer = setTimeout(onDone, 1200);
     return () => clearTimeout(timer);
-  }, []);
+  }, []); // hẹn giờ một lần khi hiện; toast mới → đổi `key` để hiện lại từ đầu
   return (
     <View style={{ position: 'absolute', left: t.layout('Margin-Small'), right: t.layout('Margin-Small'), bottom: t.layout('Margin-Small') }}>
       <Toast type="Positive" title={title} caption={caption} />
