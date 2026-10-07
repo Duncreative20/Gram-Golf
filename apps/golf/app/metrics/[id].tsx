@@ -8,6 +8,7 @@ import { canViewPrivate, clubById, clubLabel, prefsOf } from '../../lib/selector
 import { formatDate, formatValue, mToYd } from '../../lib/format';
 import { FITNESS_FIELDS, swingFields } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
+import { NoAccess } from '../../components/NoAccess';
 
 export default function MetricSessionDetail() {
   const t = useTheme();
@@ -23,8 +24,7 @@ export default function MetricSessionDetail() {
         <StackHeader title="Chi tiết phiên" />
         <View style={{ flex: 1, justifyContent: 'center', padding: t.layout('Margin-Small') }}>
           {session ? (
-            // Tạm — Task 11 thay bằng <NoAccess />. Follow không mở dữ liệu riêng (D6).
-            <EmptyState icon="lock-01-line" title="Không có quyền xem" caption="Chỉ HLV đã kết nối mới xem được dữ liệu này." />
+            <NoAccess />
           ) : (
             <EmptyState icon="file-search-line" title="Không tìm thấy phiên" caption="Phiên này không tồn tại hoặc đã bị xoá." primaryText="Quay lại" onPrimary={back} />
           )}

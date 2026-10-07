@@ -10,6 +10,7 @@ import { formatDate, formatDistance, formatSpeed, formatValue } from '../../../l
 import { CLUB_FIELDS } from '../../../lib/validation';
 import { StackHeader } from '../../../components/StackHeader';
 import { Section } from '../../../components/Section';
+import { NoAccess } from '../../../components/NoAccess';
 
 // ponytail: mỗi danh sách chỉ hiện 3 mục gần nhất, chưa có màn lọc theo gậy — cần xem hết thì thêm bộ lọc gậy ở tab Thông số / Swing.
 const RECENT = 3;
@@ -28,8 +29,7 @@ export default function ClubDetail() {
         <StackHeader title="Chi tiết gậy" />
         <View style={{ flex: 1, justifyContent: 'center', padding: t.layout('Margin-Small') }}>
           {club ? (
-            // Tạm — Task 11 thay bằng <NoAccess />. Follow không mở dữ liệu riêng (D6).
-            <EmptyState icon="lock-01-line" title="Không có quyền xem" caption="Chỉ HLV đã kết nối mới xem được dữ liệu này." />
+            <NoAccess />
           ) : (
             <EmptyState icon="file-search-line" title="Không tìm thấy gậy" caption="Gậy này không tồn tại." primaryText="Quay lại" onPrimary={back} />
           )}

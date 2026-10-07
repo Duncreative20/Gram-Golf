@@ -4,7 +4,7 @@ import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import {
   AlertBanner, Avatar, Button, Dialog, Divider, EmptyState, Icon, MessageInput, ProgressBar, Screen, Tag, Text, VideoControlOverlay, useTheme, type VideoState,
 } from '@gr/ds';
-import { CAMERA_VIEW_LABELS, type CoachNote, type JobStatus, type SwingAnalysis } from '../../lib/domain';
+import { CAMERA_VIEW_LABELS, type CoachNote, type JobStatus, type Profile, type Swing, type SwingAnalysis } from '../../lib/domain';
 import { NOW } from '../../lib/mock';
 import { newId } from '../../lib/ids';
 import { useStore } from '../../lib/store';
@@ -15,6 +15,7 @@ import { StackHeader } from '../../components/StackHeader';
 import { StatTile } from '../../components/StatTile';
 import { SwingUpload } from '../../components/SwingUpload';
 import { AlertMessage } from '../../components/SessionEntry';
+import { NoAccess } from '../../components/NoAccess';
 
 const PHASES = [
   { key: 'address', label: 'Chuẩn bị' },
@@ -138,11 +139,36 @@ function Timeline({ duration, position, phases, notes, onSeek }: { duration: num
   );
 }
 
+/** Cổng quyền (D6) đứng TRƯỚC mọi state/effect của màn: người không có quyền xem chỉ thấy NoAccess — job phân tích của chủ swing
+ *  (effect trong SwingView) không chạy trên máy họ. */
 export default function SwingDetail() {
   const t = useTheme();
-  const { state, dispatch, me } = useStore();
+  const { state, me } = useStore();
   const { id } = useLocalSearchParams<{ id: string }>();
   const swing = state.swings.find((w) => w.id === id);
+  if (!me) return <Redirect href="/" />;
+  if (!swing || !canViewPrivate(state, me.id, swing.playerId)) {
+    const back = () => (router.canGoBack() ? router.back() : router.replace('/'));
+    return (
+      <Screen>
+        <StackHeader title="Chi tiết swing" />
+        <View style={{ flex: 1, justifyContent: 'center', padding: t.layout('Margin-Small') }}>
+          {swing ? (
+            <NoAccess />
+          ) : (
+            <EmptyState icon="file-search-line" title="Không tìm thấy swing" caption="Swing này không tồn tại hoặc đã bị xoá." primaryText="Quay lại" onPrimary={back} />
+          )}
+        </View>
+      </Screen>
+    );
+  }
+  return <SwingView key={swing.id} swing={swing} me={me} />;
+}
+
+/** Màn swing cho người đã qua cổng quyền: chủ swing (phân tích, tải tiếp, xoá) hoặc HLV có kết nối active (xem + ghi chú). */
+function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
+  const t = useTheme();
+  const { state, dispatch } = useStore();
   const [positionSec, setPositionSec] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -152,7 +178,7 @@ export default function SwingDetail() {
 
   // Phát giả lập (chưa có video thật): vị trí chạy theo thời gian thực tới hết video.
   useEffect(() => {
-    if (!playing || !swing) return;
+    if (!playing) return;
     let p = positionSec;
     const timer = setInterval(() => {
       p = Math.min(swing.durationSec, p + PLAY_TICK_MS / 1000);
@@ -165,11 +191,11 @@ export default function SwingDetail() {
     return () => clearInterval(timer);
   }, [playing]);
 
-  // ponytail: job phân tích (mô phỏng worker) chỉ chạy khi màn đang mở — rời màn thì dừng, mở lại chạy tiếp từ tiến độ trong store
-  // (danh sách vẫn thấy "Đang phân tích"). Worker thật chạy nền, màn chỉ đọc trạng thái.
-  const jobStatus = swing?.job.status;
+  // ponytail: job phân tích (mô phỏng worker) chỉ chạy khi màn của người có quyền xem đang mở (chủ swing hoặc HLV có kết nối) — rời màn
+  // thì dừng, mở lại chạy tiếp từ tiến độ trong store (danh sách vẫn thấy "Đang phân tích"). Worker thật chạy nền, màn chỉ đọc trạng thái.
+  const jobStatus = swing.job.status;
   useEffect(() => {
-    if (!swing || (jobStatus !== 'queued' && jobStatus !== 'processing')) return;
+    if (jobStatus !== 'queued' && jobStatus !== 'processing') return;
     const update = (r: { status: JobStatus; progress: number; analysis?: SwingAnalysis }) =>
       dispatch({ type: 'jobUpdate', id: swing.id, ...r, at: NOW, notificationId: newId('nt') });
     if (jobStatus === 'queued') {
@@ -184,25 +210,7 @@ export default function SwingDetail() {
       update(r);
     }, ANALYSIS_TICK_MS);
     return () => clearInterval(timer);
-  }, [swing?.id, jobStatus]);
-
-  if (!me) return <Redirect href="/" />;
-  if (!swing || !canViewPrivate(state, me.id, swing.playerId)) {
-    const back = () => (router.canGoBack() ? router.back() : router.replace('/'));
-    return (
-      <Screen>
-        <StackHeader title="Chi tiết swing" />
-        <View style={{ flex: 1, justifyContent: 'center', padding: t.layout('Margin-Small') }}>
-          {swing ? (
-            // Tạm — Task 11 thay bằng <NoAccess />. Follow không mở dữ liệu riêng (D6).
-            <EmptyState icon="lock-01-line" title="Không có quyền xem" caption="Chỉ HLV đã kết nối mới xem được dữ liệu này." />
-          ) : (
-            <EmptyState icon="file-search-line" title="Không tìm thấy swing" caption="Swing này không tồn tại hoặc đã bị xoá." primaryText="Quay lại" onPrimary={back} />
-          )}
-        </View>
-      </Screen>
-    );
-  }
+  }, [swing.id, jobStatus]);
 
   const own = swing.playerId === me.id; // chủ swing: phân tích, tải tiếp, xoá
   const coach = me.role === 'coach'; // đã qua canViewPrivate → HLV có kết nối active: xem + ghi chú

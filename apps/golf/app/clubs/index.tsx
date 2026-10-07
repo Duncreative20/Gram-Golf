@@ -6,6 +6,7 @@ import { useStore } from '../../lib/store';
 import { canViewPrivate, clubLabel, clubsOf, groupClubs, profileById } from '../../lib/selectors';
 import { formatValue } from '../../lib/format';
 import { StackHeader } from '../../components/StackHeader';
+import { NoAccess } from '../../components/NoAccess';
 
 /** Lưới thẻ gậy theo nhóm, 2 cột; chạm thẻ → chi tiết gậy (sửa/lưu trữ chỉ chủ gậy thấy ở đó). Không có lề ngoài — màn dùng tự bọc. */
 export function ClubGrid({ clubs }: { clubs: Club[] }) {
@@ -49,8 +50,7 @@ export default function Clubs() {
       <Screen>
         <StackHeader title="Bộ gậy" />
         <View style={{ flex: 1, justifyContent: 'center', padding: t.layout('Margin-Small') }}>
-          {/* Tạm — Task 11 thay bằng <NoAccess />. Follow không mở dữ liệu riêng (D6). */}
-          <EmptyState icon="lock-01-line" title="Không có quyền xem" caption="Chỉ HLV đã kết nối mới xem được dữ liệu này." />
+          <NoAccess />
         </View>
       </Screen>
     );
