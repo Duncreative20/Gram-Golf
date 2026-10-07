@@ -9,12 +9,13 @@ export const prefsOf = (s: AppState, id: ID): Preferences => s.prefs[id] ?? DEFA
 export const canViewPrivate = (s: AppState, viewerId: ID, playerId: ID) =>
   viewerId === playerId || s.connections.some((c) => c.coachId === viewerId && c.playerId === playerId && c.status === 'active');
 
-export const validateInvite = (s: AppState, code: string, now: ISO): InviteCheck => {
+export const validateInvite = (s: AppState, code: string, now: ISO, playerId?: ID): InviteCheck => {
   const inv = s.invites.find((i) => i.code.toUpperCase() === code.trim().toUpperCase());
   if (!inv) return 'not_found';
   if (inv.revoked) return 'revoked';
   if (inv.usedBy) return 'used';
   if (Date.parse(inv.expiresAt) <= Date.parse(now)) return 'expired';
+  if (playerId && s.connections.some((c) => c.coachId === inv.coachId && c.playerId === playerId && c.status === 'active')) return 'already_connected';
   return 'ok';
 };
 export const pendingInvites = (s: AppState, coachId: ID, now: ISO) => s.invites.filter((i) => i.coachId === coachId && validateInvite(s, i.code, now) === 'ok');

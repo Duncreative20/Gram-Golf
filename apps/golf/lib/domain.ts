@@ -16,7 +16,7 @@ export interface CoachConnection {
   invitedAt: ISO; acceptedAt?: ISO; revokedAt?: ISO;
 }
 export interface CoachInvite { code: string; coachId: ID; createdAt: ISO; expiresAt: ISO; usedBy?: ID; revoked?: boolean }
-export type InviteCheck = 'ok' | 'not_found' | 'expired' | 'used' | 'revoked';
+export type InviteCheck = 'ok' | 'not_found' | 'expired' | 'used' | 'revoked' | 'already_connected';
 
 export type MetricSource = 'manual' | 'csv' | 'photo' | 'qr';
 export type Vendor = 'trackman' | 'foresight';

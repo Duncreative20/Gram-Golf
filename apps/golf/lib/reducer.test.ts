@@ -24,6 +24,14 @@ describe('kết nối HLV', () => {
     expect(validateInvite(s0(), 'NOPE', NOW)).toBe('not_found');
     expect(validateInvite(s0(), 'tuan24', NOW)).toBe('ok'); // không phân biệt hoa thường
   });
+  it('đã kết nối với HLV này hoặc không phải player → state không đổi, mã không bị tiêu', () => {
+    const before = s0();
+    expect(validateInvite(before, 'TUAN24', NOW, 'p-minh')).toBe('already_connected');
+    expect(validateInvite(before, 'TUAN24', NOW, 'p-huy')).toBe('ok');
+    expect(reduce(before, { type: 'acceptInvite', code: 'TUAN24', playerId: 'p-minh', at: NOW, id: 'cx', notificationId: 'n' })).toBe(before);
+    expect(reduce(before, { type: 'acceptInvite', code: 'TUAN24', playerId: 'c-ha', at: NOW, id: 'cx', notificationId: 'n' })).toBe(before);
+    expect(roster(before, 'c-tuan').map((p) => p.id)).toEqual(['p-minh', 'p-lan']);
+  });
   it('player đã có HLV chính → kết nối mới không là chính', () => {
     const s = reduce(s0(), { type: 'acceptInvite', code: 'TUAN24', playerId: 'p-khoa', at: NOW, id: 'cx-2', notificationId: 'n' });
     expect(s.connections.find((x) => x.id === 'cx-2')!.isPrimary).toBe(false);

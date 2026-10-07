@@ -10,7 +10,7 @@ describe('parseLaunchMonitorCsv', () => {
     const ok = r.rows.filter((x) => x.value);
     expect(ok.length).toBe(4);
     expect(ok[0]!.value!.carryM).toBeCloseTo(ydToMRound(250), 0);
-    expect(r.rows.find((x) => !x.value)!.errors.length).toBeGreaterThan(0);
+    expect(r.rows.find((x) => !x.value)!.errors.some((e) => e.startsWith('Tốc độ đầu gậy: '))).toBe(true);
   });
   it('nhận diện Foresight (mét sẵn)', () => {
     const r = parseLaunchMonitorCsv(SAMPLE_FILES.find((f) => f.vendor === 'foresight')!.content);

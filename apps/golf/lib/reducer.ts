@@ -61,7 +61,7 @@ export function reduce(s: AppState, a: Action): AppState {
     case 'createInvite': return { ...s, invites: [a.invite, ...s.invites] };
     case 'revokeInvite': return { ...s, invites: s.invites.map((i) => (i.code === a.code ? { ...i, revoked: true } : i)) };
     case 'acceptInvite': {
-      if (validateInvite(s, a.code, a.at) !== 'ok') return s;
+      if (validateInvite(s, a.code, a.at, a.playerId) !== 'ok' || s.profiles.find((p) => p.id === a.playerId)?.role !== 'player') return s;
       const inv = s.invites.find((i) => i.code.toUpperCase() === a.code.trim().toUpperCase())!;
       const hasPrimary = s.connections.some((c) => c.playerId === a.playerId && c.status === 'active' && c.isPrimary);
       const conn = { id: a.id, coachId: inv.coachId, playerId: a.playerId, status: 'active' as const, isPrimary: !hasPrimary, invitedAt: inv.createdAt, acceptedAt: a.at };

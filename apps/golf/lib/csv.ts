@@ -1,6 +1,6 @@
 import type { SwingMetrics, Vendor } from './domain';
 import { ydToM } from './format';
-import { validateSwingMetrics } from './validation';
+import { SWING_FIELDS, validateSwingMetrics } from './validation';
 
 export interface CsvRow { line: number; club: string; value: SwingMetrics | null; errors: string[] }
 export interface CsvResult { vendor: Vendor | null; rows: CsvRow[] }
@@ -23,7 +23,7 @@ export function parseLaunchMonitorCsv(text: string): CsvResult {
     const raw = Object.fromEntries(Object.entries(spec.map).map(([k, col]) => [k, get(col)])) as Record<keyof SwingMetrics, string>;
     if (spec.carryYards && raw.carryM.trim()) raw.carryM = String(Math.round(ydToM(Number(raw.carryM))));
     const r = validateSwingMetrics(raw);
-    return { line: i + 2, club: get(spec.club), value: r.value, errors: Object.values(r.errors) as string[] };
+    return { line: i + 2, club: get(spec.club), value: r.value, errors: SWING_FIELDS.filter((f) => r.errors[f.key]).map((f) => `${f.label}: ${r.errors[f.key]}`) };
   });
   return { vendor, rows };
 }
