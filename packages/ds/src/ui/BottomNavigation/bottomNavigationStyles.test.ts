@@ -37,4 +37,16 @@ describe('bottomNavigationStyles', () => {
     expect(it.item.flexShrink).toBe(1); expect(it.item.minWidth).toBe(0);
     expect(it.inner.minWidth).toBe(0); expect(it.label.maxWidth).toBe('100%');
   });
+  it('dense (≥5 mục, NỢ FIGMA F55): pill trải hết bề ngang, mục chia đều flex 1, gap + padding ngang trong thu nhỏ để nhãn không bị cắt ở 390', () => {
+    const bar = bottomNavigationStyles(t, { type: 'Floating', dense: true });
+    expect(bar.items.alignSelf).toBe('stretch');
+    expect(bar.items.gap).toBe(t.space('Spacing/Gap/3XSmall'));
+    const it5 = bottomNavItemStyles(t, { theme: 'Accent', selected: false, dense: true });
+    expect(it5.item.flex).toBe(1);
+    expect(it5.inner.paddingHorizontal).toBe(t.space('Spacing/Padding/3XSmall'));
+    // mặc định (≤4 mục) giữ đúng Figma
+    expect(bottomNavigationStyles(t, { type: 'Floating' }).items.alignSelf).toBeUndefined();
+    expect(bottomNavItemStyles(t, { theme: 'Accent', selected: false }).item.flex).toBeUndefined();
+    expect(bottomNavItemStyles(t, { theme: 'Accent', selected: false }).inner.paddingHorizontal).toBe(t.space('Spacing/Padding/Small'));
+  });
 });

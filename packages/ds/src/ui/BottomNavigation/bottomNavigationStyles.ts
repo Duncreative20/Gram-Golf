@@ -20,13 +20,18 @@ const THEME: Record<BottomNavTheme, { off: ItemPaint; on: ItemPaint }> = {
   Overlay: { off: { icon: 'Color/Content/Accent/Strongest', label: 'Color/Content/Accent/Strongest' }, on: { bg: 'Color/Background/Surface/Default', icon: 'Color/Content/Accent/Strongest', label: 'Color/Content/Accent/Strongest', shadow: true } },
 };
 
-export function bottomNavigationStyles(t: Theme, o: { type: BottomNavType }): { bar: ViewStyle; items: ViewStyle } {
+/**
+ * `dense` (≥5 mục) — NỢ FIGMA F55: Floating chỉ vừa 4 mục; 5 mục ở 390 cắt nhãn. Dense: pill trải hết bề ngang, mục chia đều,
+ * gap + padding ngang trong thu về 3XSmall.
+ */
+export function bottomNavigationStyles(t: Theme, o: { type: BottomNavType; dense?: boolean }): { bar: ViewStyle; items: ViewStyle } {
   return {
     bar: { paddingHorizontal: t.layout('Margin-Small'), alignItems: 'center' },
     items: {
       flexDirection: 'row',
       maxWidth: '100%',
-      gap: t.space('Spacing/Gap/Small'),
+      ...(o.dense ? { alignSelf: 'stretch' } : {}),
+      gap: t.space(o.dense ? 'Spacing/Gap/3XSmall' : 'Spacing/Gap/Small'),
       padding: t.space('Spacing/Padding/2XSmall'),
       borderRadius: t.radius('Corner-Radius/Rounded'),
       // Cả 2 type bind Surface/Glass (Floating-Glass: slot Nav-Item fill Surface/Glass 54 % + BACKGROUND_BLUR — đợt 1 đọc nhầm fill
@@ -39,18 +44,19 @@ export function bottomNavigationStyles(t: Theme, o: { type: BottomNavType }): { 
 
 export interface BottomNavItemStyles { item: ViewStyle; inner: ViewStyle; label: TextStyle; iconSize: number; iconColor: PaintKey; noti: ViewStyle }
 
-export function bottomNavItemStyles(t: Theme, o: { theme: BottomNavTheme; selected: boolean }): BottomNavItemStyles {
+export function bottomNavItemStyles(t: Theme, o: { theme: BottomNavTheme; selected: boolean; dense?: boolean }): BottomNavItemStyles {
   const p = o.selected ? THEME[o.theme].on : THEME[o.theme].off;
   const dot = t.size('Element-Size/Popular/2XSmall');
   return {
     item: {
       flexShrink: 1, minWidth: 0,
+      ...(o.dense ? { flex: 1 } : {}),
       padding: t.space('Spacing/Padding/2XSmall'),
       borderRadius: t.radius('Corner-Radius/Rounded'),
       ...(p.bg ? { backgroundColor: paint(t, p.bg) } : {}),
       ...(p.shadow ? t.shadow('Shadow/Bottom/Level-1') : {}),
     },
-    inner: { alignItems: 'center', minWidth: 0, gap: t.space('Spacing/Gap/3XSmall'), paddingHorizontal: t.space('Spacing/Padding/Small'), paddingVertical: t.space('Spacing/Padding/Small') },
+    inner: { alignItems: 'center', minWidth: 0, gap: t.space('Spacing/Gap/3XSmall'), paddingHorizontal: t.space(o.dense ? 'Spacing/Padding/3XSmall' : 'Spacing/Padding/Small'), paddingVertical: t.space('Spacing/Padding/Small') },
     label: { ...t.text('Label/Medium/DemiBold'), color: paint(t, p.label), maxWidth: '100%' },
     iconSize: t.size('Navigation-Mobile/Bottom/Icon-Size'),
     iconColor: p.icon,

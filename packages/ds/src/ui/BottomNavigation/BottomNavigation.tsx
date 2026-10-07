@@ -27,13 +27,14 @@ export interface BottomNavigationProps {
 
 export function BottomNavigation({ items, selectedIndex, onChange, type = 'Floating', theme = 'Neutral' }: BottomNavigationProps) {
   const t = useTheme();
-  const s = bottomNavigationStyles(t, { type });
+  const dense = items.length >= 5;
+  const s = bottomNavigationStyles(t, { type, dense });
   return (
     <View style={s.bar} accessibilityRole="tablist">
       <View style={s.items}>
         {items.map((it, i) => {
           const selected = i === selectedIndex;
-          const st = bottomNavItemStyles(t, { theme, selected });
+          const st = bottomNavItemStyles(t, { theme, selected, dense });
           return (
             <Pressable key={i} accessibilityRole="tab" {...a11yState({ selected }, 'tab')} onPress={() => onChange?.(i)} style={st.item}>
               <View style={st.inner}>

@@ -666,6 +666,7 @@ How `theme="Overlay"` is painted:
 - Accessibility roles: `tablist` on the container, and `tab` with `aria-selected` on each item.
 - The bar is not absolutely positioned and does not handle safe-area insets. It is a centred pill with `paddingHorizontal: Margin-Small`, so you position it at the bottom yourself.
 - Items are keyed by array index.
+- With 5 or more items the bar switches to a dense layout (NỢ FIGMA F55): the pill stretches to full width, items share it equally (`flex: 1`), and the gap and inner horizontal padding drop to `3XSmall`, so 5 Vietnamese labels fit at 390px. With 4 or fewer items the Figma spacing is unchanged.
 
 ```tsx
 const [i, setI] = useState(0);
