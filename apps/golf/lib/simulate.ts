@@ -1,4 +1,4 @@
-import type { CameraView, SwingAnalysis, SwingMetrics, Units, Vendor } from './domain';
+import type { CameraView, JobStatus, SwingAnalysis, SwingMetrics, UploadStatus, Units, Vendor } from './domain';
 import { formatNumber, mToYd, parseNumberVN } from './format';
 import { SWING_FIELDS } from './validation';
 
@@ -57,6 +57,29 @@ export function mockAnalysis(fileName: string, durationSec: number): { status: '
       modelVersion: 'pose-mock-0.1',
     },
   };
+}
+
+const round2 = (x: number) => Math.round(x * 100) / 100;
+
+/** Tải video lên giả lập: màn gọi `uploadTick` mỗi `UPLOAD_TICK_MS` (+5 % → 3 s cho cả video). */
+export const UPLOAD_TICK_MS = 150;
+/** Một nhịp tải lên. Đi qua mốc `failAt` của video → lỗi đúng tại mốc. Thử lại tải tiếp từ chỗ lỗi (tải lên nối tiếp)
+ *  nên không đi qua mốc lần nữa → thành công. */
+export function uploadTick(progress: number, failAt?: number): { status: UploadStatus; progress: number } {
+  const next = Math.min(1, round2(progress + 0.05));
+  if (failAt !== undefined && progress < failAt && next >= failAt) return { status: 'failed', progress: failAt };
+  return { status: next >= 1 ? 'done' : 'uploading', progress: next };
+}
+
+/** Job phân tích giả lập ≈ 3 s: chờ `queued` 0,5 s → `processing` +10 % mỗi `ANALYSIS_TICK_MS` → kết quả `mockAnalysis`. */
+export const ANALYSIS_QUEUE_MS = 500;
+export const ANALYSIS_TICK_MS = 250;
+/** Một nhịp của job đang `processing`; đủ 100 % → trạng thái cuối (succeeded / needs_review) kèm kết quả. */
+export function analysisTick(progress: number, fileName: string, durationSec: number): { status: JobStatus; progress: number; analysis?: SwingAnalysis } {
+  const next = Math.min(1, round2(progress + 0.1));
+  if (next < 1) return { status: 'processing', progress: next };
+  const r = mockAnalysis(fileName, durationSec);
+  return { status: r.status, progress: 1, analysis: r.analysis };
 }
 
 export interface OcrField { key: keyof SwingMetrics; raw: string; confidence: number }

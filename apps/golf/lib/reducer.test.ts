@@ -102,6 +102,22 @@ describe('swing', () => {
     expect(s.swings.find((x) => x.id === sw.id)!.analysis).toBeDefined();
     expect(s.notifications.some((n) => n.id === 'n-z' && n.type === 'analysis_done')).toBe(true);
   });
+  it('tiến độ tải lên / job nằm trong store (danh sách đọc được); job chưa xong không tạo thông báo', () => {
+    const sw = s0().swings.find((x) => x.job.status === 'none')!;
+    const up = reduce(s0(), { type: 'uploadUpdate', id: sw.id, status: 'uploading', progress: 0.45 });
+    expect(up.swings.find((x) => x.id === sw.id)!.upload).toEqual({ status: 'uploading', progress: 0.45 });
+    const before = s0();
+    const job = reduce(before, { type: 'jobUpdate', id: sw.id, status: 'processing', progress: 0.4, at: NOW, notificationId: 'n-p' });
+    expect(job.swings.find((x) => x.id === sw.id)!.job).toEqual({ status: 'processing', progress: 0.4 });
+    expect(job.notifications).toBe(before.notifications);
+  });
+  it('xoá swing xoá luôn ghi chú HLV của nó (lời hứa của Dialog xoá), ghi chú swing khác giữ nguyên', () => {
+    const before = s0();
+    const s = reduce(before, { type: 'deleteSwing', id: 'sw-minh-2' });
+    expect(s.swings.some((w) => w.id === 'sw-minh-2')).toBe(false);
+    expect(s.notes.map((n) => n.id)).toEqual(['note-1']);
+    expect(before.notes.filter((n) => n.swingId === 'sw-minh-2')).toHaveLength(2);
+  });
 });
 
 describe('bộ gậy', () => {
