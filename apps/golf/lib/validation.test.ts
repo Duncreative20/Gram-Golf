@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CLUB_TYPES } from './domain';
 import { seedState } from './mock';
-import { validateSwingMetrics, validateFitnessMetrics, validateClub, validateRegistration, SWING_FIELDS, swingFields, rangeText, defaultLoft, loftOnTypeChange, clubRaw, type ClubRaw } from './validation';
+import { validateSwingMetrics, validateFitnessMetrics, validateClub, validateRegistration, validatePost, addTags, SWING_FIELDS, swingFields, rangeText, defaultLoft, loftOnTypeChange, clubRaw, type ClubRaw } from './validation';
 
 describe('validation', () => {
   it('chấp nhận bộ số hợp lệ', () => {
@@ -146,5 +146,20 @@ describe('validateRegistration', () => {
     const r = validateRegistration('player', { ...base, email: ' minh@gramgolf.VN', phone: '0901234567' }, profiles);
     expect(r.value).toBeNull();
     expect(Object.keys(r.errors).sort()).toEqual(['email', 'phone']);
+  });
+});
+
+describe('bài viết', () => {
+  it('tiêu đề và nội dung bắt buộc (bỏ khoảng trắng hai đầu), tối đa 120 / 2000 ký tự', () => {
+    expect(validatePost({ title: '  Tempo 3:1 ', content: ' Đếm nhịp khi lên gậy. ' })).toEqual({ errors: {}, value: { title: 'Tempo 3:1', content: 'Đếm nhịp khi lên gậy.' } });
+    expect(validatePost({ title: ' ', content: '\n' })).toEqual({ errors: { title: 'Bắt buộc', content: 'Bắt buộc' }, value: null });
+    expect(validatePost({ title: 'a'.repeat(121), content: 'b'.repeat(2001) })).toEqual({ errors: { title: 'Tối đa 120 ký tự', content: 'Tối đa 2000 ký tự' }, value: null });
+    expect(validatePost({ title: 'a'.repeat(120), content: 'b'.repeat(2000) }).value).not.toBeNull();
+  });
+  it('tag: chữ thường, bỏ "#" và khoảng trắng thừa, tách theo dấu phẩy, bỏ trùng, tối đa 5', () => {
+    expect(addTags([], 'Driver')).toEqual(['driver']);
+    expect(addTags(['driver'], ' #DRIVER , Tempo,,  short   game ')).toEqual(['driver', 'tempo', 'short game']);
+    expect(addTags(['a', 'b', 'c', 'd'], 'e, f, g')).toEqual(['a', 'b', 'c', 'd', 'e']);
+    expect(addTags(['a'], ' , #, ')).toEqual(['a']);
   });
 });

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { reduce } from './reducer';
 import { seedState, NOW } from './mock';
-import { canViewPrivate, validateInvite, activeCoaches, feed, roster, clubById, clubsOf, pendingInvites } from './selectors';
+import { canViewPrivate, validateInvite, activeCoaches, feed, roster, clubById, clubsOf, pendingInvites, discover } from './selectors';
 
 const s0 = () => seedState();
 
@@ -87,6 +87,14 @@ describe('xã hội', () => {
     expect(s.follows.some((f) => [f.followerId, f.followedId].sort().join() === ['p-khoa', 'p-minh'].sort().join())).toBe(false);
     expect(feed(s, 'p-minh').some((p) => p.authorId === 'p-khoa')).toBe(false);
     expect(feed(s, 'p-khoa').some((p) => p.authorId === 'p-minh')).toBe(false);
+    expect(discover(s, 'p-minh', '').some((p) => p.id === 'p-khoa')).toBe(false);
+    expect(discover(s, 'p-khoa', '').some((p) => p.id === 'p-minh')).toBe(false);
+  });
+  it('toggleFollow không có tác dụng khi một trong hai đã chặn người kia (cả hai chiều, không gửi thông báo)', () => {
+    const s = reduce(s0(), { type: 'block', blockerId: 'p-minh', blockedId: 'p-huy' });
+    for (const [followerId, followedId] of [['p-huy', 'p-minh'], ['p-minh', 'p-huy']] as const) {
+      expect(reduce(s, { type: 'toggleFollow', followerId, followedId, at: NOW, notificationId: 'n' })).toBe(s);
+    }
   });
   it('toggleLike idempotent theo cặp', () => {
     const post = s0().posts[0]!;

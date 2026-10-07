@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { seedState, NOW } from './mock';
-import type { Club, ClubType } from './domain';
-import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, awaitsFeedback, discover, likeCount, likedBy, clubsOf, previousSwing, latestNote, groupClubs } from './selectors';
+import type { AppState, Club, ClubType } from './domain';
+import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, awaitsFeedback, discover, likeCount, likedBy, clubsOf, previousSwing, latestNote, groupClubs, commentsOf, isBlocked } from './selectors';
 
 describe('selectors', () => {
   const s = seedState();
@@ -45,6 +45,15 @@ describe('selectors', () => {
   it('khám phá: không gồm chính mình, lọc tên không dấu', () => {
     expect(discover(s, 'p-minh', '').some((p) => p.id === 'p-minh')).toBe(false);
     expect(discover(s, 'p-minh', 'tuan').map((p) => p.id)).toEqual(['c-tuan']);
+  });
+  it('bình luận theo thứ tự thời gian; ẩn bình luận của người đã chặn / bị chặn với người xem (hai chiều), người khác vẫn thấy', () => {
+    const ids = (st: AppState, post: string, viewer: string) => commentsOf(st, post, viewer).map((c) => c.id);
+    expect(ids(s, 'post-4', 'p-minh')).toEqual(['cm-2', 'cm-3']);
+    const b: AppState = { ...s, blocks: [{ blockerId: 'p-minh', blockedId: 'p-khoa' }] };
+    expect(isBlocked(b, 'p-khoa', 'p-minh')).toBe(true);
+    expect(ids(b, 'post-4', 'p-minh')).toEqual(['cm-2']); // p-minh chặn p-khoa → không thấy bình luận của p-khoa
+    expect(ids(b, 'post-5', 'p-khoa')).toEqual([]); // p-khoa bị p-minh chặn → cũng không thấy bình luận của p-minh
+    expect(ids(b, 'post-4', 'c-tuan')).toEqual(['cm-2', 'cm-3']); // người thứ ba vẫn thấy đủ
   });
   it('like', () => {
     const p = s.posts[0]!;

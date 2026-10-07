@@ -1,5 +1,5 @@
 import type { AppNotification, AppState, Club, CoachInvite, CoachNote, Comment, ID, ISO, JobStatus, MetricSession, NotificationType, Post, Preferences, Profile, Report, Swing, SwingAnalysis, UploadStatus } from './domain';
-import { validateInvite } from './selectors';
+import { isBlocked, validateInvite } from './selectors';
 import { DEFAULT_PREFS, seedState } from './mock';
 
 export type Action =
@@ -79,7 +79,8 @@ export function reduce(s: AppState, a: Action): AppState {
       return { ...s, connections: s.connections.map((c) => (c.playerId === target.playerId && c.status === 'active' ? { ...c, isPrimary: c.id === target.id } : c)) };
     }
     case 'toggleFollow': {
-      if (a.followerId === a.followedId) return s;
+      // chặn (một trong hai chiều) = không theo dõi được nhau (block đã gỡ follow hai chiều)
+      if (a.followerId === a.followedId || isBlocked(s, a.followerId, a.followedId)) return s;
       const on = s.follows.some((f) => f.followerId === a.followerId && f.followedId === a.followedId);
       return on
         ? { ...s, follows: s.follows.filter((f) => !(f.followerId === a.followerId && f.followedId === a.followedId)) }

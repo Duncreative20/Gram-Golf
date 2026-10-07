@@ -65,7 +65,7 @@ export const latestNote = (s: AppState, playerId: ID): CoachNote | undefined => 
 export const awaitsFeedback = (s: AppState, w: Swing, coachId: ID) => !!w.analysis && !s.notes.some((n) => n.swingId === w.id && n.coachId === coachId);
 export const needsFeedback = (s: AppState, coachId: ID) => roster(s, coachId).filter((p) => swingsOf(s, p.id).some((w) => awaitsFeedback(s, w, coachId)));
 
-const isBlocked = (s: AppState, a: ID, b: ID) => s.blocks.some((x) => (x.blockerId === a && x.blockedId === b) || (x.blockerId === b && x.blockedId === a));
+export const isBlocked = (s: AppState, a: ID, b: ID) => s.blocks.some((x) => (x.blockerId === a && x.blockedId === b) || (x.blockerId === b && x.blockedId === a));
 export const isFollowing = (s: AppState, a: ID, b: ID) => s.follows.some((f) => f.followerId === a && f.followedId === b);
 export const followerCount = (s: AppState, id: ID) => s.follows.filter((f) => f.followedId === id).length;
 export const followingCount = (s: AppState, id: ID) => s.follows.filter((f) => f.followerId === id).length;
@@ -74,7 +74,9 @@ export const feed = (s: AppState, userId: ID): Post[] =>
 export const postsBy = (s: AppState, authorId: ID) => s.posts.filter((p) => p.authorId === authorId).sort(byDateDesc);
 export const likeCount = (s: AppState, postId: ID) => s.likes.filter((l) => l.postId === postId).length;
 export const likedBy = (s: AppState, userId: ID, postId: ID) => s.likes.some((l) => l.userId === userId && l.postId === postId);
-export const commentsOf = (s: AppState, postId: ID) => s.comments.filter((c) => c.postId === postId).sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
+/** Bình luận của bài theo thứ tự thời gian; ẩn bình luận của người đã chặn / bị chặn với người xem `viewerId` (Review Focus 5). */
+export const commentsOf = (s: AppState, postId: ID, viewerId: ID) =>
+  s.comments.filter((c) => c.postId === postId && !isBlocked(s, viewerId, c.authorId)).sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
 export const fold = (x: string) => x.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').toLowerCase();
 export const discover = (s: AppState, userId: ID, query: string) =>
   s.profiles.filter((p) => p.id !== userId && !isBlocked(s, userId, p.id) && fold(p.name).includes(fold(query.trim())));

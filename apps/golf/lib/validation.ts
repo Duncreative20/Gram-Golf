@@ -139,3 +139,24 @@ export function validateRegistration(role: Role, raw: RegistrationRaw, profiles:
   const value: Registration | null = Object.keys(errors).length ? null : { role, name, email, phone, ...extra };
   return { errors, value };
 }
+
+export const POST_TITLE_MAX = 120;
+export const POST_CONTENT_MAX = 2000;
+export const POST_TAGS_MAX = 5;
+/** Form đăng bài: tiêu đề và nội dung bắt buộc (sau khi bỏ khoảng trắng hai đầu), tối đa 120 / 2000 ký tự. */
+export function validatePost(raw: { title: string; content: string }) {
+  const errors: Partial<Record<'title' | 'content', string>> = {};
+  const title = raw.title.trim();
+  const content = raw.content.trim();
+  if (!title) errors.title = 'Bắt buộc';
+  else if (title.length > POST_TITLE_MAX) errors.title = `Tối đa ${POST_TITLE_MAX} ký tự`;
+  if (!content) errors.content = 'Bắt buộc';
+  else if (content.length > POST_CONTENT_MAX) errors.content = `Tối đa ${POST_CONTENT_MAX} ký tự`;
+  return { errors, value: Object.keys(errors).length ? null : { title, content } };
+}
+/** Thêm tag từ chữ người dùng gõ ("Driver, #tempo"): tách theo dấu phẩy, bỏ "#" đầu và khoảng trắng thừa, chữ thường, bỏ trùng; đủ 5 tag thì bỏ phần dư. */
+export const addTags = (tags: string[], input: string) =>
+  input
+    .split(',')
+    .map((x) => x.trim().replace(/^#+/, '').trim().replace(/\s+/g, ' ').toLowerCase())
+    .reduce((acc, tag) => (tag && !acc.includes(tag) && acc.length < POST_TAGS_MAX ? [...acc, tag] : acc), tags);
