@@ -1,4 +1,4 @@
-import type { SwingMetrics, Vendor } from './domain';
+import { CLUB_TYPES, type ClubType, type SwingMetrics, type Vendor } from './domain';
 import { ydToM } from './format';
 import { SWING_FIELDS, validateSwingMetrics } from './validation';
 
@@ -26,4 +26,17 @@ export function parseLaunchMonitorCsv(text: string): CsvResult {
     return { line: i + 2, club: get(spec.club), value: r.value, errors: SWING_FIELDS.filter((f) => r.errors[f.key]).map((f) => `${f.label}: ${r.errors[f.key]}`) };
   });
   return { vendor, rows };
+}
+
+const NUMBERED: Record<string, string> = { wood: 'Gỗ', hybrid: 'Hybrid', iron: 'Sắt' };
+const WEDGES: Record<string, ClubType> = { p: 'PW', g: 'GW', s: 'SW', l: 'LW', pitching: 'PW', gap: 'GW', sand: 'SW', lob: 'LW' };
+/** Tên gậy ở cột Club của máy đo ("Driver", "3 Wood", "7 Iron", "PW", "Sand Wedge") → loại gậy trong app; không có → undefined. */
+export function clubTypeFromCsv(name: string): ClubType | undefined {
+  const s = name.trim().toLowerCase();
+  if (s === 'driver') return 'Driver';
+  if (s === 'putter') return 'Putter';
+  const n = s.match(/^(\d)\s*(wood|hybrid|iron)$/);
+  if (n) return CLUB_TYPES.find((t) => t === `${NUMBERED[n[2]]} ${n[1]}`);
+  const w = s.match(/^(p|g|s|l|pitching|gap|sand|lob)\s*w(edge)?$/);
+  return w ? WEDGES[w[1]] : undefined;
 }

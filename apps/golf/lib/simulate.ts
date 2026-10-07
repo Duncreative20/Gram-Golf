@@ -1,6 +1,9 @@
-import type { CameraView, SwingAnalysis, SwingMetrics, Vendor } from './domain';
+import type { CameraView, SwingAnalysis, SwingMetrics, Units, Vendor } from './domain';
+import { formatNumber, mToYd, parseNumberVN } from './format';
+import { SWING_FIELDS } from './validation';
 
-export const SAMPLE_FILES: { name: string; vendor: Vendor; content: string }[] = [
+/** File CSV mẫu cho màn nhập (bản thử chưa mở file thật). `vendor: null` = file không phải của máy đo hỗ trợ → nhánh lỗi. */
+export const SAMPLE_FILES: { name: string; vendor: Vendor | null; content: string }[] = [
   {
     name: 'TrackMan_Session_2026-10-05.csv', vendor: 'trackman',
     content: [
@@ -20,6 +23,10 @@ export const SAMPLE_FILES: { name: string; vendor: Vendor; content: string }[] =
       '7 Iron;85.2;116.0;1.36;6650;17.2;151',
       '7 Iron;83.6;113.1;1.35;6990;18.4;145',
     ].join('\n'),
+  },
+  {
+    name: 'Ghi_chep_tu_nhap.csv', vendor: null,
+    content: ['Ngay,Gay,Khoang cach (m)', '05/10/2026,Driver,230', '05/10/2026,Sat 7,145'].join('\n'),
   },
 ];
 
@@ -61,3 +68,15 @@ export function mockOcr(vendor: Vendor): OcrField[] {
   return (Object.keys(v) as (keyof SwingMetrics)[]).map((key) => ({ key, raw: v[key], confidence: key === 'spinRpm' ? 0.62 : 0.97 }));
 }
 export const LOW_CONFIDENCE = 0.8;
+/** Kết quả OCR → giá trị điền sẵn cho `SwingMetricsForm` + trường cần kiểm tra lại (dưới ngưỡng tin cậy).
+ *  Carry của OCR là mét (D9); ô carry nhập theo đơn vị hiển thị → imperial đổi sang yard. Chuỗi không phải số giữ nguyên để form báo lỗi. */
+export function ocrPrefill(fields: OcrField[], units: Units) {
+  const values = Object.fromEntries(SWING_FIELDS.map((f) => [f.key, ''])) as Record<keyof SwingMetrics, string>;
+  const highlight: Partial<Record<keyof SwingMetrics, boolean>> = {};
+  for (const f of fields) {
+    const m = f.key === 'carryM' && units === 'imperial' ? parseNumberVN(f.raw) : null;
+    values[f.key] = m === null ? f.raw : formatNumber(mToYd(m));
+    if (f.confidence < LOW_CONFIDENCE) highlight[f.key] = true;
+  }
+  return { values, highlight };
+}
