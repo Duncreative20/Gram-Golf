@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM, initials, statDelta, formatValue, vnDay, withVnDay, formatSec, timeLeft, formatVnd, parseInviteCode } from './format';
+import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM, initials, statDelta, formatValue, vnDay, withVnDay, formatSec, timeLeft, formatVnd, parseInviteCode, swingTiles } from './format';
 
 describe('format', () => {
   it('mốc thời gian video: 1 chữ số thập phân kiểu VN + "s" (như "Ghi chú tại 1,3s")', () => {
@@ -40,6 +40,20 @@ describe('format', () => {
     expect(statDelta(1.44 - 1.45, 2)).toEqual({ text: '-0,01', good: false });
     expect(statDelta(-0.004, 2)).toEqual({ text: '0,00', good: true });
     expect(statDelta(mToYd(198) - mToYd(193), 0, 'yd')).toEqual({ text: '+5 yd', good: true });
+  });
+  it('4 ô chỉ số swing: số kiểu VN, carry theo đơn vị hiển thị, chênh lệch so với phiên trước (cùng gậy)', () => {
+    const latest = { clubSpeedMph: 97.2, ballSpeedMph: 140.0, smash: 1.44, spinRpm: 3600, launchDeg: 11.8, carryM: 198 };
+    const prev = { clubSpeedMph: 96.1, ballSpeedMph: 138.9, smash: 1.45, spinRpm: 3750, launchDeg: 12.3, carryM: 193 };
+    expect(swingTiles(latest, prev, 'metric')).toEqual([
+      { label: 'Tốc độ đầu gậy', value: '97', unit: 'mph', delta: { text: '+1 mph', good: true } },
+      { label: 'Tốc độ bóng', value: '140', unit: 'mph', delta: { text: '+1 mph', good: true } },
+      { label: 'Smash', value: '1,44', delta: { text: '-0,01', good: false } },
+      { label: 'Carry', value: '198', unit: 'm', delta: { text: '+5 m', good: true } },
+    ]);
+    // imperial: carry đổi sang yard cả giá trị lẫn chênh lệch (198 m ≈ 216,5 yd)
+    expect(swingTiles(latest, prev, 'imperial')[3]).toEqual({ label: 'Carry', value: '217', unit: 'yd', delta: { text: '+5 yd', good: true } });
+    // không có phiên trước cùng gậy → không có chênh lệch
+    expect(swingTiles(latest, undefined, 'metric').map((x) => x.delta)).toEqual([undefined, undefined, undefined, undefined]);
   });
   it('số kèm đơn vị kiểu VN: cách trước đơn vị chữ, liền với ° và /x, không digits thì giữ nguyên số', () => {
     expect(formatValue(104.2, 'mph', 0)).toBe('104 mph');

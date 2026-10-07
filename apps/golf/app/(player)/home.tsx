@@ -2,25 +2,17 @@ import type { PropsWithChildren } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router } from 'expo-router';
 import { Avatar, Button, Card, EmptyState, Icon, ListItem, Screen, Tag, Text, useTheme } from '@gr/ds';
-import { SOURCE_LABELS, type SwingMetrics } from '../../lib/domain';
+import { SOURCE_LABELS } from '../../lib/domain';
 import { NOW } from '../../lib/mock';
 import { useStore } from '../../lib/store';
 import {
   carryByClub, clubById, clubLabel, followerCount, followingCount, latestNote, latestSwing, prefsOf, previousSwing, primaryCoach, profileById, speedTrend, swingsOf,
 } from '../../lib/selectors';
-import { formatDate, formatDistance, formatNumber, formatSpeed, initials, mToYd, relativeTime, statDelta } from '../../lib/format';
+import { formatDate, formatDistance, formatNumber, formatSpeed, initials, relativeTime, swingTiles } from '../../lib/format';
 import { TabHeader } from '../../components/TabHeader';
 import { StatTile } from '../../components/StatTile';
 import { TrendChart } from '../../components/charts/TrendChart';
 import { ConcentricRings } from '../../components/charts/ConcentricRings';
-
-// 4 ô "Chỉ số swing gần nhất" — cả 4 càng cao càng tốt (statDelta: tăng = tốt). Carry đổi m → yd theo prefs.
-const TILES: { key: keyof SwingMetrics; label: string; unit?: string; digits: number }[] = [
-  { key: 'clubSpeedMph', label: 'Tốc độ đầu gậy', unit: 'mph', digits: 0 },
-  { key: 'ballSpeedMph', label: 'Tốc độ bóng', unit: 'mph', digits: 0 },
-  { key: 'smash', label: 'Smash', digits: 2 },
-  { key: 'carryM', label: 'Carry', unit: 'm', digits: 0 },
-];
 
 function Section({ title, caption, children }: PropsWithChildren<{ title: string; caption?: string }>) {
   const t = useTheme();
@@ -40,17 +32,10 @@ export default function PlayerHome() {
   const { state, me } = useStore();
   if (!me) return <Redirect href="/" />;
   const units = prefsOf(state, me.id).units;
-  const yd = units === 'imperial';
   const latest = latestSwing(state, me.id);
   const prev = latest && previousSwing(state, latest);
   const club = clubById(state, latest?.clubId);
-  const tiles = latest
-    ? TILES.map(({ key, label, unit, digits }) => {
-        const v = (m: SwingMetrics) => (key === 'carryM' && yd ? mToYd(m.carryM) : m[key]);
-        const u = key === 'carryM' && yd ? 'yd' : unit;
-        return { label, unit: u, value: formatNumber(v(latest.swing), digits), delta: prev && statDelta(v(latest.swing) - v(prev.swing), digits, u) };
-      })
-    : [];
+  const tiles = latest ? swingTiles(latest.swing, prev?.swing, units) : [];
   const trend = speedTrend(state, me.id).map((p) => ({ x: formatDate(p.date).slice(0, 5), y: p.clubSpeedMph }));
   const carry = carryByClub(state, me.id).map((c) => ({ label: clubLabel(c.club), value: c.carryM, display: formatDistance(c.carryM, units) }));
   const coach = primaryCoach(state, me.id);

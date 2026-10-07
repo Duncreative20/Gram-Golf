@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Clipboard, ScrollView, View } from 'react-native';
-import { Redirect } from 'expo-router';
+import { Redirect, useLocalSearchParams } from 'expo-router';
 import { Button, Card, Dialog, ListItem, Screen, ShareSheet, Text, useTheme } from '@gr/ds';
 import { NOW } from '../../lib/mock';
 import { useStore } from '../../lib/store';
@@ -13,11 +13,13 @@ import { SavedToast } from '../../components/SessionEntry';
 
 const inviteLink = (code: string) => `https://gramgolf.app/i/${code}`;
 
-/** HLV tạo mã mời 6 ký tự (hạn 7 ngày), chia sẻ / sao chép link, xem và thu hồi lời mời đang chờ. */
+/** HLV tạo mã mời 6 ký tự (hạn 7 ngày), chia sẻ / sao chép link, xem và thu hồi lời mời đang chờ.
+ *  `?code=` (chạm một lời mời ở tab Học viên) hiện lại thẻ của mã đang chờ đó để sao chép / chia sẻ lại. */
 export default function CreateInvite() {
   const t = useTheme();
   const { state, dispatch, me } = useStore();
-  const [current, setCurrent] = useState<string>(); // mã vừa tạo ở màn này
+  const { code } = useLocalSearchParams<{ code?: string }>();
+  const [current, setCurrent] = useState(code); // mã đang hiện: mở từ tab Học viên hoặc vừa tạo ở màn này
   const [sharing, setSharing] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
   const [message, setMessage] = useState('');

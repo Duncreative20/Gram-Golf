@@ -1,4 +1,4 @@
-import type { Units } from './domain';
+import type { SwingMetrics, Units } from './domain';
 
 export const mToYd = (m: number) => m * 1.0936133;
 export const ydToM = (yd: number) => yd / 1.0936133;
@@ -18,6 +18,20 @@ export const statDelta = (diff: number, digits = 0, unit?: string) => {
   const r = Number(diff.toFixed(digits));
   return { text: `${r > 0 ? '+' : ''}${vn(r, digits)}${unit ? ` ${unit}` : ''}`, good: r >= 0 };
 };
+// 4 ô "Chỉ số swing gần nhất" — cả 4 càng cao càng tốt (statDelta: tăng = tốt). Carry đổi m → yd theo đơn vị hiển thị.
+const SWING_TILES: { key: keyof SwingMetrics; label: string; unit?: string; digits: number }[] = [
+  { key: 'clubSpeedMph', label: 'Tốc độ đầu gậy', unit: 'mph', digits: 0 },
+  { key: 'ballSpeedMph', label: 'Tốc độ bóng', unit: 'mph', digits: 0 },
+  { key: 'smash', label: 'Smash', digits: 2 },
+  { key: 'carryM', label: 'Carry', unit: 'm', digits: 0 },
+];
+/** Props cho 4 `StatTile` của phiên swing `latest` (Tổng quan người chơi, tab Tổng quan ở chi tiết học viên); chênh lệch so với `prev` = phiên trước cùng gậy. */
+export const swingTiles = (latest: SwingMetrics, prev: SwingMetrics | undefined, units: Units) =>
+  SWING_TILES.map(({ key, label, unit, digits }) => {
+    const v = (m: SwingMetrics) => (key === 'carryM' && units === 'imperial' ? mToYd(m.carryM) : m[key]);
+    const u = key === 'carryM' && units === 'imperial' ? 'yd' : unit;
+    return { label, unit: u, value: vn(v(latest), digits), delta: prev && statDelta(v(latest) - v(prev), digits, u) };
+  });
 
 const pad = (n: number) => String(n).padStart(2, '0');
 // Việt Nam UTC+7 cố định (không có giờ mùa hè) — không dựa vào Intl/múi giờ của máy.

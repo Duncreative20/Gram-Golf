@@ -61,8 +61,9 @@ export const swingsOf = (s: AppState, playerId: ID): Swing[] => s.swings.filter(
 export const notesFor = (s: AppState, swingId: ID) => s.notes.filter((n) => n.swingId === swingId).sort((a, b) => (a.atSec ?? 0) - (b.atSec ?? 0));
 /** Ghi chú HLV mới nhất trên các swing của chính người chơi (mục "Ghi chú mới từ HLV" ở Tổng quan). */
 export const latestNote = (s: AppState, playerId: ID): CoachNote | undefined => swingsOf(s, playerId).flatMap((w) => notesFor(s, w.id)).sort(byDateDesc)[0];
-export const needsFeedback = (s: AppState, coachId: ID) =>
-  roster(s, coachId).filter((p) => swingsOf(s, p.id).some((w) => w.analysis && !s.notes.some((n) => n.swingId === w.id && n.coachId === coachId)));
+/** Swing chờ HLV `coachId` phản hồi: đã có kết quả phân tích và chính HLV đó chưa ghi chú (ghi chú của HLV khác không tính). */
+export const awaitsFeedback = (s: AppState, w: Swing, coachId: ID) => !!w.analysis && !s.notes.some((n) => n.swingId === w.id && n.coachId === coachId);
+export const needsFeedback = (s: AppState, coachId: ID) => roster(s, coachId).filter((p) => swingsOf(s, p.id).some((w) => awaitsFeedback(s, w, coachId)));
 
 const isBlocked = (s: AppState, a: ID, b: ID) => s.blocks.some((x) => (x.blockerId === a && x.blockedId === b) || (x.blockerId === b && x.blockedId === a));
 export const isFollowing = (s: AppState, a: ID, b: ID) => s.follows.some((f) => f.followerId === a && f.followedId === b);

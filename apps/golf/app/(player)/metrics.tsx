@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router, type Href } from 'expo-router';
-import { EmptyState, Icon, IconButton, ListItem, Screen, Segmented, Tag, useTheme, type IconName } from '@gr/ds';
-import { SOURCE_LABELS } from '../../lib/domain';
+import { EmptyState, IconButton, Screen, Segmented, useTheme, type IconName } from '@gr/ds';
 import { useStore } from '../../lib/store';
-import { clubById, clubLabel, clubsOf, prefsOf, sessionsOf } from '../../lib/selectors';
-import { formatDate, formatDistance, formatSpeed, formatValue } from '../../lib/format';
-import { FITNESS_FIELDS } from '../../lib/validation';
+import { clubsOf, prefsOf, sessionsOf } from '../../lib/selectors';
 import { TabHeader } from '../../components/TabHeader';
+import { SessionRow } from '../../components/SessionRow';
 import { ClubGrid } from '../clubs';
 
 const SEGMENTS = [{ label: 'Swing' }, { label: 'Thể lực' }, { label: 'Bộ gậy' }];
@@ -25,33 +23,8 @@ export default function PlayerMetrics() {
   if (!me) return <Redirect href="/" />;
   const units = prefsOf(state, me.id).units;
   const add = ADD[seg];
-  const chevron = <Icon name="chevron-right-line-medium" size={t.size('Element-Size/Popular/Base')} color="Color/Content/Neutral/Light" />;
   const clubs = clubsOf(state, me.id);
-  const rows =
-    seg === 2
-      ? []
-      : sessionsOf(state, me.id, seg === 0 ? 'swing' : 'fitness').map((s) => {
-          const club = clubById(state, s.clubId);
-          return (
-            <ListItem
-              key={s.id}
-              title={s.kind === 'swing' ? `${formatDate(s.capturedAt)} · ${club ? clubLabel(club) : 'Chưa gắn gậy'}` : formatDate(s.capturedAt)}
-              caption={
-                s.kind === 'swing'
-                  ? `${formatSpeed(s.swing.clubSpeedMph)} · ${formatDistance(s.swing.carryM, units)}`
-                  : // khoảng trắng không ngắt trong từng chỉ số → xuống dòng chỉ ở " · ", không tách "45 | kg"
-                    FITNESS_FIELDS.map((f) => `${f.label} ${formatValue(s.fitness[f.key], f.unit, f.digits)}`.replace(/ /g, '\u00a0')).join(' · ')
-              }
-              trailing={
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space('Spacing/Gap/XSmall') }}>
-                  <Tag size="Small" text={SOURCE_LABELS[s.source]} />
-                  {chevron}
-                </View>
-              }
-              onPress={() => router.push(`/metrics/${s.id}`)}
-            />
-          );
-        });
+  const rows = seg === 2 ? [] : sessionsOf(state, me.id, seg === 0 ? 'swing' : 'fitness').map((s) => <SessionRow key={s.id} session={s} units={units} />);
   return (
     <Screen edges={['top']}>
       <TabHeader title="Thông số" />

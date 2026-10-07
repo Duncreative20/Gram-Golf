@@ -1603,6 +1603,7 @@ import { ListItem, type ListItemProps, type ListItemType } from '@gr/ds';
 | `trailing` | `ReactNode` | – | | Figma Trailing slot. **Ignored when `type='Radio-Card'`** |
 | `trailingInteractive` | `boolean` | `undefined` | | Set to `true` when `trailing` is a pressable control (Button, Toggle, Checkbox) |
 | `onPress` | `() => void` | – | | |
+| `accessibilityLabel` | `string` | – | | Spoken label for a pressable row instead of its title + caption (e.g. spelling an invite code letter by letter). Ignored when the row is not accessible (no `onPress`, or `trailingInteractive`) |
 
 Gotchas:
 - **Without `onPress` the row is inert.** The Pressable gets `disabled={!onPress}` and `accessible={false}`, so it shows no pressed feedback and screen readers read title and caption as separate elements. `Inline` and `Grouped` rows also get no role. A `Radio-Card` row keeps `role="radio"` but can't be focused, so give it `onPress`. `selected` styling still applies.

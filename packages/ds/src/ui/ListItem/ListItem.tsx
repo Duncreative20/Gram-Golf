@@ -18,15 +18,17 @@ export interface ListItemProps {
   /** trailing là control bấm được (Button/Toggle/Checkbox): hàng không nhận role/accessible để không lồng control (web: button trong button; iOS: hàng nuốt nút con) */
   trailingInteractive?: boolean;
   onPress?: () => void;
+  /** Nhãn đọc thay cho chữ tiêu đề + chú thích của hàng bấm được (vd mã mời cần đánh vần từng ký tự); bỏ qua khi hàng không accessible (không `onPress` hoặc `trailingInteractive`) */
+  accessibilityLabel?: string;
 }
 
-export function ListItem({ type = 'Inline', selected, title, caption, leading, trailing, trailingInteractive, onPress }: ListItemProps) {
+export function ListItem({ type = 'Inline', selected, title, caption, leading, trailing, trailingInteractive, onPress, accessibilityLabel }: ListItemProps) {
   const t = useTheme();
   const role = type === 'Radio-Card' ? 'radio' : onPress && !trailingInteractive ? 'button' : undefined;
   // Radio-Card: hàng là radio, mark chỉ trang trí (không focus, không role) — trailing truyền vào bị bỏ qua
   const trail = type === 'Radio-Card' ? <Radio select={!!selected} decorative /> : trailing;
   return (
-    <Pressable accessibilityRole={role} {...a11yState(type === 'Radio-Card' ? { checked: !!selected } : { selected }, role)} accessible={!!onPress && (type === 'Radio-Card' || !trailingInteractive)} disabled={!onPress} onPress={onPress} style={({ pressed }) => listItemStyles(t, { type, selected, pressed }).container}>
+    <Pressable accessibilityRole={role} accessibilityLabel={accessibilityLabel} {...a11yState(type === 'Radio-Card' ? { checked: !!selected } : { selected }, role)} accessible={!!onPress && (type === 'Radio-Card' || !trailingInteractive)} disabled={!onPress} onPress={onPress} style={({ pressed }) => listItemStyles(t, { type, selected, pressed }).container}>
       {({ pressed }) => {
         const s = listItemStyles(t, { type, selected, pressed });
         return (

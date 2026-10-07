@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { seedState, NOW } from './mock';
 import type { Club, ClubType } from './domain';
-import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, discover, likeCount, likedBy, clubsOf, previousSwing, latestNote, groupClubs } from './selectors';
+import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, awaitsFeedback, discover, likeCount, likedBy, clubsOf, previousSwing, latestNote, groupClubs } from './selectors';
 
 describe('selectors', () => {
   const s = seedState();
@@ -31,7 +31,17 @@ describe('selectors', () => {
     expect(latestNote(s2, 'p-lan')?.id).toBe('note-x');
   });
   it('đếm thông báo chưa đọc', () => { expect(unreadCount(s, 'p-minh')).toBe(2); });
-  it('HLV: học viên cần phản hồi', () => { expect(needsFeedback(s, 'c-tuan').map((p) => p.id)).toEqual(['p-lan']); });
+  it('HLV: học viên cần phản hồi', () => {
+    expect(needsFeedback(s, 'c-tuan').map((p) => p.id)).toEqual(['p-lan']);
+    expect(needsFeedback(s, 'c-ha').map((p) => p.id)).toEqual(['p-minh']); // ghi chú của c-tuan không tính cho c-ha; p-khoa chưa có swing
+  });
+  it('HLV: swing chờ phản hồi = đã có kết quả phân tích và chính HLV đó chưa ghi chú', () => {
+    const w = (id: string) => s.swings.find((x) => x.id === id)!;
+    expect(awaitsFeedback(s, w('sw-lan-1'), 'c-tuan')).toBe(true);
+    expect(awaitsFeedback(s, w('sw-minh-1'), 'c-tuan')).toBe(false); // c-tuan đã ghi chú
+    expect(awaitsFeedback(s, w('sw-minh-1'), 'c-ha')).toBe(true); // ghi chú của HLV khác không tính
+    expect(awaitsFeedback(s, w('sw-minh-3'), 'c-tuan')).toBe(false); // chưa phân tích
+  });
   it('khám phá: không gồm chính mình, lọc tên không dấu', () => {
     expect(discover(s, 'p-minh', '').some((p) => p.id === 'p-minh')).toBe(false);
     expect(discover(s, 'p-minh', 'tuan').map((p) => p.id)).toEqual(['c-tuan']);
