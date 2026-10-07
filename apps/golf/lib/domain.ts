@@ -19,6 +19,7 @@ export interface CoachInvite { code: string; coachId: ID; createdAt: ISO; expire
 export type InviteCheck = 'ok' | 'not_found' | 'expired' | 'used' | 'revoked' | 'already_connected';
 
 export type MetricSource = 'manual' | 'csv' | 'photo' | 'qr';
+export const SOURCE_LABELS: Record<MetricSource, string> = { manual: 'Nhập tay', csv: 'CSV', photo: 'Ảnh', qr: 'QR' };
 export type Vendor = 'trackman' | 'foresight';
 export interface SwingMetrics { clubSpeedMph: number; ballSpeedMph: number; smash: number; spinRpm: number; launchDeg: number; carryM: number }
 export interface FitnessMetrics { weightKg: number; flexibility: number; gripStrengthKg: number; verticalJumpCm: number }

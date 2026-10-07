@@ -43,6 +43,8 @@ const sessions = (): MetricSession[] => [
   swing('ss-d6', '2026-09-30T10:00:00Z', 'cl-driver', 'csv', [104.2, 152.1, 1.46, 2650, 12.4, 229]),
   swing('ss-i1', '2026-09-12T10:00:00Z', 'cl-iron7', 'manual', [83.5, 113.6, 1.36, 6900, 18.1, 141]),
   swing('ss-i2', '2026-10-03T10:00:00Z', 'cl-iron7', 'photo', [84.6, 115.1, 1.36, 6750, 17.6, 145]),
+  // ss-w0 → ss-w1: phiên mới nhất (Gỗ 3) có phiên trước cùng gậy để Tổng quan hiện chênh lệch (smash giảm, còn lại tăng)
+  swing('ss-w0', '2026-09-19T10:00:00Z', 'cl-wood3', 'csv', [96.1, 138.9, 1.45, 3750, 12.3, 193]),
   swing('ss-w1', '2026-10-05T10:00:00Z', 'cl-wood3', 'manual', [97.2, 140.0, 1.44, 3600, 11.8, 198]),
   { id: 'ss-f1', playerId: 'p-minh', capturedAt: '2026-09-05T01:00:00Z', source: 'manual', kind: 'fitness', fitness: { weightKg: 73.5, flexibility: 6, gripStrengthKg: 43, verticalJumpCm: 46 } },
   { id: 'ss-f2', playerId: 'p-minh', capturedAt: '2026-10-04T01:00:00Z', source: 'manual', kind: 'fitness', fitness: { weightKg: 72.0, flexibility: 7, gripStrengthKg: 45, verticalJumpCm: 48 } },

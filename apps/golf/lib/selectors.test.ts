@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { seedState, NOW } from './mock';
-import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, discover, likeCount, likedBy, clubsOf } from './selectors';
+import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, discover, likeCount, likedBy, clubsOf, previousSwing, latestNote } from './selectors';
 
 describe('selectors', () => {
   const s = seedState();
@@ -15,6 +15,20 @@ describe('selectors', () => {
     expect(c[0]!.carryM).toBeGreaterThanOrEqual(c[1]!.carryM);
   });
   it('phiên swing mới nhất', () => { expect(latestSwing(s, 'p-minh')?.kind).toBe('swing'); });
+  it('phiên swing liền trước cùng gậy (để tính chênh lệch)', () => {
+    const at = (id: string) => s.sessions.find((x) => x.id === id)!;
+    expect(previousSwing(s, latestSwing(s, 'p-minh')!)?.id).toBe('ss-w0'); // Gỗ 3: bỏ qua phiên Sắt 7/Driver xen giữa
+    expect(previousSwing(s, at('ss-d6'))?.id).toBe('ss-d5');
+    expect(previousSwing(s, at('ss-d1'))).toBeUndefined(); // phiên Driver đầu tiên
+    expect(previousSwing(s, { ...at('ss-d6'), clubId: undefined })).toBeUndefined();
+  });
+  it('ghi chú HLV mới nhất trên swing của chính mình', () => {
+    expect(latestNote(s, 'p-minh')?.id).toBe('note-1');
+    expect(latestNote(s, 'p-huy')).toBeUndefined();
+    const s2 = { ...s, notes: [...s.notes, { id: 'note-x', swingId: 'sw-lan-1', coachId: 'c-tuan', text: 'Giữ đầu ổn định.', createdAt: NOW }] };
+    expect(latestNote(s2, 'p-minh')?.id).toBe('note-1'); // ghi chú mới hơn trên swing người khác không lọt sang
+    expect(latestNote(s2, 'p-lan')?.id).toBe('note-x');
+  });
   it('đếm thông báo chưa đọc', () => { expect(unreadCount(s, 'p-minh')).toBe(2); });
   it('HLV: học viên cần phản hồi', () => { expect(needsFeedback(s, 'c-tuan').map((p) => p.id)).toEqual(['p-lan']); });
   it('khám phá: không gồm chính mình, lọc tên không dấu', () => {

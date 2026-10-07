@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM, initials } from './format';
+import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM, initials, statDelta } from './format';
 
 describe('format', () => {
   it('đổi mét ↔ yard', () => {
@@ -21,6 +21,19 @@ describe('format', () => {
     expect(relativeTime('2026-10-07T06:00:00Z', now)).toBe('2 giờ trước');
     expect(relativeTime('2026-10-04T08:00:00Z', now)).toBe('3 ngày trước');
     expect(relativeTime('2026-09-01T08:00:00Z', now)).toBe('01/09/2026');
+  });
+  it('ngày hiển thị theo giờ Việt Nam (UTC+7 cố định), qua nửa đêm VN là sang ngày mới', () => {
+    expect(formatDate('2026-09-30T23:30:00Z')).toBe('01/10/2026');
+    expect(formatDate('2026-10-05T16:59:59Z')).toBe('05/10/2026');
+    expect(formatDate('2026-10-05T17:00:00Z')).toBe('06/10/2026');
+    expect(formatDate('2026-12-31T17:00:00Z')).toBe('01/01/2027');
+    expect(relativeTime('2026-09-30T23:30:00Z', '2026-10-08T00:00:00Z')).toBe('01/10/2026');
+  });
+  it('chênh lệch chỉ số: làm tròn trước khi xét dấu, tăng = tốt', () => {
+    expect(statDelta(97.2 - 96.1, 0, 'mph')).toEqual({ text: '+1 mph', good: true });
+    expect(statDelta(1.44 - 1.45, 2)).toEqual({ text: '-0,01', good: false });
+    expect(statDelta(-0.004, 2)).toEqual({ text: '0,00', good: true });
+    expect(statDelta(mToYd(198) - mToYd(193), 0, 'yd')).toEqual({ text: '+5 yd', good: true });
   });
   it('đọc số kiểu VN', () => {
     expect(parseNumberVN('1,48')).toBe(1.48);

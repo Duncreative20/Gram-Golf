@@ -8,10 +8,17 @@ export const formatDistance = (m: number, units: Units) => (units === 'imperial'
 export const formatSpeed = (mph: number) => `${Math.round(mph)} mph`;
 export const formatTempo = (ratio: number) => `${vn(ratio, 1)} : 1`;
 export const formatNumber = (n: number, digits = 0) => vn(n, digits);
+/** Chênh lệch của chỉ số càng cao càng tốt (tốc độ, smash, carry): làm tròn theo `digits` rồi mới xét dấu → "+1 mph" / "-0,01" / "0". */
+export const statDelta = (diff: number, digits = 0, unit?: string) => {
+  const r = Number(diff.toFixed(digits));
+  return { text: `${r > 0 ? '+' : ''}${vn(r, digits)}${unit ? ` ${unit}` : ''}`, good: r >= 0 };
+};
 
 const pad = (n: number) => String(n).padStart(2, '0');
+// Việt Nam UTC+7 cố định (không có giờ mùa hè) — không dựa vào Intl/múi giờ của máy.
+const VN_OFFSET_MS = 7 * 3600 * 1000;
 export const formatDate = (iso: string) => {
-  const d = new Date(iso);
+  const d = new Date(Date.parse(iso) + VN_OFFSET_MS);
   return `${pad(d.getUTCDate())}/${pad(d.getUTCMonth() + 1)}/${d.getUTCFullYear()}`;
 };
 export const relativeTime = (iso: string, now: string) => {

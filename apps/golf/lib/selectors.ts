@@ -1,4 +1,4 @@
-import type { AppState, Club, CoachConnection, ID, ISO, InviteCheck, MetricSession, Post, Preferences, Profile, Swing } from './domain';
+import type { AppState, Club, CoachConnection, CoachNote, ID, ISO, InviteCheck, MetricSession, Post, Preferences, Profile, Swing } from './domain';
 import { DEFAULT_PREFS } from './mock';
 
 export const profileById = (s: AppState, id: ID) => s.profiles.find((p) => p.id === id);
@@ -34,6 +34,11 @@ export const sessionsOf = (s: AppState, playerId: ID, kind?: MetricSession['kind
   s.sessions.filter((x) => x.playerId === playerId && (!kind || x.kind === kind)).sort(byDateDesc);
 export const latestSwing = (s: AppState, playerId: ID) => sessionsOf(s, playerId, 'swing')[0] as Extract<MetricSession, { kind: 'swing' }> | undefined;
 export const latestFitness = (s: AppState, playerId: ID) => sessionsOf(s, playerId, 'fitness')[0] as Extract<MetricSession, { kind: 'fitness' }> | undefined;
+/** Phiên swing liền trước `x` của cùng người chơi, cùng gậy — để tính chênh lệch ở ô chỉ số. Không gậy / không có → undefined. */
+export const previousSwing = (s: AppState, x: Pick<MetricSession, 'playerId' | 'clubId' | 'capturedAt'>) =>
+  x.clubId
+    ? (sessionsOf(s, x.playerId, 'swing') as Extract<MetricSession, { kind: 'swing' }>[]).find((y) => y.clubId === x.clubId && Date.parse(y.capturedAt) < Date.parse(x.capturedAt))
+    : undefined;
 export const speedTrend = (s: AppState, playerId: ID, n = 5) =>
   (sessionsOf(s, playerId, 'swing') as Extract<MetricSession, { kind: 'swing' }>[])
     .filter((x) => clubById(s, x.clubId)?.type === 'Driver').slice(0, n).reverse()
@@ -51,6 +56,8 @@ export const clubLabel = (c: Club) => (c.type === 'Tuỳ chỉnh' ? c.customName
 
 export const swingsOf = (s: AppState, playerId: ID): Swing[] => s.swings.filter((w) => w.playerId === playerId).sort(byDateDesc);
 export const notesFor = (s: AppState, swingId: ID) => s.notes.filter((n) => n.swingId === swingId).sort((a, b) => (a.atSec ?? 0) - (b.atSec ?? 0));
+/** Ghi chú HLV mới nhất trên các swing của chính người chơi (mục "Ghi chú mới từ HLV" ở Tổng quan). */
+export const latestNote = (s: AppState, playerId: ID): CoachNote | undefined => swingsOf(s, playerId).flatMap((w) => notesFor(s, w.id)).sort(byDateDesc)[0];
 export const needsFeedback = (s: AppState, coachId: ID) =>
   roster(s, coachId).filter((p) => swingsOf(s, p.id).some((w) => w.analysis && !s.notes.some((n) => n.swingId === w.id && n.coachId === coachId)));
 
