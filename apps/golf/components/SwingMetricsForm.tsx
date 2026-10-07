@@ -36,7 +36,8 @@ export function MetricFields<K extends string>({ fields, values, onChange, error
   );
 }
 
-/** 6 chỉ số swing theo `SWING_FIELDS`. Carry nhập theo đơn vị trong prefs (m/yd) — lưu bằng `validateSwingMetrics(values, units)` để đổi về mét. */
+/** 6 chỉ số swing theo `SWING_FIELDS`. `values` theo đơn vị hiển thị: carry m/yd theo prefs — lưu bằng `validateSwingMetrics(values, units)` để đổi về mét;
+ *  điền sẵn từ số mét (OCR) phải đổi sang đơn vị hiển thị trước (`ocrPrefill`). */
 export function SwingMetricsForm(props: FieldsProps<keyof SwingMetrics>) {
   const { state, me } = useStore();
   return <MetricFields fields={swingFields(me ? prefsOf(state, me.id).units : 'metric')} {...props} />;
