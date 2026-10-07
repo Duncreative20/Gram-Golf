@@ -1,0 +1,52 @@
+import type { FitnessMetrics, SwingMetrics } from './domain';
+import { parseNumberVN } from './format';
+
+export interface FieldSpec<K extends string> { key: K; label: string; unit: string; min: number; max: number; digits: number }
+export const SWING_FIELDS: FieldSpec<keyof SwingMetrics>[] = [
+  { key: 'clubSpeedMph', label: 'Tốc độ đầu gậy', unit: 'mph', min: 40, max: 150, digits: 0 },
+  { key: 'ballSpeedMph', label: 'Tốc độ bóng', unit: 'mph', min: 50, max: 220, digits: 0 },
+  { key: 'smash', label: 'Smash factor', unit: '', min: 1, max: 1.56, digits: 2 },
+  { key: 'spinRpm', label: 'Spin', unit: 'rpm', min: 500, max: 12000, digits: 0 },
+  { key: 'launchDeg', label: 'Góc bắn', unit: '°', min: -10, max: 45, digits: 1 },
+  { key: 'carryM', label: 'Carry', unit: 'm', min: 10, max: 350, digits: 0 },
+];
+export const FITNESS_FIELDS: FieldSpec<keyof FitnessMetrics>[] = [
+  { key: 'weightKg', label: 'Cân nặng', unit: 'kg', min: 30, max: 200, digits: 1 },
+  { key: 'flexibility', label: 'Độ dẻo', unit: '/10', min: 0, max: 10, digits: 0 },
+  { key: 'gripStrengthKg', label: 'Lực nắm', unit: 'kg', min: 5, max: 100, digits: 0 },
+  { key: 'verticalJumpCm', label: 'Bật cao', unit: 'cm', min: 5, max: 120, digits: 0 },
+];
+
+export type Raw<K extends string> = Record<K, string>;
+export interface Validated<T> { value: T | null; errors: Partial<Record<keyof T, string>> }
+
+function validateFields<K extends string>(specs: FieldSpec<K>[], raw: Raw<K>): Validated<Record<K, number>> {
+  const errors: Partial<Record<K, string>> = {};
+  const out = {} as Record<K, number>;
+  for (const f of specs) {
+    const n = parseNumberVN(raw[f.key] ?? '');
+    if (n === null) errors[f.key] = raw[f.key]?.trim() ? 'Không phải số' : 'Bắt buộc';
+    else if (n < f.min || n > f.max) errors[f.key] = `Trong khoảng ${f.min}–${f.max}${f.unit ? ' ' + f.unit : ''}`;
+    else out[f.key] = n;
+  }
+  return { value: Object.keys(errors).length ? null : out, errors };
+}
+export const validateSwingMetrics = (raw: Raw<keyof SwingMetrics>) => validateFields(SWING_FIELDS, raw) as Validated<SwingMetrics>;
+export const validateFitnessMetrics = (raw: Raw<keyof FitnessMetrics>) => validateFields(FITNESS_FIELDS, raw) as Validated<FitnessMetrics>;
+
+export interface ClubRaw { brand: string; model: string; shaftBrand: string; loftDeg: string; lieDeg: string; shaftWeightG: string; bounceDeg: string }
+export function validateClub(raw: ClubRaw) {
+  const errors: Partial<Record<keyof ClubRaw, string>> = {};
+  for (const k of ['brand', 'model', 'shaftBrand'] as const) if (!raw[k].trim()) errors[k] = 'Bắt buộc';
+  const num = (k: keyof ClubRaw, min: number, max: number, optional: boolean) => {
+    if (optional && !raw[k].trim()) return undefined;
+    const n = parseNumberVN(raw[k]);
+    if (n === null || n < min || n > max) { errors[k] = `Trong khoảng ${min}–${max}`; return undefined; }
+    return n;
+  };
+  const loftDeg = num('loftDeg', 0, 64, false);
+  const lieDeg = num('lieDeg', 45, 80, false);
+  const shaftWeightG = num('shaftWeightG', 30, 150, true);
+  const bounceDeg = num('bounceDeg', 0, 20, true);
+  return { errors, value: Object.keys(errors).length ? null : { brand: raw.brand.trim(), model: raw.model.trim(), shaftBrand: raw.shaftBrand.trim(), loftDeg: loftDeg!, lieDeg: lieDeg!, shaftWeightG, bounceDeg } };
+}

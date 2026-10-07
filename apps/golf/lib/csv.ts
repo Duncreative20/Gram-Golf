@@ -1,0 +1,29 @@
+import type { SwingMetrics, Vendor } from './domain';
+import { ydToM } from './format';
+import { validateSwingMetrics } from './validation';
+
+export interface CsvRow { line: number; club: string; value: SwingMetrics | null; errors: string[] }
+export interface CsvResult { vendor: Vendor | null; rows: CsvRow[] }
+
+const COLS: Record<Vendor, { sep: string; club: string; map: Record<keyof SwingMetrics, string>; carryYards: boolean }> = {
+  trackman: { sep: ',', club: 'Club', carryYards: true, map: { clubSpeedMph: 'Club Speed [mph]', ballSpeedMph: 'Ball Speed [mph]', smash: 'Smash Factor', spinRpm: 'Spin Rate [rpm]', launchDeg: 'Launch Angle [deg]', carryM: 'Carry [yds]' } },
+  foresight: { sep: ';', club: 'Club', carryYards: false, map: { clubSpeedMph: 'ClubSpeed (mph)', ballSpeedMph: 'BallSpeed (mph)', smash: 'Smash', spinRpm: 'BackSpin (rpm)', launchDeg: 'VLA (deg)', carryM: 'Carry (m)' } },
+};
+
+export function parseLaunchMonitorCsv(text: string): CsvResult {
+  const lines = text.trim().split(/\r?\n/);
+  const head = lines[0] ?? '';
+  const vendor = (Object.keys(COLS) as Vendor[]).find((v) => head.split(COLS[v].sep).includes(COLS[v].map.clubSpeedMph)) ?? null;
+  if (!vendor) return { vendor: null, rows: [] };
+  const spec = COLS[vendor];
+  const header = head.split(spec.sep);
+  const rows = lines.slice(1).map((ln, i) => {
+    const cells = ln.split(spec.sep);
+    const get = (col: string) => cells[header.indexOf(col)] ?? '';
+    const raw = Object.fromEntries(Object.entries(spec.map).map(([k, col]) => [k, get(col)])) as Record<keyof SwingMetrics, string>;
+    if (spec.carryYards && raw.carryM.trim()) raw.carryM = String(Math.round(ydToM(Number(raw.carryM))));
+    const r = validateSwingMetrics(raw);
+    return { line: i + 2, club: get(spec.club), value: r.value, errors: Object.values(r.errors) as string[] };
+  });
+  return { vendor, rows };
+}
