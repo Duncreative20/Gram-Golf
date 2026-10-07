@@ -5,7 +5,7 @@
   "scripts": {
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
-    "check:literals": "grep -rEn \"#[0-9a-fA-F]{6}|fontSize:\\s*[1-9]|(padding|margin)[A-Za-z]*:\\s*[1-9]|gap:\\s*[1-9]\" apps/golf/app packages/ds/src/ui packages/ds/src/stories packages/ds/.storybook packages/ds/src/icons/Icon.tsx && exit 1 || echo OK"
+    "check:literals": "grep -rEn \"#[0-9a-fA-F]{6}|fontSize:\\s*[1-9]|(padding|margin)[A-Za-z]*:\\s*[1-9]|gap:\\s*[1-9]\" apps/golf/app apps/golf/components packages/ds/src/ui packages/ds/src/stories packages/ds/.storybook packages/ds/src/icons/Icon.tsx && exit 1 || echo OK"
   },
   "devDependencies": {
     "typescript": "~5.9.2"

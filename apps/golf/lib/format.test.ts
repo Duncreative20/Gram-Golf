@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM } from './format';
+import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM, initials } from './format';
 
 describe('format', () => {
   it('đổi mét ↔ yard', () => {
@@ -27,5 +27,10 @@ describe('format', () => {
     expect(parseNumberVN(' 2.650 ')).toBe(2.65);
     expect(parseNumberVN('')).toBeNull();
     expect(parseNumberVN('abc')).toBeNull();
+  });
+  it('chữ tắt avatar = chữ đầu 2 từ cuối của tên', () => {
+    expect(initials('Nguyễn Minh Anh')).toBe('MA');
+    expect(initials('HLV Đỗ Minh Tuấn')).toBe('MT');
+    expect(initials('  lan ')).toBe('L');
   });
 });
