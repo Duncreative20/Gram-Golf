@@ -1,5 +1,5 @@
-import type { FitnessMetrics, Profile, Role, SwingMetrics } from './domain';
-import { parseNumberVN } from './format';
+import type { FitnessMetrics, Profile, Role, SwingMetrics, Units } from './domain';
+import { formatValue, mToYd, parseNumberVN, ydToM } from './format';
 
 export interface FieldSpec<K extends string> { key: K; label: string; unit: string; min: number; max: number; digits: number }
 export const SWING_FIELDS: FieldSpec<keyof SwingMetrics>[] = [
@@ -17,6 +17,12 @@ export const FITNESS_FIELDS: FieldSpec<keyof FitnessMetrics>[] = [
   { key: 'verticalJumpCm', label: 'Bật cao', unit: 'cm', min: 5, max: 120, digits: 0 },
 ];
 
+/** Ô nhập swing theo đơn vị hiển thị: imperial → carry nhập yard, khoảng làm tròn vào trong để đổi về mét vẫn hợp lệ. */
+export const swingFields = (units: Units): FieldSpec<keyof SwingMetrics>[] =>
+  units === 'metric' ? SWING_FIELDS : SWING_FIELDS.map((f) => (f.key === 'carryM' ? { ...f, unit: 'yd', min: Math.ceil(mToYd(f.min)), max: Math.floor(mToYd(f.max)) } : f));
+/** Khoảng hợp lệ viết kiểu VN: "40–150 mph", "1–1,56", "-10–45°" (gợi ý dưới ô nhập + thông báo lỗi). */
+export const rangeText = (f: FieldSpec<string>) => `${formatValue(f.min)}–${formatValue(f.max, f.unit)}`;
+
 export type Raw<K extends string> = Record<K, string>;
 export interface Validated<T> { value: T | null; errors: Partial<Record<keyof T, string>> }
 
@@ -26,12 +32,17 @@ function validateFields<K extends string>(specs: FieldSpec<K>[], raw: Raw<K>): V
   for (const f of specs) {
     const n = parseNumberVN(raw[f.key] ?? '');
     if (n === null) errors[f.key] = raw[f.key]?.trim() ? 'Không phải số' : 'Bắt buộc';
-    else if (n < f.min || n > f.max) errors[f.key] = `Trong khoảng ${f.min}–${f.max}${f.unit ? ' ' + f.unit : ''}`;
+    else if (n < f.min || n > f.max) errors[f.key] = `Trong khoảng ${rangeText(f)}`;
     else out[f.key] = n;
   }
   return { value: Object.keys(errors).length ? null : out, errors };
 }
-export const validateSwingMetrics = (raw: Raw<keyof SwingMetrics>) => validateFields(SWING_FIELDS, raw) as Validated<SwingMetrics>;
+/** `units` = đơn vị người dùng nhập carry (prefs); giá trị trả về luôn ở mét (D9). */
+export const validateSwingMetrics = (raw: Raw<keyof SwingMetrics>, units: Units = 'metric') => {
+  const r = validateFields(swingFields(units), raw) as Validated<SwingMetrics>;
+  if (r.value && units === 'imperial') r.value.carryM = ydToM(r.value.carryM);
+  return r;
+};
 export const validateFitnessMetrics = (raw: Raw<keyof FitnessMetrics>) => validateFields(FITNESS_FIELDS, raw) as Validated<FitnessMetrics>;
 
 export interface ClubRaw { brand: string; model: string; shaftBrand: string; loftDeg: string; lieDeg: string; shaftWeightG: string; bounceDeg: string }

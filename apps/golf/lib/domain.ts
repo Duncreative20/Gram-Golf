@@ -21,6 +21,7 @@ export type InviteCheck = 'ok' | 'not_found' | 'expired' | 'used' | 'revoked' | 
 export type MetricSource = 'manual' | 'csv' | 'photo' | 'qr';
 export const SOURCE_LABELS: Record<MetricSource, string> = { manual: 'Nhập tay', csv: 'CSV', photo: 'Ảnh', qr: 'QR' };
 export type Vendor = 'trackman' | 'foresight';
+export const VENDOR_LABELS: Record<Vendor, string> = { trackman: 'TrackMan', foresight: 'Foresight' };
 export interface SwingMetrics { clubSpeedMph: number; ballSpeedMph: number; smash: number; spinRpm: number; launchDeg: number; carryM: number }
 export interface FitnessMetrics { weightKg: number; flexibility: number; gripStrengthKg: number; verticalJumpCm: number }
 interface SessionBase { id: ID; playerId: ID; capturedAt: ISO; source: MetricSource; vendor?: Vendor; clubId?: ID; note?: string }

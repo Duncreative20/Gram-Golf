@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM, initials, statDelta } from './format';
+import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM, initials, statDelta, formatValue, vnDay, withVnDay } from './format';
 
 describe('format', () => {
   it('đổi mét ↔ yard', () => {
@@ -34,6 +34,24 @@ describe('format', () => {
     expect(statDelta(1.44 - 1.45, 2)).toEqual({ text: '-0,01', good: false });
     expect(statDelta(-0.004, 2)).toEqual({ text: '0,00', good: true });
     expect(statDelta(mToYd(198) - mToYd(193), 0, 'yd')).toEqual({ text: '+5 yd', good: true });
+  });
+  it('số kèm đơn vị kiểu VN: cách trước đơn vị chữ, liền với ° và /x, không digits thì giữ nguyên số', () => {
+    expect(formatValue(104.2, 'mph', 0)).toBe('104 mph');
+    expect(formatValue(104.2, 'mph')).toBe('104,2 mph');
+    expect(formatValue(12.36, '°', 1)).toBe('12,4°');
+    expect(formatValue(7, '/10')).toBe('7/10');
+    expect(formatValue(1.456, '', 2)).toBe('1,46');
+    expect(formatValue(1.56)).toBe('1,56');
+    expect(formatValue(-10, '°')).toBe('-10°');
+  });
+  it('ngày cho DatePicker (ngày local) = ngày lịch VN của mốc ISO', () => {
+    const d = vnDay('2026-09-30T23:30:00Z'); // 06:30 ngày 01/10 giờ VN
+    expect([d.getFullYear(), d.getMonth(), d.getDate(), d.getHours()]).toEqual([2026, 9, 1, 0]);
+  });
+  it('đổi ngày (lịch VN) theo ngày chọn trên DatePicker, giữ nguyên giờ trong ngày', () => {
+    expect(withVnDay('2026-10-07T08:00:00Z', new Date(2026, 9, 5))).toBe('2026-10-05T08:00:00.000Z');
+    expect(withVnDay('2026-09-30T23:30:00Z', new Date(2026, 8, 15))).toBe('2026-09-14T23:30:00.000Z'); // 06:30 VN ngày 15/09
+    expect(formatDate(withVnDay('2026-10-07T08:00:00Z', vnDay('2026-10-01T03:00:00Z')))).toBe('01/10/2026');
   });
   it('đọc số kiểu VN', () => {
     expect(parseNumberVN('1,48')).toBe(1.48);

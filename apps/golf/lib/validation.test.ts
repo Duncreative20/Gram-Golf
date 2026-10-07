@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { validateSwingMetrics, validateFitnessMetrics, validateClub, validateRegistration, SWING_FIELDS } from './validation';
+import { validateSwingMetrics, validateFitnessMetrics, validateClub, validateRegistration, SWING_FIELDS, swingFields, rangeText } from './validation';
 
 describe('validation', () => {
   it('chấp nhận bộ số hợp lệ', () => {
@@ -21,6 +21,31 @@ describe('validation', () => {
     expect(validateFitnessMetrics({ weightKg: '72', flexibility: '7', gripStrengthKg: '45', verticalJumpCm: '48' }).value).not.toBeNull();
     expect(validateFitnessMetrics({ weightKg: '72', flexibility: '11', gripStrengthKg: '45', verticalJumpCm: '48' }).errors.flexibility).toBeTruthy();
     expect(validateClub({ brand: '', model: 'Qi10', shaftBrand: 'Fujikura', loftDeg: '10,5', lieDeg: '56', shaftWeightG: '', bounceDeg: '' }).errors.brand).toBeTruthy();
+  });
+  it('khoảng hợp lệ viết số kiểu VN, đơn vị liền với ° và /x', () => {
+    expect(rangeText(SWING_FIELDS[0]!)).toBe('40–150 mph');
+    const r = validateSwingMetrics({ clubSpeedMph: '104', ballSpeedMph: '152', smash: '1,7', spinRpm: '2650', launchDeg: '50', carryM: '228' });
+    expect(r.errors.smash).toBe('Trong khoảng 1–1,56');
+    expect(r.errors.launchDeg).toBe('Trong khoảng -10–45°');
+    expect(validateFitnessMetrics({ weightKg: '72', flexibility: '11', gripStrengthKg: '45', verticalJumpCm: '48' }).errors.flexibility).toBe('Trong khoảng 0–10/10');
+  });
+});
+
+describe('carry theo đơn vị hiển thị (D9: luôn lưu mét)', () => {
+  const raw = { clubSpeedMph: '104', ballSpeedMph: '152', smash: '1,46', spinRpm: '2650', launchDeg: '12,5', carryM: '250' };
+  it('metric: giữ nguyên SWING_FIELDS, carry nhập mét', () => {
+    expect(swingFields('metric')).toBe(SWING_FIELDS);
+    expect(validateSwingMetrics(raw, 'metric').value?.carryM).toBe(250);
+  });
+  it('imperial: carry nhập yard, khoảng đổi sang yard mà vẫn nằm trong 10–350 m', () => {
+    expect(swingFields('imperial').find((f) => f.key === 'carryM')).toMatchObject({ unit: 'yd', min: 11, max: 382 });
+    expect(swingFields('imperial').filter((f) => f.key !== 'carryM')).toEqual(SWING_FIELDS.filter((f) => f.key !== 'carryM'));
+  });
+  it('imperial: lưu carry đã đổi về mét; ngoài khoảng yard báo lỗi bằng yard', () => {
+    expect(validateSwingMetrics(raw, 'imperial').value?.carryM).toBeCloseTo(228.6, 1);
+    const r = validateSwingMetrics({ ...raw, carryM: '383' }, 'imperial');
+    expect(r.value).toBeNull();
+    expect(r.errors.carryM).toBe('Trong khoảng 11–382 yd');
   });
 });
 

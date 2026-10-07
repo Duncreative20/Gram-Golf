@@ -34,7 +34,10 @@ export default function RootLayout() {
     <ThemeProvider scheme="auto" emphasis="brand">
       <StoreProvider>
         <DevQuickLogin>
-          <Stack screenOptions={{ headerShown: false }} />
+          <Stack screenOptions={{ headerShown: false }}>
+            {/* Chọn nguồn số liệu mở dạng sheet (iOS: page sheet) */}
+            <Stack.Screen name="metrics/add" options={{ presentation: 'modal' }} />
+          </Stack>
         </DevQuickLogin>
       </StoreProvider>
     </ThemeProvider>
