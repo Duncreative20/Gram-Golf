@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router, type Href } from 'expo-router';
-import { Button, EmptyState, Icon, IconButton, ListItem, Screen, Segmented, Tag, Text, useTheme, type IconName } from '@gr/ds';
+import { EmptyState, Icon, IconButton, ListItem, Screen, Segmented, Tag, useTheme, type IconName } from '@gr/ds';
 import { SOURCE_LABELS } from '../../lib/domain';
 import { useStore } from '../../lib/store';
 import { clubById, clubLabel, clubsOf, prefsOf, sessionsOf } from '../../lib/selectors';
 import { formatDate, formatDistance, formatSpeed, formatValue } from '../../lib/format';
 import { FITNESS_FIELDS } from '../../lib/validation';
 import { TabHeader } from '../../components/TabHeader';
+import { ClubGrid } from '../clubs';
 
 const SEGMENTS = [{ label: 'Swing' }, { label: 'Thể lực' }, { label: 'Bộ gậy' }];
 // Nút "+" và empty state của từng segment dẫn tới đúng chỗ thêm: thể lực chỉ nhập tay, Bộ gậy → thêm gậy.
@@ -25,9 +26,10 @@ export default function PlayerMetrics() {
   const units = prefsOf(state, me.id).units;
   const add = ADD[seg];
   const chevron = <Icon name="chevron-right-line-medium" size={t.size('Element-Size/Popular/Base')} color="Color/Content/Neutral/Light" />;
+  const clubs = clubsOf(state, me.id);
   const rows =
     seg === 2
-      ? clubsOf(state, me.id).map((c) => <ListItem key={c.id} title={clubLabel(c)} caption={`${c.brand} ${c.model} · ${formatValue(c.loftDeg, '°')} · ${c.shaftFlex}`} />)
+      ? []
       : sessionsOf(state, me.id, seg === 0 ? 'swing' : 'fitness').map((s) => {
           const club = clubById(state, s.clubId);
           return (
@@ -56,18 +58,17 @@ export default function PlayerMetrics() {
       <View style={{ paddingHorizontal: t.layout('Margin-Small'), paddingBottom: t.space('Spacing/Padding/Small') }}>
         <Segmented items={SEGMENTS} selectedIndex={seg} onChange={setSeg} />
       </View>
-      {rows.length ? (
+      {(seg === 2 ? clubs.length : rows.length) > 0 ? (
         <>
           {/* chừa chỗ cho nút "+" nổi */}
           <ScrollView contentContainerStyle={{ paddingBottom: t.size('Button/Size/Large') + 2 * t.layout('Margin-Small') }}>
-            {seg === 2 && (
-              // ponytail: danh sách gậy đơn giản — Task 8 thay bằng ClubGrid của clubs/index
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: t.layout('Margin-Small') }}>
-                <Text variant="Body/Small/Regular" color="Color/Content/Neutral/Light">{`${rows.length} gậy`}</Text>
-                <Button type="Flat" level="Accent" size="Small" trailingIcon="chevron-right-line-small" text="Quản lý bộ gậy" onPress={() => router.push('/clubs')} />
+            {seg === 2 ? (
+              <View style={{ paddingHorizontal: t.layout('Margin-Small') }}>
+                <ClubGrid clubs={clubs} />
               </View>
+            ) : (
+              rows
             )}
-            {rows}
           </ScrollView>
           <View style={{ position: 'absolute', right: t.layout('Margin-Small'), bottom: t.layout('Margin-Small') }}>
             <IconButton icon="plus-line" accessibilityLabel={add.label} onPress={() => router.push(add.href)} />

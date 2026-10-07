@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { reduce } from './reducer';
 import { seedState, NOW } from './mock';
-import { canViewPrivate, validateInvite, activeCoaches, feed, roster } from './selectors';
+import { canViewPrivate, validateInvite, activeCoaches, feed, roster, clubById, clubsOf } from './selectors';
 
 const s0 = () => seedState();
 
@@ -101,5 +101,25 @@ describe('swing', () => {
     const s = reduce(s0(), { type: 'jobUpdate', id: sw.id, status: 'succeeded', progress: 1, analysis: s0().swings.find((x) => x.analysis)!.analysis, at: NOW, notificationId: 'n-z' });
     expect(s.swings.find((x) => x.id === sw.id)!.analysis).toBeDefined();
     expect(s.notifications.some((n) => n.id === 'n-z' && n.type === 'analysis_done')).toBe(true);
+  });
+});
+
+describe('bộ gậy', () => {
+  it('upsertClub: id mới thì thêm, id đã có thì thay tại chỗ (sửa gậy không tạo bản sao)', () => {
+    const before = s0();
+    const driver = before.clubs.find((c) => c.id === 'cl-driver')!;
+    const edited = reduce(before, { type: 'upsertClub', club: { ...driver, loftDeg: 9 } });
+    expect(edited.clubs).toHaveLength(before.clubs.length);
+    expect(edited.clubs.findIndex((c) => c.id === 'cl-driver')).toBe(before.clubs.indexOf(driver));
+    expect(clubById(edited, 'cl-driver')?.loftDeg).toBe(9);
+    const added = reduce(before, { type: 'upsertClub', club: { ...driver, id: 'cl-new' } });
+    expect(added.clubs).toHaveLength(before.clubs.length + 1);
+  });
+  it('lưu trữ gậy: ẩn khỏi danh sách; phiên/swing cũ vẫn gắn gậy và vẫn đọc được gậy', () => {
+    const s = reduce(s0(), { type: 'archiveClub', id: 'cl-driver', at: NOW });
+    expect(clubsOf(s, 'p-minh').map((c) => c.id)).not.toContain('cl-driver');
+    expect(clubById(s, 'cl-driver')).toMatchObject({ type: 'Driver', archivedAt: NOW });
+    expect(s.sessions.filter((x) => x.clubId === 'cl-driver')).toHaveLength(6);
+    expect(s.swings.filter((w) => w.clubId === 'cl-driver')).toHaveLength(1);
   });
 });

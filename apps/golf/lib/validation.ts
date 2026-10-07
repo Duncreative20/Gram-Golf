@@ -1,7 +1,8 @@
-import type { FitnessMetrics, Profile, Role, SwingMetrics, Units } from './domain';
+import type { Club, ClubType, FitnessMetrics, Profile, Role, ShaftFlex, SwingMetrics, Units } from './domain';
 import { formatValue, mToYd, parseNumberVN, ydToM } from './format';
 
-export interface FieldSpec<K extends string> { key: K; label: string; unit: string; min: number; max: number; digits: number }
+/** `optional`: ô để trống là hợp lệ (không có giá trị). */
+export interface FieldSpec<K extends string> { key: K; label: string; unit: string; min: number; max: number; digits: number; optional?: boolean }
 export const SWING_FIELDS: FieldSpec<keyof SwingMetrics>[] = [
   { key: 'clubSpeedMph', label: 'Tốc độ đầu gậy', unit: 'mph', min: 40, max: 150, digits: 0 },
   { key: 'ballSpeedMph', label: 'Tốc độ bóng', unit: 'mph', min: 50, max: 220, digits: 0 },
@@ -26,13 +27,17 @@ export const rangeText = (f: FieldSpec<string>) => `${formatValue(f.min)}–${fo
 export type Raw<K extends string> = Record<K, string>;
 export interface Validated<T> { value: T | null; errors: Partial<Record<keyof T, string>> }
 
+/** Ô tuỳ chọn để trống → không có trong `value`. */
 function validateFields<K extends string>(specs: FieldSpec<K>[], raw: Raw<K>): Validated<Record<K, number>> {
   const errors: Partial<Record<K, string>> = {};
   const out = {} as Record<K, number>;
   for (const f of specs) {
-    const n = parseNumberVN(raw[f.key] ?? '');
-    if (n === null) errors[f.key] = raw[f.key]?.trim() ? 'Không phải số' : 'Bắt buộc';
-    else if (n < f.min || n > f.max) errors[f.key] = `Trong khoảng ${rangeText(f)}`;
+    const s = raw[f.key] ?? '';
+    const n = parseNumberVN(s);
+    if (n === null) {
+      if (s.trim()) errors[f.key] = 'Không phải số';
+      else if (!f.optional) errors[f.key] = 'Bắt buộc';
+    } else if (n < f.min || n > f.max) errors[f.key] = `Trong khoảng ${rangeText(f)}`;
     else out[f.key] = n;
   }
   return { value: Object.keys(errors).length ? null : out, errors };
@@ -45,21 +50,59 @@ export const validateSwingMetrics = (raw: Raw<keyof SwingMetrics>, units: Units 
 };
 export const validateFitnessMetrics = (raw: Raw<keyof FitnessMetrics>) => validateFields(FITNESS_FIELDS, raw) as Validated<FitnessMetrics>;
 
-export interface ClubRaw { brand: string; model: string; shaftBrand: string; loftDeg: string; lieDeg: string; shaftWeightG: string; bounceDeg: string }
-export function validateClub(raw: ClubRaw) {
+type ClubNumberKey = 'shaftWeightG' | 'loftDeg' | 'lieDeg' | 'bounceDeg';
+/** Ô số của form gậy, theo thứ tự hiển thị. Bounce chỉ hiện với wedge (hoặc khi đã có giá trị) — màn quyết. */
+export const CLUB_FIELDS: FieldSpec<ClubNumberKey>[] = [
+  { key: 'shaftWeightG', label: 'Trọng lượng cán', unit: 'g', min: 30, max: 150, digits: 0, optional: true },
+  { key: 'loftDeg', label: 'Loft', unit: '°', min: 0, max: 64, digits: 1 },
+  { key: 'lieDeg', label: 'Lie', unit: '°', min: 45, max: 80, digits: 1 },
+  { key: 'bounceDeg', label: 'Bounce', unit: '°', min: 0, max: 20, digits: 0, optional: true },
+];
+/** Giá trị form gậy (chuỗi như người dùng gõ). `type` chưa chọn = undefined; `customName` chỉ dùng khi loại "Tuỳ chỉnh". */
+export interface ClubRaw extends Raw<ClubNumberKey> { type?: ClubType; customName: string; brand: string; model: string; shaftBrand: string; shaftFlex: ShaftFlex }
+type ClubFields = Omit<Club, 'id' | 'playerId' | 'archivedAt'>;
+
+/** Lỗi theo trường như form số liệu ("Bắt buộc" / "Không phải số" / "Trong khoảng 0–64°"); `value` = mọi trường của gậy trừ id/chủ. */
+export function validateClub(raw: ClubRaw): { errors: Partial<Record<keyof ClubRaw, string>>; value: ClubFields | null } {
   const errors: Partial<Record<keyof ClubRaw, string>> = {};
+  if (!raw.type) errors.type = 'Bắt buộc';
+  const custom = raw.type === 'Tuỳ chỉnh';
+  if (custom && !raw.customName.trim()) errors.customName = 'Bắt buộc';
   for (const k of ['brand', 'model', 'shaftBrand'] as const) if (!raw[k].trim()) errors[k] = 'Bắt buộc';
-  const num = (k: keyof ClubRaw, min: number, max: number, optional: boolean) => {
-    if (optional && !raw[k].trim()) return undefined;
-    const n = parseNumberVN(raw[k]);
-    if (n === null || n < min || n > max) { errors[k] = `Trong khoảng ${min}–${max}`; return undefined; }
-    return n;
+  const nums = validateFields(CLUB_FIELDS, raw);
+  Object.assign(errors, nums.errors);
+  if (!raw.type || !nums.value || Object.keys(errors).length) return { errors, value: null };
+  const n: Partial<Record<ClubNumberKey, number>> = nums.value; // ô tuỳ chọn để trống không có giá trị
+  return {
+    errors,
+    value: {
+      type: raw.type, customName: custom ? raw.customName.trim() : undefined,
+      brand: raw.brand.trim(), model: raw.model.trim(), shaftBrand: raw.shaftBrand.trim(), shaftFlex: raw.shaftFlex,
+      shaftWeightG: n.shaftWeightG, loftDeg: n.loftDeg!, lieDeg: n.lieDeg!, bounceDeg: n.bounceDeg,
+    },
   };
-  const loftDeg = num('loftDeg', 0, 64, false);
-  const lieDeg = num('lieDeg', 45, 80, false);
-  const shaftWeightG = num('shaftWeightG', 30, 150, true);
-  const bounceDeg = num('bounceDeg', 0, 20, true);
-  return { errors, value: Object.keys(errors).length ? null : { brand: raw.brand.trim(), model: raw.model.trim(), shaftBrand: raw.shaftBrand.trim(), loftDeg: loftDeg!, lieDeg: lieDeg!, shaftWeightG, bounceDeg } };
+}
+
+const LOFT: Partial<Record<ClubType, number>> = { Driver: 10.5, 'Gỗ 3': 15, 'Gỗ 5': 18, 'Hybrid 3': 19, 'Hybrid 4': 22, PW: 46, GW: 50, SW: 56, LW: 60, Putter: 3 };
+/** Loft gợi ý (°) theo loại: sắt 4 = 21°, mỗi số sắt +3,5°; gậy tuỳ chỉnh không có gợi ý. */
+export function defaultLoft(type: ClubType): number | undefined {
+  const iron = /^Sắt (\d)$/.exec(type);
+  return iron ? 21 + (Number(iron[1]) - 4) * 3.5 : LOFT[type];
+}
+/** Ô loft khi đổi loại gậy: còn trống hoặc vẫn đúng gợi ý của loại cũ (người dùng chưa tự nhập) → gợi ý của loại mới; đã tự nhập → giữ nguyên. */
+export function loftOnTypeChange(loft: string, from: ClubType | undefined, to: ClubType): string {
+  const untouched = !loft.trim() || (from !== undefined && parseNumberVN(loft) === defaultLoft(from));
+  if (!untouched) return loft;
+  const suggested = defaultLoft(to);
+  return suggested === undefined ? '' : formatValue(suggested);
+}
+/** Giá trị ban đầu của form: gậy mới → trống (flex Regular); sửa gậy → số viết kiểu VN ("10,5"). */
+export function clubRaw(c?: Club): ClubRaw {
+  const num = (n?: number) => (n === undefined ? '' : formatValue(n));
+  return {
+    type: c?.type, customName: c?.customName ?? '', brand: c?.brand ?? '', model: c?.model ?? '', shaftBrand: c?.shaftBrand ?? '',
+    shaftFlex: c?.shaftFlex ?? 'Regular', shaftWeightG: num(c?.shaftWeightG), loftDeg: num(c?.loftDeg), lieDeg: num(c?.lieDeg), bounceDeg: num(c?.bounceDeg),
+  };
 }
 
 export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

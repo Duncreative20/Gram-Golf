@@ -52,6 +52,7 @@ export interface Club {
 }
 
 export type CameraView = 'face-on' | 'down-the-line';
+export const CAMERA_VIEW_LABELS: Record<CameraView, string> = { 'face-on': 'Face-on', 'down-the-line': 'Down-the-line' };
 export type UploadStatus = 'uploading' | 'paused' | 'failed' | 'done';
 export type JobStatus = 'none' | 'queued' | 'processing' | 'succeeded' | 'failed' | 'needs_review';
 export interface SwingTip { text: string; startSec: number; endSec: number }

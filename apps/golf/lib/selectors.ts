@@ -1,4 +1,4 @@
-import type { AppState, Club, CoachConnection, CoachNote, ID, ISO, InviteCheck, MetricSession, Post, Preferences, Profile, Swing } from './domain';
+import { CLUB_GROUPS, type AppState, type Club, type CoachConnection, type CoachNote, type ID, type ISO, type InviteCheck, type MetricSession, type Post, type Preferences, type Profile, type Swing } from './domain';
 import { DEFAULT_PREFS } from './mock';
 
 export const profileById = (s: AppState, id: ID) => s.profiles.find((p) => p.id === id);
@@ -53,6 +53,9 @@ export const carryByClub = (s: AppState, playerId: ID, n = 3) => {
 export const clubById = (s: AppState, id?: ID): Club | undefined => (id ? s.clubs.find((c) => c.id === id) : undefined);
 export const clubsOf = (s: AppState, playerId: ID) => s.clubs.filter((c) => c.playerId === playerId && !c.archivedAt);
 export const clubLabel = (c: Club) => (c.type === 'Tuỳ chỉnh' ? c.customName ?? 'Gậy tuỳ chỉnh' : c.type);
+/** Gậy theo nhóm `CLUB_GROUPS` (bỏ nhóm trống); trong nhóm theo thứ tự loại (Driver → Gỗ 3 → Gỗ 5), cùng loại theo thứ tự thêm. */
+export const groupClubs = (clubs: Club[]) =>
+  CLUB_GROUPS.map((g) => ({ label: g.label, clubs: g.types.flatMap((type) => clubs.filter((c) => c.type === type)) })).filter((g) => g.clubs.length > 0);
 
 export const swingsOf = (s: AppState, playerId: ID): Swing[] => s.swings.filter((w) => w.playerId === playerId).sort(byDateDesc);
 export const notesFor = (s: AppState, swingId: ID) => s.notes.filter((n) => n.swingId === swingId).sort((a, b) => (a.atSec ?? 0) - (b.atSec ?? 0));

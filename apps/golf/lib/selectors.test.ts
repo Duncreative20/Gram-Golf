@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { seedState, NOW } from './mock';
-import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, discover, likeCount, likedBy, clubsOf, previousSwing, latestNote } from './selectors';
+import type { Club, ClubType } from './domain';
+import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, discover, likeCount, likedBy, clubsOf, previousSwing, latestNote, groupClubs } from './selectors';
 
 describe('selectors', () => {
   const s = seedState();
@@ -42,5 +43,15 @@ describe('selectors', () => {
   });
   it('gậy đã lưu trữ không hiện', () => {
     expect(clubsOf(s, 'p-minh').every((c) => !c.archivedAt)).toBe(true);
+  });
+  it('gậy theo nhóm: đúng thứ tự nhóm, trong nhóm theo thứ tự loại (không theo thứ tự thêm), bỏ nhóm trống', () => {
+    const club = (id: string, type: ClubType): Club => ({ id, playerId: 'p-x', type, brand: 'B', model: 'M', shaftBrand: 'S', shaftFlex: 'Regular', loftDeg: 20, lieDeg: 60 });
+    const groups = groupClubs([club('i7', 'Sắt 7'), club('w3', 'Gỗ 3'), club('sw', 'SW'), club('dr', 'Driver'), club('cu', 'Tuỳ chỉnh'), club('pw', 'PW')]);
+    expect(groups.map((g) => [g.label, g.clubs.map((c) => c.id)])).toEqual([
+      ['Gỗ', ['dr', 'w3']],
+      ['Sắt', ['i7']],
+      ['Wedge', ['pw', 'sw']],
+      ['Khác', ['cu']],
+    ]);
   });
 });

@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
 import { BottomSheet, PopoverItem, SelectField, Text, useTheme } from '@gr/ds';
-import { CLUB_GROUPS, type Club, type ID } from '../lib/domain';
+import type { Club, ID } from '../lib/domain';
 import { useStore } from '../lib/store';
-import { clubById, clubLabel, clubsOf } from '../lib/selectors';
+import { clubById, clubLabel, clubsOf, groupClubs } from '../lib/selectors';
 
 const describe = (c: Club) => `${clubLabel(c)} · ${c.brand} ${c.model}`;
 
@@ -15,7 +15,7 @@ export function ClubPicker({ playerId, value, onChange, error }: { playerId: ID;
   const [open, setOpen] = useState(false);
   const clubs = clubsOf(state, playerId);
   const selected = clubById(state, value);
-  const groups = CLUB_GROUPS.map((g) => ({ label: g.label, clubs: clubs.filter((c) => g.types.includes(c.type)) })).filter((g) => g.clubs.length);
+  const groups = groupClubs(clubs);
   return (
     <>
       <SelectField
