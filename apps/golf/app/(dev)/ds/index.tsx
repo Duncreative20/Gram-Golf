@@ -1,7 +1,8 @@
 // Gallery @gr/ds — nghiệm thu hình ảnh từng component trên Expo Go. Không phải màn app.
-import { Pressable, ScrollView } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import { Link } from 'expo-router';
 import { Screen, Text, useTheme } from '@gr/ds';
+import { Logo } from '../../../components/Logo';
 
 export const GALLERY: { name: string; href: string }[] = [
   { name: 'Icon', href: '/(dev)/ds/icon' },
@@ -41,6 +42,14 @@ export default function DsIndex() {
     <Screen>
       <ScrollView contentContainerStyle={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
         <Text variant="Heading/Subheading">@gr/ds gallery · {t.scheme}</Text>
+        <Text variant="Body/Base/DemiBold">Brand · Logo</Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: t.space('Spacing/Gap/Large') }}>
+          <Logo />
+          <Logo variant="full" />
+          <View style={{ backgroundColor: t.color('Color/Background/Accent/Solid/Default'), padding: t.space('Spacing/Padding/Small'), borderRadius: t.radius('Corner-Radius/Base') }}>
+            <Logo variant="full" tone="onBrand" />
+          </View>
+        </View>
         {GALLERY.map((g) => (
           <Link key={g.href} href={g.href as never} asChild>
             <Pressable style={{ paddingVertical: t.space('Spacing/Gap/Small') }}>

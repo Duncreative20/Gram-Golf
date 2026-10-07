@@ -1,11 +1,14 @@
 {
   "expo": {
-    "name": "Golf Relax",
-    "slug": "golf-relax",
+    "name": "GramGolf",
+    "slug": "gramgolf",
     "version": "0.1.0",
     "orientation": "portrait",
-    "scheme": "golf",
+    "scheme": "gramgolf",
     "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#0B2230"
+    },
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": false

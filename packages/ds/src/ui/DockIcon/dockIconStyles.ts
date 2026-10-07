@@ -23,7 +23,7 @@ export const DOCK_SIZE: Record<DockIconSize, { box: SizeKey; icon: SizeKey }> = 
 
 function dockPaint(theme: DockIconTheme, bg: DockIconBackground): { bg: ThemeLightKey; icon: ThemeLightKey } {
   if (theme === 'Neutral') return bg === 'Solid' ? { bg: 'Color/Background/Neutral/Solid/Default', icon: 'Color/Content/Inverse/Strongest' } : { bg: 'Color/Background/Neutral/Subtle/Default', icon: 'Color/Content/Neutral/Base' };
-  // Accent Solid: Figma bind On-Colors (trắng) nhưng Accent/Solid dark = mint sáng → On-Accent/Default (có DARK_FIXUP → On-Brights), audit §7d.
+  // Accent Solid: Figma bind On-Colors (trắng) nhưng trắng trên teal brand chỉ 2.38:1 → On-Accent/Default (navy GramGolf), audit §7d.
   if (theme === 'Accent') return bg === 'Solid' ? { bg: 'Color/Background/Accent/Solid/Default', icon: 'Color/Content/On-Accent/Default' } : { bg: 'Color/Background/Accent/Subtle/Default', icon: 'Color/Content/Accent/Light' };
   if (theme === 'Inverse') return { bg: 'Color/Background/Inverse/Solid/Default', icon: 'Color/Content/Neutral/Strongest' };
   if (theme === 'Pale') return { bg: 'Color/Background/Neutral/Subtle/Default', icon: 'Color/Content/Neutral/Light' }; // Figma Pale = Neutral/Subtle + Light (parity §7e)

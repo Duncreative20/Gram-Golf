@@ -27,7 +27,7 @@ describe('createTheme colors', () => {
     const k = 'Button-Primary/Background/Default';
     const neutral = createTheme({ scheme: 'light' }).component(k);
     expect(neutral).toBe('#1a1a1a'); // Neutral.Solid.Default → Neutral.12
-    expect(createTheme({ scheme: 'light', emphasis: 'brand' }).component(k)).toBe('#1b795c'); // Accent.Solid.Default → Brand.9
+    expect(createTheme({ scheme: 'light', emphasis: 'brand' }).component(k)).toBe('#14be96'); // Accent.Solid.Default → Brand.9 (GramGolf teal, tokens/brand/)
     expect(createTheme({ scheme: 'dark' }).component(k)).not.toBe(neutral);
   });
 });

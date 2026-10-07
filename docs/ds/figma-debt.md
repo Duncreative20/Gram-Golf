@@ -10,7 +10,7 @@ Nguồn: audit tương phản (spec §7d) + parity token (spec §7e). Mã F* dù
 |---|---|---|---|---|
 | F1 | `Segmented` (1238:892) Level | Level=Secondary dùng `Segmented-Item-Primary/*` + nền Surface/Default; Level=Primary dùng `Segmented-Item-Secondary/*` + Surface/Alt | Level = tên token item: Primary = Surface/Default + Item-Primary | Đổi tên 2 variant Level cho khớp token item (hoặc rebind item) |
 | F2 | Dark mode: `Input/Background/Default` | dark = #fafafa (Focused = #191919) | `DARK_FIXUP` → `Color/Background/Surface/Default` | Alias dark → Surface/Default |
-| F3 | Dark: `Color/Content/On-Accent/Default`, `Button-Accent/Content/*` | #ffffff trên `Accent/Solid` dark #73e3be (1.56:1) | `DARK_FIXUP` → `On-Brights` | Alias dark → On-Brights |
+| F3 | Dark: `Color/Content/On-Accent/Default`, `Button-Accent/Content/*` | #ffffff trên `Accent/Solid` dark #73e3be (1.56:1) | On-Accent: lớp brand `tokens/brand/` đặt `On-Brand-*` = navy #0b2230 → đã bỏ `DARK_FIXUP` (2026-10-07); `Button-Accent/Content/*`: `DARK_FIXUP` → `On-Brights` | Alias dark → On-Brights (hoặc nhận brand GramGolf, xem mục F) |
 | F4 | Dark: `Button-Accent-Overlay/Content/*` | #ddf8ef trên nền #fafafa (1.07:1) | `DARK_FIXUP` → `On-Brights` | Alias dark → On-Brights |
 | F5 | `Segmented/Container-Corner-Radius-Small`, `Item-Corner-Radius-Small` | bind trong set Segmented Small + Toggle, nhưng không có trong collection dump (chỉ có `-Medium` = 1000) | dùng `-Medium` / `Corner-Radius/Rounded` | Đưa 2 biến vào collection publish (hoặc rebind Small → Medium) |
 | F6 | `Segmented/Spacing/Small/Text-Wrapper-Padding 2` | tên có hậu tố " 2" | giữ đúng key | Đổi tên bỏ " 2" (rồi dump lại token + sửa key trong `segmentedStyles.ts`) |
@@ -84,3 +84,14 @@ Nguồn: audit tương phản (spec §7d) + parity token (spec §7e). Mã F* dù
 - Top-Navigation Type=Package-Select, Text-Area bộ đếm ký tự, Bottom-Sheet Stack=On, Video Media-Item: chưa build (không phải nợ Figma).
 - **State Focused chưa có trong Figma** cho Field-Group (row), Comment-Composer, Story reply → code không vẽ focus; trên web giữ outline mặc định trình duyệt cho các ô này (WCAG 2.4.7), chỉ tắt outline (`INPUT_RESET`) ở Text-Field/Search/Area/Message/Number/Stepper đã có state Focused. Chờ Figma thêm state Focused (viền `Color/Focus/*`) rồi rebind + tắt outline. *(reviewer 2026-09-26)*
 - **Error + Focused** (Text-Field các loại, Number-Field): Figma chỉ có Error hoặc Focused riêng → code giữ viền Negative khi vừa lỗi vừa focus (dấu focus = caret + bg Focused). Chờ Figma chốt tổ hợp.
+
+## F. Brand GramGolf (override code-side, 2026-10-07)
+
+**Brand GramGolf teal là override code-side `packages/ds/tokens/brand/` — Figma vẫn GR xanh cũ.** Thang `GR`/`GR-Alpha` (light+dark) = teal, step 9 `#14be96`; `On-Brand-*` = navy `#0b2230` (light Pressed = trắng trên step 11); `Color/Content/Accent/Light` → Brand 11. Phân tích: `docs/ds/REBRAND.md`. Việc trong Figma: đưa thang teal + On-Brand navy vào collection `global-colors`/`base-colors`, dump lại, xoá `tokens/brand/`.
+
+| # | Chỗ | Figma | Code | Việc trong Figma |
+|---|---|---|---|---|
+| F-brand-1 | Page-Indicator dot Accent đang chọn | teal step 9 trên canvas trắng 2.38:1 (< 3, WCAG 1.4.11) | giữ, `KNOWN_DESIGN` (khối hình, vị trí chấm vẫn đọc được) | Chọn dot đậm hơn (Brand 11) hoặc chấp nhận |
+| F-brand-2 | Progress Accent fill vs track | 1.98:1 | giữ, `KNOWN_DESIGN` | Track tối hơn / fill Brand 11 |
+| F-brand-3 | Toggle on: bar vs canvas (light 2.38), dot vs bar (light 2.38, dark 2.28) | như vậy | giữ, `KNOWN_DESIGN` (shape + bóng dot) | Bar Brand 10–11 hoặc dot navy |
+| F-brand-4 | Bottom-Navigation item `Accent-Solid` nhãn chọn | `Content/Inverse/Strongest` (trắng 2.18:1 trên teal) | `Content/On-Accent/Default` (navy) như icon; parity `ignore` | Rebind nhãn sang On-Accent/Default |

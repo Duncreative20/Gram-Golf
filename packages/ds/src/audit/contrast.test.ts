@@ -159,8 +159,8 @@ function rows(t: Theme): Row[] {
   return R;
 }
 
-function evaluate(scheme: 'light' | 'dark') {
-  const t = createTheme({ scheme });
+function evaluate(scheme: 'light' | 'dark', emphasis: 'neutral' | 'brand' = 'neutral') {
+  const t = createTheme({ scheme, emphasis });
   const out: { name: string; ratio: number; min: number; ok: boolean; exempt: boolean }[] = [];
   for (const r of rows(t)) {
     let bg: RGBA = [255, 255, 255, 1];
@@ -184,12 +184,15 @@ const KNOWN_DESIGN = [
   /Positive|Info|Green|Blue|Orange|Red\/Solid|Danger|Negative|Stepper dot Error/, /@photo|@scrim|Overlay/, /Checkbox box border|Radio border|Toggle off|Tag remove|DockIcon Yellow\/Subtle/,
   // Lượt 2: viền tint nhạt (Figma bind Border/Active/*/Subtle), pressed Secondary 4.26 (Neutral/Base trên Neutral/Subtle/Pressed), label off Neutral-Solid bind Placeholder.
   /Connector .* border|Button Main\/Secondary pressed|BottomNav .*Neutral-Solid label/,
+  // Brand GramGolf (tokens/brand/): teal #14be96 trên nền trắng chỉ 2.38:1 (WCAG 1.4.11 cần 3). Đây là khối hình (chấm trang,
+  // thanh tiến độ, toggle), không phải chữ — hình dạng/vị trí vẫn đọc được; chữ trên teal đã là navy ≥ 6.8. NỢ BRAND F-brand-1..3.
+  /PageIndicator Accent on|Progress Accent fill vs track|Toggle on (dot vs bar|bar vs canvas)/,
 ];
 
 describe('contrast audit', () => {
-  for (const scheme of ['light', 'dark'] as const) {
-    it(`${scheme}: không cặp nào tàng hình; cặp thấp đều nằm trong KNOWN_DESIGN`, () => {
-      const res = evaluate(scheme);
+  for (const scheme of ['light', 'dark'] as const) for (const emphasis of ['neutral', 'brand'] as const) {
+    it(`${scheme}/${emphasis}: không cặp nào tàng hình; cặp thấp đều nằm trong KNOWN_DESIGN`, () => {
+      const res = evaluate(scheme, emphasis);
       const bad = res.filter((r) => !r.ok && !r.exempt);
       const soft = res.filter((r) => !r.ok && r.exempt);
       const fmt = (r: (typeof res)[number]) => `${r.ratio.toFixed(2).padStart(6)} <${r.min}  ${r.name}`;
@@ -197,7 +200,7 @@ describe('contrast audit', () => {
       const unknown = bad.filter((r) => !KNOWN_DESIGN.some((re) => re.test(r.name)));
       // < 1.5 = coi như tàng hình; bỏ qua nhóm miễn (dot off, placeholder…) và KNOWN_DESIGN (viền 5 %, toggle off — có bóng/shape).
       const invisible = res.filter((r) => !(r.ratio >= 1.5) && !r.exempt && !KNOWN_DESIGN.some((re) => re.test(r.name)));
-      if (unknown.length || invisible.length) console.log(`[${scheme}] UNKNOWN: ${unknown.map(fmt).join(' | ')} INVISIBLE: ${invisible.map(fmt).join(' | ')}`);
+      if (unknown.length || invisible.length) console.log(`[${scheme}/${emphasis}] UNKNOWN: ${unknown.map(fmt).join(' | ')} INVISIBLE: ${invisible.map(fmt).join(' | ')}`);
       expect(unknown.map((r) => `${r.name}=${r.ratio.toFixed(2)}`)).toEqual([]);
       expect(invisible.map((r) => `${r.name}=${r.ratio.toFixed(2)}`)).toEqual([]);
     });

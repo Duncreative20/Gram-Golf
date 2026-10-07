@@ -13,7 +13,7 @@ export default function RootLayout() {
   }, [loaded]);
   if (!loaded) return null;
   return (
-    <ThemeProvider scheme="auto">
+    <ThemeProvider scheme="auto" emphasis="brand">
       <Stack screenOptions={{ headerShown: false }} />
     </ThemeProvider>
   );

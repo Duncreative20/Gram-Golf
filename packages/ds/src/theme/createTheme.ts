@@ -36,23 +36,19 @@ const NO_SHADOW: ShadowStyle = { shadowColor: '#000000', shadowOffset: { width: 
 /**
  * Alias dark mode sai trong Figma (đo 2026-09-17, spec §7d). Giá trị thay = token semantic đúng nghĩa, KHÔNG bịa hex.
  * - Input/Background/Default dark = #fafafa (sáng) trong khi Focused = #191919 → nền input tối như Surface.
- * - Color/Content/On-Accent/Default dark = #ffffff trên Accent/Solid dark = #73e3be (mint sáng) → 1.56:1 → dùng On-Brights (chữ tối).
  * - Button-Accent/Content/* dark = #ffffff, Button-Accent-Overlay/Content/* dark = #ddf8ef trên nền #fafafa → On-Brights.
  */
-const DARK_FIXUP: { color: Partial<Record<ThemeLightKey, ThemeLightKey>>; component: Partial<Record<ComponentNeutralLightKey, ThemeLightKey>> } = {
-  color: { 'Color/Content/On-Accent/Default': 'Color/Content/On-Brights' },
-  component: {
-    'Input/Background/Default': 'Color/Background/Surface/Default',
-    'Button-Accent/Content/Default': 'Color/Content/On-Brights',
-    'Button-Accent/Content/Pressed': 'Color/Content/On-Brights',
-    'Button-Accent-Overlay/Content/Default': 'Color/Content/On-Brights',
-    'Button-Accent-Overlay/Content/Pressed': 'Color/Content/On-Brights',
-    // Nền *-Overlay/Background cố định trắng 20 % nhưng Figma dark alias Content → #1a1a1a (NỢ FIGMA F49)
-    'Button-Primary-Overlay/Content/Default': 'Color/Content/On-Dark-Overlay/Strongest',
-    'Button-Primary-Overlay/Content/Hover': 'Color/Content/On-Dark-Overlay/Strongest',
-    'Button-Primary-Overlay/Content/Pressed': 'Color/Content/On-Dark-Overlay/Strongest',
-    'Button-Tertiary-Overlay/Content/Default': 'Color/Content/On-Dark-Overlay/Strongest',
-  },
+const DARK_FIXUP: Partial<Record<ComponentNeutralLightKey, ThemeLightKey>> = {
+  'Input/Background/Default': 'Color/Background/Surface/Default',
+  'Button-Accent/Content/Default': 'Color/Content/On-Brights',
+  'Button-Accent/Content/Pressed': 'Color/Content/On-Brights',
+  'Button-Accent-Overlay/Content/Default': 'Color/Content/On-Brights',
+  'Button-Accent-Overlay/Content/Pressed': 'Color/Content/On-Brights',
+  // Nền *-Overlay/Background cố định trắng 20 % nhưng Figma dark alias Content → #1a1a1a (NỢ FIGMA F49)
+  'Button-Primary-Overlay/Content/Default': 'Color/Content/On-Dark-Overlay/Strongest',
+  'Button-Primary-Overlay/Content/Hover': 'Color/Content/On-Dark-Overlay/Strongest',
+  'Button-Primary-Overlay/Content/Pressed': 'Color/Content/On-Dark-Overlay/Strongest',
+  'Button-Tertiary-Overlay/Content/Default': 'Color/Content/On-Dark-Overlay/Strongest',
 };
 
 // Pure: không đụng RN runtime, test được bằng vitest. Key = đúng tên Figma.
@@ -65,9 +61,9 @@ export function createTheme(opts: ThemeOptions) {
     emphasis,
     // Audit tương phản 2026-09-17 (src/audit/contrast.test.ts): vài alias DARK trong Figma trỏ sai → chữ tàng hình.
     // Override tại đây, có danh sách ở DARK_FIXUP; Dũng sửa trong Figma + dump lại thì xoá dòng tương ứng.
-    color: (k: ThemeLightKey): string => (opts.scheme === 'dark' && DARK_FIXUP.color[k] ? (colors[DARK_FIXUP.color[k]] as string) : (colors[k] as string)),
+    color: (k: ThemeLightKey): string => colors[k] as string,
     component: (k: ComponentNeutralLightKey): string => {
-      const fix = opts.scheme === 'dark' ? DARK_FIXUP.component[k] : undefined;
+      const fix = opts.scheme === 'dark' ? DARK_FIXUP[k] : undefined;
       return fix ? (colors[fix] as string) : (component[k] as string);
     },
     space: (k: SpacingKey): number => spacing[k],

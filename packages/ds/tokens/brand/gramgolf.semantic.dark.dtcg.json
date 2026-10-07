@@ -1,0 +1,14 @@
+{
+  "semantic": {
+    "Color": {
+      "Content": {
+        "Accent": {
+          "Light": {
+            "$type": "color",
+            "$value": "{base-colors.Dark.Brand.11}"
+          }
+        }
+      }
+    }
+  }
+}

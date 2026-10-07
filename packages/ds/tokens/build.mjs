@@ -1,6 +1,6 @@
 // DTCG (tokens/figma/*.dtcg.json) → src/generated/*.ts. Chạy: pnpm -F @gr/ds build:tokens
 import StyleDictionary from 'style-dictionary';
-import { readdirSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readdirSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -27,7 +27,7 @@ const BASE = [
   'component-size.default.dtcg.json', 'emphasis.medium.dtcg.json', 'breakpoints.mobile.dtcg.json',
   'typography.global-base-14.dtcg.json',
 ];
-const COLORS = (scheme) => ['global-colors.gr.dtcg.json', 'base-colors.gr.dtcg.json', `semantic.${scheme}.dtcg.json`];
+const COLORS = (scheme) => ['global-colors.gr.dtcg.json', 'base-colors.gr.dtcg.json', `semantic.${scheme}.dtcg.json`, '../brand/gramgolf.dtcg.json', `../brand/gramgolf.semantic.${scheme}.dtcg.json`];
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
 const SETS = [
   { source: BASE, files: [
@@ -46,7 +46,7 @@ const SETS = [
 
 const exportNames = {};
 for (const set of SETS) {
-  const source = set.source.filter((f) => present.has(f)).map((f) => resolve(FIG, f));
+  const source = set.source.filter((f) => existsSync(resolve(FIG, f))).map((f) => resolve(FIG, f));
   const files = set.files.filter(([, , group]) => set.source.some((f) => f.startsWith(group + '.') && present.has(f)));
   if (files.length === 0) continue;
   const sd = new StyleDictionary({
