@@ -23,7 +23,7 @@ Không thấy lỗi chức năng ở các màn `metrics/*`, `(player)/metrics`, 
 
 | Luồng | Bước | Ghi chú |
 | --- | --- | --- |
-| F06 | Danh sách gậy đã lưu trữ + khôi phục gậy | Phase 2. Hiện chỉ lưu trữ một chiều; gậy lưu trữ chỉ mở được qua link chi tiết (`f06--da-luu-tru`). |
+| F06 | Danh sách gậy đã lưu trữ + khôi phục gậy | Phase 2. Hiện chỉ lưu trữ một chiều; gậy lưu trữ chỉ mở được qua link chi tiết (`f06--da-luu-tru`). — **đã làm (Task 21): Bộ gậy › Lưu trữ (`f06--b-10-luu-tru`), Khôi phục / Xoá gậy (`f06--b-11-gay-luu-tru`, `f06--b-12-xoa-gay`)** |
 | F05 | — | Đủ route. Chọn file CSV / ảnh thật của hệ điều hành là bản thử (file / ảnh mẫu) ngay trong màn. |
 
 ## Phủ route

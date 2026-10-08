@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router, type Href } from 'expo-router';
-import { EmptyState, IconButton, Screen, Segmented, useTheme, type IconName } from '@gr/ds';
+import { EmptyState, Icon, IconButton, ListItem, Screen, Segmented, useTheme, type IconName } from '@gr/ds';
 import { useStore } from '../../lib/store';
-import { clubsOf, prefsOf, sessionsOf } from '../../lib/selectors';
+import { archivedClubsOf, clubsOf, prefsOf, sessionsOf } from '../../lib/selectors';
 import { TabHeader } from '../../components/TabHeader';
 import { SessionRow } from '../../components/SessionRow';
 import { ClubGrid } from '../clubs';
@@ -24,6 +24,8 @@ export default function PlayerMetrics() {
   const units = prefsOf(state, me.id).units;
   const add = ADD[seg];
   const clubs = clubsOf(state, me.id);
+  const archived = archivedClubsOf(state, me.id);
+  const openArchived = () => router.push({ pathname: '/clubs', params: { view: 'archived' } });
   const rows = seg === 2 ? [] : sessionsOf(state, me.id, seg === 0 ? 'swing' : 'fitness').map((s) => <SessionRow key={s.id} session={s} units={units} />);
   return (
     <Screen edges={['top']}>
@@ -36,9 +38,20 @@ export default function PlayerMetrics() {
           {/* chừa chỗ cho nút "+" nổi */}
           <ScrollView contentContainerStyle={{ paddingBottom: t.size('Button/Size/Large') + 2 * t.layout('Margin-Small') }}>
             {seg === 2 ? (
-              <View style={{ paddingHorizontal: t.layout('Margin-Small') }}>
-                <ClubGrid clubs={clubs} />
-              </View>
+              <>
+                {archived.length > 0 && (
+                  <ListItem
+                    title="Gậy đã lưu trữ"
+                    caption={`${archived.length} gậy — khôi phục hoặc xoá`}
+                    leading={<Icon name="archive-line" size={t.size('Element-Size/Popular/Base')} color="Color/Content/Neutral/Base" />}
+                    trailing={<Icon name="chevron-right-line-medium" size={t.size('Element-Size/Popular/Base')} color="Color/Content/Neutral/Light" />}
+                    onPress={openArchived}
+                  />
+                )}
+                <View style={{ paddingHorizontal: t.layout('Margin-Small') }}>
+                  <ClubGrid clubs={clubs} />
+                </View>
+              </>
             ) : (
               rows
             )}
@@ -49,7 +62,14 @@ export default function PlayerMetrics() {
         </>
       ) : (
         <View style={{ flex: 1, justifyContent: 'center', padding: t.layout('Margin-Small') }}>
-          <EmptyState icon={add.icon} title={add.title} caption={add.caption} primaryText={add.label} onPrimary={() => router.push(add.href)} />
+          <EmptyState
+            icon={add.icon}
+            title={add.title}
+            caption={add.caption}
+            primaryText={add.label}
+            onPrimary={() => router.push(add.href)}
+            {...(seg === 2 && archived.length > 0 ? { secondaryText: 'Gậy đã lưu trữ', onSecondary: openArchived } : {})}
+          />
         </View>
       )}
     </Screen>

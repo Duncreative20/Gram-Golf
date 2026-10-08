@@ -46,7 +46,7 @@ sửa (bước code nằm sẵn trong task sở hữu, cột “Bước”); thu
 | 21 | review Task 13 #2 | `settings/privacy.tsx:39,86-92`: Dialog xoá tài khoản trống chữ khi mờ dần lúc đóng | 28 | Step 4 | chờ Task 28 |
 | 22 | review Task 13 #5 + report Task 13 | Thông báo của người đã chặn vẫn hiện và vẫn tính vào số trên chuông | 27 | Step 3 | chờ Task 27 |
 | 23 | review Task 14 #1 | `CLAUDE.md:24` nói tải lần đầu có "lỗi + thử lại" — skeleton không có nhánh lỗi | 30 | Step 5 | chờ Task 30 |
-| 24 | review Task 14 #2 | Mẫu `deleteOnLeave` chép ở `metrics/[id].tsx:18-25`, `swings/[id].tsx:179-186`; xoá gậy (Task 21) là nơi thứ 3 | 21 | Step 5 | chờ Task 21 |
+| 24 | review Task 14 #2 | Mẫu `deleteOnLeave` chép ở `metrics/[id].tsx:18-25`, `swings/[id].tsx:179-186`; xoá gậy (Task 21) là nơi thứ 3 | 21 | Step 5 | đã sửa (Task 21): `components/useOnLeave.ts`, dùng ở 3 màn |
 | 25 | review Task 14 #5 | Story F01/F03/F05/F10/F13 vẽ Tổng quan / bảng tin có skeleton 400 ms | 15 | Step 5, 6 (`DELAYS` + `hold`; story dùng `find*`) | đã sửa (Task 15) |
 | 26 | issues A–E "Hạ tầng" + `verify.md` | `userEvent.type` không tới `onChangeText`; Modal ra ngoài ảnh / thừa 32 px; toast tự tắt; script chụp treo | 15 | Step 6, 8, 9 | đã sửa (Task 15) |
 | 27 | review Task 14 cannot-verify + report Task 14 | Bàn phím iOS/Android (`KeyboardAvoid`), `resetTo` và xoá-khi-rời trên native chỉ kiểm trên web | 30 | Step 3 (mục "Kiểm trên điện thoại") | chờ Task 30 |

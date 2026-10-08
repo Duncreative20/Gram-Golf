@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
+import { useEffect, useState, type PropsWithChildren } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import {
@@ -18,6 +18,7 @@ import { StatTile } from '../../components/StatTile';
 import { SwingUpload } from '../../components/SwingUpload';
 import { AlertMessage } from '../../components/Feedback';
 import { NoAccess } from '../../components/NoAccess';
+import { useOnLeave } from '../../components/useOnLeave';
 
 const PHASES = [
   { key: 'address', label: 'Chuẩn bị' },
@@ -181,13 +182,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
   const [deleting, setDeleting] = useState<CoachNote>(); // giữ ghi chú để Dialog không trống khi mờ dần
   const [confirmNoteDelete, setConfirmNoteDelete] = useState(false);
   // Xoá sau khi màn đã rời (unmount) — xoá trước khi quay lại thì màn đang rời nháy "Không tìm thấy swing".
-  const deleteOnLeave = useRef(false);
-  useEffect(
-    () => () => {
-      if (deleteOnLeave.current) dispatch({ type: 'deleteSwing', id: swing.id });
-    },
-    [],
-  );
+  const deleteOnLeave = useOnLeave(() => dispatch({ type: 'deleteSwing', id: swing.id }));
 
   // Phát giả lập (chưa có video thật): vị trí chạy theo thời gian thực tới hết video.
   useEffect(() => {
@@ -509,7 +504,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
         destructive
         onPrimary={() => {
           setConfirmDelete(false);
-          deleteOnLeave.current = true;
+          deleteOnLeave();
           if (router.canGoBack()) router.back();
           else router.replace('/(player)/swings');
         }}

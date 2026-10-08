@@ -5,12 +5,14 @@ import { Button, Dialog, EmptyState, Icon, InlineMessage, ListItem, Screen, Tag,
 import { CAMERA_VIEW_LABELS, SOURCE_LABELS, type MetricSession } from '../../../lib/domain';
 import { NOW } from '../../../lib/mock';
 import { useStore } from '../../../lib/store';
-import { canViewPrivate, clubById, clubLabel, notesFor, prefsOf, profileById, sessionsOf, swingsOf } from '../../../lib/selectors';
+import { canViewPrivate, clubById, clubLabel, clubLinkCount, notesFor, prefsOf, profileById, sessionsOf, swingsOf } from '../../../lib/selectors';
 import { formatDate, formatDistance, formatSpeed, formatValue } from '../../../lib/format';
 import { CLUB_FIELDS } from '../../../lib/validation';
 import { StackHeader } from '../../../components/StackHeader';
 import { Section } from '../../../components/Section';
 import { NoAccess } from '../../../components/NoAccess';
+import { SavedToast } from '../../../components/Feedback';
+import { useOnLeave } from '../../../components/useOnLeave';
 
 // ponytail: mỗi danh sách chỉ hiện 3 mục gần nhất, chưa có màn lọc theo gậy — cần xem hết thì thêm bộ lọc gậy ở tab Thông số / Swing.
 const RECENT = 3;
@@ -20,6 +22,9 @@ export default function ClubDetail() {
   const { state, dispatch, me } = useStore();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [confirmArchive, setConfirmArchive] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [toast, setToast] = useState<string>();
+  const deleteOnLeave = useOnLeave(() => dispatch({ type: 'deleteClub', id })); // xoá SAU khi rời màn — không nháy "Không tìm thấy gậy"
   if (!me) return <Redirect href="/" />;
   const club = clubById(state, id);
   const back = () => (router.canGoBack() ? router.back() : router.replace('/clubs'));
@@ -42,7 +47,7 @@ export default function ClubDetail() {
   const units = prefsOf(state, me.id).units;
   const swings = swingsOf(state, club.playerId).filter((w) => w.clubId === club.id);
   const sessions = sessionsOf(state, club.playerId).filter((s): s is Extract<MetricSession, { kind: 'swing' }> => s.kind === 'swing' && s.clubId === club.id);
-  const linked = swings.length + sessions.length;
+  const linked = clubLinkCount(state, club.id);
   const specs = [
     { label: 'Loại', value: club.type },
     { label: 'Hãng', value: club.brand },
@@ -70,7 +75,7 @@ export default function ClubDetail() {
       <ScrollView contentContainerStyle={{ paddingVertical: t.space('Spacing/Padding/Medium'), gap: t.space('Spacing/Gap/Large') }}>
         {club.archivedAt && (
           <View style={{ paddingHorizontal: t.layout('Margin-Small') }}>
-            <InlineMessage text={`Đã lưu trữ ngày ${formatDate(club.archivedAt)} — gậy ẩn khỏi danh sách, dữ liệu cũ giữ nguyên.`} />
+            <InlineMessage text={`Đã lưu trữ ngày ${formatDate(club.archivedAt)} — gậy ẩn khỏi danh sách và chọn gậy, dữ liệu cũ giữ nguyên. Khôi phục để dùng lại.`} />
           </View>
         )}
         <Section title="Thông số">
@@ -121,9 +126,29 @@ export default function ClubDetail() {
               ))
             : empty('Chưa có phiên số liệu nào với gậy này.')}
         </Section>
-        {canEdit && (
-          <View style={{ paddingHorizontal: t.layout('Margin-Small') }}>
-            <Button level="Danger Subtle" size="Medium (Base)" leadingIcon="archive-line" text="Lưu trữ gậy" onPress={() => setConfirmArchive(true)} />
+        {own && (
+          <View style={{ paddingHorizontal: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
+            {club.archivedAt ? (
+              <Button
+                level="Secondary"
+                size="Medium (Base)"
+                leadingIcon="refresh-ccw-01-line"
+                text="Khôi phục gậy"
+                onPress={() => {
+                  dispatch({ type: 'unarchiveClub', id: club.id });
+                  setToast('Đã khôi phục — gậy về danh sách Đang dùng');
+                }}
+              />
+            ) : (
+              <Button level="Danger Subtle" size="Medium (Base)" leadingIcon="archive-line" text="Lưu trữ gậy" onPress={() => setConfirmArchive(true)} />
+            )}
+            {linked === 0 ? (
+              <Button level="Danger Subtle" size="Medium (Base)" leadingIcon="trash-line" text="Xoá gậy" onPress={() => setConfirmDelete(true)} />
+            ) : (
+              <Text variant="Caption/Regular" color="Color/Content/Neutral/Light">
+                {`Gậy đã gắn với ${linked} phiên/swing nên chỉ lưu trữ được — không xoá để giữ lịch sử.`}
+              </Text>
+            )}
           </View>
         )}
       </ScrollView>
@@ -142,6 +167,22 @@ export default function ClubDetail() {
         }}
         secondaryText="Huỷ"
       />
+      <Dialog
+        visible={confirmDelete}
+        onRequestClose={() => setConfirmDelete(false)}
+        theme="Warning"
+        title="Xoá gậy này?"
+        body="Gậy chưa gắn với phiên hay swing nào. Xoá xong không khôi phục được."
+        primaryText="Xoá"
+        destructive
+        onPrimary={() => {
+          setConfirmDelete(false);
+          deleteOnLeave();
+          back();
+        }}
+        secondaryText="Huỷ"
+      />
+      {toast && <SavedToast title={toast} onDone={() => setToast(undefined)} />}
     </Screen>
   );
 }

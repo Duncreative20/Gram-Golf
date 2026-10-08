@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
 import { BottomSheet, PopoverItem, SelectField, Text, useTheme } from '@gr/ds';
@@ -16,6 +16,14 @@ export function ClubPicker({ playerId, value, onChange, error }: { playerId: ID;
   const clubs = clubsOf(state, playerId);
   const selected = clubById(state, value);
   const groups = groupClubs(clubs);
+  const before = useRef<Set<ID> | undefined>(undefined); // gậy đã có lúc bấm "Thêm gậy mới"
+  // quay lại form sau khi thêm gậy → chọn sẵn gậy vừa thêm (hand-off: không bắt mở lại danh sách)
+  useEffect(() => {
+    const fresh = before.current && clubs.find((c) => !before.current!.has(c.id));
+    if (!fresh) return;
+    before.current = undefined;
+    onChange(fresh.id);
+  }, [clubs.length]);
   return (
     <>
       <SelectField
@@ -60,6 +68,7 @@ export function ClubPicker({ playerId, value, onChange, error }: { playerId: ID;
             icon="plus-line"
             label="Thêm gậy mới"
             onPress={() => {
+              before.current = new Set(clubs.map((c) => c.id));
               setOpen(false);
               router.push('/clubs/new');
             }}

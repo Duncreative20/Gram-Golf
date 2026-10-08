@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { Accordion, Button, Dialog, EmptyState, ListItem, Screen, Text, useTheme } from '@gr/ds';
@@ -9,6 +9,7 @@ import { formatDate, formatValue, mToYd } from '../../lib/format';
 import { FITNESS_FIELDS, swingFields } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
 import { NoAccess } from '../../components/NoAccess';
+import { useOnLeave } from '../../components/useOnLeave';
 
 export default function MetricSessionDetail() {
   const t = useTheme();
@@ -16,13 +17,7 @@ export default function MetricSessionDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [confirmDelete, setConfirmDelete] = useState(false);
   // Xoá sau khi màn đã rời (unmount) — xoá trước khi quay lại thì màn đang rời nháy "Không tìm thấy phiên".
-  const deleteOnLeave = useRef(false);
-  useEffect(
-    () => () => {
-      if (deleteOnLeave.current) dispatch({ type: 'deleteSession', id: id! });
-    },
-    [],
-  );
+  const deleteOnLeave = useOnLeave(() => dispatch({ type: 'deleteSession', id: id! }));
   if (!me) return <Redirect href="/" />;
   const session = state.sessions.find((s) => s.id === id);
   const back = () => (router.canGoBack() ? router.back() : router.replace('/'));
@@ -100,7 +95,7 @@ export default function MetricSessionDetail() {
         destructive
         onPrimary={() => {
           setConfirmDelete(false);
-          deleteOnLeave.current = true;
+          deleteOnLeave();
           back();
         }}
         secondaryText="Huỷ"
