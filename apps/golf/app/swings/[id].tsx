@@ -1,5 +1,5 @@
-import { useEffect, useState, type PropsWithChildren } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import {
   AlertBanner, Avatar, Button, Dialog, Divider, EmptyState, Icon, MessageInput, ProgressBar, Screen, Tag, Text, VideoControlOverlay, useTheme, type VideoState,
@@ -12,6 +12,7 @@ import { canViewPrivate, clubById, clubLabel, notesFor, profileById } from '../.
 import { formatDate, formatNumber, formatSec, formatTempo, initials, relativeTime } from '../../lib/format';
 import { ANALYSIS_QUEUE_MS, ANALYSIS_TICK_MS, analysisTick } from '../../lib/simulate';
 import { StackHeader } from '../../components/StackHeader';
+import { KeyboardAvoid } from '../../components/KeyboardAvoid';
 import { StatTile } from '../../components/StatTile';
 import { SwingUpload } from '../../components/SwingUpload';
 import { AlertMessage } from '../../components/Feedback';
@@ -175,6 +176,14 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
   const [note, setNote] = useState('');
   const [noteError, setNoteError] = useState<string>();
   const [sent, setSent] = useState<string>();
+  // Xoá sau khi màn đã rời (unmount) — xoá trước khi quay lại thì màn đang rời nháy "Không tìm thấy swing".
+  const deleteOnLeave = useRef(false);
+  useEffect(
+    () => () => {
+      if (deleteOnLeave.current) dispatch({ type: 'deleteSwing', id: swing.id });
+    },
+    [],
+  );
 
   // Phát giả lập (chưa có video thật): vị trí chạy theo thời gian thực tới hết video.
   useEffect(() => {
@@ -199,7 +208,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
     const update = (r: { status: JobStatus; progress: number; analysis?: SwingAnalysis }) =>
       dispatch({ type: 'jobUpdate', id: swing.id, ...r, at: NOW, notificationId: newId('nt') });
     if (jobStatus === 'queued') {
-      const timer = setTimeout(() => update({ status: 'processing', progress: 0 }), ANALYSIS_QUEUE_MS);
+      const timer = setTimeout(() => update({ status: 'processing', progress: swing.job.progress }), ANALYSIS_QUEUE_MS);
       return () => clearTimeout(timer);
     }
     let p = swing.job.progress;
@@ -223,7 +232,8 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
     setPlaying(false);
     setPositionSec(sec);
   };
-  const analyze = () => dispatch({ type: 'jobUpdate', id: swing.id, status: 'queued', progress: 0, at: NOW, notificationId: newId('nt') });
+  // Thử lại sau lỗi: job chạy tiếp từ tiến độ lúc lỗi (lần đầu: 0)
+  const analyze = () => dispatch({ type: 'jobUpdate', id: swing.id, status: 'queued', progress: swing.job.progress, at: NOW, notificationId: newId('nt') });
   const sendNote = (text: string) => {
     const body = text.trim();
     if (!body) return setNoteError('Nhập nội dung ghi chú');
@@ -322,7 +332,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
         // ponytail: "menu" của chủ swing chỉ có 1 mục (Xoá) → action thẳng trên header; thêm mục thì đổi sang BottomSheet menu
         actions={own ? [{ icon: 'trash-line', accessibilityLabel: 'Xoá swing', onPress: () => setConfirmDelete(true) }] : undefined}
       />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
+      <KeyboardAvoid>
         <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingVertical: t.space('Spacing/Padding/Medium'), gap: t.space('Spacing/Gap/XLarge') }}>
           {uploaded ? (
             <>
@@ -409,7 +419,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
             </View>
           </>
         )}
-      </KeyboardAvoidingView>
+      </KeyboardAvoid>
       <Dialog
         visible={confirmDelete}
         onRequestClose={() => setConfirmDelete(false)}
@@ -424,9 +434,9 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
         destructive
         onPrimary={() => {
           setConfirmDelete(false);
+          deleteOnLeave.current = true;
           if (router.canGoBack()) router.back();
           else router.replace('/(player)/swings');
-          dispatch({ type: 'deleteSwing', id: swing.id });
         }}
         secondaryText="Huỷ"
       />

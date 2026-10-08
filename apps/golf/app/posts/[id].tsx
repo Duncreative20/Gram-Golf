@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { Avatar, Button, Card, CommentComposer, CommentThread, Dialog, Divider, EmptyState, Icon, LikesSheet, Screen, Text, useTheme, type CommentData } from '@gr/ds';
 import type { Comment, ID, Profile } from '../../lib/domain';
@@ -9,6 +9,7 @@ import { useStore } from '../../lib/store';
 import { canViewPrivate, commentsOf, isBlocked, likeCount, profileById } from '../../lib/selectors';
 import { initials, relativeTime } from '../../lib/format';
 import { StackHeader } from '../../components/StackHeader';
+import { KeyboardAvoid } from '../../components/KeyboardAvoid';
 import { Section } from '../../components/Section';
 import { PostItem } from '../../components/PostItem';
 import { SwingCard } from '../../components/SwingCard';
@@ -93,7 +94,7 @@ export default function PostDetail() {
             : { icon: 'flag-01-line', accessibilityLabel: 'Báo cáo bài viết', onPress: () => openReport('Báo cáo bài viết', post.authorId) },
         ]}
       />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
+      <KeyboardAvoid>
         <ScrollView
           ref={scroll}
           keyboardShouldPersistTaps="handled"
@@ -157,7 +158,7 @@ export default function PostDetail() {
             leading={<Avatar size="XSmall" theme={me.avatarUrl ? 'Photo' : 'Accent'} source={me.avatarUrl ? { uri: me.avatarUrl } : undefined} initials={initials(me.name)} />}
           />
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAvoid>
       <LikesSheet
         visible={likesOpen}
         onClose={() => setLikesOpen(false)}

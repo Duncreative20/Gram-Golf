@@ -14,6 +14,7 @@ import { ClubPicker } from '../../components/ClubPicker';
 import { MetricFields, SwingMetricsForm } from '../../components/SwingMetricsForm';
 import { AlertMessage, SavedToast } from '../../components/Feedback';
 import { backToMetrics, SessionDateField } from '../../components/SessionEntry';
+import { KeyboardAvoid } from '../../components/KeyboardAvoid';
 
 const KINDS = [{ label: 'Swing' }, { label: 'Thể lực' }];
 const EMPTY_SWING: Raw<keyof SwingMetrics> = { clubSpeedMph: '', ballSpeedMph: '', smash: '', spinRpm: '', launchDeg: '', carryM: '' };
@@ -51,30 +52,32 @@ export default function MetricsManual() {
   return (
     <Screen>
       <StackHeader title="Nhập tay" />
-      <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Large') }}>
-        <Segmented
-          items={KINDS}
-          selectedIndex={tab}
-          onChange={(i) => {
-            setTab(i);
-            setSubmitted(false);
-          }}
-        />
-        <SessionDateField value={capturedAt} onChange={setCapturedAt} />
-        {isSwing ? (
-          <>
-            <ClubPicker playerId={me.id} value={clubId} onChange={setClubId} error={submitted && !clubId ? 'Bắt buộc' : undefined} />
-            <SwingMetricsForm values={swing} onChange={setSwing} errors={submitted ? swingResult.errors : {}} />
-          </>
-        ) : (
-          <MetricFields fields={FITNESS_FIELDS} values={fitness} onChange={setFitness} errors={submitted ? fitnessResult.errors : {}} />
-        )}
-      </ScrollView>
-      <Divider />
-      <View style={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
-        {submitted && invalid > 0 && <AlertMessage theme="Negative" text={`Chưa lưu: ${invalid} trường cần sửa.`} />}
-        <Button text="Lưu" disabled={!!saved} onPress={save} />
-      </View>
+      <KeyboardAvoid>
+        <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Large') }}>
+          <Segmented
+            items={KINDS}
+            selectedIndex={tab}
+            onChange={(i) => {
+              setTab(i);
+              setSubmitted(false);
+            }}
+          />
+          <SessionDateField value={capturedAt} onChange={setCapturedAt} />
+          {isSwing ? (
+            <>
+              <ClubPicker playerId={me.id} value={clubId} onChange={setClubId} error={submitted && !clubId ? 'Bắt buộc' : undefined} />
+              <SwingMetricsForm values={swing} onChange={setSwing} errors={submitted ? swingResult.errors : {}} />
+            </>
+          ) : (
+            <MetricFields fields={FITNESS_FIELDS} values={fitness} onChange={setFitness} errors={submitted ? fitnessResult.errors : {}} />
+          )}
+        </ScrollView>
+        <Divider />
+        <View style={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
+          {submitted && invalid > 0 && <AlertMessage theme="Negative" text={`Chưa lưu: ${invalid} trường cần sửa.`} />}
+          <Button text="Lưu" disabled={!!saved} onPress={save} />
+        </View>
+      </KeyboardAvoid>
       {saved && <SavedToast title="Đã lưu" caption={saved} onDone={backToMetrics} />}
     </Screen>
   );

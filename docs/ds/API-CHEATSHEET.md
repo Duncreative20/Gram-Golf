@@ -1060,7 +1060,7 @@ Everything below is a named export from `@gr/ds` (package `main` = `src/index.ts
     borderRadius: t.radius('Corner-Radius/Large'),
   });
   ```
-- Some built-in a11y strings are hard-coded and mixed Vietnamese/English, with no prop to change them: "Xoá nội dung" (TextField clear), "Clear" (SearchField clear), "Gửi" (MessageInput send), "Giảm" / "Tăng" (± buttons), "Số lượng" (number default), "OTP", "Tin nhắn" and "Tìm kiếm" (label fallbacks), "Tháng trước" / "Tháng sau" (MonthHeader arrows), "Chọn ngày" (DateWheel), "Chọn giờ" (TimeWheel).
+- Some built-in a11y strings are hard-coded and mixed Vietnamese/English, with no prop to change them: "Xoá nội dung" (TextField and SearchField clear), "Gửi" (MessageInput send), "Giảm" / "Tăng" (± buttons), "Số lượng" (number default), "OTP", "Tin nhắn" and "Tìm kiếm" (label fallbacks), "Tháng trước" / "Tháng sau" (MonthHeader arrows), "Chọn ngày" (DateWheel), "Chọn giờ" (TimeWheel).
 
 ---
 
@@ -1109,7 +1109,7 @@ const [v, setV] = useState('');
 
 - There is **no** `label`, `helpText`, `error`, `disabled` or `readOnly`. If you need to block input, pass `editable={false}`. This has no visual effect: the field keeps its normal styling.
 - The `search-medium-line` icon is always shown. `returnKeyType="search"` is forced.
-- The clear button (an `IconButton` `x-small-line`, size 2XSmall, Tertiary, or Primary overlay when `overlay`; a11y "Clear") shows only while `value` is truthy, and it calls `onChangeText('')`. **Use it controlled.**
+- The clear button (an `IconButton` `x-small-line`, size 2XSmall, Tertiary, or Primary overlay when `overlay`; a11y "Xoá nội dung") shows only while `value` is truthy, and it calls `onChangeText('')`. **Use it controlled.**
 - a11y label fallback: the `accessibilityLabel` prop, then `placeholder`, then `'Tìm kiếm'`.
 
 ```tsx

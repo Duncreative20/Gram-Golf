@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { Accordion, Button, Dialog, EmptyState, ListItem, Screen, Text, useTheme } from '@gr/ds';
@@ -15,6 +15,14 @@ export default function MetricSessionDetail() {
   const { state, dispatch, me } = useStore();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [confirmDelete, setConfirmDelete] = useState(false);
+  // Xoá sau khi màn đã rời (unmount) — xoá trước khi quay lại thì màn đang rời nháy "Không tìm thấy phiên".
+  const deleteOnLeave = useRef(false);
+  useEffect(
+    () => () => {
+      if (deleteOnLeave.current) dispatch({ type: 'deleteSession', id: id! });
+    },
+    [],
+  );
   if (!me) return <Redirect href="/" />;
   const session = state.sessions.find((s) => s.id === id);
   const back = () => (router.canGoBack() ? router.back() : router.replace('/'));
@@ -90,8 +98,8 @@ export default function MetricSessionDetail() {
         destructive
         onPrimary={() => {
           setConfirmDelete(false);
+          deleteOnLeave.current = true;
           back();
-          dispatch({ type: 'deleteSession', id: session.id });
         }}
         secondaryText="Huỷ"
       />

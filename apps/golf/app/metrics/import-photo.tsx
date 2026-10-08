@@ -1,31 +1,35 @@
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { Redirect } from 'expo-router';
-import { AlertBanner, Button, Divider, Icon, InlineMessage, Screen, Segmented, Stepper, Text, useTheme } from '@gr/ds';
+import { AlertBanner, Button, Divider, EmptyState, Icon, InlineMessage, ListItem, Screen, Segmented, Stepper, Text, useTheme } from '@gr/ds';
 import { VENDOR_LABELS, type ID, type Vendor } from '../../lib/domain';
 import { NOW } from '../../lib/mock';
 import { newId } from '../../lib/ids';
 import { useStore } from '../../lib/store';
 import { prefsOf } from '../../lib/selectors';
 import { formatDate } from '../../lib/format';
-import { mockOcr, ocrPrefill } from '../../lib/simulate';
+import { ocrEdit, readPhoto, SAMPLE_PHOTOS, type OcrReview } from '../../lib/simulate';
 import { validateSwingMetrics } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
 import { ClubPicker } from '../../components/ClubPicker';
 import { SwingMetricsForm } from '../../components/SwingMetricsForm';
 import { AlertMessage, SavedToast } from '../../components/Feedback';
 import { backToMetrics } from '../../components/SessionEntry';
+import { KeyboardAvoid } from '../../components/KeyboardAvoid';
 
 const VENDORS: Vendor[] = ['trackman', 'foresight'];
 const STEPS = [{ title: 'Chọn hãng' }, { title: 'Đọc số liệu' }, { title: 'Kiểm tra' }];
 
-/** Nhập từ ảnh chụp màn hình máy đo: chọn hãng + khung hướng dẫn → đọc (OCR giả lập 1,5 s, huỷ được) → kiểm tra từng trường → lưu. */
+/** Nhập từ ảnh chụp màn hình máy đo: chọn hãng + khung hướng dẫn + ảnh → đọc (OCR giả lập 1,5 s, huỷ được; ảnh mờ → lỗi, chọn ảnh khác)
+ *  → kiểm tra từng trường (sửa trường độ tin cậy thấp thì tắt cảnh báo của trường đó) → lưu. */
 export default function MetricsImportPhoto() {
   const t = useTheme();
   const { state, dispatch, me } = useStore();
   const [vendorIndex, setVendorIndex] = useState(0);
+  const [photoIndex, setPhotoIndex] = useState(0);
   const [reading, setReading] = useState(false);
-  const [review, setReview] = useState<ReturnType<typeof ocrPrefill>>();
+  const [unreadable, setUnreadable] = useState(false);
+  const [review, setReview] = useState<OcrReview>();
   const [clubId, setClubId] = useState<ID>();
   const [submitted, setSubmitted] = useState(false);
   const [saved, setSaved] = useState<string>(); // chú thích Toast, chốt lúc lưu
@@ -35,7 +39,9 @@ export default function MetricsImportPhoto() {
     if (!reading) return;
     // Huỷ / rời màn trong lúc đọc → dọn timer, không điền kết quả
     const timer = setTimeout(() => {
-      setReview(ocrPrefill(mockOcr(vendor), units));
+      const r = readPhoto(SAMPLE_PHOTOS[photoIndex].fileName, vendor, units);
+      if (r) setReview(r);
+      else setUnreadable(true);
       setReading(false);
     }, 1500);
     return () => clearTimeout(timer);
@@ -44,7 +50,7 @@ export default function MetricsImportPhoto() {
   const result = review && validateSwingMetrics(review.values, units);
   const lowConfidence = review ? Object.keys(review.highlight).length : 0;
   const invalid = result ? Object.keys(result.errors).length + (clubId ? 0 : 1) : 0;
-  const step = review ? 2 : reading ? 1 : 0;
+  const step = review ? 2 : reading || unreadable ? 1 : 0;
   const save = () => {
     setSubmitted(true);
     if (!result?.value || !clubId) return;
@@ -83,14 +89,36 @@ export default function MetricsImportPhoto() {
               {`Chụp thẳng màn hình kết quả ${VENDOR_LABELS[vendor]}, đủ sáng, không bị loá`}
             </Text>
           </View>
-          {/* ponytail: bản thử chưa mở thư viện ảnh/camera — bản chính dùng image picker của hệ điều hành */}
-          <InlineMessage theme="Info" text="Bản thử: dùng ảnh mẫu, chưa mở thư viện ảnh" />
+          <View style={{ gap: t.space('Spacing/Gap/XSmall') }}>
+            <Text variant="Label/Small/DemiBold">Ảnh</Text>
+            {/* ponytail: bản thử chưa mở thư viện ảnh/camera — bản chính dùng image picker của hệ điều hành */}
+            <InlineMessage theme="Info" text="Bản thử: chọn một ảnh mẫu, chưa mở thư viện ảnh" />
+            <View accessibilityRole="radiogroup" accessibilityLabel="Ảnh" style={{ gap: t.space('Spacing/Gap/XSmall') }}>
+              {SAMPLE_PHOTOS.map((p, i) => (
+                <ListItem key={p.fileName} type="Radio-Card" title={p.fileName} selected={i === photoIndex} onPress={() => setPhotoIndex(i)} />
+              ))}
+            </View>
+          </View>
         </ScrollView>
         <Divider />
         <View style={{ padding: t.layout('Margin-Small') }}>
-          <Button leadingIcon="image-plus-line" text="Chọn ảnh" onPress={() => setReading(true)} />
+          <Button leadingIcon="scan-line" text="Đọc số liệu" onPress={() => setReading(true)} />
         </View>
       </>
+    );
+  } else if (unreadable) {
+    body = (
+      <View style={{ flex: 1, justifyContent: 'center', padding: t.layout('Margin-Small') }}>
+        <View accessibilityRole="alert">
+          <EmptyState
+            icon="image-x-line"
+            title="Không đọc được số liệu"
+            caption={`Ảnh mờ hoặc bị loá. Chụp thẳng màn hình kết quả ${VENDOR_LABELS[vendor]}, đủ sáng rồi thử lại với ảnh khác.`}
+            primaryText="Chọn ảnh khác"
+            onPrimary={() => setUnreadable(false)}
+          />
+        </View>
+      </View>
     );
   } else if (step === 1) {
     body = (
@@ -105,12 +133,12 @@ export default function MetricsImportPhoto() {
     );
   } else if (review && result) {
     body = (
-      <>
+      <KeyboardAvoid>
         <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Large') }}>
           {lowConfidence > 0 && <AlertBanner theme="Warning" text={`${lowConfidence} trường độ tin cậy thấp — kiểm tra trước khi lưu`} />}
           <View style={{ paddingHorizontal: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Large') }}>
             {/* số đọc từ ảnh: lỗi hiện ngay (không đợi bấm Lưu) để thấy trường phải sửa */}
-            <SwingMetricsForm values={review.values} onChange={(values) => setReview({ ...review, values })} errors={result.errors} highlight={review.highlight} />
+            <SwingMetricsForm values={review.values} onChange={(values) => setReview(ocrEdit(review, values))} errors={result.errors} highlight={review.highlight} />
             <ClubPicker playerId={me.id} value={clubId} onChange={setClubId} error={submitted && !clubId ? 'Bắt buộc' : undefined} />
           </View>
         </ScrollView>
@@ -134,7 +162,7 @@ export default function MetricsImportPhoto() {
             </View>
           </View>
         </View>
-      </>
+      </KeyboardAvoid>
     );
   }
 

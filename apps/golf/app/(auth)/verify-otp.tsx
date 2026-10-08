@@ -6,7 +6,7 @@ import { useStore } from '../../lib/store';
 import { newId } from '../../lib/ids';
 import { NOW } from '../../lib/mock';
 import type { Registration } from '../../lib/validation';
-import { StackHeader } from '../../components/StackHeader';
+import { resetTo, StackHeader } from '../../components/StackHeader';
 
 // ponytail: mã OTP cố định cho bản mock — gửi/kiểm mã thật ở backend.
 const MOCK_OTP = '123456';
@@ -47,7 +47,7 @@ export default function VerifyOtp() {
   const verify = (c = code) => {
     if (c !== MOCK_OTP) return setWrong(true);
     dispatch({ type: 'register', profile: { ...draft, id: newId('u'), createdAt: NOW } });
-    router.replace('/(auth)/onboarding');
+    resetTo('/(auth)/onboarding'); // welcome + form đăng ký không còn dưới onboarding
   };
   return (
     <Screen>
@@ -67,7 +67,7 @@ export default function VerifyOtp() {
         <Button
           level="Tertiary"
           size="Medium (Base)"
-          text={wait > 0 ? `Gửi lại mã sau ${wait}s` : 'Gửi lại mã'}
+          text={wait > 0 ? `Gửi lại mã sau ${wait} s` : 'Gửi lại mã'}
           disabled={wait > 0}
           onPress={() => (setWait(RESEND_SEC), setCode(''), setWrong(false))}
         />

@@ -29,9 +29,13 @@ export function TrendChart({
   const lastDot = t.size('Element-Size/Popular/XSmall') / 2;
   const gap = t.space('Spacing/Gap/2XSmall');
   const labelH = t.text('Body/Base/DemiBold').lineHeight;
-  const top = labelH + gap + lastDot; // chừa chỗ cho nhãn giá trị khi điểm cuối là điểm cao nhất
-  const bottom = h - lastDot;
   const ys = data.map((d) => d.y);
+  // Nhãn giá trị cuối nằm phía đường không đi tới: đoạn cuối đi xuống → nhãn dưới điểm, còn lại → trên; chừa chỗ đúng phía đó
+  // (đặt cố định phía trên thì đoạn đi xuống dốc cắt qua chữ).
+  const below = ys.length > 1 && ys[ys.length - 2] > ys[ys.length - 1];
+  const room = labelH + gap + lastDot;
+  const top = below ? lastDot : room;
+  const bottom = h - (below ? room : lastDot);
   const lo = Math.min(...ys);
   const hi = Math.max(...ys);
   const col = width / data.length;
@@ -57,7 +61,7 @@ export function TrendChart({
               )}
             </Svg>
             {/* hộp rộng 2 cột, tâm ở điểm cuối: nhãn có đơn vị không bị cắt dù cột hẹp */}
-            <View style={{ position: 'absolute', left: last.x - col, width: 2 * col, top: last.y - lastDot - gap - labelH }}>
+            <View style={{ position: 'absolute', left: last.x - col, width: 2 * col, top: below ? last.y + lastDot + gap : last.y - lastDot - gap - labelH }}>
               <Text variant="Body/Base/DemiBold" color="Color/Content/Accent/Base" numberOfLines={1} style={{ textAlign: 'center' }}>
                 {formatY(lastY)}
               </Text>

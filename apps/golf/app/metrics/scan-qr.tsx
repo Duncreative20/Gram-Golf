@@ -10,11 +10,12 @@ import { AlertMessage } from '../../components/Feedback';
 // ponytail: phiên mà mã QR giả lập trỏ tới = file TrackMan mẫu — bản thật lấy mã phiên từ QR rồi tải dữ liệu từ đối tác
 const LINKED_FILE = SAMPLE_FILES.find((f) => f.vendor === 'trackman')!.name;
 
-/** Quét QR ở sân tập (thử nghiệm): khung camera giả lập → "đã liên kết phiên" → nhập dữ liệu phiên qua màn CSV. */
+/** Quét QR ở sân tập (thử nghiệm): khung camera giả lập → "đã liên kết phiên" → nhập dữ liệu phiên qua màn CSV.
+ *  Mã không đọc được / không phải mã phiên → báo lỗi + quét lại. */
 export default function MetricsScanQr() {
   const t = useTheme();
   const { me } = useStore();
-  const [linked, setLinked] = useState(false);
+  const [result, setResult] = useState<'linked' | 'invalid'>();
   if (me?.role !== 'player') return <Redirect href="/" />;
   const accent = t.color('Color/Border/Accent/Solid/Default');
   const corner = t.size('Element-Size/Popular/Large');
@@ -47,15 +48,21 @@ export default function MetricsScanQr() {
         <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Base">
           QR của sân tập dùng để liên kết phiên — đang chờ xác nhận định dạng với đối tác
         </Text>
-        {linked && <AlertMessage theme="Positive" text="Đã liên kết phiên TrackMan #A1F3" />}
+        {result === 'linked' && <AlertMessage theme="Positive" text="Đã liên kết phiên TrackMan #A1F3" />}
+        {result === 'invalid' && <AlertMessage theme="Negative" text="Không đọc được mã — mã mờ hoặc không phải mã phiên của sân tập. Căn mã vào giữa khung rồi quét lại." />}
       </ScrollView>
       <Divider />
-      <View style={{ padding: t.layout('Margin-Small') }}>
-        {linked ? (
+      <View style={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
+        {result === 'linked' ? (
           // thay màn QR → "quay lại"/lưu xong ở màn CSV về đúng màn đã mở nguồn nhập
           <Button leadingIcon="file-chart-line" text="Nhập dữ liệu phiên" onPress={() => router.replace({ pathname: '/metrics/import-csv', params: { file: LINKED_FILE } })} />
+        ) : result === 'invalid' ? (
+          <Button leadingIcon="refresh-cw-01-line" text="Quét lại" onPress={() => setResult(undefined)} />
         ) : (
-          <Button leadingIcon="scan-line" text="Mô phỏng quét thành công" onPress={() => setLinked(true)} />
+          <>
+            <Button leadingIcon="scan-line" text="Mô phỏng quét thành công" onPress={() => setResult('linked')} />
+            <Button level="Tertiary" text="Mô phỏng mã không đọc được" onPress={() => setResult('invalid')} />
+          </>
         )}
       </View>
     </Screen>

@@ -1,14 +1,14 @@
-import type { PropsWithChildren } from 'react';
+import { useEffect, useState, type PropsWithChildren } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router } from 'expo-router';
-import { Avatar, Button, Card, EmptyState, Icon, ListItem, Screen, Tag, Text, useTheme } from '@gr/ds';
+import { Avatar, Button, Card, EmptyState, Icon, ListItem, Screen, Skeleton, SkeletonText, Tag, Text, useTheme } from '@gr/ds';
 import { SOURCE_LABELS } from '../../lib/domain';
 import { NOW } from '../../lib/mock';
 import { useStore } from '../../lib/store';
 import {
   carryByClub, clubById, clubLabel, followerCount, followingCount, latestNote, latestSwing, prefsOf, previousSwing, primaryCoach, profileById, speedTrend, swingsOf,
 } from '../../lib/selectors';
-import { formatDate, formatDistance, formatNumber, formatSpeed, initials, relativeTime, swingTiles } from '../../lib/format';
+import { formatDate, formatDistance, formatNumber, formatSec, formatSpeed, initials, relativeTime, swingTiles } from '../../lib/format';
 import { TabHeader } from '../../components/TabHeader';
 import { StatTile } from '../../components/StatTile';
 import { TrendChart } from '../../components/charts/TrendChart';
@@ -30,7 +30,48 @@ function Section({ title, caption, children }: PropsWithChildren<{ title: string
 export default function PlayerHome() {
   const t = useTheme();
   const { state, me } = useStore();
+  // Lần đầu mở: giả lập tải dữ liệu 400 ms → khung xương (bản thật: chờ API)
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 400);
+    return () => clearTimeout(timer);
+  }, []);
   if (!me) return <Redirect href="/" />;
+  if (loading) {
+    return (
+      <Screen edges={['top']}>
+        <TabHeader />
+        <View accessible accessibilityLabel="Đang tải tổng quan" style={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/XLarge') }}>
+          <Card style={{ backgroundColor: t.color('Color/Background/Accent/Subtle/Default'), gap: t.space('Spacing/Gap/Medium') }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space('Spacing/Gap/Medium') }}>
+              <Skeleton shape="Round" size="Large - 48px" />
+              <View style={{ flex: 1, gap: t.space('Spacing/Gap/XSmall') }}>
+                <SkeletonText heading="Medium" />
+                <SkeletonText />
+              </View>
+            </View>
+            <Skeleton size="Large - 48px" />
+          </Card>
+          <View style={{ gap: t.space('Spacing/Gap/Small') }}>
+            <SkeletonText heading="Small" />
+            {[0, 1].map((row) => (
+              <View key={row} style={{ flexDirection: 'row', gap: t.space('Spacing/Gap/Small') }}>
+                {[0, 1].map((i) => (
+                  <View key={i} style={{ flex: 1 }}>
+                    <Skeleton size="Large - 48px" />
+                  </View>
+                ))}
+              </View>
+            ))}
+          </View>
+          <View style={{ gap: t.space('Spacing/Gap/Small') }}>
+            <SkeletonText heading="Small" />
+            <SkeletonText lines={5} />
+          </View>
+        </View>
+      </Screen>
+    );
+  }
   const units = prefsOf(state, me.id).units;
   const latest = latestSwing(state, me.id);
   const prev = latest && previousSwing(state, latest);
@@ -144,7 +185,7 @@ export default function PlayerHome() {
             </Section>
 
             {carry.length > 0 && (
-              <Section title="Carry theo gậy" caption="Carry trung bình của 3 gậy xa nhất">
+              <Section title="Carry theo gậy" caption={`Carry trung bình của ${carry.length} gậy xa nhất`}>
                 <Card theme="Border">
                   <ConcentricRings items={carry} accessibilityLabel={`Carry trung bình theo gậy: ${carry.map((c) => `${c.label} ${c.display}`).join(', ')}`} />
                 </Card>
@@ -172,7 +213,7 @@ export default function PlayerHome() {
                   <View style={{ flex: 1 }}>
                     <Text variant="Body/Base/DemiBold" numberOfLines={1}>{noteCoach?.name ?? 'HLV'}</Text>
                     <Text variant="Caption/Regular" color="Color/Content/Neutral/Light">
-                      {[relativeTime(note.createdAt, NOW), noteClub && clubLabel(noteClub), note.atSec !== undefined && `mốc ${formatNumber(note.atSec, 2)} s`].filter(Boolean).join(' · ')}
+                      {[relativeTime(note.createdAt, NOW), noteClub && clubLabel(noteClub), note.atSec !== undefined && `mốc ${formatSec(note.atSec)}`].filter(Boolean).join(' · ')}
                     </Text>
                   </View>
                 </View>

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Redirect, router } from 'expo-router';
+import { Redirect } from 'expo-router';
 import { Avatar, Button, Dialog, ListItem, Screen, Text, ToggleRow, useTheme } from '@gr/ds';
 import type { Preferences, Profile } from '../../lib/domain';
 import { useStore } from '../../lib/store';
 import { prefsOf, profileById } from '../../lib/selectors';
 import { initials } from '../../lib/format';
-import { StackHeader } from '../../components/StackHeader';
+import { resetTo, StackHeader } from '../../components/StackHeader';
 import { Section } from '../../components/Section';
 import { SavedToast } from '../../components/Feedback';
 
@@ -96,7 +96,7 @@ export default function PrivacySettings() {
           // ponytail: mock chỉ đăng xuất, dữ liệu vẫn trong store — bản thật gọi API xoá tài khoản rồi mới đăng xuất.
           setDeleteStep(-1);
           dispatch({ type: 'signOut' });
-          router.replace('/');
+          resetTo('/');
         }}
         secondaryText="Huỷ"
       />

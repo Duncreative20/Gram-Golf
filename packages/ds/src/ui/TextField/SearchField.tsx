@@ -34,8 +34,8 @@ export function SearchField({ type = 'Default', size = 'Medium (Base)', overlay,
       />
       {value ? (
         overlay
-          ? <IconButton overlay level="Primary" size="2XSmall" icon="x-small-line" accessibilityLabel="Clear" onPress={() => onChangeText?.('')} />
-          : <IconButton level="Tertiary" size="2XSmall" icon="x-small-line" accessibilityLabel="Clear" onPress={() => onChangeText?.('')} />
+          ? <IconButton overlay level="Primary" size="2XSmall" icon="x-small-line" accessibilityLabel="Xoá nội dung" onPress={() => onChangeText?.('')} />
+          : <IconButton level="Tertiary" size="2XSmall" icon="x-small-line" accessibilityLabel="Xoá nội dung" onPress={() => onChangeText?.('')} />
       ) : null}
     </View>
   );

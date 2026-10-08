@@ -31,6 +31,7 @@ export default function AcceptInvite() {
   if (me?.role !== 'player') return <Redirect href="/" />; // chưa đăng nhập → welcome; HLV tạo mã ở connect/invite
   const verdict = (c: string) => ({ result: validateInvite(state, c, NOW, me.id), coachId: state.invites.find((i) => i.code.toUpperCase() === c)?.coachId });
   const check = () => {
+    if (accepted) return; // Enter trên bàn phím sau khi đã kết nối: mã giờ là "đã dùng" — không kiểm lại
     if (code.length < 6) {
       setFieldError(code ? 'Mã mời gồm 6 ký tự' : 'Nhập mã mời');
       return;

@@ -80,7 +80,7 @@ export function PostItem({ post, onOpen }: { post: Post; onOpen?: () => void }) 
         />
         {/* bài đầy đủ: phần Bình luận nằm ngay dưới, không cần nút mở */}
         {onOpen && <SocialAction type="Comment" label={comments ? String(comments) : undefined} accessibilityLabel={`Bình luận, ${comments} bình luận`} onPress={onOpen} />}
-        <SocialAction type="Share" label={sent ? 'Đã gửi' : undefined} accessibilityLabel="Chia sẻ" onPress={() => setSharing(true)} />
+        <SocialAction type="Share" label={sent ? 'Đã sao chép' : undefined} accessibilityLabel="Chia sẻ" onPress={() => setSharing(true)} />
       </View>
       <ShareSheet
         visible={sharing}
@@ -92,8 +92,9 @@ export function PostItem({ post, onOpen }: { post: Post; onOpen?: () => void }) 
         message={message}
         onChangeMessage={setMessage}
         onSend={() => {
-          // ponytail: gửi trong app chỉ giả lập (chưa có tin nhắn) — nâng cấp: hộp thư + thông báo cho người nhận.
-          AccessibilityInfo.announceForAccessibility(`Đã gửi bài viết cho ${selected.length} người`);
+          // ponytail: chưa có tin nhắn trong app — "Gửi" chép lời nhắn + link bài để dán vào ứng dụng nhắn tin; có hộp thư thì gửi thật cho người đã chọn.
+          Clipboard.setString([message.trim(), postLink(post.id)].filter(Boolean).join('\n'));
+          AccessibilityInfo.announceForAccessibility('Đã sao chép bài viết để gửi');
           setSent(true);
           closeShare();
         }}

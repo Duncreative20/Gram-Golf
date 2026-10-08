@@ -5,7 +5,7 @@ import { Avatar, Button, Dialog, ListItem, Screen, Text, useTheme } from '@gr/ds
 import type { Role } from '../../lib/domain';
 import { useStore } from '../../lib/store';
 import { formatValue, initials } from '../../lib/format';
-import { StackHeader } from '../../components/StackHeader';
+import { resetTo, StackHeader } from '../../components/StackHeader';
 
 const GROUPS: { role: Role; label: string }[] = [
   { role: 'player', label: 'Người chơi' },
@@ -42,7 +42,7 @@ export default function DevSettings() {
                     selected={p.id === state.sessionUserId}
                     onPress={() => {
                       dispatch({ type: 'signIn', userId: p.id });
-                      router.replace('/');
+                      resetTo('/'); // vào từ welcome / hồ sơ: không để welcome hay màn của tài khoản cũ dưới tab
                     }}
                   />
                 ))}

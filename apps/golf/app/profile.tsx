@@ -4,7 +4,7 @@ import { Redirect, router } from 'expo-router';
 import { Avatar, Badge, Button, Dialog, Screen, Text, useTheme } from '@gr/ds';
 import { useStore } from '../lib/store';
 import { formatValue, initials } from '../lib/format';
-import { StackHeader } from '../components/StackHeader';
+import { resetTo, StackHeader } from '../components/StackHeader';
 import { FollowCounts } from '../components/People';
 
 export default function Profile() {
@@ -47,7 +47,7 @@ export default function Profile() {
         onPrimary={() => {
           setConfirmSignOut(false);
           dispatch({ type: 'signOut' });
-          router.replace('/');
+          resetTo('/');
         }}
         secondaryText="Huỷ"
       />

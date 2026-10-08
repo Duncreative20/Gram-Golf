@@ -127,8 +127,9 @@ export default function CreateInvite() {
           message={message}
           onChangeMessage={setMessage}
           onSend={() => {
-            // ponytail: gửi trong app chỉ giả lập (chưa có tin nhắn / thông báo lời mời cho người nhận) — học viên vẫn nhập mã ở tab HLV.
-            notify(`Đã gửi mã ${shown.code} cho ${selected.length} người`);
+            // ponytail: chưa có tin nhắn trong app — "Gửi" chép lời nhắn + link để HLV dán vào Zalo/SMS; có hộp thư thì gửi thật cho người đã chọn.
+            Clipboard.setString([message.trim(), inviteLink(shown.code)].filter(Boolean).join('\n'));
+            notify('Đã sao chép lời mời để gửi');
             closeSheet();
           }}
           actions={[

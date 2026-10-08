@@ -9,6 +9,7 @@ import { formatValue } from '../../lib/format';
 import { CLUB_FIELDS, clubRaw, defaultLoft, loftOnTypeChange, rangeText, validateClub } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
 import { AlertMessage } from '../../components/Feedback';
+import { KeyboardAvoid } from '../../components/KeyboardAvoid';
 
 const WEDGES = CLUB_GROUPS.find((g) => g.label === 'Wedge')!.types;
 type TextKey = 'customName' | 'brand' | 'model' | 'shaftBrand';
@@ -45,53 +46,54 @@ export function ClubForm({ initial, onSubmit }: { initial?: Club; onSubmit: (clu
   );
   return (
     <>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        automaticallyAdjustKeyboardInsets
-        contentContainerStyle={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Medium') }}
-      >
-        <SelectField
-          label="Loại gậy"
-          placeholder="Chọn loại gậy"
-          value={raw.type}
-          error={errors.type}
-          onPress={() => setTypeOpen(true)}
-          // label mặc định chỉ là "Loại gậy" → trình đọc màn hình không nghe được loại đang chọn
-          accessibilityLabel={`Loại gậy, ${raw.type ?? 'chưa chọn'}`}
-        />
-        {raw.type === 'Tuỳ chỉnh' && text('customName', 'Tên gậy', 'VD: Chipper 37°')}
-        {text('brand', 'Hãng', 'VD: TaylorMade')}
-        {text('model', 'Model', 'VD: Qi10')}
-        {text('shaftBrand', 'Hãng cán', 'VD: Fujikura Ventus Blue 6')}
-        <View style={{ gap: t.size('Input/Spacing-Regt/Medium/Outside-Field-Gap') }}>
-          <Text variant="Label/Small/DemiBold" color="Color/Content/Neutral/Light">Flex</Text>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space('Spacing/Gap/XSmall') }}>
-            {SHAFT_FLEXES.map((f) => (
-              <Chip key={f} size="Medium" text={f} select={raw.shaftFlex === f} onPress={() => setRaw((r) => ({ ...r, shaftFlex: f }))} />
-            ))}
-          </View>
-        </View>
-        {CLUB_FIELDS.filter((f) => f.key !== 'bounceDeg' || showBounce).map((f) => (
-          <TextField
-            key={f.key}
-            label={`${f.label} (${f.unit}${f.optional ? ', tuỳ chọn' : ''})`}
-            helpText={
-              f.key === 'loftDeg' && suggested !== undefined
-                ? `Gợi ý cho ${raw.type}: ${formatValue(suggested, '°')} · khoảng hợp lệ ${rangeText(f)}`
-                : `Khoảng hợp lệ ${rangeText(f)}`
-            }
-            value={raw[f.key]}
-            onChangeText={(v) => set(f.key, v)}
-            error={errors[f.key]}
-            keyboardType="decimal-pad"
+      <KeyboardAvoid>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Medium') }}
+        >
+          <SelectField
+            label="Loại gậy"
+            placeholder="Chọn loại gậy"
+            value={raw.type}
+            error={errors.type}
+            onPress={() => setTypeOpen(true)}
+            // label mặc định chỉ là "Loại gậy" → trình đọc màn hình không nghe được loại đang chọn
+            accessibilityLabel={`Loại gậy, ${raw.type ?? 'chưa chọn'}`}
           />
-        ))}
-      </ScrollView>
-      <Divider />
-      <View style={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
-        {submitted && invalid > 0 && <AlertMessage theme="Negative" text={`Chưa lưu: ${invalid} trường cần sửa.`} />}
-        <Button text="Lưu" disabled={done} onPress={save} />
-      </View>
+          {raw.type === 'Tuỳ chỉnh' && text('customName', 'Tên gậy', 'VD: Chipper 37°')}
+          {text('brand', 'Hãng', 'VD: TaylorMade')}
+          {text('model', 'Model', 'VD: Qi10')}
+          {text('shaftBrand', 'Hãng cán', 'VD: Fujikura Ventus Blue 6')}
+          <View style={{ gap: t.size('Input/Spacing-Regt/Medium/Outside-Field-Gap') }}>
+            <Text variant="Label/Small/DemiBold" color="Color/Content/Neutral/Light">Flex</Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space('Spacing/Gap/XSmall') }}>
+              {SHAFT_FLEXES.map((f) => (
+                <Chip key={f} size="Medium" text={f} select={raw.shaftFlex === f} onPress={() => setRaw((r) => ({ ...r, shaftFlex: f }))} />
+              ))}
+            </View>
+          </View>
+          {CLUB_FIELDS.filter((f) => f.key !== 'bounceDeg' || showBounce).map((f) => (
+            <TextField
+              key={f.key}
+              label={`${f.label} (${f.unit}${f.optional ? ', tuỳ chọn' : ''})`}
+              helpText={
+                f.key === 'loftDeg' && suggested !== undefined
+                  ? `Gợi ý cho ${raw.type}: ${formatValue(suggested, '°')} · khoảng hợp lệ ${rangeText(f)}`
+                  : `Khoảng hợp lệ ${rangeText(f)}`
+              }
+              value={raw[f.key]}
+              onChangeText={(v) => set(f.key, v)}
+              error={errors[f.key]}
+              keyboardType="decimal-pad"
+            />
+          ))}
+        </ScrollView>
+        <Divider />
+        <View style={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
+          {submitted && invalid > 0 && <AlertMessage theme="Negative" text={`Chưa lưu: ${invalid} trường cần sửa.`} />}
+          <Button text="Lưu" disabled={done} onPress={save} />
+        </View>
+      </KeyboardAvoid>
       <BottomSheet visible={typeOpen} onClose={() => setTypeOpen(false)} heading="Chọn loại gậy" divider>
         <ScrollView>
           <View accessibilityRole="radiogroup" accessibilityLabel="Loại gậy">
