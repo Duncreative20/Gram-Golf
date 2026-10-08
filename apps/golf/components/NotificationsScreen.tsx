@@ -16,7 +16,7 @@ const SENTENCE: Record<NotificationType, string> = {
   coach_note: 'đã ghi chú swing của bạn',
   follow: 'đã theo dõi bạn',
   like: 'đã thích bài viết của bạn',
-  comment: 'đã bình luận',
+  comment: 'đã bình luận bài viết của bạn',
   invite_accepted: 'đã chấp nhận lời mời',
   analysis_done: 'Phân tích swing đã xong',
   connect_request: 'mời bạn kết nối',
@@ -111,7 +111,7 @@ export default function NotificationsScreen({ tab }: { tab?: boolean }) {
   const earlier = all.filter((n) => n.readAt);
   return (
     <Screen edges={tab ? ['top'] : undefined}>
-      {tab ? <TabHeader title="Thông báo" /> : <StackHeader title="Thông báo" />}
+      {tab ? <TabHeader title="Thông báo" bell={false} /> : <StackHeader title="Thông báo" />}
       {all.length ? (
         <ScrollView contentContainerStyle={{ paddingVertical: t.space('Spacing/Padding/Medium'), gap: t.space('Spacing/Gap/Large') }}>
           {fresh.length > 0 && (
@@ -134,7 +134,15 @@ export default function NotificationsScreen({ tab }: { tab?: boolean }) {
         </ScrollView>
       ) : (
         <View style={{ flex: 1, justifyContent: 'center', padding: t.layout('Margin-Small') }}>
-          <EmptyState icon="bell-01-line" title="Chưa có thông báo" caption="Ghi chú của HLV, người theo dõi mới, lượt thích và bình luận sẽ hiện ở đây." />
+          <EmptyState
+            icon="bell-01-line"
+            title="Chưa có thông báo"
+            caption={
+              me.role === 'coach'
+                ? 'Học viên nhận lời mời, yêu cầu kết nối, swing mới của học viên, người theo dõi mới, lượt thích và bình luận sẽ hiện ở đây.'
+                : 'Ghi chú của HLV, kết quả phân tích swing, lời mời kết nối, người theo dõi mới, lượt thích và bình luận sẽ hiện ở đây.'
+            }
+          />
         </View>
       )}
     </Screen>

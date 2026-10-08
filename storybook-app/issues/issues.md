@@ -27,11 +27,11 @@ sửa (bước code nằm sẵn trong task sở hữu, cột “Bước”); thu
 | 2 | README · `f01--tong-quan-co-du-lieu` | "Xu hướng … (Driver, 1 buổi)" vẽ biểu đồ một điểm (`charts/TrendChart.tsx`, dùng ở `(player)/home.tsx:173`, `students/[id].tsx:90`) | 20 | Step 4b | đã sửa (Task 20) |
 | 3 | README · `f10--chi-tiet-bai` | DS `Comment/Comment.tsx:70`: "⋯" của bình luận của mình bấm không làm gì | 15 | Step 13 | đã sửa (Task 15) |
 | 4 | README · `f10--tra-loi-binh-luan` | DS `Comment/Comment.tsx:155-156`: "Thêm ảnh" / "Thêm địa điểm" không có handler | 15 | Step 13 | đã sửa (Task 15) |
-| 5 | README · `f11--tab-hlv` + report Task 13 | `NotificationsScreen.tsx:101`: tab Thông báo của HLV vẫn có chuông mở chính màn đó | 27 | Step 3 | chờ Task 27 |
+| 5 | README · `f11--tab-hlv` + report Task 13 | `NotificationsScreen.tsx:101`: tab Thông báo của HLV vẫn có chuông mở chính màn đó | 27 | Step 3 | đã sửa (Task 27) |
 | 6 | README · `f04--ho-so-hlv`, `f10--*` | DS `PostCard.tsx:56`, `Social.tsx:91`, `Comment.tsx:57`: chữ tắt `name.slice(0, 1)` → mọi HLV hiện "H" | 15 | Step 13 | đã sửa (Task 15) |
 | 7 | README · `f02--onboarding-anh` | `(auth)/onboarding.tsx:32`: HLV vẫn đọc "Giúp HLV và bạn bè nhận ra bạn." | 24 | Step 3 | đã sửa (Task 24) |
-| 8 | README · `f11--danh-sach` | `NotificationsScreen.tsx:19`: "… đã bình luận" thiếu tân ngữ | 27 | Step 3 | chờ Task 27 |
-| 9 | README · `f11--tab-hlv-rong` + review Task 13 #3 | `NotificationsScreen.tsx:124`: rỗng của HLV nói "Ghi chú của HLV…" | 27 | Step 3 | chờ Task 27 |
+| 8 | README · `f11--danh-sach` | `NotificationsScreen.tsx:19`: "… đã bình luận" thiếu tân ngữ | 27 | Step 3 | đã sửa (Task 27) |
+| 9 | README · `f11--tab-hlv-rong` + review Task 13 #3 | `NotificationsScreen.tsx:124`: rỗng của HLV nói "Ghi chú của HLV…" | 27 | Step 3 | đã sửa (Task 27) |
 | 10 | README · `f12--tai-khoan-hlv` + review Task 13 #4 | `settings/account.tsx:26`: đơn giá điền sẵn "450000", placeholder "450.000" | 28 | Step 3 | chờ Task 28 |
 | 11 | README · `f12--mat-khau` | `settings/password.tsx:13,15`: placeholder "••••••••" ở ô trống trông như đã có mật khẩu | 25 | Step 5 | đã sửa (Task 25) |
 | 12 | `verify.md` · `f10--kham-pha` | `components/People.tsx:66`: "hcp 14", màn khác "Handicap 14" | 26 | Step 1b | đã sửa (Task 23) |
@@ -44,7 +44,7 @@ sửa (bước code nằm sẵn trong task sở hữu, cột “Bước”); thu
 | 19 | review Task 12 #8 | `posts/[id].tsx:195`: xoá bài gọi `back()` rồi `dispatch` cùng nhịp → màn đang rời nháy "Không tìm thấy" | 26 | Step 1b | đã sửa (Task 23): `useOnLeave` |
 | 20 | review Task 13 #1 | `settings/password.tsx`: thiếu guard `if (!me) return <Redirect href="/" />` (mở được khi đã đăng xuất) | 25 | Step 5 | đã sửa (Task 25) |
 | 21 | review Task 13 #2 | `settings/privacy.tsx:39,86-92`: Dialog xoá tài khoản trống chữ khi mờ dần lúc đóng | 28 | Step 4 | chờ Task 28 |
-| 22 | review Task 13 #5 + report Task 13 | Thông báo của người đã chặn vẫn hiện và vẫn tính vào số trên chuông | 27 | Step 3 | chờ Task 27 |
+| 22 | review Task 13 #5 + report Task 13 | Thông báo của người đã chặn vẫn hiện và vẫn tính vào số trên chuông | 27 | Step 3 | đã sửa (Task 27) |
 | 23 | review Task 14 #1 | `CLAUDE.md:24` nói tải lần đầu có "lỗi + thử lại" — skeleton không có nhánh lỗi | 30 | Step 5 | chờ Task 30 |
 | 24 | review Task 14 #2 | Mẫu `deleteOnLeave` chép ở `metrics/[id].tsx:18-25`, `swings/[id].tsx:179-186`; xoá gậy (Task 21) là nơi thứ 3 | 21 | Step 5 | đã sửa (Task 21): `components/useOnLeave.ts`, dùng ở 3 màn |
 | 25 | review Task 14 #5 | Story F01/F03/F05/F10/F13 vẽ Tổng quan / bảng tin có skeleton 400 ms | 15 | Step 5, 6 (`DELAYS` + `hold`; story dùng `find*`) | đã sửa (Task 15) |

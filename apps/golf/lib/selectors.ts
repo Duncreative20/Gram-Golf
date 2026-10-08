@@ -1,4 +1,4 @@
-import { CLUB_GROUPS, type AppState, type Club, type CoachConnection, type CoachNote, type ID, type ISO, type InviteCheck, type MetricSession, type Post, type Preferences, type Profile, type Swing } from './domain';
+import { CLUB_GROUPS, type AppNotification, type AppState, type Club, type CoachConnection, type CoachNote, type ID, type ISO, type InviteCheck, type MetricSession, type Post, type Preferences, type Profile, type Swing } from './domain';
 import { DEFAULT_PREFS } from './mock';
 
 export const profileById = (s: AppState, id: ID) => s.profiles.find((p) => p.id === id);
@@ -81,8 +81,10 @@ export const fold = (x: string) => x.normalize('NFD').replace(/[\u0300-\u036f]/g
 export const discover = (s: AppState, userId: ID, query: string) =>
   s.profiles.filter((p) => p.id !== userId && !isBlocked(s, userId, p.id) && fold(p.name).includes(fold(query.trim())));
 
-export const notificationsOf = (s: AppState, userId: ID) => s.notifications.filter((n) => n.userId === userId).sort(byDateDesc);
-export const unreadCount = (s: AppState, userId: ID) => s.notifications.filter((n) => n.userId === userId && !n.readAt).length;
+/** Thông báo của `userId` hiện được: bỏ thông báo do người đã chặn / bị chặn với `userId` gây ra (cùng luật bảng tin, bình luận). */
+const visibleTo = (s: AppState, userId: ID) => (n: AppNotification) => n.userId === userId && !(n.actorId && isBlocked(s, userId, n.actorId));
+export const notificationsOf = (s: AppState, userId: ID) => s.notifications.filter(visibleTo(s, userId)).sort(byDateDesc);
+export const unreadCount = (s: AppState, userId: ID) => s.notifications.filter((n) => visibleTo(s, userId)(n) && !n.readAt).length;
 
 // ── Phase 2 ──────────────────────────────────────────────────────────────────────────────────
 /** Kết nối đang mở (chờ trả lời hoặc active) của cặp HLV–người chơi. Một cặp có tối đa 1 kết nối mở. */

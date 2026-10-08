@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { seedState, NOW } from './mock';
 import type { AppState, Club, ClubType } from './domain';
-import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, awaitsFeedback, discover, likeCount, likedBy, clubsOf, previousSwing, latestNote, groupClubs, commentsOf, isBlocked, openConnection, connectionRequests, findPlayers, swingsByReview, filterSwings, swingsOf } from './selectors';
+import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, awaitsFeedback, discover, likeCount, likedBy, clubsOf, previousSwing, latestNote, groupClubs, commentsOf, isBlocked, openConnection, connectionRequests, findPlayers, swingsByReview, filterSwings, swingsOf, notificationsOf } from './selectors';
 
 describe('selectors', () => {
   const s = seedState();
@@ -118,5 +118,13 @@ describe('selectors Phase 2', () => {
     const edge = [{ ...w[0]!, id: 'edge', capturedAt: '2026-09-30T08:00:00Z' }]; // đúng NOW − 7 ngày
     expect(filterSwings(edge, '7d', 'newest', NOW).map((x) => x.id)).toEqual(['edge']);
     expect(w.map((x) => x.id)).toEqual(['sw-minh-3', 'sw-minh-1', 'sw-minh-2']);
+  });
+});
+
+describe('thông báo và chặn', () => {
+  it('thông báo do người đã chặn / bị chặn gây ra không hiện, không tính vào số chưa đọc; thông báo hệ thống vẫn hiện', () => {
+    const s = { ...seedState(), blocks: [{ blockerId: 'p-minh', blockedId: 'p-khoa' }] };
+    expect(notificationsOf(s, 'p-minh').map((n) => n.id)).toEqual(['nt-1', 'nt-3', 'nt-4']); // mới → cũ, bỏ nt-2 (Khoa theo dõi)
+    expect(unreadCount(s, 'p-minh')).toBe(1);
   });
 });
