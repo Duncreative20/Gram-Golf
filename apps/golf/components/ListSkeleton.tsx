@@ -4,6 +4,8 @@ import { Skeleton, SkeletonText, useTheme } from '@gr/ds';
 import { DELAYS } from '../lib/simulate';
 
 const seen = new Set<string>();
+/** Quên mọi màn "đã tải" — story (storybook-app/lib/appStory.tsx) gọi trước mỗi story để skeleton không rò giữa các story. */
+export const resetFirstLoad = () => seen.clear();
 /** Giả lập lần tải đầu của màn `key` trong phiên (dữ liệu mock có sẵn nên không có pha tải thật): true trong DELAYS.firstLoad đầu, các lần mở sau false.
  *  ponytail: bộ nhớ "đã tải" theo phiên JS — backend thật dùng trạng thái isLoading của truy vấn. */
 export function useFirstLoad(key: string) {

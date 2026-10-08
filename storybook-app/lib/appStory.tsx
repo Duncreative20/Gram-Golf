@@ -10,6 +10,7 @@ import type { Action } from '../../apps/golf/lib/reducer';
 import type { AppState, ID } from '../../apps/golf/lib/domain';
 import { DELAYS } from '../../apps/golf/lib/simulate';
 import { AppTabBar } from '../../apps/golf/components/AppTabBar';
+import { resetFirstLoad } from '../../apps/golf/components/ListSkeleton';
 import { ParamsContext } from '../stubs/expo-router';
 
 type Setup = Action[] | ((dispatch: (a: Action) => void, state: AppState) => void | Action[]);
@@ -68,9 +69,10 @@ function TabBar({ role, active }: NonNullable<AppStoryOptions['tabs']>) {
 
 export function appStory({ as, params = {}, setup, tabs, hold = [] }: AppStoryOptions = {}) {
   const decorator: Decorator = (Story) => {
-    // ponytail: sửa object dùng chung lúc vẽ — mỗi story đặt lại TOÀN BỘ về mặc định trước nên `hold` không rò sang story sau;
+    // ponytail: sửa object dùng chung lúc vẽ — mỗi story đặt lại TOÀN BỘ về mặc định trước (DELAYS + bộ nhớ firstLoad) nên `hold` không rò sang story sau;
     // cần vẽ nhiều story cùng lúc trong một trang thì chuyển DELAYS vào context.
     Object.assign(DELAYS, DEFAULT_DELAYS, Object.fromEntries(hold.map((k) => [k, FOREVER])));
+    resetFirstLoad(); // `seen` của useFirstLoad cũng là state module — story nào cũng bắt đầu như lần mở đầu trong phiên
     return (
       <StoreProvider>
         <ParamsContext.Provider value={params}>
