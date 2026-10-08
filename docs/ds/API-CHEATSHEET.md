@@ -382,6 +382,7 @@ Gotchas:
   - Small uses `Small`.
   - XSmall and 2XSmall use `XSmall`.
 - There is no `onPress` and no `style` prop. Both are TS errors. Wrap the avatar in a `Pressable` if you need it tappable.
+- `nameInitials(name)` (cùng file `ui/Avatar/Avatar.tsx`): chữ tắt 2 chữ — chữ đầu của 2 từ cuối, in hoa ("HLV Đỗ Minh Tuấn" → "MT"), cùng luật `initials()` của app. Identity / ShareSheet / CommentItem dùng (trước 2026-10-08 là `name.slice(0, 1)` → mọi HLV hiện "H").
 - **For stacks, use `AvatarGroup`, which is exported from `ui/DockIcon/DockIcon`.** Its props are:
   - `avatars: Pick<AvatarProps,'source'|'initials'|'theme'|'accessibilityLabel'>[]`
   - `size?: AvatarGroupSize`, default `'Medium'`
@@ -2056,7 +2057,7 @@ const [open, setOpen] = useState(false);
 > - The overlay rule was too broad. `VideoControlOverlay` draws its own black scrim, and `StoryBottomContent` draws its own bottom scrim by default. `MediaInfoPill`'s background is translucent **white** in light mode.
 > - The sheets do not pass `type='Modal'`. They get it from `BottomSheet`'s default.
 > - "Count fields are strings" has exceptions: `CollectionData.count`, `CommentMediaItem.more`, and `StoryHeader` `count`/`active`/`progress` are numbers.
-> - The `More-item` ("Thêm") action always renders in `PostCard`, `StoryHeader` and `CommentItem`, even without `onMore`.
+> - The `More-item` ("Thêm") action always renders in `PostCard` and `StoryHeader`, even without `onMore`. `CommentItem` không có `onMore` → không vẽ ⋯ (2026-10-08).
 > - `CommentItem` used to render a second, initials-only avatar; fixed 2026-10-08 with `Identity showAvatar={false}` (see its gotchas).
 > - Added the hard-coded placeholders and accessibility labels, the "+" / image / location button wiring in `CommentComposer`, and the `CommentMediaItem` label when a video has no `duration`.
 
@@ -2415,7 +2416,7 @@ Gotchas:
 - Handlers receive the whole `CommentData`.
 - `liked` is controlled through the data you pass in. Update your list after `onLike`.
 - The reply action's label is always "Trả lời" and there is no reply count.
-- **The "Thêm" (More-item) action always renders**, even without `onMore`.
+- **`CommentItem` không có `onMore` → không vẽ ⋯** ("Thêm", More-item): không có thao tác thì không có nút (trước 2026-10-08 nút luôn vẽ, bấm không làm gì).
 - Media renders at size `Small` unless an item sets its own `size`.
 - The attachment action has no accessibility label, so it is announced by its visible text.
 - `user.handle` is not shown.
@@ -2464,7 +2465,7 @@ Gotchas:
 Gotchas:
 - The layout switches **automatically** between two states:
   - **Compact** (no `value`, `replyTo` or `attachments`): the leading "+" button (labelled "Thêm", calls `onAddMedia`) or your `leading` slot, then the input, then send.
-  - **Expanded** (as soon as there is a `value`, a `replyTo` or any `attachments`): the input, an attachment row, then an action row with an image button ("Thêm ảnh", calls `onAddMedia`), a location button ("Thêm địa điểm", calls `onAddLocation`) and send.
+  - **Expanded** (as soon as there is a `value`, a `replyTo` or any `attachments`): the input, an attachment row, then an action row with an image button ("Thêm ảnh", calls `onAddMedia`), a location button ("Thêm địa điểm", calls `onAddLocation`) and send. **`CommentComposer` không có `onAddMedia` / `onAddLocation` → không vẽ nút tương ứng** (2026-10-08); nút "+" của trạng thái gọn vẫn vẽ khi không có `leading`.
 - Send ("Gửi") is disabled when `sending`, or when the value is empty and there are no attachments.
 - `sending` does not disable the text input.
 - Attachments render at size `Small` unless an item sets its own `size`.

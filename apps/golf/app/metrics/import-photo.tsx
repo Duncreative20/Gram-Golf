@@ -8,7 +8,7 @@ import { newId } from '../../lib/ids';
 import { useStore } from '../../lib/store';
 import { prefsOf } from '../../lib/selectors';
 import { formatDate } from '../../lib/format';
-import { ocrEdit, readPhoto, SAMPLE_PHOTOS, type OcrReview } from '../../lib/simulate';
+import { DELAYS, ocrEdit, readPhoto, SAMPLE_PHOTOS, type OcrReview } from '../../lib/simulate';
 import { validateSwingMetrics } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
 import { ClubPicker } from '../../components/ClubPicker';
@@ -43,7 +43,7 @@ export default function MetricsImportPhoto() {
       if (r) setReview(r);
       else setUnreadable(true);
       setReading(false);
-    }, 1500);
+    }, DELAYS.ocr);
     return () => clearTimeout(timer);
   }, [reading]);
   if (me?.role !== 'player') return <Redirect href="/" />;

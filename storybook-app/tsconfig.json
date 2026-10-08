@@ -1,0 +1,6 @@
+{
+  "extends": "../apps/golf/tsconfig.json",
+  "compilerOptions": { "lib": ["ESNext", "DOM", "DOM.Iterable"] },
+  "include": [".storybook/*.ts", ".storybook/*.tsx", "**/*.ts", "**/*.tsx", "../apps/golf/.expo/types/**/*.ts", "../apps/golf/expo-env.d.ts"],
+  "exclude": ["node_modules", "__shots__"]
+}

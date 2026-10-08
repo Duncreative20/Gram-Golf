@@ -8,3 +8,4 @@ ios/
 android/
 storybook-static/
 .codegraph/
+storybook-app/__shots__/

@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { ActivityIndicator, Image, Pressable, ScrollView, Text as RNText, TextInput, View, type ImageSourcePropType } from 'react-native';
 import { useTheme } from '../../theme/useTheme';
 import { Icon } from '../../icons/Icon';
-import { Avatar } from '../Avatar/Avatar';
+import { Avatar, nameInitials } from '../Avatar/Avatar';
 import { Button } from '../Button/Button';
 import { IconButton } from '../Button/IconButton';
 import { Divider } from '../Divider/Divider';
@@ -54,7 +54,7 @@ export function CommentItem({ comment, onLike, onReply, onAttachment, onMore }: 
   const s = commentStyles(t);
   return (
     <View style={s.item}>
-      <View style={s.avatarRing}><Avatar size="XSmall" source={comment.user.avatar} initials={comment.user.name.slice(0, 1)} theme={comment.user.avatar ? 'Photo' : 'Neutral'} /></View>
+      <View style={s.avatarRing}><Avatar size="XSmall" source={comment.user.avatar} initials={nameInitials(comment.user.name)} theme={comment.user.avatar ? 'Photo' : 'Neutral'} /></View>
       <View style={s.container}>
         <View style={s.body}>
           <Identity user={comment.user} meta={comment.time} showAvatar={false} />
@@ -67,7 +67,7 @@ export function CommentItem({ comment, onLike, onReply, onAttachment, onMore }: 
             <SocialAction size="Small" type="Comment" label="Trả lời" onPress={() => onReply?.(comment)} accessibilityLabel="Trả lời" />
             {comment.attachment ? <SocialAction size="Small" type="Attachment" label={comment.attachment} onPress={() => onAttachment?.(comment)} /> : null}
           </View>
-          <SocialAction size="Small" type="More-item" onPress={() => onMore?.(comment)} accessibilityLabel="Thêm" />
+          {onMore ? <SocialAction size="Small" type="More-item" onPress={() => onMore(comment)} accessibilityLabel="Thêm" /> : null}
         </View>
       </View>
     </View>
@@ -152,8 +152,8 @@ export function CommentComposer({ value, onChangeText, onSend, placeholder = 'Vi
       {expanded ? (
         <View style={s.actionRow}>
           <View style={s.leadingActions}>
-            <IconButton type="Flat" level="Secondary" size="XSmall" icon="image-solid" accessibilityLabel="Thêm ảnh" onPress={onAddMedia} />
-            <IconButton type="Flat" level="Secondary" size="XSmall" icon="marker-pin-02-line" accessibilityLabel="Thêm địa điểm" onPress={onAddLocation} />
+            {onAddMedia ? <IconButton type="Flat" level="Secondary" size="XSmall" icon="image-solid" accessibilityLabel="Thêm ảnh" onPress={onAddMedia} /> : null}
+            {onAddLocation ? <IconButton type="Flat" level="Secondary" size="XSmall" icon="marker-pin-02-line" accessibilityLabel="Thêm địa điểm" onPress={onAddLocation} /> : null}
           </View>
           {send}
         </View>

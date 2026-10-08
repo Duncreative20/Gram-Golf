@@ -16,6 +16,9 @@ export interface AvatarProps {
   accessibilityLabel?: string;
 }
 
+/** Chữ tắt từ tên: chữ đầu của 2 từ cuối, in hoa ("HLV Đỗ Minh Tuấn" → "MT") — cùng luật `initials()` của app (apps/golf/lib/format.ts). */
+export const nameInitials = (name: string) => name.split(/\s+/).filter(Boolean).slice(-2).map((w) => w.charAt(0).toUpperCase()).join('');
+
 export function Avatar({ size = 'Medium', shape = 'Circle', theme: themeProp = 'Photo', background = 'Subtle', source, initials, status, accessibilityLabel }: AvatarProps) {
   const t = useTheme();
   const theme = themeProp === 'Photo' && !source ? 'Neutral' : themeProp;

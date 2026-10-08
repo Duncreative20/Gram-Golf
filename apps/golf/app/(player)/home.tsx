@@ -9,6 +9,7 @@ import {
   carryByClub, clubById, clubLabel, followerCount, followingCount, latestNote, latestSwing, prefsOf, previousSwing, primaryCoach, profileById, speedTrend, swingsOf,
 } from '../../lib/selectors';
 import { formatDate, formatDistance, formatNumber, formatSec, formatSpeed, initials, relativeTime, swingTiles } from '../../lib/format';
+import { DELAYS } from '../../lib/simulate';
 import { TabHeader } from '../../components/TabHeader';
 import { StatTile } from '../../components/StatTile';
 import { TrendChart } from '../../components/charts/TrendChart';
@@ -33,7 +34,7 @@ export default function PlayerHome() {
   // Lần đầu mở: giả lập tải dữ liệu 400 ms → khung xương (bản thật: chờ API)
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 400);
+    const timer = setTimeout(() => setLoading(false), DELAYS.firstLoad);
     return () => clearTimeout(timer);
   }, []);
   if (!me) return <Redirect href="/" />;

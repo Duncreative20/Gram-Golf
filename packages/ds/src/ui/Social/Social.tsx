@@ -4,7 +4,7 @@ import { Image, Pressable, ScrollView, Text as RNText, View, type ImageSourcePro
 import { useTheme } from '../../theme/useTheme';
 import { Icon } from '../../icons/Icon';
 import type { IconName } from '../../icons/generated';
-import { Avatar } from '../Avatar/Avatar';
+import { Avatar, nameInitials } from '../Avatar/Avatar';
 import { Button } from '../Button/Button';
 import { IconButton } from '../Button/IconButton';
 import { Checkbox } from '../Checkbox/Checkbox';
@@ -88,7 +88,7 @@ export function ShareSheet({ visible, onClose, users, selectedIds = [], onToggle
             return (
               <Pressable key={u.id} onPress={() => onToggleUser?.(u)} accessibilityRole="checkbox" {...a11yState({ checked: sel })} style={{ alignItems: 'center', gap: t.space('Spacing/Gap/2XSmall'), width: t.size('Image-Size/XLarge') }}>
                 <View>
-                  <Avatar size="Large" source={u.avatar} initials={u.name.slice(0, 1)} theme={u.avatar ? 'Photo' : 'Neutral'} />
+                  <Avatar size="Large" source={u.avatar} initials={nameInitials(u.name)} theme={u.avatar ? 'Photo' : 'Neutral'} />
                   {sel ? <View style={{ position: 'absolute', right: 0, bottom: 0 }}><Icon name="check-circle-solid" size={t.size('Element-Size/Popular/Small')} color="Color/Content/Accent/Base" /></View> : null}
                 </View>
                 <RNText style={{ ...t.text('Caption/Medium'), color: t.color('Color/Content/Neutral/Base') }} numberOfLines={1}>{u.name}</RNText>

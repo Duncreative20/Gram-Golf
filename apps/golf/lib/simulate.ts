@@ -124,3 +124,7 @@ export const ocrEdit = (review: OcrReview, values: OcrReview['values']): OcrRevi
   values,
   highlight: Object.fromEntries(Object.entries(review.highlight).filter(([k]) => values[k as keyof SwingMetrics] === review.values[k as keyof SwingMetrics])),
 });
+
+/** Độ trễ giả lập (ms) của trạng thái tạm thời. Màn đọc lúc chạy (không chép ra hằng riêng) để Storybook app (`appStory({ hold })`) kéo dài
+ *  được khi chụp ảnh. firstLoad = skeleton lần đầu mở màn; toast = toast thành công tự đóng; ocr = "Đang đọc…" khi nhập ảnh. */
+export const DELAYS = { firstLoad: 400, toast: 1200, ocr: 1500 };

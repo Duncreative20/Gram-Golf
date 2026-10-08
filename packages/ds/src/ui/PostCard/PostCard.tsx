@@ -3,7 +3,7 @@ import { a11yState } from '../a11y';
 import { ActivityIndicator, Image, Pressable, ScrollView, Text as RNText, View, type ImageSourcePropType, type ImageStyle, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import { useTheme } from '../../theme/useTheme';
 import { Icon } from '../../icons/Icon';
-import { Avatar } from '../Avatar/Avatar';
+import { Avatar, nameInitials } from '../Avatar/Avatar';
 import { Button } from '../Button/Button';
 import { IconButton } from '../Button/IconButton';
 import { PageIndicator } from '../PageIndicator/PageIndicator';
@@ -53,7 +53,7 @@ export function Identity({ user, meta, location, overlay, avatarSize, showAvatar
   const s = identityStyles(t, { overlay });
   return (
     <View style={s.row}>
-      {showAvatar ? <Avatar size={avatarSize ?? s.avatarSize} source={user.avatar} initials={user.name.slice(0, 1)} theme={user.avatar ? 'Photo' : 'Neutral'} /> : null}
+      {showAvatar ? <Avatar size={avatarSize ?? s.avatarSize} source={user.avatar} initials={nameInitials(user.name)} theme={user.avatar ? 'Photo' : 'Neutral'} /> : null}
       <View style={s.text}>
         <View style={s.nameRow}>
           <RNText style={s.name} numberOfLines={1}>{user.name}</RNText>

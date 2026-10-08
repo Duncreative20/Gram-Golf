@@ -1,0 +1,232 @@
+# Storybook màn app GramGolf
+
+Storybook thứ hai (cạnh Storybook `@gr/ds` cổng 6006): vẽ **màn thật** của `apps/golf/app/**` theo **luồng chức năng** F01–F13, mỗi bước = một story, để chủ dự án duyệt từng màn / trạng thái.
+
+## Chạy
+
+Từ gốc repo:
+
+```sh
+pnpm storybook:app --no-open          # cổng 6007; chủ dự án chạy Storybook DS ở 6006, không trùng
+lsof -ti tcp:6007 | xargs kill        # tắt — KHÔNG dùng pkill -f storybook (giết luôn Storybook DS 6006)
+```
+
+Mở http://localhost:6007 · danh mục story: http://localhost:6007/index.json. Toolbar Theme (sáng/tối), Emphasis, Viewport (390 mặc định) dùng chung preview của DS.
+
+| File | Vai trò |
+| --- | --- |
+| `.storybook/main.ts` | framework react-native-web-vite; alias `@gr/ds` → `packages/ds/src`, `expo-router` → stub; `__DEV__ = true`; cache Vite ở `storybook-app/node_modules/.vite` |
+| `.storybook/preview.tsx` | dùng lại preview DS + `layout: 'fullscreen'` + sắp xếp `Luồng/F01…F13`, bước theo số |
+| `.storybook/shot.css` | chỉ khi chụp (viewport ≥ 1500 px cao): màn cao theo nội dung, tối thiểu 844; đang mở dialog / sheet → ảnh đúng khung 390×844 có Modal |
+| `stubs/expo-router.tsx` | `router.*` ghi vào panel **Actions** (không đổi màn, không throw), `canGoBack() → true`; `<Redirect>` hiện “↪ Chuyển hướng tới …”; params từ `appStory({ params })` |
+| `lib/appStory.tsx` | helper duy nhất cho story (dưới) |
+| `flows/FNN-*.stories.tsx` | story theo luồng |
+| `issues/*.md` | ghi chép của từng nhóm viết story (A–E) + `verify.md` (rà soát cuối); tổng hợp ở cuối README |
+
+## Viết một story luồng
+
+```tsx
+/**
+ * F07 · Swing của người chơi
+ *
+ * Các bước (mỗi bước = một story; ✓ = đã có):
+ *  ✓ 01 · Danh sách swing          (player)/swings   as p-minh, tab swings
+ *  ✓ 02 · Danh sách rỗng           (player)/swings   as p-huy
+ *    03 · …
+ *
+ * Chưa có (route không tồn tại — không dựng UI giả):
+ *  - Swing dạng lưới / lọc — Phase 2.
+ */
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
+import { userEvent } from 'storybook/test';
+import Swings from '../../apps/golf/app/(player)/swings';
+import SwingDetail from '../../apps/golf/app/swings/[id]';
+import { appStory } from '../lib/appStory';
+
+const meta = { title: 'Luồng/F07 · Swing của người chơi', id: 'f07' } satisfies Meta;
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const DanhSach: Story = {
+  name: '01 · Danh sách swing',
+  render: () => <Swings />,
+  ...appStory({ as: 'p-minh', tabs: { role: 'player', active: 'swings' } }),
+};
+
+export const ChiTietDaXoa: Story = {
+  name: '05a · Chi tiết — swing đã bị xoá',
+  render: () => <SwingDetail />,
+  ...appStory({ as: 'p-minh', params: { id: 'sw-minh-1' }, setup: [{ type: 'deleteSwing', id: 'sw-minh-1' }] }),
+};
+
+// Trạng thái cần thao tác (gõ, bấm, mở dialog / sheet) → play với userEvent; tìm phần tử bằng find* (màn vẽ sau khi seed).
+export const XoaDialog: Story = {
+  name: '06 · Dialog xoá swing',
+  render: () => <SwingDetail />,
+  ...appStory({ as: 'p-minh', params: { id: 'sw-minh-1' } }),
+  play: async ({ canvas }) => {
+    await userEvent.click(await canvas.findByLabelText('Xoá swing'));
+  },
+};
+```
+
+`appStory(options)` → `{ decorators, parameters }` (spread vào story):
+
+| Option | Kiểu | Ý nghĩa |
+| --- | --- | --- |
+| `as` | `ID` | đăng nhập người dùng mẫu (`apps/golf/lib/mock.ts`): `p-minh` (có dữ liệu, HLV chính `c-tuan` + HLV phụ `c-ha`), `p-lan`, `p-khoa`, `p-huy` (chưa có HLV), `c-tuan`, `c-ha`. Bỏ trống = chưa đăng nhập |
+| `params` | `Record<string, string>` | params route cho `useLocalSearchParams` / `useGlobalSearchParams` (vd `{ id: 'sw-minh-1' }`) |
+| `setup` | `Action[]` hoặc `(dispatch, state) => void \| Action[]` | action của `apps/golf/lib/reducer.ts` chạy **một lần** sau `signIn`, trước khi vẽ màn. Id / thời điểm dùng chuỗi cố định (`NOW` của `mock.ts`) để ảnh ổn định |
+| `tabs` | `{ role: 'player' \| 'coach', active }` | màn trong nhóm tab → vẽ `AppTabBar` thật dưới màn; `active` = tên route tab (`home`, `metrics`, `swings`, `community`, `coach` / `roster`, `community`, `inbox`, `me`). Bấm tab ghi `tab.navigate` vào Actions |
+| `hold` | `(keyof typeof DELAYS)[]` | giữ trạng thái tạm thời để chụp: 'firstLoad' (skeleton), 'toast', 'ocr' ("Đang đọc…"); Task 29 thêm 'save' (spinner), 'toastError'. Story khác luôn về độ trễ mặc định |
+
+`typeIn(el, value)` (cùng file): gõ vào ô nhập trong `play`.
+
+Store mới tinh mỗi story (`seedState()`), không rò trạng thái giữa các story.
+
+## Quy tắc đặt tên
+
+- File `flows/FNN-<slug-không-dấu>.stories.tsx`, một file một luồng.
+- Meta: `title: 'Luồng/FNN · <Tên luồng>'`, `id: 'fNN'` → story id gọn `fNN--<tên-export>` (dùng cho lọc chụp và bảng Phủ route).
+- Export: PascalCase không dấu (`HocVienNhapMa`). `name`: `'NN · <Bước>'` hai chữ số; trạng thái phụ của cùng bước `'NNa · …'`, `'NNb · …'` (sắp theo số: 05 < 05a < 06 < 10).
+- Story của bước `shot` `"<nn>-<slug>"` trong `docs/flows/Fxx/steps.json`: export `B<nn><SlugPascal>` (hai cụm số liền nhau nối bằng `_`), id `fxx--b-<nn>-<slug>`; biến thể `'<nn><a|b…> · …'` không đặt export bắt đầu bằng `B` + số.
+- Chữ hiển thị, tiêu đề, chú thích: tiếng Việt có dấu. Wrapper trong story không viết literal màu / cỡ chữ / khoảng cách — dùng `useTheme()` như app.
+- Đầu file: comment mẫu (các bước + “Chưa có”) như `flows/F04-ket-noi-hlv.stories.tsx`.
+- Route chưa tồn tại → **không dựng UI giả**: ghi vào “Chưa có” ở đầu file và mục “Chưa có (Phase 2)” dưới. Route có nhưng màn còn “Đang dựng” → vẫn viết story theo route (tự cập nhật khi màn xong).
+- Màn app có lỗi làm hỏng / xấu story → **không sửa màn**: ghi `file:line`, hiện tượng, story id vào `issues/<nhóm>.md` + mục “Lỗi màn hình đã thấy” dưới.
+- F13 (trạng thái xuyên suốt) chỉ gom những trạng thái chưa có ở luồng khác; trùng thì ghi link story id trong comment, không nhân bản.
+
+## Chụp ảnh
+
+Storybook 6007 đang chạy, từ gốc repo (`<outDir>` phải nằm trong `storybook-app/__shots__/`; regex lọc theo story id):
+
+```sh
+SB_URL=http://localhost:6007 CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  node scripts/shot-storybook.mjs storybook-app/__shots__/f04 '^f04--' 390 844
+```
+
+Ra `<outDir>/<story-id>.<light|dark>.png`, khung cố định 390×844 (tham số cuối) — Dialog / sheet nằm trong khung. Bỏ tham số cuối thì ảnh cao theo nội dung (tối thiểu 844, `shot.css`). Story treo quá 60 s → script khởi động lại Chrome, thử lại 1 lần (dòng `TIMEOUT`); lỗi trang (exception, `console.error`) in sau dấu `|`. Storyboard của luồng chụp thẳng vào `docs/flows/Fxx/` (xem `docs/flows/README.md`).
+
+## Luồng
+
+| Mã | Luồng | Các bước |
+| --- | --- | --- |
+| F01 | Người chơi mới | welcome → đăng ký (Người chơi) → OTP → onboarding → Tổng quan trống → nhập số liệu đầu tiên → Tổng quan có dữ liệu |
+| F02 | HLV mới | welcome → đăng ký (HLV) → OTP → onboarding → Học viên trống → tạo mã mời |
+| F03 | Tài khoản | đăng nhập (đúng/sai), quên mật khẩu, đổi mật khẩu, đăng xuất (hồ sơ) |
+| F04 | Kết nối HLV–học viên | HLV tạo/chia sẻ/thu hồi mã → học viên nhập mã (lỗi: sai/hết hạn/đã dùng/đã thu hồi/đã kết nối) → xem trước → chấp nhận → tab HLV (HLV chính/phụ, đặt làm chính, huỷ kết nối + dialog) → hồ sơ HLV |
+| F05 | Số liệu | chọn nguồn → nhập tay (lỗi + hợp lệ) / CSV (chọn file, xem trước có dòng lỗi, xác nhận, file lạ) / ảnh OCR (chọn hãng, đang đọc, review trường độ tin cậy thấp) / QR → danh sách Swing/Thể lực → chi tiết phiên → Tổng quan |
+| F06 | Bộ gậy | danh sách theo nhóm → thêm (lỗi validate, wedge bounce, tuỳ chỉnh) → chi tiết → sửa → dialog lưu trữ; HLV xem chỉ đọc; không quyền → 403 |
+| F07 | Swing của người chơi | danh sách (các trạng thái, rỗng) → đăng swing (hướng dẫn, chọn video/gậy/góc, đang tải, tạm dừng, lỗi tải + thử lại) → chi tiết (chưa phân tích, đang phân tích, đã phân tích + tip theo mốc, cần xem lại, lỗi) → dialog xoá |
+| F08 | HLV review swing | roster “Cần phản hồi” → chi tiết học viên tab Swing → swing của học viên (HLV có quyền: ô ghi chú theo mốc, đã gửi) → học viên xem ghi chú (bấm mốc) |
+| F09 | HLV xem học viên | roster (tìm, lọc Tất cả/Cần phản hồi/Lời mời, rỗng) → chi tiết học viên 5 tab (Tổng quan, Thông số, Swing, Bộ gậy, Thể lực) → người không có quyền → 403 |
+| F10 | Cộng đồng | bảng tin / khám phá (theo dõi) → đăng bài (lỗi + hợp lệ) → chi tiết bài + bình luận → hồ sơ người dùng → chặn/báo cáo → danh sách người theo dõi |
+| F11 | Thông báo | danh sách (mới/trước đó), rỗng |
+| F12 | Hồ sơ & cài đặt | hồ sơ người chơi / HLV, cài đặt, tài khoản, mật khẩu, quyền riêng tư, thông báo, đơn vị, dev |
+| F13 | Trạng thái xuyên suốt | các màn rỗng / lỗi / 403 tiêu biểu (link story ở luồng khác nếu trùng) |
+
+Ngoài các bước: thêm story cho trạng thái khó bấm tới (rỗng / đang tải / lỗi / 403 `NoAccess` / lỗi validate).
+
+## Phủ route
+
+Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **45/45 route có story** (227 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
+
+| Route | Story id | Ghi chú |
+| --- | --- | --- |
+| `index` | `f03--vao-app-nguoi-choi`, `f03--vao-app-hlv`, `f03--da-dang-xuat` | Chỉ chuyển hướng theo vai / chưa đăng nhập (story vẽ “↪ Chuyển hướng tới …”) |
+| `(auth)/welcome` | `f01--man-chao`, `f02--man-chao` |  |
+| `(auth)/register` | `f01--dang-ky-chon-vai`, `f01--dang-ky-thong-tin`, `f01--dang-ky-loi-bo-trong`, `f01--dang-ky-trung-tai-khoan`, `f02--dang-ky-chon-vai`, `f02--dang-ky-thong-tin`, `f02--dang-ky-loi` |  |
+| `(auth)/verify-otp` | `f01--xac-minh-otp`, `f01--xac-minh-otp-sai`, `f01--xac-minh-otp-thieu-thong-tin`, `f02--xac-minh-otp` | Đếm ngược “Gửi lại mã sau 59 s” chạy theo giây |
+| `(auth)/onboarding` | `f01--onboarding-anh`, `f01--onboarding-don-vi`, `f01--onboarding-ma-moi`, `f02--onboarding-anh`, `f02--onboarding-moi-hoc-vien` |  |
+| `(auth)/login` | `f03--dang-nhap`, `f03--dang-nhap-bo-trong`, `f03--dang-nhap-sai` |  |
+| `(auth)/forgot-password` | `f03--quen-mat-khau`, `f03--quen-mat-khau-email-sai`, `f03--quen-mat-khau-da-gui` |  |
+| `(player)/home` | `f01--tong-quan-trong`, `f01--tong-quan-co-du-lieu`, `f05--tong-quan`, `f13--chua-dang-nhap`, `f13--dang-tai-tong-quan` | `f13--chua-dang-nhap` = guard chưa đăng nhập; `f13--dang-tai-tong-quan` = skeleton (`hold: ['firstLoad']`) |
+| `(player)/metrics` | `f05--danh-sach-swing`, `f05--danh-sach-the-luc`, `f05--danh-sach-rong`, `f06--tab-thong-so` |  |
+| `(player)/swings` | `f07--danh-sach`, `f07--danh-sach-rong` |  |
+| `(player)/community` | `f10--bang-tin`, `f10--bang-tin-rong`, `f10--kham-pha`, `f10--kham-pha-tim`, `f10--kham-pha-khong-thay`, `f10--bang-tin-sau-khi-chan` |  |
+| `(player)/coach` | `f04--tab-hlv`, `f04--tab-hlv-chua-ket-noi`, `f04--dat-lam-hlv-chinh`, `f04--huy-ket-noi-dialog`, `f04--da-huy-hlv-chinh` |  |
+| `(coach)/roster` | `f02--hoc-vien-trong`, `f02--hoc-vien-trong-loi-moi`, `f02--hoc-vien-loi-moi-dang-cho`, `f09--danh-sach`, `f09--tim-hoc-vien`, `f09--tim-khong-thay`, `f09--can-phan-hoi`, `f09--can-phan-hoi-rong`, `f09--loi-moi`, `f09--loi-moi-rong`, `f09--chua-co-hoc-vien`, `f08--can-phan-hoi` | Tab HLV; F02 (HLV mới), F08 (Cần phản hồi), F09 (tìm, lọc) |
+| `(coach)/community` | `f10--bang-tin-hlv` |  |
+| `(coach)/inbox` | `f11--tab-hlv`, `f11--tab-hlv-rong` |  |
+| `(coach)/me` | `f12--ho-so-hlv-tab` |  |
+| `connect/invite` | `f02--moi-chua-co-ma`, `f02--moi-da-tao-ma`, `f04--hlv-tao-ma`, `f04--hlv-chua-co-loi-moi`, `f04--hlv-chia-se-ma`, `f04--hlv-thu-hoi-dialog`, `f04--hlv-da-thu-hoi`, `f13--nguoi-choi-mo-man-hlv` | `f13--nguoi-choi-mo-man-hlv` = guard vai; ShareSheet chỉ giả lập gửi |
+| `connect/accept` | `f04--hoc-vien-nhap-ma`, `f04--nhap-ma-de-trong`, `f04--nhap-ma-sai`, `f04--nhap-ma-het-han`, `f04--nhap-ma-da-dung`, `f04--nhap-ma-da-thu-hoi`, `f04--nhap-ma-da-ket-noi`, `f04--xem-truoc-hlv-chinh`, `f04--xem-truoc-hlv-phu`, `f04--chap-nhan-ket-noi` |  |
+| `coaches/[id]` | `f04--ho-so-hlv`, `f04--ho-so-hlv-khong-co`, `f10--ho-so-hlv-bi-chan` | `f10--ho-so-hlv-bi-chan` = trạng thái bị chặn |
+| `metrics/add` | `f01--chon-nguon-so-lieu`, `f05--chon-nguon` | `presentation: modal` của layout không thể hiện |
+| `metrics/manual` | `f01--nhap-tay-chua-co-gay`, `f01--nhap-tay-loi`, `f01--nhap-tay-da-luu`, `f05--nhap-tay`, `f05--nhap-tay-loi`, `f05--nhap-tay-da-luu`, `f05--nhap-tay-the-luc`, `f05--nhap-tay-yard`, `f13--toast-da-luu` | `f13--toast-da-luu` = toast giữ nguyên (`hold: ['toast']`) |
+| `metrics/import-csv` | `f05--csv-chon-file`, `f05--csv-xem-truoc`, `f05--csv-file-la`, `f05--csv-xac-nhan`, `f05--csv-da-nhap`, `f05--csv-thieu-gay` | Chọn file mẫu ngay trong màn (chưa mở file hệ điều hành) |
+| `metrics/import-photo` | `f05--anh-chon-hang`, `f05--anh-dang-doc`, `f05--anh-kiem-tra`, `f05--anh-khong-doc-duoc` | OCR giả lập 1,5 s — story vá hẹn giờ (`ocrTimer`) cho ảnh ổn định |
+| `metrics/scan-qr` | `f05--quet-qr`, `f05--quet-qr-da-lien-ket` | Thử nghiệm: nút mô phỏng quét |
+| `metrics/[id]` | `f05--chi-tiet-phien`, `f05--chi-tiet-the-luc`, `f05--chi-tiet-xoa-dialog`, `f05--chi-tiet-hlv-xem`, `f05--chi-tiet-khong-quyen`, `f05--chi-tiet-khong-thay` |  |
+| `clubs/index` | `f06--danh-sach`, `f06--danh-sach-rong`, `f06--hlv-xem-bo-gay`, `f06--khong-quyen-bo-gay` |  |
+| `clubs/new` | `f06--them-gay`, `f06--them-gay-loi`, `f06--them-gay-chon-loai`, `f06--them-gay-wedge`, `f06--them-gay-tuy-chinh` |  |
+| `clubs/[id]/index` | `f06--chi-tiet`, `f06--luu-tru-dialog`, `f06--da-luu-tru`, `f06--hlv-xem-chi-tiet`, `f06--khong-quyen-chi-tiet`, `f06--khong-tim-thay` |  |
+| `clubs/[id]/edit` | `f06--sua-gay`, `f06--sua-gay-da-luu-tru`, `f13--sua-gay-nguoi-khac` | `f06--sua-gay-da-luu-tru`, `f13--sua-gay-nguoi-khac` = guard → chi tiết gậy |
+| `swings/new` | `f07--huong-dan-quay`, `f07--chon-video`, `f07--chon-gay`, `f07--loi-chua-chon-gay`, `f07--dang-tai`, `f07--tam-dung`, `f07--loi-tai`, `f07--thu-lai-tai-xong`, `f13--hlv-mo-man-nguoi-choi` | Mô phỏng tải lên chạy theo nhịp (`ticks`); `f13--hlv-mo-man-nguoi-choi` = guard vai |
+| `swings/[id]` | `f07--chi-tiet-tai-do`, `f07--chi-tiet-chua-phan-tich`, `f07--chi-tiet-dang-phan-tich`, `f07--chi-tiet-da-phan-tich`, `f07--bam-goi-y`, `f07--chi-tiet-can-xem-lai`, `f07--chi-tiet-loi-phan-tich`, `f07--xoa-dialog`, `f07--da-xoa`, `f08--swing-hoc-vien`, `f08--chua-co-ghi-chu`, `f08--dang-viet`, `f08--loi-trong`, `f08--da-gui`, `f08--khong-co-quyen`, `f08--hoc-vien-xem-ghi-chu` | F07 người chơi, F08 HLV ghi chú |
+| `students/[id]` | `f09--tong-quan`, `f09--tong-quan-rong`, `f09--thong-so`, `f09--swing`, `f09--swing-can-phan-hoi`, `f09--bo-gay`, `f09--the-luc`, `f09--khong-quyen-da-huy`, `f09--khong-quyen-nguoi-theo-doi`, `f09--khong-tim-thay`, `f08--tab-swing` |  |
+| `community/compose` | `f10--dang-bai`, `f10--dang-bai-loi`, `f10--dang-bai-hop-le`, `f10--dang-bai-chon-swing`, `f10--dang-bai-da-dang` |  |
+| `posts/[id]` | `f10--chi-tiet-bai`, `f10--chi-tiet-bai-cua-minh`, `f10--tra-loi-binh-luan`, `f10--da-gui-binh-luan`, `f10--ai-da-thich`, `f10--xoa-bai-dialog`, `f10--swing-dinh-kem-co-quyen`, `f10--swing-dinh-kem-rieng-tu`, `f10--bai-khong-tim-thay`, `f10--bai-nguoi-da-chan`, `f10--bao-cao-bai`, `f10--bao-cao-loi` |  |
+| `users/[id]` | `f10--ho-so-nguoi-dung`, `f10--ho-so-hlv-xem-hoc-vien`, `f10--ho-so-khong-tim-thay`, `f10--chan-dialog`, `f10--da-chan`, `f10--bi-chan`, `f10--bao-cao-nguoi-dung`, `f13--ho-so-id-hlv` | `f13--ho-so-id-hlv` = id HLV → chuyển sang `coaches/[id]` |
+| `people` | `f10--nguoi-theo-doi`, `f10--dang-theo-doi`, `f10--theo-doi-rong`, `f10--theo-doi-nguoi-da-chan` |  |
+| `notifications` | `f11--danh-sach`, `f11--da-doc-tat-ca`, `f11--rong` |  |
+| `profile` | `f03--ho-so`, `f03--ho-so-dang-xuat`, `f12--ho-so-nguoi-choi`, `f12--ho-so-hlv` | Đăng xuất (dialog) ở F03 |
+| `settings/index` | `f03--cai-dat`, `f12--cai-dat` |  |
+| `settings/account` | `f12--tai-khoan`, `f12--tai-khoan-hlv`, `f12--tai-khoan-loi`, `f12--tai-khoan-da-luu` |  |
+| `settings/password` | `f03--doi-mat-khau`, `f03--doi-mat-khau-loi`, `f03--doi-mat-khau-xong`, `f12--mat-khau` | Trạng thái lỗi / đã đổi ở F03 |
+| `settings/privacy` | `f12--quyen-rieng-tu`, `f12--quyen-rieng-tu-da-chan`, `f12--xoa-tai-khoan`, `f12--xoa-tai-khoan-lan-cuoi`, `f12--quyen-rieng-tu-hlv` |  |
+| `settings/notifications` | `f12--cai-dat-thong-bao`, `f12--cai-dat-thong-bao-hlv` |  |
+| `settings/units` | `f12--don-vi-met`, `f12--don-vi-yard` |  |
+| `settings/dev` | `f12--dev`, `f12--dev-dat-lai` | Chỉ `__DEV__`; Storybook luôn `__DEV__ = true` |
+
+## Chưa có (Phase 2)
+
+Bước của luồng cần màn Phase 2 — task luồng xoá dòng của mình khi story đã có. Bước ngoài Phase 2: mục "Đã biết / chưa làm" của `docs/flows/F<nn>.md`.
+
+| Luồng | Bước chưa có màn | Task |
+| --- | --- | --- |
+| F02 | Onboarding HLV: bước "Giới thiệu nghề nghiệp" (bắt buộc, 20–300 ký tự) | 24 |
+| F03 | Đặt lại mật khẩu từ link (hợp lệ / hết hạn / sai); "Mở link (thử)" ở quên mật khẩu; đăng nhập sau khi đặt lại | 25 |
+| F04 | Lời mời 2 chiều: HLV mời học viên cụ thể → học viên Chấp nhận / Từ chối; học viên gửi yêu cầu từ hồ sơ HLV → HLV Duyệt / Từ chối; HLV huỷ kết nối → 403 ngay | 17 |
+| F05 | Sửa phiên (swing, thể lực, theo yard); dòng "Đã sửa" | 20 |
+| F06 | Đang dùng / Lưu trữ; khôi phục; xoá gậy chưa gắn dữ liệu | 21 |
+| F07 | Danh sách / Lưới, lọc + sắp xếp theo ngày; ô Ngày khi đăng; popup file quá dung lượng / không phải video; mục Gậy có thông số | 19 |
+| F08 | Thông báo "học viên đăng swing mới"; Chưa review / Đã review; Chèn mốc; sửa / xoá ghi chú; chip "Tua tới" | 18 |
+| F11 | Thông báo `connect_request`, `swing_uploaded` | 27 |
+| F12 | Đổi ảnh đại diện ở Tài khoản; Dev › "Kiểm tra theo luồng" | 28, 30 |
+| F13 | 404; 403 có Quay lại; skeleton các màn danh sách; spinner khi lưu/xoá; toast thất bại + Thử lại; Dev › "Giả lập lỗi khi lưu/xoá" | 29 |
+
+## Lỗi màn hình đã thấy
+
+Tổng hợp `issues/A.md` … `issues/E.md` + `issues/verify.md` (chi tiết, gợi ý sửa ở đó). Không màn nào crash / trống; console chỉ có cảnh báo DS `"shadow*" style props are deprecated`. Đã chụp lại 2026-10-08. Task 15 phân loại từng lỗi về task sở hữu (bảng đầy đủ + minor của review Task 12–14: `issues/issues.md` › “Phân loại Phase 2”); task đó sửa xong thì đổi Trạng thái thành `đã sửa (Task NN)`.
+
+| Mức | Story id | File:dòng | Hiện tượng | Task | Trạng thái |
+| --- | --- | --- | --- | --- | --- |
+| vừa | `f01--tong-quan-co-du-lieu` | `apps/golf/app/(player)/home.tsx:187-190` + `apps/golf/components/charts/ConcentricRings.tsx:19` | Một gậy → “Carry theo gậy” vẽ một đĩa đặc to, không còn là vòng đồng tâm | 20 | chờ Task 20 |
+| vừa | `f01--tong-quan-co-du-lieu` | `apps/golf/app/(player)/home.tsx:173` | “Xu hướng … (Driver, 1 buổi)” vẽ biểu đồ một điểm | 20 | chờ Task 20 |
+| vừa | `f10--chi-tiet-bai`, `f10--da-gui-binh-luan` | `packages/ds/src/ui/Comment/Comment.tsx:70` + `apps/golf/app/posts/[id].tsx:140` | Bình luận của mình vẫn có nút “⋯”, bấm không làm gì (DS luôn vẽ dù `onMore` trống) | 15 | đã sửa (Task 15) |
+| vừa | `f10--tra-loi-binh-luan` | `packages/ds/src/ui/Comment/Comment.tsx:155-156` + `apps/golf/app/posts/[id].tsx:151` | Ô bình luận mở rộng hiện “Thêm ảnh” / “Thêm địa điểm” nhưng màn không truyền handler — bấm không làm gì | 15 | đã sửa (Task 15) |
+| vừa | `f11--tab-hlv`, `f11--tab-hlv-rong` | `apps/golf/components/NotificationsScreen.tsx:101` | Tab Thông báo của HLV dùng `TabHeader` → vẫn có chuông (kèm badge) mở chính màn đang xem | 27 | chờ Task 27 |
+| thấp | `f04--ho-so-hlv`, `f04--hlv-chia-se-ma`, `f10--*` | `packages/ds/src/ui/PostCard/PostCard.tsx:56`, `packages/ds/src/ui/Social/Social.tsx:91`, `packages/ds/src/ui/Comment/Comment.tsx:57` | Avatar không ảnh lấy `name.slice(0, 1)` → mọi HLV hiện “H”, khác “MT” ở màn app (`initials()`) | 15 | đã sửa (Task 15) |
+| thấp | `f02--onboarding-anh` | `apps/golf/app/(auth)/onboarding.tsx:32` | Onboarding của HLV vẫn ghi “Giúp HLV và bạn bè nhận ra bạn.” | 24 | chờ Task 24 |
+| thấp | `f01--dang-ky-thong-tin`, `f02--dang-ky-thong-tin` | `apps/golf/app/(auth)/register.tsx:85` | Bước cuối vẫn là “Tiếp →” dù bấm là gửi mã OTP | — | không làm: chữ không sai (bước kế là xác minh OTP) |
+| thấp | `f05--tong-quan`, `f01--tong-quan-co-du-lieu` (tối) | `apps/golf/components/charts/ConcentricRings.tsx:6`, `:25` | Tối: vòng ngoài + ô chú giải gậy xa nhất (`Support/Brand/Soft`) gần như chìm vào nền thẻ | — | không làm: chú giải có tên gậy + số, màu chỉ phụ; thang màu chart tối cần thiết kế |
+| thấp | `f06--them-gay-chon-loai` (sáng) | `packages/ds/src/ui/Popover/popoverItemStyles.ts:48` | Viền radio chưa chọn (`Checkbox/Border/Default`) rất nhạt, có thể < 3:1 — nợ Figma của DS | 15 | đã sửa (Task 15): giữ token Figma, ghi nợ F56 |
+| thấp | `f10--dang-bai`, `f12--tai-khoan` | `packages/ds/src/ui/TextField/TextArea.tsx:18` | Nhãn / chữ TextArea to hơn TextField bên cạnh → form lệch cỡ chữ | — | không làm: đúng Figma (TextArea khác Text-Field) |
+| thấp | `f11--danh-sach` | `apps/golf/components/NotificationsScreen.tsx:19` | “Lê Đăng Khoa đã bình luận” thiếu tân ngữ | 27 | chờ Task 27 |
+| thấp | `f11--tab-hlv-rong` | `apps/golf/components/NotificationsScreen.tsx:124` | Thông báo rỗng của HLV ghi câu viết cho người chơi (“Ghi chú của HLV…”) | 27 | chờ Task 27 |
+| thấp | `f12--tai-khoan-hlv` | `apps/golf/app/settings/account.tsx:26` | Đơn giá điền sẵn “450000” không có dấu chấm (placeholder / helpText có) | 28 | chờ Task 28 |
+| thấp | `f12--mat-khau`, `f03--doi-mat-khau` | `apps/golf/app/settings/password.tsx:13,15` | Placeholder “••••••••” ở ô trống trông như đã có mật khẩu | 25 | chờ Task 25 |
+| thấp | `f12--dev` | `packages/ds/src/ui/ListItem/listItemStyles.ts:22` | Hàng `selected` đổi padding → avatar lệch phải vài px | — | không làm: theo variant Figma, chỉ màn Dev |
+| thấp | `f10--kham-pha`, `f10--nguoi-theo-doi`, `f10--dang-theo-doi` | `apps/golf/components/People.tsx:66` | “hcp 14” — màn khác ghi “Handicap 14” | 26 | chờ Task 26 |
+| thấp | `f10--tra-loi-binh-luan` | `packages/ds/src/ui/Comment/commentStyles.ts:54` | Chip “↩ Trả lời … ⊗” gap quá nhỏ, icon dính chữ | — | không làm: token Figma `Badge/Spacing/Small/Gap` |
+| thấp | `f09--tong-quan-rong` | `apps/golf/app/students/[id].tsx:72` | “Học viên chưa có phiên swing nào.” trong khi tab Swing có 1 video — dễ lẫn số liệu với video | 22 | chờ Task 22 |
+
+## Giới hạn
+
+- Điều hướng không đổi màn (chỉ ghi Actions) — mỗi màn của luồng là một story riêng; trạng thái giữa chừng (đã gõ, dialog, sheet, toast) dựng bằng `setup` hoặc `play`.
+- Không vẽ `_layout`: guard theo vai ở `(player)/_layout` / `(coach)/_layout` không chạy trong story; thanh tab do `appStory({ tabs })` vẽ (danh sách tab chép tay từ hai layout đó). `presentation: 'modal'` của `metrics/add` không thể hiện.
+- `Seed` vẽ màn sau một khung trống (đợi seed) — `play` phải dùng `find*`, không dùng `get*`.
+- Gõ chữ vào ô nhập: **không dùng `userEvent.type`** (react-native-web 0.21 + React 19: chữ vào DOM nhưng `onChangeText` không chạy → bấm Lưu / Tiếp màn coi như ô trống). Dùng `fireEvent.change(el, { target: { value } })` hoặc `fireEvent.input(...)` từ `storybook/test`. Story mới dùng `typeIn` của `lib/appStory.tsx`.
+- Dialog / BottomSheet là Modal vẽ ngoài `#storybook-root` → `canvas.findBy*` không thấy; dùng `screen.findBy*` / `within(canvasElement.ownerDocument.body)`.
+- Chữ trên màn đổi (vd `formatSec` “1,3s” → “1,3 s”, nút “Chọn ảnh” → “Đọc số liệu”) làm `play` âm thầm hỏng: ảnh vẫn chụp nhưng đứng ở bước trước. Sau khi màn đổi, chụp lại và xem console có `TestingLibraryElementError`.

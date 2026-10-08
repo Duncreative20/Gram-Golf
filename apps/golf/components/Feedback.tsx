@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import { InlineMessage, Toast, useTheme, type InlineMessageProps } from '@gr/ds';
+import { DELAYS } from '../lib/simulate';
 
 /** InlineMessage mà trình đọc màn hình đọc ngay khi hiện — InlineMessage của DS không có role alert (Toast có). */
 export function AlertMessage(props: InlineMessageProps) {
@@ -12,12 +13,12 @@ export function AlertMessage(props: InlineMessageProps) {
   );
 }
 
-/** Toast thành công ở đáy màn; sau 1,2 s gọi `onDone` (quay lại, đổi màn, hoặc chỉ ẩn toast). */
+/** Toast thành công ở đáy màn; sau `DELAYS.toast` (1,2 s) gọi `onDone` (quay lại, đổi màn, hoặc chỉ ẩn toast). */
 export function SavedToast({ title, caption, onDone }: { title: string; caption?: string; onDone: () => void }) {
   const t = useTheme();
   useEffect(() => {
     // ponytail: Toast hiện trên màn vừa lưu rồi mới quay lại — app chưa có toast toàn cục; cần toast sống qua điều hướng thì nâng lên provider ở _layout.
-    const timer = setTimeout(onDone, 1200);
+    const timer = setTimeout(onDone, DELAYS.toast);
     return () => clearTimeout(timer);
   }, []); // hẹn giờ một lần khi hiện; toast mới → đổi `key` để hiện lại từ đầu
   return (

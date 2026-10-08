@@ -1,0 +1,10 @@
+/* Chỉ khi chụp (scripts/shot-storybook.mjs mở viewport cao 3000): màn cao theo nội dung, tối thiểu = khung Mobile 390×844
+   → ảnh không thừa nền trống, thanh tab / nút nổi nằm cuối nội dung. Viewport thật trong Storybook (≤ 1024) không bị ảnh hưởng:
+   header và thanh tab vẫn ghim, ScrollView tự cuộn như trên máy.
+   Đang mở dialog / sheet (Modal react-native-web: aria-modal, position fixed theo viewport → nằm giữa / đáy 3000 px, ngoài ảnh):
+   ảnh = đúng khung máy 390×844, màn cắt ở 844, Modal cao 844. */
+@media (min-height: 1500px) {
+  #storybook-root { height: auto; min-height: 844px; }
+  body:has([aria-modal="true"]) #sb-content { max-height: 844px; overflow: hidden; }
+  [aria-modal="true"] { bottom: auto !important; height: 844px !important; }
+}

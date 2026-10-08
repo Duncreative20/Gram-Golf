@@ -4,6 +4,7 @@ import { Redirect, router } from 'expo-router';
 import { Button, EmptyState, Screen, SearchField, Skeleton, SkeletonText, TabBar, Text, useTheme } from '@gr/ds';
 import { useStore } from '../lib/store';
 import { discover, feed } from '../lib/selectors';
+import { DELAYS } from '../lib/simulate';
 import { TabHeader } from './TabHeader';
 import { PostItem } from './PostItem';
 import { PersonRow } from './People';
@@ -20,7 +21,7 @@ export default function CommunityScreen() {
   // Lần đầu mở: giả lập tải bảng tin 400 ms → khung xương bài viết (bản thật: chờ API)
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 400);
+    const timer = setTimeout(() => setLoading(false), DELAYS.firstLoad);
     return () => clearTimeout(timer);
   }, []);
   if (!me) return <Redirect href="/" />;
