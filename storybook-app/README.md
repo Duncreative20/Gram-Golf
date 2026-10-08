@@ -129,19 +129,19 @@ Ngoài các bước: thêm story cho trạng thái khó bấm tới (rỗng / đ
 
 ## Phủ route
 
-Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **46/46 route có story** (308 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
+Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **46/46 route có story** (310 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
 
 | Route | Story id | Ghi chú |
 | --- | --- | --- |
-| `index` | `f03--b-06-vao-app`, `f03--vao-app-hlv`, `f03--b-10-ve-chao` | Chỉ chuyển hướng theo vai / chưa đăng nhập (story vẽ “↪ Chuyển hướng tới …”); lượt F01 bắt đầu ở `/` chưa đăng nhập → welcome (`f01--b-01-chao`) |
-| `(auth)/welcome` | `f01--b-01-chao`, `f02--man-chao` |  |
+| `index` | `f03--vao-app-nguoi-choi`, `f03--vao-app-hlv`, `f03--da-dang-xuat` | Chỉ chuyển hướng theo vai / chưa đăng nhập (story vẽ “↪ Chuyển hướng tới …”); lượt F01 bắt đầu ở `/` chưa đăng nhập → welcome (`f01--b-01-chao`) |
+| `(auth)/welcome` | `f01--b-01-chao`, `f02--man-chao`, `f03--b-10-ve-chao` |  |
 | `(auth)/register` | `f01--b-02-chon-vai-tro`, `f01--b-03-loi-form`, `f01--dang-ky-thong-tin`, `f01--dang-ky-trung-tai-khoan`, `f02--b-01-dang-ky-hlv`, `f02--dang-ky-chon-vai`, `f02--dang-ky-loi` |  |
 | `(auth)/verify-otp` | `f01--b-04-otp`, `f01--xac-minh-otp-sai`, `f01--xac-minh-otp-thieu-thong-tin`, `f02--xac-minh-otp` | Đếm ngược “Gửi lại mã sau 59 s” chạy theo giây |
 | `(auth)/onboarding` | `f01--b-05-anh-dai-dien`, `f01--onboarding-don-vi`, `f01--b-06-ma-moi`, `f02--onboarding-anh`, `f02--b-02-bio-bat-buoc`, `f02--b-03-bio-ngan`, `f02--b-04-bio-hop-le`, `f02--onboarding-moi-hoc-vien` | HLV có thêm bước 3/4 “Giới thiệu nghề nghiệp” (F02) |
 | `(auth)/login` | `f03--b-01-dang-nhap-sai`, `f03--b-05-ve-dang-nhap`, `f03--dang-nhap`, `f03--dang-nhap-bo-trong` | `?reset=1` = thông báo đã đặt lại mật khẩu (`f03--b-05-ve-dang-nhap`) |
 | `(auth)/forgot-password` | `f03--b-02-quen-mk-loi`, `f03--b-03-da-gui-link`, `f03--quen-mat-khau` | “Mở link (thử)” chỉ `__DEV__` |
 | `(auth)/reset-password` | `f03--b-04-dat-lai-loi`, `f03--b-11-link-het-han`, `f03--b-12-link-sai`, `f03--dat-lai-mat-khau`, `f03--dat-lai-mat-khau-bo-trong` | `?token=GG-RESET-OK` hợp lệ, `GG-RESET-EXPIRED` hết hạn, thiếu / sai = không hợp lệ |
-| `(player)/home` | `f01--b-07-tong-quan-trong`, `f01--b-10-tong-quan-co-du-lieu`, `f05--b-01-tong-quan-truoc`, `f05--b-20-tong-quan-sau`, `f13--chua-dang-nhap`, `f13--dang-tai-tong-quan` | `f13--chua-dang-nhap` = guard chưa đăng nhập; `f13--dang-tai-tong-quan` = skeleton (`hold: ['firstLoad']`) |
+| `(player)/home` | `f01--b-07-tong-quan-trong`, `f01--b-10-tong-quan-co-du-lieu`, `f03--b-06-vao-app`, `f05--b-01-tong-quan-truoc`, `f05--b-20-tong-quan-sau`, `f13--chua-dang-nhap`, `f13--dang-tai-tong-quan` | `f13--chua-dang-nhap` = guard chưa đăng nhập; `f13--dang-tai-tong-quan` = skeleton (`hold: ['firstLoad']`) |
 | `(player)/metrics` | `f05--b-02-lich-su`, `f05--b-06-da-luu`, `f05--b-10-the-luc`, `f05--b-18-yard-lich-su`, `f05--b-19-sau-xoa`, `f05--danh-sach-rong`, `f06--b-01-bo-gay`, `f06--b-04-them-xong`, `f06--b-09-sau-luu-tru` | `f06--b-09-sau-luu-tru` = dòng “Gậy đã lưu trữ” trên lưới |
 | `(player)/swings` | `f07--b-01-danh-sach`, `f07--b-02-luoi`, `f07--b-03-loc-sap-xep`, `f07--b-15-sau-xoa`, `f07--danh-sach`, `f07--danh-sach-rong`, `f07--loc-7-ngay-rong` | Danh sách / Lưới, lọc 7 / 30 ngày, sắp xếp theo ngày quay |
 | `(player)/community` | `f10--bang-tin`, `f10--bang-tin-rong`, `f10--kham-pha`, `f10--kham-pha-tim`, `f10--kham-pha-khong-thay`, `f10--bang-tin-sau-khi-chan` |  |

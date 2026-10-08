@@ -7,11 +7,11 @@
  *  ✓ 03  · Email đúng → Gửi link                     (auth)/forgot-password  play: minhanh@gramgolf.vn → Gửi link (có “Mở link (thử)”)
  *  ✓ 04  · Mở link → mật khẩu thiếu số → Đặt lại     (auth)/reset-password   token GG-RESET-OK; play: golfmoi / golfmoi1
  *  ✓ 05  · Đặt lại xong → Đăng nhập                  (auth)/login            params reset=1
- *  ✓ 06  · Đăng nhập Minh Anh với mật khẩu mới       index                   as p-minh → ↪ /(player)/home
+ *  ✓ 06  · Đăng nhập Minh Anh với mật khẩu mới       (player)/home           as p-minh, tab home
  *  ✓ 07  · Đổi mật khẩu: nhập lại khác               settings/password       as p-minh; play: golfmoi2026 / golf2027 / golf2028
  *  ✓ 08  · Đổi mật khẩu xong                         settings/password       play: hợp lệ → toast (hold toast)
  *  ✓ 09  · Hồ sơ → Đăng xuất                         profile                 play: bấm Đăng xuất
- *  ✓ 10  · Xác nhận → về màn chào                    index                   chưa đăng nhập → ↪ /(auth)/welcome
+ *  ✓ 10  · Xác nhận → về màn chào                    (auth)/welcome          chưa đăng nhập
  *  ✓ 11  · Link đặt lại đã hết hạn                   (auth)/reset-password   token GG-RESET-EXPIRED
  *  ✓ 12  · Link thiếu token                          (auth)/reset-password   không params
  * Biến thể:
@@ -21,9 +21,11 @@
  *  ✓ 04a · Đặt lại mật khẩu — form trống             (auth)/reset-password   token GG-RESET-OK
  *  ✓ 04b · Đặt lại mật khẩu — bỏ trống               (auth)/reset-password   play: bấm Đặt lại mật khẩu
  *  ✓ 06a · Đăng nhập xong — HLV                      index                   as c-tuan → ↪ /(coach)/roster
+ *  ✓ 06b · Điểm vào app — người chơi (chuyển hướng)  index                   as p-minh → ↪ /(player)/home
  *  ✓ 07a · Cài đặt (lối vào Mật khẩu)                settings/index          as p-minh
  *  ✓ 07b · Đổi mật khẩu — form                       settings/password       as p-minh
  *  ✓ 09a · Hồ sơ                                     profile                 as p-minh
+ *  ✓ 10a · Đã đăng xuất — điểm vào app (chuyển hướng) index                  chưa đăng nhập → ↪ /(auth)/welcome
  *
  * Tài khoản: p-minh (người chơi, minhanh@gramgolf.vn), c-tuan (HLV). Mật khẩu mock: bất kỳ ≥ 6 ký tự (không lưu — đặt lại / đổi chỉ kiểm định dạng).
  *
@@ -32,9 +34,11 @@
 import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { screen, userEvent } from 'storybook/test';
 import Index from '../../apps/golf/app/index';
+import Welcome from '../../apps/golf/app/(auth)/welcome';
 import Login from '../../apps/golf/app/(auth)/login';
 import ForgotPassword from '../../apps/golf/app/(auth)/forgot-password';
 import ResetPassword from '../../apps/golf/app/(auth)/reset-password';
+import PlayerHome from '../../apps/golf/app/(player)/home';
 import Settings from '../../apps/golf/app/settings/index';
 import PasswordSettings from '../../apps/golf/app/settings/password';
 import Profile from '../../apps/golf/app/profile';
@@ -101,8 +105,8 @@ export const B05VeDangNhap: Story = {
 
 export const B06VaoApp: Story = {
   name: '06 · Đăng nhập Minh Anh với mật khẩu mới',
-  render: () => <Index />,
-  ...appStory({ as: 'p-minh' }),
+  render: () => <PlayerHome />,
+  ...appStory({ as: 'p-minh', tabs: { role: 'player', active: 'home' } }),
 };
 
 export const B07DoiMkLoi: Story = {
@@ -137,7 +141,7 @@ export const B09DangXuat: Story = {
 
 export const B10VeChao: Story = {
   name: '10 · Xác nhận → về màn chào',
-  render: () => <Index />,
+  render: () => <Welcome />,
   ...appStory(),
 };
 
@@ -199,6 +203,12 @@ export const VaoAppHlv: Story = {
   ...appStory({ as: 'c-tuan' }),
 };
 
+export const VaoAppNguoiChoi: Story = {
+  name: '06b · Điểm vào app — người chơi (chuyển hướng)',
+  render: () => <Index />,
+  ...appStory({ as: 'p-minh' }),
+};
+
 export const CaiDat: Story = {
   name: '07a · Cài đặt (lối vào Mật khẩu)',
   render: () => <Settings />,
@@ -215,4 +225,10 @@ export const HoSo: Story = {
   name: '09a · Hồ sơ',
   render: () => <Profile />,
   ...appStory({ as: 'p-minh' }),
+};
+
+export const DaDangXuat: Story = {
+  name: '10a · Đã đăng xuất — điểm vào app (chuyển hướng)',
+  render: () => <Index />,
+  ...appStory(),
 };
