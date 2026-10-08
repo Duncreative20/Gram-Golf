@@ -17,7 +17,7 @@
  *  ✓ 09 · HLV nhận thông báo                     (coach)/inbox                 as c-tuan
  *  ✓ 10 · Chi tiết học viên (nút Huỷ kết nối)    students/[id] p-huy           as c-tuan
  *  ✓ 11 · Hồ sơ HLV — Gửi yêu cầu kết nối        coaches/[id] c-tuan           as p-khoa
- *  ✓ 11a–11c · HLV của bạn / HLV đang mời bạn / không tìm thấy
+ *  ✓ 11a–11d · HLV của bạn / HLV đang mời bạn / không tìm thấy / chặn HLV đang mời — dialog
  *  ✓ 12 · Đã gửi yêu cầu                         coaches/[id] c-tuan           as p-khoa
  *  ✓ 13 · HLV duyệt yêu cầu                      (coach)/roster ?seg=loi-moi   as c-tuan
  *  ✓ 13a–13b · HLV đã mời, chờ học viên / Lời mời trống
@@ -365,6 +365,13 @@ export const HoSoHlvKhongCo: Story = {
   name: '11c · Hồ sơ HLV — không tìm thấy',
   render: () => <CoachPublicProfile />,
   ...appStory({ as: 'p-minh', params: { id: 'c-khong-co' } }),
+};
+
+export const HoSoHlvChan: Story = {
+  name: '11d · Hồ sơ HLV — chặn HLV đang mời (Báo cáo / Chặn trên header)',
+  render: () => <CoachPublicProfile />,
+  ...appStory({ as: 'p-huy', params: { id: 'c-tuan' }, setup: [REQ_TUAN_HUY] }),
+  play: ({ canvas }) => click(canvas, 'Chặn HLV Đỗ Minh Tuấn'),
 };
 
 export const LoiMoiDaGui: Story = {

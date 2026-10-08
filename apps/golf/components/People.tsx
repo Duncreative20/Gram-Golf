@@ -1,13 +1,17 @@
 // Mảnh "người dùng" dùng chung: Khám phá, danh sách theo dõi (people), hồ sơ (profile, users/[id], coaches/[id], tab Hồ sơ HLV).
+import { useState, type ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
 import { router, type Href } from 'expo-router';
-import { Avatar, Badge, Button, EmptyState, Text, useTheme, type ButtonSize } from '@gr/ds';
+import { Avatar, Badge, Button, Dialog, EmptyState, Screen, Text, useTheme, type ButtonSize, type TopNavAction } from '@gr/ds';
 import type { ID, Profile } from '../lib/domain';
 import { NOW } from '../lib/mock';
 import { useStore } from '../lib/store';
-import { followerCount, followingCount, isFollowing, profileById } from '../lib/selectors';
+import { canViewPrivate, followerCount, followingCount, isBlocked, isFollowing, profileById } from '../lib/selectors';
 import { formatValue, initials } from '../lib/format';
 import { newId } from '../lib/ids';
+import { StackHeader } from './StackHeader';
+import { ReportSheet } from './ReportSheet';
+import { SavedToast } from './Feedback';
 
 /** Hồ sơ công khai theo vai trò: HLV → coaches/[id], người chơi → users/[id]. */
 export const profileHref = (p: Pick<Profile, 'id' | 'role'>): Href => (p.role === 'coach' ? `/coaches/${p.id}` : `/users/${p.id}`);
@@ -105,5 +109,58 @@ export function BlockedNotice({ userId }: { userId: ID }) {
       title={mine ? 'Bạn đã chặn người này' : 'Không xem được nội dung'}
       caption={mine ? 'Hai bạn không thấy bài của nhau và không theo dõi được nhau.' : 'Bạn không xem được bài đăng và không theo dõi được người này.'}
     />
+  );
+}
+
+/** Khung hồ sơ công khai (users/[id], coaches/[id]): header có Báo cáo + Chặn (Dialog → back), ReportSheet, toast "Đã gửi báo cáo".
+ *  Chặn ẩn khi là chính mình, đã chặn nhau, hoặc hai bên đang có kết nối HLV active — huỷ kết nối trước (chặn không gỡ kết nối). */
+export function ProfileScreen({ title, user, children }: { title: string; user: Profile; children: ReactNode }) {
+  const { state, dispatch, me } = useStore();
+  const [confirmBlock, setConfirmBlock] = useState(false);
+  const [reporting, setReporting] = useState(false);
+  const [toast, setToast] = useState<{ key: number; title: string }>();
+  if (!me) return null;
+  const back = () => (router.canGoBack() ? router.back() : router.replace('/'));
+  // canViewPrivate(x, x) = true nên cũng phủ trường hợp chính mình
+  const canBlock = !isBlocked(state, me.id, user.id) && !canViewPrivate(state, me.id, user.id) && !canViewPrivate(state, user.id, me.id);
+  // ponytail: "menu ⋯" (Chặn, Báo cáo) thành 2 action thẳng trên header — chọn mục trong menu BottomSheet rồi mở ngay Dialog / sheet
+  // khác bị kẹt trên iOS (Modal đang đóng, Task 9–10); DS có callback đóng sheet thì gộp lại thành menu.
+  const actions: TopNavAction[] = user.id === me.id
+    ? []
+    : [
+        { icon: 'flag-01-line', accessibilityLabel: 'Báo cáo người dùng', onPress: () => setReporting(true) },
+        ...(canBlock ? [{ icon: 'slash-circle-01-line' as const, accessibilityLabel: `Chặn ${user.name}`, onPress: () => setConfirmBlock(true) }] : []),
+      ];
+  return (
+    <Screen>
+      <StackHeader title={title} actions={actions} />
+      {children}
+      <ReportSheet
+        visible={reporting}
+        heading="Báo cáo người dùng"
+        targetUserId={user.id}
+        onClose={() => setReporting(false)}
+        onReported={() => {
+          setReporting(false);
+          setToast((prev) => ({ key: (prev?.key ?? 0) + 1, title: 'Đã gửi báo cáo' }));
+        }}
+      />
+      <Dialog
+        visible={confirmBlock}
+        onRequestClose={() => setConfirmBlock(false)}
+        theme="Warning"
+        title={`Chặn ${user.name}?`}
+        body="Hai bạn sẽ không thấy bài của nhau và bỏ theo dõi lẫn nhau."
+        primaryText="Chặn"
+        destructive
+        onPrimary={() => {
+          setConfirmBlock(false);
+          dispatch({ type: 'block', blockerId: me.id, blockedId: user.id });
+          back();
+        }}
+        secondaryText="Huỷ"
+      />
+      {toast && <SavedToast key={toast.key} title={toast.title} onDone={() => setToast(undefined)} />}
+    </Screen>
   );
 }

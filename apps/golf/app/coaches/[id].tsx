@@ -8,9 +8,10 @@ import { newId } from '../../lib/ids';
 import { StackHeader } from '../../components/StackHeader';
 import { CoachSummary } from '../../components/CoachSummary';
 import { PostsSection } from '../../components/PostItem';
-import { BlockedNotice, FollowButton, FollowCounts } from '../../components/People';
+import { BlockedNotice, FollowButton, FollowCounts, ProfileScreen } from '../../components/People';
 
-/** Hồ sơ công khai HLV: ai cũng xem được; theo dõi KHÔNG mở dữ liệu riêng (D6). Một trong hai đã chặn người kia → không theo dõi, không xem bài. */
+/** Hồ sơ công khai HLV: ai cũng xem được; theo dõi KHÔNG mở dữ liệu riêng (D6). Một trong hai đã chặn người kia → không theo dõi, không xem bài.
+ *  Báo cáo / Chặn ở header (ProfileScreen) — người chơi bị HLV gửi yêu cầu lặp lại có đường chặn. */
 export default function CoachPublicProfile() {
   const t = useTheme();
   const { state, dispatch, me } = useStore();
@@ -42,8 +43,7 @@ export default function CoachPublicProfile() {
   const request = () => dispatch({ type: 'requestConnection', id: newId('cn'), coachId: coach.id, playerId: me.id, by: 'player', at: NOW, notificationId: newId('nt') });
   const respond = (accept: boolean) => conn && dispatch({ type: 'respondConnection', id: conn.id, accept, at: NOW, notificationId: newId('nt') });
   return (
-    <Screen>
-      <StackHeader title="Hồ sơ HLV" />
+    <ProfileScreen title="Hồ sơ HLV" user={coach}>
       <ScrollView contentContainerStyle={{ paddingVertical: t.space('Spacing/Padding/Medium'), gap: t.space('Spacing/Gap/XLarge') }}>
         <View style={{ paddingHorizontal: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Medium') }}>
           <CoachSummary coach={coach} />
@@ -90,6 +90,6 @@ export default function CoachPublicProfile() {
         </View>
         {!blocked && <PostsSection authorId={coach.id} />}
       </ScrollView>
-    </Screen>
+    </ProfileScreen>
   );
 }

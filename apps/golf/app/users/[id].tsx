@@ -1,27 +1,21 @@
-import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
-import { Avatar, Button, Dialog, EmptyState, Screen, Text, useTheme, type TopNavAction } from '@gr/ds';
+import { Avatar, Button, EmptyState, Screen, Text, useTheme } from '@gr/ds';
 import { useStore } from '../../lib/store';
 import { canViewPrivate, isBlocked, profileById } from '../../lib/selectors';
 import { formatValue, initials } from '../../lib/format';
 import { StackHeader } from '../../components/StackHeader';
 import { PostsSection } from '../../components/PostItem';
-import { ReportSheet } from '../../components/ReportSheet';
-import { SavedToast } from '../../components/Feedback';
-import { BlockedNotice, FollowButton, FollowCounts } from '../../components/People';
+import { BlockedNotice, FollowButton, FollowCounts, ProfileScreen } from '../../components/People';
 
 const back = () => (router.canGoBack() ? router.back() : router.replace('/'));
 
 /** Hồ sơ công khai người chơi: handicap, CLB, theo dõi, bài đăng. KHÔNG hiện thông số / swing / bộ gậy (D6) — chỉ HLV có kết nối
- *  active thấy nút "Xem dữ liệu học viên". Chặn (Dialog) → back; Báo cáo (lý do). Một trong hai đã chặn → không theo dõi, không xem bài. */
+ *  active thấy nút "Xem dữ liệu học viên". Báo cáo / Chặn ở header (ProfileScreen). Một trong hai đã chặn → không theo dõi, không xem bài. */
 export default function UserProfile() {
   const t = useTheme();
-  const { state, dispatch, me } = useStore();
+  const { state, me } = useStore();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [confirmBlock, setConfirmBlock] = useState(false);
-  const [reporting, setReporting] = useState(false);
-  const [toast, setToast] = useState<{ key: number; title: string }>();
   if (!me) return <Redirect href="/" />;
   const user = profileById(state, id);
   if (user?.role === 'coach') return <Redirect href={`/coaches/${user.id}`} />;
@@ -39,18 +33,8 @@ export default function UserProfile() {
   const blocked = isBlocked(state, me.id, user.id);
   const coaching = !self && canViewPrivate(state, me.id, user.id); // người xem là HLV có kết nối active với người chơi này
   const details = [user.handicap !== undefined && `Handicap ${formatValue(user.handicap)}`, user.homeClub].filter(Boolean).join(' · ');
-  // ponytail: "menu ⋯" (Chặn, Báo cáo) thành 2 action thẳng trên header — chọn mục trong menu BottomSheet rồi mở ngay Dialog / sheet
-  // khác bị kẹt trên iOS (Modal đang đóng, Task 9–10); DS có callback đóng sheet thì gộp lại thành menu.
-  const actions: TopNavAction[] = self
-    ? []
-    : [
-        { icon: 'flag-01-line', accessibilityLabel: 'Báo cáo người dùng', onPress: () => setReporting(true) },
-        // đã chặn nhau thì thôi; HLV đang kèm học viên này phải huỷ kết nối trước (chặn không gỡ kết nối)
-        ...(blocked || coaching ? [] : [{ icon: 'slash-circle-01-line' as const, accessibilityLabel: `Chặn ${user.name}`, onPress: () => setConfirmBlock(true) }]),
-      ];
   return (
-    <Screen>
-      <StackHeader title="Hồ sơ" actions={actions} />
+    <ProfileScreen title="Hồ sơ" user={user}>
       <ScrollView contentContainerStyle={{ paddingVertical: t.space('Spacing/Padding/Medium'), gap: t.space('Spacing/Gap/XLarge') }}>
         <View style={{ paddingHorizontal: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Medium') }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space('Spacing/Gap/Medium') }}>
@@ -81,32 +65,6 @@ export default function UserProfile() {
         </View>
         {!blocked && <PostsSection authorId={user.id} />}
       </ScrollView>
-      <ReportSheet
-        visible={reporting}
-        heading="Báo cáo người dùng"
-        targetUserId={user.id}
-        onClose={() => setReporting(false)}
-        onReported={() => {
-          setReporting(false);
-          setToast((prev) => ({ key: (prev?.key ?? 0) + 1, title: 'Đã gửi báo cáo' }));
-        }}
-      />
-      <Dialog
-        visible={confirmBlock}
-        onRequestClose={() => setConfirmBlock(false)}
-        theme="Warning"
-        title={`Chặn ${user.name}?`}
-        body="Hai bạn sẽ không thấy bài của nhau và bỏ theo dõi lẫn nhau."
-        primaryText="Chặn"
-        destructive
-        onPrimary={() => {
-          setConfirmBlock(false);
-          dispatch({ type: 'block', blockerId: me.id, blockedId: user.id });
-          back();
-        }}
-        secondaryText="Huỷ"
-      />
-      {toast && <SavedToast key={toast.key} title={toast.title} onDone={() => setToast(undefined)} />}
-    </Screen>
+    </ProfileScreen>
   );
 }
