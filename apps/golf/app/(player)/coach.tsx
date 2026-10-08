@@ -10,7 +10,7 @@ import { formatDate, initials } from '../../lib/format';
 import { TabHeader } from '../../components/TabHeader';
 import { Section } from '../../components/Section';
 import { CoachSummary } from '../../components/CoachSummary';
-import { SavedToast } from '../../components/SessionEntry';
+import { SavedToast } from '../../components/Feedback';
 
 // Quyền xem theo ma trận RLS (canViewPrivate): HLV kết nối active xem dữ liệu riêng; follow thì không.
 const COACH_SEES: { icon: IconName; text: string }[] = [

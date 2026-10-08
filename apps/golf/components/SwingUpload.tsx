@@ -4,7 +4,7 @@ import { Button, ProgressBar, useTheme, type IconName, type ProgressStatus, type
 import type { Swing, UploadStatus } from '../lib/domain';
 import { useStore } from '../lib/store';
 import { SAMPLE_VIDEOS, UPLOAD_TICK_MS, uploadTick } from '../lib/simulate';
-import { AlertMessage } from './SessionEntry';
+import { AlertMessage } from './Feedback';
 
 const UI: Record<UploadStatus, { label: (pct: string) => string; theme: ProgressTheme; status?: ProgressStatus; action?: { icon: IconName; text: string } }> = {
   uploading: { label: (pct) => `Đang tải lên ${pct}`, theme: 'Accent', action: { icon: 'pause-circle-line', text: 'Tạm dừng' } },

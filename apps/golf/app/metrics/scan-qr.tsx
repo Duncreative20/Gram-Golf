@@ -5,7 +5,7 @@ import { Button, Divider, Screen, Tag, Text, useTheme } from '@gr/ds';
 import { useStore } from '../../lib/store';
 import { SAMPLE_FILES } from '../../lib/simulate';
 import { StackHeader } from '../../components/StackHeader';
-import { AlertMessage } from '../../components/SessionEntry';
+import { AlertMessage } from '../../components/Feedback';
 
 // ponytail: phiên mà mã QR giả lập trỏ tới = file TrackMan mẫu — bản thật lấy mã phiên từ QR rồi tải dữ liệu từ đối tác
 const LINKED_FILE = SAMPLE_FILES.find((f) => f.vendor === 'trackman')!.name;

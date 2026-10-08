@@ -12,7 +12,8 @@ import { FITNESS_FIELDS, validateFitnessMetrics, validateSwingMetrics, type Raw 
 import { StackHeader } from '../../components/StackHeader';
 import { ClubPicker } from '../../components/ClubPicker';
 import { MetricFields, SwingMetricsForm } from '../../components/SwingMetricsForm';
-import { AlertMessage, SavedToast, SessionDateField } from '../../components/SessionEntry';
+import { AlertMessage, SavedToast } from '../../components/Feedback';
+import { backToMetrics, SessionDateField } from '../../components/SessionEntry';
 
 const KINDS = [{ label: 'Swing' }, { label: 'Thể lực' }];
 const EMPTY_SWING: Raw<keyof SwingMetrics> = { clubSpeedMph: '', ballSpeedMph: '', smash: '', spinRpm: '', launchDeg: '', carryM: '' };
@@ -74,7 +75,7 @@ export default function MetricsManual() {
         {submitted && invalid > 0 && <AlertMessage theme="Negative" text={`Chưa lưu: ${invalid} trường cần sửa.`} />}
         <Button text="Lưu" disabled={!!saved} onPress={save} />
       </View>
-      {saved && <SavedToast title="Đã lưu" caption={saved} />}
+      {saved && <SavedToast title="Đã lưu" caption={saved} onDone={backToMetrics} />}
     </Screen>
   );
 }

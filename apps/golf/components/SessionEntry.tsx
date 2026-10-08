@@ -1,8 +1,7 @@
-// Mảnh dùng chung của các màn nhập số liệu (nhập tay, CSV, ảnh chụp, QR); AlertMessage và SavedToast dùng cả ở màn khác (gậy, swing, kết nối HLV).
-import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+// Mảnh dùng chung của các màn nhập số liệu (nhập tay, CSV, ảnh chụp, QR).
+import { useState } from 'react';
 import { router } from 'expo-router';
-import { BottomSheet, DateField, DatePicker, InlineMessage, Toast, useTheme, type InlineMessageProps } from '@gr/ds';
+import { BottomSheet, DateField, DatePicker } from '@gr/ds';
 import type { ISO } from '../lib/domain';
 import { NOW } from '../lib/mock';
 import { formatDate, vnDay, withVnDay } from '../lib/format';
@@ -28,28 +27,5 @@ export function SessionDateField({ value, onChange }: { value: ISO; onChange: (i
   );
 }
 
-/** InlineMessage mà trình đọc màn hình đọc ngay khi hiện — InlineMessage của DS không có role alert (Toast có). */
-export function AlertMessage(props: InlineMessageProps) {
-  return (
-    <View accessibilityRole="alert" accessibilityLiveRegion="polite">
-      <InlineMessage {...props} />
-    </View>
-  );
-}
-
-const backToMetrics = () => (router.canGoBack() ? router.back() : router.replace('/(player)/metrics'));
-
-/** Toast thành công ở đáy màn; sau 1,2 s gọi `onDone` — mặc định quay lại màn trước (mở thẳng URL, không có lịch sử → tab Thông số). */
-export function SavedToast({ title, caption, onDone = backToMetrics }: { title: string; caption?: string; onDone?: () => void }) {
-  const t = useTheme();
-  useEffect(() => {
-    // ponytail: Toast hiện trên màn vừa lưu rồi mới quay lại — app chưa có toast toàn cục; cần toast sống qua điều hướng thì nâng lên provider ở _layout.
-    const timer = setTimeout(onDone, 1200);
-    return () => clearTimeout(timer);
-  }, []); // hẹn giờ một lần khi hiện; toast mới → đổi `key` để hiện lại từ đầu
-  return (
-    <View style={{ position: 'absolute', left: t.layout('Margin-Small'), right: t.layout('Margin-Small'), bottom: t.layout('Margin-Small') }}>
-      <Toast type="Positive" title={title} caption={caption} />
-    </View>
-  );
-}
+/** Lưu xong ở màn nhập số liệu → quay lại màn trước (mở thẳng URL, không có lịch sử → tab Thông số). */
+export const backToMetrics = () => (router.canGoBack() ? router.back() : router.replace('/(player)/metrics'));

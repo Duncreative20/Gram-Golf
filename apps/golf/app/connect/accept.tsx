@@ -10,7 +10,7 @@ import { parseInviteCode } from '../../lib/format';
 import { newId } from '../../lib/ids';
 import { StackHeader } from '../../components/StackHeader';
 import { CoachSummary } from '../../components/CoachSummary';
-import { AlertMessage, SavedToast } from '../../components/SessionEntry';
+import { AlertMessage, SavedToast } from '../../components/Feedback';
 
 const CHECK_MESSAGES: Record<Exclude<InviteCheck, 'ok'>, { theme: StatusTheme; text: string }> = {
   not_found: { theme: 'Negative', text: 'Mã không tồn tại' },

@@ -9,7 +9,7 @@ import { formatDate, timeLeft } from '../../lib/format';
 import { newInvite } from '../../lib/ids';
 import { StackHeader } from '../../components/StackHeader';
 import { Section } from '../../components/Section';
-import { SavedToast } from '../../components/SessionEntry';
+import { SavedToast } from '../../components/Feedback';
 
 const inviteLink = (code: string) => `https://gramgolf.app/i/${code}`;
 

@@ -13,7 +13,7 @@ import { Section } from '../../components/Section';
 import { PostItem } from '../../components/PostItem';
 import { SwingCard } from '../../components/SwingCard';
 import { ReportSheet } from '../../components/ReportSheet';
-import { SavedToast } from '../../components/SessionEntry';
+import { SavedToast } from '../../components/Feedback';
 import { profileHref } from '../../components/People';
 
 const COMMENT_MAX = 1000; // ký tự mỗi bình luận

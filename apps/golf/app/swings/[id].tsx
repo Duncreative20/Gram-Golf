@@ -14,7 +14,7 @@ import { ANALYSIS_QUEUE_MS, ANALYSIS_TICK_MS, analysisTick } from '../../lib/sim
 import { StackHeader } from '../../components/StackHeader';
 import { StatTile } from '../../components/StatTile';
 import { SwingUpload } from '../../components/SwingUpload';
-import { AlertMessage } from '../../components/SessionEntry';
+import { AlertMessage } from '../../components/Feedback';
 import { NoAccess } from '../../components/NoAccess';
 
 const PHASES = [

@@ -8,7 +8,7 @@ import { useStore } from '../../lib/store';
 import { formatValue } from '../../lib/format';
 import { CLUB_FIELDS, clubRaw, defaultLoft, loftOnTypeChange, rangeText, validateClub } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
-import { AlertMessage } from '../../components/SessionEntry';
+import { AlertMessage } from '../../components/Feedback';
 
 const WEDGES = CLUB_GROUPS.find((g) => g.label === 'Wedge')!.types;
 type TextKey = 'customName' | 'brand' | 'model' | 'shaftBrand';

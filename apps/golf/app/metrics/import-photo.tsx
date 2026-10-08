@@ -13,7 +13,8 @@ import { validateSwingMetrics } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
 import { ClubPicker } from '../../components/ClubPicker';
 import { SwingMetricsForm } from '../../components/SwingMetricsForm';
-import { AlertMessage, SavedToast } from '../../components/SessionEntry';
+import { AlertMessage, SavedToast } from '../../components/Feedback';
+import { backToMetrics } from '../../components/SessionEntry';
 
 const VENDORS: Vendor[] = ['trackman', 'foresight'];
 const STEPS = [{ title: 'Chọn hãng' }, { title: 'Đọc số liệu' }, { title: 'Kiểm tra' }];
@@ -144,7 +145,7 @@ export default function MetricsImportPhoto() {
         <Stepper current={step} steps={STEPS} />
       </View>
       {body}
-      {saved && <SavedToast title="Đã lưu" caption={saved} />}
+      {saved && <SavedToast title="Đã lưu" caption={saved} onDone={backToMetrics} />}
     </Screen>
   );
 }

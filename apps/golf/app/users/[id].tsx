@@ -9,7 +9,7 @@ import { StackHeader } from '../../components/StackHeader';
 import { Section } from '../../components/Section';
 import { PostItem } from '../../components/PostItem';
 import { ReportSheet } from '../../components/ReportSheet';
-import { SavedToast } from '../../components/SessionEntry';
+import { SavedToast } from '../../components/Feedback';
 import { BlockedNotice, FollowButton, FollowCounts } from '../../components/People';
 
 const back = () => (router.canGoBack() ? router.back() : router.replace('/'));

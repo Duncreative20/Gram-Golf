@@ -10,7 +10,7 @@ import { clubById, clubLabel, swingsOf } from '../../lib/selectors';
 import { formatDate } from '../../lib/format';
 import { POST_CONTENT_MAX, POST_TAGS_MAX, POST_TITLE_MAX, addTags, validatePost } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
-import { SavedToast } from '../../components/SessionEntry';
+import { SavedToast } from '../../components/Feedback';
 
 /** Đăng bài: tiêu đề + nội dung bắt buộc (lỗi theo trường sau lần bấm Đăng đầu), tag (Enter / dấu phẩy → Chip, chạm để bỏ,
  *  tối đa 5, chữ thường, bỏ trùng), đính kèm một swing đã tải lên của mình (tuỳ chọn). Đăng → addPost → Toast → về bảng tin. */

@@ -12,7 +12,7 @@ import { SAMPLE_VIDEOS } from '../../lib/simulate';
 import { StackHeader } from '../../components/StackHeader';
 import { ClubPicker } from '../../components/ClubPicker';
 import { SwingUpload } from '../../components/SwingUpload';
-import { AlertMessage } from '../../components/SessionEntry';
+import { AlertMessage } from '../../components/Feedback';
 
 const STEPS = [{ title: 'Hướng dẫn quay' }, { title: 'Chọn video' }, { title: 'Tải lên' }];
 const VIEWS: CameraView[] = ['face-on', 'down-the-line'];

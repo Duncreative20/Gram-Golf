@@ -13,7 +13,8 @@ import { formatDate, formatDistance, formatSpeed, formatValue } from '../../lib/
 import { SWING_FIELDS } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
 import { ClubPicker } from '../../components/ClubPicker';
-import { AlertMessage, SavedToast, SessionDateField } from '../../components/SessionEntry';
+import { AlertMessage, SavedToast } from '../../components/Feedback';
+import { backToMetrics, SessionDateField } from '../../components/SessionEntry';
 
 type SampleFile = (typeof SAMPLE_FILES)[number];
 // Chỉ số phụ của một dòng (tốc độ đầu gậy + carry đã ở tiêu đề); khoảng trắng không ngắt → chỉ xuống dòng sau " · "
@@ -176,7 +177,7 @@ export default function MetricsImportCsv() {
         <Stepper current={step} steps={[{ title: 'Chọn file' }, { title: 'Xem trước', error: !!file && !vendor }, { title: 'Xác nhận' }]} />
       </View>
       {body}
-      {saved && <SavedToast title={saved.title} caption={saved.caption} />}
+      {saved && <SavedToast title={saved.title} caption={saved.caption} onDone={backToMetrics} />}
     </Screen>
   );
 }
