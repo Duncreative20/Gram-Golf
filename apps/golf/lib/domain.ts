@@ -10,10 +10,12 @@ export interface Profile {
   ratePerHourVnd?: number; verified?: boolean;                 // coach
 }
 
-export type ConnectionStatus = 'pending' | 'active' | 'revoked';
+export type ConnectionStatus = 'pending' | 'active' | 'revoked' | 'declined';
 export interface CoachConnection {
   id: ID; coachId: ID; playerId: ID; status: ConnectionStatus; isPrimary: boolean;
   invitedAt: ISO; acceptedAt?: ISO; revokedAt?: ISO;
+  /** Lời mời / yêu cầu gửi trong app: ai gửi. Không có = kết nối qua mã mời (active ngay — D5). */
+  requestedBy?: Role; declinedAt?: ISO;
 }
 export interface CoachInvite { code: string; coachId: ID; createdAt: ISO; expiresAt: ISO; usedBy?: ID; revoked?: boolean }
 export type InviteCheck = 'ok' | 'not_found' | 'expired' | 'used' | 'revoked' | 'already_connected';
@@ -24,7 +26,7 @@ export type Vendor = 'trackman' | 'foresight';
 export const VENDOR_LABELS: Record<Vendor, string> = { trackman: 'TrackMan', foresight: 'Foresight' };
 export interface SwingMetrics { clubSpeedMph: number; ballSpeedMph: number; smash: number; spinRpm: number; launchDeg: number; carryM: number }
 export interface FitnessMetrics { weightKg: number; flexibility: number; gripStrengthKg: number; verticalJumpCm: number }
-interface SessionBase { id: ID; playerId: ID; capturedAt: ISO; source: MetricSource; vendor?: Vendor; clubId?: ID; note?: string }
+interface SessionBase { id: ID; playerId: ID; capturedAt: ISO; source: MetricSource; vendor?: Vendor; clubId?: ID; note?: string; editedAt?: ISO }
 export type MetricSession =
   | (SessionBase & { kind: 'swing'; swing: SwingMetrics })
   | (SessionBase & { kind: 'fitness'; fitness: FitnessMetrics });
@@ -67,7 +69,7 @@ export interface Swing {
   job: { status: JobStatus; progress: number };
   analysis?: SwingAnalysis;
 }
-export interface CoachNote { id: ID; swingId: ID; coachId: ID; atSec?: number; text: string; createdAt: ISO }
+export interface CoachNote { id: ID; swingId: ID; coachId: ID; atSec?: number; text: string; createdAt: ISO; editedAt?: ISO }
 
 export interface Follow { followerId: ID; followedId: ID }
 export interface Post { id: ID; authorId: ID; createdAt: ISO; title: string; content: string; tags: string[]; swingId?: ID }
@@ -76,7 +78,7 @@ export interface Comment { id: ID; postId: ID; authorId: ID; text: string; creat
 export interface Block { blockerId: ID; blockedId: ID }
 export interface Report { id: ID; reporterId: ID; targetUserId?: ID; postId?: ID; reason: string; createdAt: ISO }
 
-export type NotificationType = 'coach_note' | 'follow' | 'like' | 'comment' | 'invite_accepted' | 'analysis_done';
+export type NotificationType = 'coach_note' | 'follow' | 'like' | 'comment' | 'invite_accepted' | 'analysis_done' | 'connect_request' | 'swing_uploaded';
 export interface AppNotification { id: ID; userId: ID; type: NotificationType; actorId?: ID; refId?: ID; createdAt: ISO; readAt?: ISO }
 
 export type Units = 'metric' | 'imperial';
@@ -91,4 +93,6 @@ export interface AppState {
   sessions: MetricSession[]; clubs: Club[]; swings: Swing[]; notes: CoachNote[];
   follows: Follow[]; posts: Post[]; likes: Like[]; comments: Comment[]; blocks: Block[]; reports: Report[];
   notifications: AppNotification[]; prefs: Record<ID, Preferences>;
+  /** Dev: mọi lưu/xoá có độ trễ giả lập đều thất bại để xem toast lỗi (Cài đặt › Dev). Không phải dữ liệu người dùng. */
+  simulateFailure: boolean;
 }

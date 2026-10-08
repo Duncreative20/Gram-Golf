@@ -6,9 +6,8 @@ import type { Units } from '../../lib/domain';
 import { useStore } from '../../lib/store';
 import { prefsOf } from '../../lib/selectors';
 import { initials } from '../../lib/format';
+import { nextSampleAvatar } from '../../lib/simulate';
 
-// ponytail: ảnh mẫu thay cho thư viện ảnh/camera — bản thật dùng expo-image-picker + upload.
-const SAMPLE_AVATARS = [12, 33, 47, 59].map((n) => `https://i.pravatar.cc/300?img=${n}`);
 const UNITS: { value: Units; label: string; caption: string }[] = [
   { value: 'metric', label: 'Mét', caption: 'Khoảng cách theo mét (m)' },
   { value: 'imperial', label: 'Yard', caption: 'Khoảng cách theo yard (yd)' },
@@ -22,10 +21,7 @@ export default function Onboarding() {
   const units = prefsOf(state, me.id).units;
   // Thay cả nhóm (auth) ở stack gốc → không quay lại được luồng đăng ký.
   const finish = (href: Href = '/') => router.replace(href);
-  const pickAvatar = () => {
-    const i = me.avatarUrl ? SAMPLE_AVATARS.indexOf(me.avatarUrl) : -1;
-    dispatch({ type: 'updateProfile', id: me.id, patch: { avatarUrl: SAMPLE_AVATARS[(i + 1) % SAMPLE_AVATARS.length] } });
-  };
+  const pickAvatar = () => dispatch({ type: 'updateProfile', id: me.id, patch: { avatarUrl: nextSampleAvatar(me.avatarUrl) } });
   const pages = [
     {
       title: 'Ảnh đại diện',

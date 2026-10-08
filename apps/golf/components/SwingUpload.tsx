@@ -4,6 +4,8 @@ import { Button, ProgressBar, useTheme, type IconName, type ProgressStatus, type
 import type { Swing, UploadStatus } from '../lib/domain';
 import { useStore } from '../lib/store';
 import { SAMPLE_VIDEOS, UPLOAD_TICK_MS, uploadTick } from '../lib/simulate';
+import { NOW } from '../lib/mock';
+import { newId } from '../lib/ids';
 import { AlertMessage } from './Feedback';
 
 const UI: Record<UploadStatus, { label: (pct: string) => string; theme: ProgressTheme; status?: ProgressStatus; action?: { icon: IconName; text: string } }> = {
@@ -19,7 +21,7 @@ export function SwingUpload({ swing, controls = true }: { swing: Swing; controls
   const t = useTheme();
   const { dispatch } = useStore();
   const { status, progress } = swing.upload;
-  const set = (next: UploadStatus, p: number) => dispatch({ type: 'uploadUpdate', id: swing.id, status: next, progress: p });
+  const set = (next: UploadStatus, p: number) => dispatch({ type: 'uploadUpdate', id: swing.id, status: next, progress: p, at: NOW, notificationId: newId('nt') });
   // ponytail: bộ đếm chạy trong màn, dọn khi rời màn → danh sách giữ tiến độ cuối ("Đang tải 45%"), mở lại swing thì tải tiếp.
   // Bản thật tải nền (background upload), màn chỉ đọc trạng thái.
   useEffect(() => {

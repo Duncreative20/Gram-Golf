@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { seedState, NOW } from './mock';
 import type { AppState, Club, ClubType } from './domain';
-import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, awaitsFeedback, discover, likeCount, likedBy, clubsOf, previousSwing, latestNote, groupClubs, commentsOf, isBlocked } from './selectors';
+import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, awaitsFeedback, discover, likeCount, likedBy, clubsOf, previousSwing, latestNote, groupClubs, commentsOf, isBlocked, openConnection, connectionRequests, findPlayers, swingsByReview, filterSwings, swingsOf } from './selectors';
 
 describe('selectors', () => {
   const s = seedState();
@@ -76,5 +76,47 @@ describe('selectors', () => {
       ['Wedge', ['pw', 'sw']],
       ['Khác', ['cu']],
     ]);
+  });
+});
+
+describe('selectors Phase 2', () => {
+  const s = seedState();
+  it('kết nối mở của cặp = chờ hoặc active; đã huỷ / đã từ chối không tính', () => {
+    expect(openConnection(s, 'c-tuan', 'p-minh')?.id).toBe('cn-tuan-minh');
+    expect(openConnection(s, 'c-ha', 'p-huy')?.status).toBe('pending');
+    expect(openConnection(s, 'c-ha', 'p-lan')).toBeUndefined(); // revoked
+  });
+  it('lời mời/yêu cầu đang chờ: incoming/outgoing theo người gửi; cặp đã chặn nhau bị ẩn', () => {
+    expect(connectionRequests(s, 'c-ha')).toMatchObject({ incoming: [{ id: 'cn-ha-huy' }], outgoing: [] });
+    expect(connectionRequests(s, 'p-huy')).toMatchObject({ incoming: [], outgoing: [{ id: 'cn-ha-huy' }] });
+    expect(connectionRequests({ ...s, blocks: [{ blockerId: 'c-ha', blockedId: 'p-huy' }] }, 'c-ha').incoming).toEqual([]);
+  });
+  it('HLV tìm người chơi để mời: tên không dấu, email, SĐT (từ 3 chữ số); bỏ người đã kết nối / đang chờ; ô trống → []', () => {
+    expect(findPlayers(s, 'c-tuan', '  ')).toEqual([]);
+    expect(findPlayers(s, 'c-tuan', 'khoa').map((p) => p.id)).toEqual(['p-khoa']);
+    expect(findPlayers(s, 'c-tuan', 'quochuy@').map((p) => p.id)).toEqual(['p-huy']);
+    expect(findPlayers(s, 'c-tuan', '0938 112').map((p) => p.id)).toEqual(['p-huy']);
+    expect(findPlayers(s, 'c-tuan', '09')).toEqual([]); // dưới 3 chữ số không tìm theo SĐT
+    expect(findPlayers(s, 'c-tuan', 'minh')).toEqual([]); // đã kết nối với c-tuan; HLV không bao giờ có trong kết quả
+    expect(findPlayers(s, 'c-ha', 'huy')).toEqual([]); // đang chờ với c-ha
+    expect(findPlayers(s, 'c-ha', 'lan').map((p) => p.id)).toEqual(['p-lan']); // kết nối cũ đã huỷ → mời lại được
+  });
+  it('Đã review / Chưa review theo đúng HLV đang xem; chưa phân tích vẫn là chưa review', () => {
+    const tuan = swingsByReview(s, 'p-minh', 'c-tuan');
+    expect(tuan.unreviewed.map((w) => w.id)).toEqual(['sw-minh-3']);
+    expect(tuan.reviewed.map((w) => w.id)).toEqual(['sw-minh-1', 'sw-minh-2']);
+    const ha = swingsByReview(s, 'p-minh', 'c-ha');
+    expect(ha.reviewed).toEqual([]);
+    expect(ha.unreviewed.map((w) => w.id)).toEqual(['sw-minh-3', 'sw-minh-1', 'sw-minh-2']);
+  });
+  it('lọc swing theo khoảng ngày (tính cả mốc biên) và sắp mới/cũ, không đổi mảng gốc', () => {
+    const w = swingsOf(s, 'p-minh');
+    expect(filterSwings(w, 'all', 'newest', NOW).map((x) => x.id)).toEqual(['sw-minh-3', 'sw-minh-1', 'sw-minh-2']);
+    expect(filterSwings(w, 'all', 'oldest', NOW).map((x) => x.id)).toEqual(['sw-minh-2', 'sw-minh-1', 'sw-minh-3']);
+    expect(filterSwings(w, '7d', 'newest', NOW).map((x) => x.id)).toEqual(['sw-minh-3', 'sw-minh-1']);
+    expect(filterSwings(w, '30d', 'newest', NOW)).toHaveLength(3);
+    const edge = [{ ...w[0]!, id: 'edge', capturedAt: '2026-09-30T08:00:00Z' }]; // đúng NOW − 7 ngày
+    expect(filterSwings(edge, '7d', 'newest', NOW).map((x) => x.id)).toEqual(['edge']);
+    expect(w.map((x) => x.id)).toEqual(['sw-minh-3', 'sw-minh-1', 'sw-minh-2']);
   });
 });

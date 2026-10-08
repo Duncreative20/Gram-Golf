@@ -83,3 +83,52 @@ export const discover = (s: AppState, userId: ID, query: string) =>
 
 export const notificationsOf = (s: AppState, userId: ID) => s.notifications.filter((n) => n.userId === userId).sort(byDateDesc);
 export const unreadCount = (s: AppState, userId: ID) => s.notifications.filter((n) => n.userId === userId && !n.readAt).length;
+
+// ── Phase 2 ──────────────────────────────────────────────────────────────────────────────────
+/** Kết nối đang mở (chờ trả lời hoặc active) của cặp HLV–người chơi. Một cặp có tối đa 1 kết nối mở. */
+export const openConnection = (s: AppState, coachId: ID, playerId: ID) =>
+  s.connections.find((c) => c.coachId === coachId && c.playerId === playerId && (c.status === 'pending' || c.status === 'active'));
+/** Lời mời / yêu cầu kết nối đang chờ của `userId` (HLV hoặc người chơi), mới → cũ: `incoming` = bên kia gửi, chờ mình trả lời;
+ *  `outgoing` = mình gửi, chờ bên kia. Cặp đã chặn nhau bị ẩn. */
+export const connectionRequests = (s: AppState, userId: ID) => {
+  const open = s.connections
+    .filter((c) => c.status === 'pending' && (c.coachId === userId || c.playerId === userId) && !isBlocked(s, c.coachId, c.playerId))
+    .sort((a, b) => Date.parse(b.invitedAt) - Date.parse(a.invitedAt));
+  const sentByMe = (c: CoachConnection) => (c.requestedBy === 'player' ? c.playerId : c.coachId) === userId;
+  return { incoming: open.filter((c) => !sentByMe(c)), outgoing: open.filter(sentByMe) };
+};
+/** HLV tìm người chơi để gửi lời mời: khớp tên (không dấu), email, hoặc SĐT (từ 3 chữ số); bỏ người đã có kết nối mở với HLV này
+ *  và cặp đã chặn nhau. Ô trống → []. */
+export const findPlayers = (s: AppState, coachId: ID, query: string): Profile[] => {
+  const q = query.trim();
+  if (!q) return [];
+  const digits = q.replace(/\D/g, '');
+  return s.profiles.filter(
+    (p) =>
+      p.role === 'player' &&
+      !openConnection(s, coachId, p.id) &&
+      !isBlocked(s, coachId, p.id) &&
+      (fold(p.name).includes(fold(q)) || p.email.toLowerCase().includes(q.toLowerCase()) || (digits.length >= 3 && p.phone.replace(/\D/g, '').includes(digits))),
+  );
+};
+/** Swing của học viên theo HLV `coachId` (MVP "Đã review / Chưa review"): đã review = chính HLV đó có ghi chú; còn lại — kể cả chưa phân tích,
+ *  đang tải lên — là chưa review. Mới → cũ. Khác `awaitsFeedback` (roster "Cần phản hồi" chỉ xét swing đã phân tích — plan Task 2). */
+export const swingsByReview = (s: AppState, playerId: ID, coachId: ID) => {
+  const reviewed = (w: Swing) => s.notes.some((n) => n.swingId === w.id && n.coachId === coachId);
+  const all = swingsOf(s, playerId);
+  return { unreviewed: all.filter((w) => !reviewed(w)), reviewed: all.filter(reviewed) };
+};
+export type SwingPeriod = 'all' | '7d' | '30d';
+const PERIOD_DAYS = { '7d': 7, '30d': 30 } as const;
+/** Lọc swing theo khoảng ngày tính lùi từ `now` (đúng mốc `now − n ngày` vẫn tính), sắp theo ngày quay mới → cũ hoặc cũ → mới. Không đổi mảng gốc. */
+export const filterSwings = (swings: Swing[], period: SwingPeriod, order: 'newest' | 'oldest', now: ISO) => {
+  const from = period === 'all' ? -Infinity : Date.parse(now) - PERIOD_DAYS[period] * 86400000;
+  const kept = swings.filter((w) => Date.parse(w.capturedAt) >= from).sort(byDateDesc);
+  return order === 'newest' ? kept : kept.reverse();
+};
+/** Gậy đã lưu trữ của người chơi, lưu trữ gần nhất trước. */
+export const archivedClubsOf = (s: AppState, playerId: ID) =>
+  s.clubs.filter((c) => c.playerId === playerId && c.archivedAt).sort((a, b) => Date.parse(b.archivedAt!) - Date.parse(a.archivedAt!));
+/** Số phiên + swing đang gắn gậy. > 0 → chỉ lưu trữ được, không xoá (tech review: lưu trữ thay vì xoá khi đã liên kết). */
+export const clubLinkCount = (s: AppState, clubId: ID) =>
+  s.sessions.filter((x) => x.clubId === clubId).length + s.swings.filter((w) => w.clubId === clubId).length;

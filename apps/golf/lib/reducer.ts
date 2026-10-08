@@ -1,5 +1,6 @@
-import type { AppNotification, AppState, Club, CoachInvite, CoachNote, Comment, ID, ISO, JobStatus, MetricSession, NotificationType, Post, Preferences, Profile, Report, Swing, SwingAnalysis, UploadStatus } from './domain';
-import { isBlocked, validateInvite } from './selectors';
+import type { AppNotification, AppState, Club, CoachConnection, CoachInvite, CoachNote, Comment, ID, ISO, JobStatus, MetricSession, NotificationType, Post, Preferences, Profile, Report, Role, Swing, SwingAnalysis, UploadStatus } from './domain';
+import { canViewPrivate, clubLinkCount, isBlocked, openConnection, validateInvite } from './selectors';
+import { noteMarks } from './format';
 import { DEFAULT_PREFS, seedState } from './mock';
 
 export type Action =
@@ -11,7 +12,7 @@ export type Action =
   | { type: 'deleteSession'; id: ID }
   | { type: 'upsertClub'; club: Club } | { type: 'archiveClub'; id: ID; at: ISO }
   | { type: 'addSwing'; swing: Swing }
-  | { type: 'uploadUpdate'; id: ID; status: UploadStatus; progress: number }
+  | { type: 'uploadUpdate'; id: ID; status: UploadStatus; progress: number; at: ISO; notificationId: ID }
   | { type: 'jobUpdate'; id: ID; status: JobStatus; progress: number; analysis?: SwingAnalysis; at: ISO; notificationId: ID }
   | { type: 'deleteSwing'; id: ID }
   | { type: 'addNote'; note: CoachNote; notificationId: ID }
@@ -26,6 +27,12 @@ export type Action =
   | { type: 'block'; blockerId: ID; blockedId: ID } | { type: 'unblock'; blockerId: ID; blockedId: ID }
   | { type: 'report'; report: Report }
   | { type: 'markRead'; userId: ID; at: ISO; ids?: ID[] }
+  | { type: 'updateSession'; session: MetricSession; at: ISO }
+  | { type: 'unarchiveClub'; id: ID } | { type: 'deleteClub'; id: ID }
+  | { type: 'editNote'; id: ID; coachId: ID; text: string; at: ISO } | { type: 'deleteNote'; id: ID; coachId: ID }
+  | { type: 'requestConnection'; id: ID; coachId: ID; playerId: ID; by: Role; at: ISO; notificationId: ID }
+  | { type: 'respondConnection'; id: ID; accept: boolean; at: ISO; notificationId: ID }
+  | { type: 'setSimulateFailure'; on: boolean }
   | { type: 'reset' };
 
 const notify = (s: AppState, n: { id: ID; userId: ID; type: NotificationType; actorId?: ID; refId?: ID; createdAt: ISO }): AppNotification[] =>
@@ -44,7 +51,17 @@ export function reduce(s: AppState, a: Action): AppState {
     case 'upsertClub': return { ...s, clubs: s.clubs.some((c) => c.id === a.club.id) ? s.clubs.map((c) => (c.id === a.club.id ? a.club : c)) : [...s.clubs, a.club] };
     case 'archiveClub': return { ...s, clubs: s.clubs.map((c) => (c.id === a.id ? { ...c, archivedAt: a.at } : c)) };
     case 'addSwing': return { ...s, swings: [a.swing, ...s.swings] };
-    case 'uploadUpdate': return { ...s, swings: s.swings.map((w) => (w.id === a.id ? { ...w, upload: { status: a.status, progress: a.progress } } : w)) };
+    case 'uploadUpdate': {
+      const sw = s.swings.find((w) => w.id === a.id);
+      if (!sw) return s;
+      const swings = s.swings.map((w) => (w === sw ? { ...w, upload: { status: a.status, progress: a.progress } } : w));
+      // Tải lên xong lần đầu → báo mọi HLV đang kết nối active (chính + phụ); nhịp giữa chừng / gửi lại "done" không báo
+      if (a.status !== 'done' || sw.upload.status === 'done') return { ...s, swings };
+      const fresh = s.connections
+        .filter((c) => c.playerId === sw.playerId && c.status === 'active')
+        .map((c, i): AppNotification => ({ id: `${a.notificationId}-${i}`, userId: c.coachId, type: 'swing_uploaded', actorId: sw.playerId, refId: sw.id, createdAt: a.at }));
+      return { ...s, swings, notifications: [...fresh, ...s.notifications] };
+    }
     case 'jobUpdate': {
       const sw = s.swings.find((w) => w.id === a.id);
       if (!sw) return s;
@@ -67,7 +84,8 @@ export function reduce(s: AppState, a: Action): AppState {
       const conn = { id: a.id, coachId: inv.coachId, playerId: a.playerId, status: 'active' as const, isPrimary: !hasPrimary, invitedAt: inv.createdAt, acceptedAt: a.at };
       return {
         ...s,
-        connections: [...s.connections, conn],
+        // lời mời/yêu cầu đang chờ của đúng cặp này tự đóng — một cặp chỉ có 1 kết nối mở
+        connections: [...s.connections.map((c) => (c.coachId === inv.coachId && c.playerId === a.playerId && c.status === 'pending' ? { ...c, status: 'revoked' as const, revokedAt: a.at } : c)), conn],
         invites: s.invites.map((i) => (i === inv ? { ...i, usedBy: a.playerId } : i)),
         notifications: notify(s, { id: a.notificationId, userId: inv.coachId, type: 'invite_accepted', actorId: a.playerId, refId: a.id, createdAt: a.at }),
       };
@@ -107,6 +125,45 @@ export function reduce(s: AppState, a: Action): AppState {
     case 'unblock': return { ...s, blocks: s.blocks.filter((b) => !(b.blockerId === a.blockerId && b.blockedId === a.blockedId)) };
     case 'report': return { ...s, reports: [...s.reports, a.report] };
     case 'markRead': return { ...s, notifications: s.notifications.map((n) => (n.userId === a.userId && !n.readAt && (!a.ids || a.ids.includes(n.id)) ? { ...n, readAt: a.at } : n)) };
-    case 'reset': return { ...seedState(), sessionUserId: s.sessionUserId };
+    case 'updateSession': {
+      const old = s.sessions.find((x) => x.id === a.session.id);
+      if (!old || old.playerId !== a.session.playerId || old.kind !== a.session.kind) return s;
+      return { ...s, sessions: s.sessions.map((x) => (x === old ? { ...a.session, editedAt: a.at } : x)) };
+    }
+    case 'unarchiveClub': return { ...s, clubs: s.clubs.map((c) => (c.id === a.id ? { ...c, archivedAt: undefined } : c)) };
+    case 'deleteClub': return clubLinkCount(s, a.id) > 0 ? s : { ...s, clubs: s.clubs.filter((c) => c.id !== a.id) };
+    case 'editNote':
+    case 'deleteNote': {
+      const n = s.notes.find((x) => x.id === a.id);
+      const sw = n && s.swings.find((w) => w.id === n.swingId);
+      // Quyền ghi (mô phỏng RLS): chỉ HLV viết ghi chú, khi vẫn còn kết nối active với chủ swing
+      if (!n || !sw || n.coachId !== a.coachId || !canViewPrivate(s, a.coachId, sw.playerId)) return s;
+      if (a.type === 'deleteNote') return { ...s, notes: s.notes.filter((x) => x !== n) };
+      const text = a.text.trim();
+      if (!text) return s;
+      return { ...s, notes: s.notes.map((x) => (x === n ? { ...x, text, atSec: noteMarks(text)[0] ?? x.atSec, editedAt: a.at } : x)) };
+    }
+    case 'requestConnection': {
+      const roleOf = (id: ID) => s.profiles.find((p) => p.id === id)?.role;
+      if (roleOf(a.coachId) !== 'coach' || roleOf(a.playerId) !== 'player' || openConnection(s, a.coachId, a.playerId) || isBlocked(s, a.coachId, a.playerId)) return s;
+      const conn: CoachConnection = { id: a.id, coachId: a.coachId, playerId: a.playerId, status: 'pending', isPrimary: false, requestedBy: a.by, invitedAt: a.at };
+      const [from, to] = a.by === 'coach' ? ([a.coachId, a.playerId] as const) : ([a.playerId, a.coachId] as const);
+      return { ...s, connections: [...s.connections, conn], notifications: notify(s, { id: a.notificationId, userId: to, type: 'connect_request', actorId: from, refId: a.id, createdAt: a.at }) };
+    }
+    case 'respondConnection': {
+      const c = s.connections.find((x) => x.id === a.id);
+      if (!c || c.status !== 'pending') return s;
+      if (!a.accept) return { ...s, connections: s.connections.map((x) => (x === c ? { ...x, status: 'declined', declinedAt: a.at } : x)) };
+      // D5 xét lúc kích hoạt: người chơi chưa có HLV chính → kết nối này là chính; có rồi → phụ
+      const hasPrimary = s.connections.some((x) => x.playerId === c.playerId && x.status === 'active' && x.isPrimary);
+      const [requester, responder] = c.requestedBy === 'player' ? ([c.playerId, c.coachId] as const) : ([c.coachId, c.playerId] as const);
+      return {
+        ...s,
+        connections: s.connections.map((x) => (x === c ? { ...x, status: 'active', isPrimary: !hasPrimary, acceptedAt: a.at } : x)),
+        notifications: notify(s, { id: a.notificationId, userId: requester, type: 'invite_accepted', actorId: responder, refId: c.id, createdAt: a.at }),
+      };
+    }
+    case 'setSimulateFailure': return { ...s, simulateFailure: a.on };
+    case 'reset': return { ...seedState(), sessionUserId: s.sessionUserId, simulateFailure: s.simulateFailure };
   }
 }

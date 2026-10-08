@@ -19,11 +19,14 @@ const SENTENCE: Record<NotificationType, string> = {
   comment: 'đã bình luận',
   invite_accepted: 'đã chấp nhận lời mời',
   analysis_done: 'Phân tích swing đã xong',
+  connect_request: 'mời bạn kết nối',
+  swing_uploaded: 'vừa tải lên swing mới',
 };
 
 /** Chạm thông báo → swing / hồ sơ người theo dõi / bài viết / học viên vừa nhận lời mời; thiếu id → chỉ đánh dấu đã đọc. */
 function target(n: AppNotification, actor?: Profile): Href | undefined {
   switch (n.type) {
+    case 'swing_uploaded':
     case 'coach_note':
     case 'analysis_done':
       return n.refId ? `/swings/${n.refId}` : undefined;
@@ -34,6 +37,8 @@ function target(n: AppNotification, actor?: Profile): Href | undefined {
       return actor ? profileHref(actor) : undefined;
     case 'invite_accepted':
       return n.actorId ? `/students/${n.actorId}` : undefined;
+    case 'connect_request':
+      return '/(player)/coach';
   }
 }
 

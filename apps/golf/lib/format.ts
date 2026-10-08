@@ -77,5 +77,13 @@ export const parseNumberVN = (raw: string): number | null => {
   if (s === '' || !/^-?\d+(\.\d+)?$/.test(s)) return null;
   return Number(s);
 };
+/** Mốc chèn vào ghi chú HLV: "[1,3 s]" (cùng dạng formatSec). */
+export const markText = (sec: number) => `[${formatSec(sec)}]`;
+/** Nút "Chèn mốc" ở ô ghi chú: thêm mốc vào cuối nội dung đang soạn, cách chữ trước 1 khoảng trắng, chừa khoảng trắng để gõ tiếp. */
+export const insertMark = (text: string, sec: number) => `${text}${text && !/\s$/.test(text) ? ' ' : ''}${markText(sec)} `;
+/** Các mốc "[1,3 s]" (hoặc gõ tay "[1,3s]") trong ghi chú (giây), theo thứ tự xuất hiện; chữ khác dạng ("1,3 s" không ngoặc, "[abc]") bỏ qua. */
+export const noteMarks = (text: string) => [...text.matchAll(/\[(\d+(?:[.,]\d{1,2})?) ?s\]/g)].map((m) => parseNumberVN(m[1]!)!);
+/** Dung lượng file kiểu VN: "38 MB", "2,4 MB" (dưới 10 MB có 1 chữ số), từ 1000 MB → "1,5 GB". */
+export const formatSize = (mb: number) => (mb >= 1000 ? `${vn(mb / 1000, 1)} GB` : `${vn(mb, mb < 10 ? 1 : 0)} MB`);
 /** Chữ tắt cho Avatar: chữ đầu của 2 từ cuối ("HLV Đỗ Minh Tuấn" → "MT"); tên rỗng → "". */
 export const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(-2).map((w) => w.charAt(0).toUpperCase()).join('');

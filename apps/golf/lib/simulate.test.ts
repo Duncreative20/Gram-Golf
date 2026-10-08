@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { JobStatus, UploadStatus } from './domain';
-import { mockAnalysis, mockOcr, ocrPrefill, ocrEdit, readPhoto, LOW_CONFIDENCE, SAMPLE_PHOTOS, SAMPLE_VIDEOS, uploadTick, UPLOAD_TICK_MS, analysisTick, ANALYSIS_QUEUE_MS, ANALYSIS_TICK_MS } from './simulate';
+import { mockAnalysis, mockOcr, ocrPrefill, ocrEdit, readPhoto, LOW_CONFIDENCE, SAMPLE_PHOTOS, SAMPLE_VIDEOS, uploadTick, UPLOAD_TICK_MS, analysisTick, ANALYSIS_QUEUE_MS, ANALYSIS_TICK_MS, RESET_TOKENS, resetTokenStatus, SAMPLE_AVATARS, nextSampleAvatar } from './simulate';
 import { validateSwingMetrics } from './validation';
 
 /** Chạy liên tiếp từng nhịp tải lên tới khi rời trạng thái 'uploading'; trả mọi nhịp đã đi qua. */
@@ -109,5 +109,20 @@ describe('simulate', () => {
     expect(r.values.carryM).toBe('2B1');
     expect(r.values.clubSpeedMph).toBe('');
     expect(r.highlight).toEqual({ carryM: true });
+  });
+});
+
+describe('link đặt lại mật khẩu, ảnh đại diện mẫu', () => {
+  it('token trong link: hợp lệ / hết hạn / thiếu hoặc lạ (phân biệt hoa thường như token thật)', () => {
+    expect(resetTokenStatus(RESET_TOKENS.ok)).toBe('ok');
+    expect(resetTokenStatus(RESET_TOKENS.expired)).toBe('expired');
+    expect(resetTokenStatus(undefined)).toBe('invalid');
+    expect(resetTokenStatus('gg-reset-ok')).toBe('invalid');
+  });
+  it('ảnh mẫu xoay vòng; chưa có ảnh hoặc ảnh lạ → ảnh đầu', () => {
+    expect(nextSampleAvatar()).toBe(SAMPLE_AVATARS[0]);
+    expect(nextSampleAvatar(SAMPLE_AVATARS[0])).toBe(SAMPLE_AVATARS[1]);
+    expect(nextSampleAvatar(SAMPLE_AVATARS[SAMPLE_AVATARS.length - 1])).toBe(SAMPLE_AVATARS[0]);
+    expect(nextSampleAvatar('https://example.com/a.png')).toBe(SAMPLE_AVATARS[0]);
   });
 });

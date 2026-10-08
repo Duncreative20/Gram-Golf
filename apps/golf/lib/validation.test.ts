@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { CLUB_TYPES } from './domain';
 import { seedState } from './mock';
-import { validateSwingMetrics, validateFitnessMetrics, validateClub, validateRegistration, validateAccount, validatePasswordChange, validatePost, addTags, SWING_FIELDS, swingFields, rangeText, defaultLoft, loftOnTypeChange, clubRaw, type ClubRaw } from './validation';
+import { validateSwingMetrics, validateFitnessMetrics, validateClub, validateRegistration, validateAccount, validatePasswordChange, validatePost, addTags, SWING_FIELDS, swingFields, rangeText, defaultLoft, loftOnTypeChange, clubRaw, type ClubRaw, validateNewPassword, PASSWORD_RULE, validateBio, BIO_MAX, videoFileError, MAX_VIDEO_MB, swingRaw, fitnessRaw } from './validation';
+import { SAMPLE_VIDEOS } from './simulate';
 
 describe('validation', () => {
   it('chấp nhận bộ số hợp lệ', () => {
@@ -151,7 +152,7 @@ describe('validateRegistration', () => {
 
 describe('validateAccount', () => {
   const player = { name: ' Nguyễn  Minh Anh ', phone: '0912 345 678', bio: ' Tập driver. ', handicap: '13,5', homeClub: ' ', academy: '', yearsExperience: '', ratePerHourVnd: '' };
-  const coach = { ...player, handicap: '', academy: ' GramGolf Academy ', yearsExperience: '12', ratePerHourVnd: '450.000' };
+  const coach = { ...player, bio: ' Chuyên swing cơ bản và tempo cho người mới. ', handicap: '', academy: ' GramGolf Academy ', yearsExperience: '12', ratePerHourVnd: '450.000' };
   const others = [{ phone: '0904 888 999' }];
   it('player hợp lệ: chuẩn hoá tên/SĐT, handicap kiểu VN, trường tuỳ chọn để trống → undefined', () => {
     expect(validateAccount('player', player, others)).toEqual({
@@ -161,7 +162,7 @@ describe('validateAccount', () => {
   });
   it('coach hợp lệ: học viện, số năm, đơn giá viết "450.000"', () => {
     expect(validateAccount('coach', coach, others).value).toEqual({
-      name: 'Nguyễn Minh Anh', phone: '0912345678', bio: 'Tập driver.', academy: 'GramGolf Academy', yearsExperience: 12, ratePerHourVnd: 450000,
+      name: 'Nguyễn Minh Anh', phone: '0912345678', bio: 'Chuyên swing cơ bản và tempo cho người mới.', academy: 'GramGolf Academy', yearsExperience: 12, ratePerHourVnd: 450000,
     });
     expect(validateAccount('coach', { ...coach, ratePerHourVnd: '' }, others).value?.ratePerHourVnd).toBeUndefined();
   });
@@ -198,5 +199,53 @@ describe('bài viết', () => {
     expect(addTags(['driver'], ' #DRIVER , Tempo,,  short   game ')).toEqual(['driver', 'tempo', 'short game']);
     expect(addTags(['a', 'b', 'c', 'd'], 'e, f, g')).toEqual(['a', 'b', 'c', 'd', 'e']);
     expect(addTags(['a'], ' , #, ')).toEqual(['a']);
+  });
+});
+
+describe('mật khẩu mới, giới thiệu HLV, file video', () => {
+  it('mật khẩu mới: bắt buộc, cùng luật đăng ký, nhập lại phải khớp', () => {
+    expect(validateNewPassword('', '')).toEqual({ password: 'Bắt buộc', confirm: 'Bắt buộc' });
+    expect(validateNewPassword('golfgolf', 'golfgolf')).toEqual({ password: PASSWORD_RULE });
+    expect(validateNewPassword('golf2026', 'golf2025')).toEqual({ confirm: 'Mật khẩu nhập lại không khớp' });
+    expect(validateNewPassword('golf2026', 'golf2026')).toEqual({});
+    const reg = validateRegistration('player', { name: 'A', email: 'a@b.vn', phone: '0912345678', password: 'golfgolf', handicap: '1', academy: '', yearsExperience: '' }, []);
+    expect(reg.errors.password).toBe(PASSWORD_RULE);
+  });
+  it('giới thiệu HLV: bắt buộc, 20–300 ký tự tính sau khi bỏ khoảng trắng hai đầu', () => {
+    expect(validateBio('   ')).toBe('Bắt buộc');
+    expect(validateBio('Dạy swing')).toBe('Tối thiểu 20 ký tự');
+    expect(validateBio('  Chuyên tempo cho người mới chơi  ')).toBeUndefined();
+    expect(validateBio('a'.repeat(BIO_MAX + 1))).toBe('Tối đa 300 ký tự');
+  });
+  it('Tài khoản: HLV báo lỗi giới thiệu theo validateBio; người chơi để trống vẫn hợp lệ', () => {
+    const raw = { name: 'HLV Đỗ Minh Tuấn', phone: '0904888999', bio: 'Ngắn quá', handicap: '', homeClub: '', academy: 'GramGolf Academy', yearsExperience: '12', ratePerHourVnd: '' };
+    expect(validateAccount('coach', raw, []).errors).toEqual({ bio: 'Tối thiểu 20 ký tự' });
+    expect(validateAccount('coach', { ...raw, bio: ' ' }, []).errors).toEqual({ bio: 'Bắt buộc' });
+    expect(validateAccount('player', { ...raw, bio: '', handicap: '14' }, []).errors).toEqual({});
+  });
+  it('file video: không phải video xét trước, rồi dung lượng; danh sách mẫu có đủ 2 nhánh lỗi', () => {
+    expect(videoFileError({ mimeType: 'image/jpeg', sizeMb: 9999 })).toBe('not_video');
+    expect(videoFileError({ mimeType: 'video/mp4', sizeMb: MAX_VIDEO_MB + 1 })).toBe('too_large');
+    expect(videoFileError({ mimeType: 'video/quicktime', sizeMb: MAX_VIDEO_MB })).toBeUndefined();
+    expect(SAMPLE_VIDEOS.filter((v) => videoFileError(v)).map((v) => [v.fileName, videoFileError(v)])).toEqual([
+      ['swing_4k_120fps_dai.mov', 'too_large'],
+      ['anh_tu_the_chuan_bi.jpg', 'not_video'],
+    ]); // 5 video mẫu có sẵn (gồm pw_may_chu_ban.mp4 của Task 14) đều hợp lệ
+  });
+});
+
+describe('sửa phiên: giá trị form từ phiên đã lưu', () => {
+  const sw = { clubSpeedMph: 104.2, ballSpeedMph: 152.1, smash: 1.46, spinRpm: 2650, launchDeg: 12.4, carryM: 229 };
+  it('metric: số kiểu VN giữ nguyên chữ số; mở form rồi lưu nguyên → y hệt', () => {
+    expect(swingRaw(sw, 'metric')).toEqual({ clubSpeedMph: '104,2', ballSpeedMph: '152,1', smash: '1,46', spinRpm: '2650', launchDeg: '12,4', carryM: '229' });
+    expect(validateSwingMetrics(swingRaw(sw, 'metric'), 'metric').value).toEqual(sw);
+  });
+  it('imperial: carry hiện yard 1 chữ số; lưu lại về mét lệch dưới 0,05 m', () => {
+    expect(swingRaw(sw, 'imperial').carryM).toBe('250,4');
+    expect(validateSwingMetrics(swingRaw(sw, 'imperial'), 'imperial').value!.carryM).toBeCloseTo(229, 1);
+  });
+  it('thể lực: mở form rồi lưu nguyên → y hệt', () => {
+    const f = { weightKg: 72.5, flexibility: 7, gripStrengthKg: 45, verticalJumpCm: 48 };
+    expect(validateFitnessMetrics(fitnessRaw(f)).value).toEqual(f);
   });
 });

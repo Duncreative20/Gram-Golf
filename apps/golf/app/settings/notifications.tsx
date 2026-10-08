@@ -7,11 +7,13 @@ import { prefsOf } from '../../lib/selectors';
 import { StackHeader } from '../../components/StackHeader';
 import { Section } from '../../components/Section';
 
-/** Nhãn 6 loại thông báo; `roles` = vai trò nhận được loại đó (HLV không nhận ghi chú/phân tích, người chơi không nhận "chấp nhận lời mời"). */
+/** Nhãn 8 loại thông báo; `roles` = vai trò nhận được loại đó (HLV không nhận ghi chú/phân tích, người chơi không nhận "học viên đăng swing mới"). */
 const TYPES: { type: NotificationType; label: string; roles: Role[] }[] = [
   { type: 'coach_note', label: 'Ghi chú của HLV', roles: ['player'] },
   { type: 'analysis_done', label: 'Phân tích swing xong', roles: ['player'] },
-  { type: 'invite_accepted', label: 'Học viên chấp nhận lời mời', roles: ['coach'] },
+  { type: 'swing_uploaded', label: 'Học viên đăng swing mới', roles: ['coach'] },
+  { type: 'connect_request', label: 'Lời mời và yêu cầu kết nối', roles: ['player', 'coach'] },
+  { type: 'invite_accepted', label: 'Kết nối được chấp nhận', roles: ['player', 'coach'] },
   { type: 'follow', label: 'Người theo dõi mới', roles: ['player', 'coach'] },
   { type: 'like', label: 'Lượt thích bài viết', roles: ['player', 'coach'] },
   { type: 'comment', label: 'Bình luận bài viết', roles: ['player', 'coach'] },

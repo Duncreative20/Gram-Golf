@@ -5,7 +5,7 @@ export const NOW = '2026-10-07T08:00:00Z';
 
 export const DEFAULT_PREFS: Preferences = {
   units: 'metric', publicClubs: false, publicSwings: false, quietHours: false,
-  notify: { coach_note: true, follow: true, like: true, comment: true, invite_accepted: true, analysis_done: true },
+  notify: { coach_note: true, follow: true, like: true, comment: true, invite_accepted: true, analysis_done: true, connect_request: true, swing_uploaded: true },
 };
 
 const profiles = (): Profile[] => [
@@ -73,6 +73,8 @@ export function seedState(): AppState {
       { id: 'cn-ha-khoa', coachId: 'c-ha', playerId: 'p-khoa', status: 'active', isPrimary: true, invitedAt: '2026-05-22T02:00:00Z', acceptedAt: '2026-05-22T05:00:00Z' },
       { id: 'cn-ha-minh', coachId: 'c-ha', playerId: 'p-minh', status: 'active', isPrimary: false, invitedAt: '2026-08-20T02:00:00Z', acceptedAt: '2026-08-21T02:00:00Z' },
       { id: 'cn-ha-lan', coachId: 'c-ha', playerId: 'p-lan', status: 'revoked', isPrimary: false, invitedAt: '2026-07-15T02:00:00Z', acceptedAt: '2026-07-15T04:00:00Z', revokedAt: '2026-09-10T02:00:00Z' },
+      // yêu cầu kết nối do người chơi gửi, đang chờ HLV Hà duyệt (tab Học viên › Lời mời của c-ha có sẵn dữ liệu)
+      { id: 'cn-ha-huy', coachId: 'c-ha', playerId: 'p-huy', status: 'pending', isPrimary: false, requestedBy: 'player', invitedAt: '2026-10-07T03:00:00Z' },
     ],
     invites: [
       { code: 'TUAN24', coachId: 'c-tuan', createdAt: '2026-10-07T02:00:00Z', expiresAt: '2026-10-14T02:00:00Z' },
@@ -124,7 +126,9 @@ export function seedState(): AppState {
       { id: 'nt-3', userId: 'p-minh', type: 'like', actorId: 'c-tuan', refId: 'post-4', createdAt: '2026-10-05T11:30:00Z', readAt: '2026-10-05T12:00:00Z' },
       { id: 'nt-4', userId: 'p-minh', type: 'analysis_done', refId: 'sw-minh-1', createdAt: '2026-10-05T09:32:00Z', readAt: '2026-10-05T09:40:00Z' },
       { id: 'nt-5', userId: 'c-tuan', type: 'invite_accepted', actorId: 'p-lan', refId: 'cn-tuan-lan', createdAt: '2026-10-06T01:00:00Z' },
+      { id: 'nt-6', userId: 'c-ha', type: 'connect_request', actorId: 'p-huy', refId: 'cn-ha-huy', createdAt: '2026-10-07T03:00:00Z' },
     ],
     prefs: Object.fromEntries(ps.map((p) => [p.id, { ...DEFAULT_PREFS, notify: { ...DEFAULT_PREFS.notify } }])),
+    simulateFailure: false,
   };
 }

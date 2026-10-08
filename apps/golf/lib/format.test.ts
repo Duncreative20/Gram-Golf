@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM, initials, statDelta, formatValue, vnDay, withVnDay, formatSec, timeLeft, formatVnd, parseInviteCode, swingTiles } from './format';
+import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM, initials, statDelta, formatValue, vnDay, withVnDay, formatSec, timeLeft, formatVnd, parseInviteCode, swingTiles, insertMark, noteMarks, formatSize } from './format';
 
 describe('format', () => {
   it('mốc thời gian video: 1 chữ số thập phân kiểu VN + " s" (như "Ghi chú tại 1,3 s") — một kiểu cho mọi màn', () => {
@@ -111,5 +111,21 @@ describe('format', () => {
     expect(parseInviteCode('Mã của mình: https://gramgolf.app/i/AB23CD nhé')).toBe('AB23CD');
     expect(parseInviteCode('ABCDEFGH')).toBe('ABCDEF');
     expect(parseInviteCode('')).toBe('');
+  });
+});
+
+describe('mốc trong ghi chú HLV, dung lượng file', () => {
+  it('chèn "[1,3 s]" (dạng formatSec) vào cuối nội dung, cách chữ trước 1 khoảng trắng; đọc lại các mốc theo thứ tự (gõ tay "[1,6s]" cũng nhận)', () => {
+    expect(insertMark('', 1.32)).toBe('[1,3 s] ');
+    expect(insertMark('Vai mở sớm', 1.3)).toBe('Vai mở sớm [1,3 s] ');
+    expect(insertMark('Vai mở sớm ', 1.3)).toBe('Vai mở sớm [1,3 s] ');
+    expect(noteMarks('Đỉnh [1,3 s] rồi chạm bóng [1,6s].')).toEqual([1.3, 1.6]);
+    expect(noteMarks('Không có mốc, 1,3 s không ngoặc, [abc]')).toEqual([]);
+    expect(noteMarks(insertMark('x', 0))).toEqual([0]);
+  });
+  it('dung lượng: MB (dưới 10 MB có 1 chữ số), từ 1000 MB đổi GB', () => {
+    expect(formatSize(38)).toBe('38 MB');
+    expect(formatSize(2.4)).toBe('2,4 MB');
+    expect(formatSize(1500)).toBe('1,5 GB');
   });
 });

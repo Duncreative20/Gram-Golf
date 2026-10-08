@@ -31,13 +31,16 @@ export const SAMPLE_FILES: { name: string; vendor: Vendor | null; content: strin
 ];
 
 /** Video mẫu cho màn đăng swing. `failAt` = tải lên lỗi tại mốc đó; `analysisFailAt` = job phân tích lỗi tại mốc đó (máy chủ bận);
- *  thử lại chạy tiếp từ mốc lỗi nên lần sau thành công. `quality: 'low'` → kết quả needs_review. */
-export const SAMPLE_VIDEOS: { fileName: string; durationSec: number; cameraView: CameraView; failAt?: number; analysisFailAt?: number; quality: 'good' | 'low' }[] = [
-  { fileName: 'driver_face_on_60fps.mp4', durationSec: 4.2, cameraView: 'face-on', quality: 'good' },
-  { fileName: 'sat7_dtl_sang_som.mp4', durationSec: 3.8, cameraView: 'down-the-line', quality: 'good' },
-  { fileName: 'wedge_mang_yeu.mp4', durationSec: 3.1, cameraView: 'face-on', failAt: 0.6, quality: 'good' },
-  { fileName: 'driver_nguoc_sang.mp4', durationSec: 4.0, cameraView: 'face-on', quality: 'low' },
-  { fileName: 'pw_may_chu_ban.mp4', durationSec: 3.4, cameraView: 'down-the-line', analysisFailAt: 0.5, quality: 'good' },
+ *  thử lại chạy tiếp từ mốc lỗi nên lần sau thành công. `quality: 'low'` → kết quả needs_review. `sizeMb` / `mimeType` → kiểm file khi chọn. */
+export const SAMPLE_VIDEOS: { fileName: string; durationSec: number; cameraView: CameraView; failAt?: number; analysisFailAt?: number; quality: 'good' | 'low'; sizeMb: number; mimeType: string }[] = [
+  { fileName: 'driver_face_on_60fps.mp4', durationSec: 4.2, cameraView: 'face-on', quality: 'good', sizeMb: 38, mimeType: 'video/mp4' },
+  { fileName: 'sat7_dtl_sang_som.mp4', durationSec: 3.8, cameraView: 'down-the-line', quality: 'good', sizeMb: 31, mimeType: 'video/mp4' },
+  { fileName: 'wedge_mang_yeu.mp4', durationSec: 3.1, cameraView: 'face-on', failAt: 0.6, quality: 'good', sizeMb: 24, mimeType: 'video/mp4' },
+  { fileName: 'driver_nguoc_sang.mp4', durationSec: 4.0, cameraView: 'face-on', quality: 'low', sizeMb: 35, mimeType: 'video/mp4' },
+  { fileName: 'pw_may_chu_ban.mp4', durationSec: 3.4, cameraView: 'down-the-line', analysisFailAt: 0.5, quality: 'good', sizeMb: 27, mimeType: 'video/mp4' },
+  // 2 file lỗi để popup MVP §6 đi tới được (cùng cách file CSV mẫu thứ 3): quá dung lượng, không phải video
+  { fileName: 'swing_4k_120fps_dai.mov', durationSec: 95, cameraView: 'face-on', quality: 'good', sizeMb: 1500, mimeType: 'video/quicktime' },
+  { fileName: 'anh_tu_the_chuan_bi.jpg', durationSec: 0, cameraView: 'face-on', quality: 'good', sizeMb: 2.4, mimeType: 'image/jpeg' },
 ];
 
 /** Kết quả phân tích giả lập, xác định theo tên file (không ngẫu nhiên → test được). */
@@ -128,3 +131,13 @@ export const ocrEdit = (review: OcrReview, values: OcrReview['values']): OcrRevi
 /** Độ trễ giả lập (ms) của trạng thái tạm thời. Màn đọc lúc chạy (không chép ra hằng riêng) để Storybook app (`appStory({ hold })`) kéo dài
  *  được khi chụp ảnh. firstLoad = skeleton lần đầu mở màn; toast = toast thành công tự đóng; ocr = "Đang đọc…" khi nhập ảnh. */
 export const DELAYS = { firstLoad: 400, toast: 1200, ocr: 1500 };
+
+/** Link đặt lại mật khẩu (mô phỏng email): token trong link → trạng thái. Bản thật: server kiểm token dùng 1 lần, hết hạn sau 30 phút. */
+export const RESET_TOKENS = { ok: 'GG-RESET-OK', expired: 'GG-RESET-EXPIRED' } as const;
+export const resetTokenStatus = (token?: string): 'ok' | 'expired' | 'invalid' =>
+  token === RESET_TOKENS.ok ? 'ok' : token === RESET_TOKENS.expired ? 'expired' : 'invalid';
+
+// ponytail: ảnh mẫu thay cho thư viện ảnh/camera — bản thật dùng expo-image-picker + upload.
+export const SAMPLE_AVATARS = [12, 33, 47, 59].map((n) => `https://i.pravatar.cc/300?img=${n}`);
+/** Ảnh mẫu kế tiếp cho nút "Chọn ảnh" / "Đổi ảnh" (onboarding, Tài khoản): xoay vòng; chưa có ảnh hoặc ảnh lạ → ảnh đầu. */
+export const nextSampleAvatar = (current?: string) => SAMPLE_AVATARS[(SAMPLE_AVATARS.indexOf(current ?? '') + 1) % SAMPLE_AVATARS.length]!;

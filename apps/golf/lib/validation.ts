@@ -112,7 +112,8 @@ const phoneError = (phone: string, others: Pick<Profile, 'phone'>[]) =>
   : !/^0\d{9}$/.test(phone) ? 'Gồm 10 số, bắt đầu bằng 0'
   : others.some((p) => p.phone.replace(/\s/g, '') === phone) ? 'Số điện thoại đã có tài khoản'
   : undefined;
-const passwordError = (pw: string) => (!pw ? 'Bắt buộc' : pw.length < 8 || !/\d/.test(pw) ? 'Tối thiểu 8 ký tự, có ít nhất 1 chữ số' : undefined);
+export const PASSWORD_RULE = 'Tối thiểu 8 ký tự, có ít nhất 1 chữ số';
+const passwordError = (pw: string) => (!pw ? 'Bắt buộc' : pw.length < 8 || !/\d/.test(pw) ? PASSWORD_RULE : undefined);
 /** Ô số bắt buộc trong 0–max, viết kiểu VN ("18,5") → số; không hợp lệ → chuỗi lỗi. */
 const bounded = (raw: string, max: number, integer: boolean): number | string => {
   const n = parseNumberVN(raw);
@@ -157,6 +158,15 @@ export function validateRegistration(role: Role, raw: RegistrationRaw, profiles:
 }
 
 export const BIO_MAX = 300;
+export const BIO_MIN = 20;
+/** Giới thiệu nghề nghiệp của HLV (bước onboarding, Tài khoản): bắt buộc, 20–300 ký tự tính sau khi bỏ khoảng trắng hai đầu. */
+export const validateBio = (raw: string): string | undefined => {
+  const n = raw.trim().length;
+  if (!n) return 'Bắt buộc';
+  if (n < BIO_MIN) return `Tối thiểu ${BIO_MIN} ký tự`;
+  if (n > BIO_MAX) return `Tối đa ${BIO_MAX} ký tự`;
+  return undefined;
+};
 export const RATE_MAX_VND = 10_000_000;
 export interface AccountRaw { name: string; phone: string; bio: string; handicap: string; homeClub: string; academy: string; yearsExperience: string; ratePerHourVnd: string }
 /** Form Tài khoản (settings/account): như đăng ký nhưng không email/mật khẩu; `others` = hồ sơ KHÁC mình (SĐT không trùng).
@@ -168,7 +178,8 @@ export function validateAccount(role: Role, raw: AccountRaw, others: Pick<Profil
   const e: Partial<Record<keyof AccountRaw, string>> = {
     name: name ? undefined : 'Bắt buộc',
     phone: phoneError(phone, others),
-    bio: bio.length > BIO_MAX ? `Tối đa ${BIO_MAX} ký tự` : undefined,
+    // HLV: giới thiệu bắt buộc (MVP §2 "Bio nghề nghiệp"); người chơi: tuỳ chọn, tối đa BIO_MAX
+    bio: role === 'coach' ? validateBio(raw.bio) : bio.length > BIO_MAX ? `Tối đa ${BIO_MAX} ký tự` : undefined,
   };
   const base = { name, phone, bio: bio || undefined };
   let value: Partial<Profile>;
@@ -217,3 +228,27 @@ export const addTags = (tags: string[], input: string) =>
     .split(',')
     .map((x) => x.trim().replace(/^#+/, '').trim().replace(/\s+/g, ' ').toLowerCase())
     .reduce((acc, tag) => (tag && !acc.includes(tag) && acc.length < POST_TAGS_MAX ? [...acc, tag] : acc), tags);
+
+/** Mật khẩu mới + nhập lại (đặt lại mật khẩu từ link): cùng luật với đăng ký và đổi mật khẩu (`passwordError`). */
+export const validateNewPassword = (password: string, confirm: string): { password?: string; confirm?: string } =>
+  onlyErrors({
+    password: passwordError(password),
+    confirm: !confirm ? 'Bắt buộc' : confirm !== password ? 'Mật khẩu nhập lại không khớp' : undefined,
+  });
+
+// ponytail: giới hạn tạm 300 MB cho video swing (vài giây 1080p 60 fps ≈ 20–60 MB) — chủ dự án chốt số khi có upload thật.
+export const MAX_VIDEO_MB = 300;
+export type VideoFileError = 'not_video' | 'too_large';
+/** File chọn ở bước "Chọn video": không phải video (theo MIME) xét trước, rồi dung lượng. Hợp lệ → undefined. */
+export const videoFileError = (f: { mimeType: string; sizeMb: number }): VideoFileError | undefined =>
+  !f.mimeType.startsWith('video/') ? 'not_video' : f.sizeMb > MAX_VIDEO_MB ? 'too_large' : undefined;
+
+/** Giá trị form sửa phiên swing từ số đã lưu (mét, D9): số kiểu VN giữ nguyên chữ số; carry theo đơn vị hiển thị — imperial đổi sang yard
+ *  1 chữ số thập phân để lưu lại không trôi quá 0,05 m. Lưu bằng `validateSwingMetrics(raw, units)`. */
+export const swingRaw = (m: SwingMetrics, units: Units): Raw<keyof SwingMetrics> =>
+  Object.fromEntries(
+    SWING_FIELDS.map((f) => [f.key, formatValue(f.key === 'carryM' && units === 'imperial' ? Math.round(mToYd(m.carryM) * 10) / 10 : m[f.key])]),
+  ) as Raw<keyof SwingMetrics>;
+/** Giá trị form sửa phiên thể lực. */
+export const fitnessRaw = (m: FitnessMetrics): Raw<keyof FitnessMetrics> =>
+  Object.fromEntries(FITNESS_FIELDS.map((f) => [f.key, formatValue(m[f.key])])) as Raw<keyof FitnessMetrics>;

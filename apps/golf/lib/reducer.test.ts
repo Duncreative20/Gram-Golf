@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { reduce } from './reducer';
 import { seedState, NOW } from './mock';
-import { canViewPrivate, validateInvite, activeCoaches, feed, roster, clubById, clubsOf, pendingInvites, discover } from './selectors';
+import type { AppState, MetricSession, UploadStatus } from './domain';
+import { canViewPrivate, validateInvite, activeCoaches, feed, roster, clubById, clubsOf, pendingInvites, discover, connectionRequests, archivedClubsOf, clubLinkCount } from './selectors';
 
 const s0 = () => seedState();
 
@@ -130,7 +131,7 @@ describe('swing', () => {
   });
   it('tiến độ tải lên / job nằm trong store (danh sách đọc được); job chưa xong không tạo thông báo', () => {
     const sw = s0().swings.find((x) => x.job.status === 'none')!;
-    const up = reduce(s0(), { type: 'uploadUpdate', id: sw.id, status: 'uploading', progress: 0.45 });
+    const up = reduce(s0(), { type: 'uploadUpdate', id: sw.id, status: 'uploading', progress: 0.45, at: NOW, notificationId: 'n-u' });
     expect(up.swings.find((x) => x.id === sw.id)!.upload).toEqual({ status: 'uploading', progress: 0.45 });
     const before = s0();
     const job = reduce(before, { type: 'jobUpdate', id: sw.id, status: 'processing', progress: 0.4, at: NOW, notificationId: 'n-p' });
@@ -163,5 +164,162 @@ describe('bộ gậy', () => {
     expect(clubById(s, 'cl-driver')).toMatchObject({ type: 'Driver', archivedAt: NOW });
     expect(s.sessions.filter((x) => x.clubId === 'cl-driver')).toHaveLength(6);
     expect(s.swings.filter((w) => w.clubId === 'cl-driver')).toHaveLength(1);
+  });
+});
+
+describe('lời mời / yêu cầu kết nối 2 chiều (D5 xét lúc kích hoạt)', () => {
+  const req = (s: AppState, coachId: string, playerId: string, by: 'coach' | 'player', id = 'rq-1') =>
+    reduce(s, { type: 'requestConnection', id, coachId, playerId, by, at: NOW, notificationId: `n-${id}` });
+  it('HLV mời người chơi cụ thể → kết nối chờ (chưa có quyền xem), người chơi nhận connect_request', () => {
+    const s = req(s0(), 'c-tuan', 'p-huy', 'coach');
+    expect(s.connections.find((c) => c.id === 'rq-1')).toMatchObject({ status: 'pending', requestedBy: 'coach', isPrimary: false, invitedAt: NOW });
+    expect(s.notifications.find((n) => n.id === 'n-rq-1')).toMatchObject({ userId: 'p-huy', type: 'connect_request', actorId: 'c-tuan', refId: 'rq-1' });
+    expect(canViewPrivate(s, 'c-tuan', 'p-huy')).toBe(false);
+    expect(connectionRequests(s, 'p-huy').incoming.map((c) => c.id)).toEqual(['rq-1']);
+    expect(connectionRequests(s, 'c-tuan').outgoing.map((c) => c.id)).toEqual(['rq-1']);
+  });
+  it('người chơi gửi yêu cầu tới HLV → HLV nhận connect_request; dữ liệu mẫu có sẵn yêu cầu p-huy → c-ha', () => {
+    const s = req(s0(), 'c-tuan', 'p-huy', 'player');
+    expect(s.notifications.find((n) => n.id === 'n-rq-1')).toMatchObject({ userId: 'c-tuan', type: 'connect_request', actorId: 'p-huy' });
+    expect(connectionRequests(s0(), 'c-ha').incoming.map((c) => c.id)).toEqual(['cn-ha-huy']);
+  });
+  it('không tạo kết nối mở thứ 2 cho cùng cặp; sai vai trò hoặc hai bên đã chặn nhau → không đổi', () => {
+    const b = s0();
+    expect(req(b, 'c-tuan', 'p-minh', 'player')).toBe(b); // đã active
+    expect(req(b, 'c-ha', 'p-huy', 'coach')).toBe(b); // đã có yêu cầu chờ theo chiều ngược lại
+    expect(req(b, 'p-minh', 'p-huy', 'coach')).toBe(b); // coachId không phải HLV
+    expect(req(b, 'c-tuan', 'c-ha', 'coach')).toBe(b); // playerId không phải người chơi
+    const blocked = reduce(b, { type: 'block', blockerId: 'p-huy', blockedId: 'c-tuan' });
+    expect(req(blocked, 'c-tuan', 'p-huy', 'coach')).toBe(blocked);
+  });
+  it('chấp nhận → active; chính/phụ theo D5 lúc chấp nhận; bên gửi nhận invite_accepted', () => {
+    const s = req(s0(), 'c-tuan', 'p-huy', 'coach');
+    const ok = reduce(s, { type: 'respondConnection', id: 'rq-1', accept: true, at: NOW, notificationId: 'n-ok' });
+    expect(ok.connections.find((c) => c.id === 'rq-1')).toMatchObject({ status: 'active', isPrimary: true, acceptedAt: NOW });
+    expect(ok.notifications.find((n) => n.id === 'n-ok')).toMatchObject({ userId: 'c-tuan', type: 'invite_accepted', actorId: 'p-huy', refId: 'rq-1' });
+    expect(roster(ok, 'c-tuan').map((p) => p.id)).toContain('p-huy');
+    // p-khoa đã có HLV chính c-ha → HLV Tuấn duyệt yêu cầu của Khoa thì thành HLV phụ; Khoa (bên gửi) nhận thông báo
+    const k = reduce(req(s0(), 'c-tuan', 'p-khoa', 'player'), { type: 'respondConnection', id: 'rq-1', accept: true, at: NOW, notificationId: 'n-k' });
+    expect(k.connections.find((c) => c.id === 'rq-1')!.isPrimary).toBe(false);
+    expect(k.notifications.find((n) => n.id === 'n-k')).toMatchObject({ userId: 'p-khoa', type: 'invite_accepted', actorId: 'c-tuan' });
+  });
+  it('có HLV chính SAU lúc gửi yêu cầu → chấp nhận thành HLV phụ (D5 xét lúc kích hoạt)', () => {
+    let s = req(s0(), 'c-tuan', 'p-huy', 'coach');
+    s = reduce(s, { type: 'createInvite', invite: { code: 'HAOK22', coachId: 'c-ha', createdAt: NOW, expiresAt: '2026-10-14T08:00:00Z' } });
+    s = reduce(s, { type: 'acceptInvite', code: 'HAOK22', playerId: 'p-huy', at: NOW, id: 'cx-ha', notificationId: 'n-ha' });
+    s = reduce(s, { type: 'respondConnection', id: 'rq-1', accept: true, at: NOW, notificationId: 'n-ok' });
+    expect(activeCoaches(s, 'p-huy').map((c) => [c.coach.id, c.connection.isPrimary])).toEqual([['c-ha', true], ['c-tuan', false]]);
+  });
+  it('nhập mã của HLV đang có lời mời/yêu cầu chờ → chỉ 1 kết nối active, lời mời chờ tự đóng, trả lời sau đó không đổi gì', () => {
+    let s = req(s0(), 'c-tuan', 'p-huy', 'coach');
+    s = reduce(s, { type: 'acceptInvite', code: 'TUAN24', playerId: 'p-huy', at: NOW, id: 'cx-1', notificationId: 'n-x' });
+    expect(s.connections.filter((c) => c.coachId === 'c-tuan' && c.playerId === 'p-huy' && c.status === 'active')).toHaveLength(1);
+    expect(s.connections.find((c) => c.id === 'rq-1')).toMatchObject({ status: 'revoked', revokedAt: NOW });
+    expect(reduce(s, { type: 'respondConnection', id: 'rq-1', accept: true, at: NOW, notificationId: 'n' })).toBe(s);
+    expect(roster(s, 'c-tuan').filter((p) => p.id === 'p-huy')).toHaveLength(1);
+  });
+  it('từ chối → declined, không thông báo, không mở quyền; gửi lại được sau khi bị từ chối', () => {
+    const s = req(s0(), 'c-tuan', 'p-huy', 'coach');
+    const no = reduce(s, { type: 'respondConnection', id: 'rq-1', accept: false, at: NOW, notificationId: 'n-no' });
+    expect(no.connections.find((c) => c.id === 'rq-1')).toMatchObject({ status: 'declined', declinedAt: NOW });
+    expect(no.notifications).toBe(s.notifications);
+    expect(canViewPrivate(no, 'c-tuan', 'p-huy')).toBe(false);
+    expect(req(no, 'c-tuan', 'p-huy', 'coach', 'rq-2').connections.find((c) => c.id === 'rq-2')!.status).toBe('pending');
+  });
+  it('huỷ lời mời/yêu cầu đang chờ bằng revokeConnection; trả lời kết nối không còn chờ → không đổi', () => {
+    const s = reduce(req(s0(), 'c-tuan', 'p-huy', 'coach'), { type: 'revokeConnection', id: 'rq-1', at: NOW });
+    expect(connectionRequests(s, 'p-huy').incoming).toEqual([]);
+    expect(reduce(s, { type: 'respondConnection', id: 'rq-1', accept: true, at: NOW, notificationId: 'n' })).toBe(s);
+    const b = s0();
+    expect(reduce(b, { type: 'respondConnection', id: 'cn-tuan-minh', accept: false, at: NOW, notificationId: 'n' })).toBe(b);
+  });
+});
+
+describe('thông báo HLV khi học viên tải swing mới lên xong', () => {
+  const add = (s: AppState, playerId: string) =>
+    reduce(s, { type: 'addSwing', swing: { id: 'sw-new', playerId, capturedAt: NOW, fileName: 'driver_face_on_60fps.mp4', durationSec: 4.2, cameraView: 'face-on', upload: { status: 'uploading', progress: 0 }, job: { status: 'none', progress: 0 } } });
+  const up = (s: AppState, status: UploadStatus, progress: number, nid = 'n-up') => reduce(s, { type: 'uploadUpdate', id: 'sw-new', status, progress, at: NOW, notificationId: nid });
+  const uploaded = (s: AppState) => s.notifications.filter((n) => n.type === 'swing_uploaded');
+  it('nhịp tải giữa chừng không báo; xong → mỗi HLV active (chính + phụ) đúng 1 thông báo', () => {
+    const mid = up(add(s0(), 'p-minh'), 'uploading', 0.5);
+    expect(uploaded(mid)).toEqual([]);
+    const done = up(mid, 'done', 1);
+    expect(uploaded(done).map((n) => [n.userId, n.actorId, n.refId]).sort()).toEqual([['c-ha', 'p-minh', 'sw-new'], ['c-tuan', 'p-minh', 'sw-new']]);
+    expect(uploaded(done).map((n) => n.id).sort()).toEqual(['n-up-0', 'n-up-1']);
+  });
+  it('báo 1 lần mỗi swing (gửi lại "done" không báo lặp; lỗi mạng rồi thử lại vẫn 1 lần); HLV đã huỷ hoặc đang chờ không nhận', () => {
+    const twice = up(up(add(s0(), 'p-lan'), 'done', 1), 'done', 1, 'n-up2');
+    expect(uploaded(twice).map((n) => n.userId)).toEqual(['c-tuan']); // c-ha với p-lan đã revoked
+    const retried = up(up(up(add(s0(), 'p-minh'), 'failed', 0.6), 'uploading', 0.6), 'done', 1);
+    expect(uploaded(retried)).toHaveLength(2);
+    expect(uploaded(up(add(s0(), 'p-huy'), 'done', 1))).toEqual([]); // p-huy chỉ có yêu cầu chờ với c-ha
+  });
+});
+
+describe('sửa / xoá ghi chú HLV (chỉ tác giả còn kết nối active)', () => {
+  it('tác giả sửa: đổi nội dung (bỏ khoảng trắng hai đầu), gắn editedAt, mốc theo "[x,y s]" đầu tiên nếu có', () => {
+    const s = reduce(s0(), { type: 'editNote', id: 'note-1', coachId: 'c-tuan', text: ' Vai mở sớm [1,4 s] ', at: NOW });
+    expect(s.notes.find((n) => n.id === 'note-1')).toMatchObject({ text: 'Vai mở sớm [1,4 s]', atSec: 1.4, editedAt: NOW });
+    const noMark = reduce(s0(), { type: 'editNote', id: 'note-1', coachId: 'c-tuan', text: 'Giữ lưng thêm một nhịp', at: NOW });
+    expect(noMark.notes.find((n) => n.id === 'note-1')!.atSec).toBe(1.32); // không có mốc → giữ mốc cũ
+  });
+  it('không phải tác giả, nội dung rỗng, hoặc HLV đã bị huỷ kết nối → không đổi', () => {
+    const b = s0();
+    expect(reduce(b, { type: 'editNote', id: 'note-1', coachId: 'c-ha', text: 'Sửa ghi chú người khác', at: NOW })).toBe(b); // c-ha active với p-minh nhưng không phải tác giả
+    expect(reduce(b, { type: 'deleteNote', id: 'note-1', coachId: 'c-ha' })).toBe(b);
+    expect(reduce(b, { type: 'editNote', id: 'note-1', coachId: 'c-tuan', text: '   ', at: NOW })).toBe(b);
+    const revoked = reduce(b, { type: 'revokeConnection', id: 'cn-tuan-minh', at: NOW });
+    expect(reduce(revoked, { type: 'editNote', id: 'note-1', coachId: 'c-tuan', text: 'Sau khi huỷ', at: NOW })).toBe(revoked);
+    expect(reduce(revoked, { type: 'deleteNote', id: 'note-1', coachId: 'c-tuan' })).toBe(revoked);
+  });
+  it('tác giả xoá: chỉ ghi chú đó mất', () => {
+    expect(reduce(s0(), { type: 'deleteNote', id: 'note-2', coachId: 'c-tuan' }).notes.map((n) => n.id)).toEqual(['note-1', 'note-3']);
+  });
+});
+
+describe('sửa phiên số liệu', () => {
+  it('thay đúng phiên tại chỗ, gắn editedAt', () => {
+    const b = s0();
+    const old = b.sessions.find((x) => x.id === 'ss-d5') as Extract<MetricSession, { kind: 'swing' }>;
+    const s = reduce(b, { type: 'updateSession', session: { ...old, swing: { ...old.swing, carryM: 230 } }, at: NOW });
+    expect(s.sessions).toHaveLength(b.sessions.length);
+    expect(s.sessions.findIndex((x) => x.id === 'ss-d5')).toBe(b.sessions.indexOf(old));
+    expect(s.sessions.find((x) => x.id === 'ss-d5')).toMatchObject({ editedAt: NOW, swing: { carryM: 230 } });
+  });
+  it('phiên không tồn tại, đổi chủ hoặc đổi loại → không đổi', () => {
+    const b = s0();
+    const old = b.sessions.find((x) => x.id === 'ss-d5')!;
+    expect(reduce(b, { type: 'updateSession', session: { ...old, id: 'ss-nope' }, at: NOW })).toBe(b);
+    expect(reduce(b, { type: 'updateSession', session: { ...old, playerId: 'p-lan' }, at: NOW })).toBe(b);
+    const asFitness: MetricSession = { id: 'ss-d5', playerId: 'p-minh', capturedAt: NOW, source: 'manual', kind: 'fitness', fitness: { weightKg: 70, flexibility: 5, gripStrengthKg: 40, verticalJumpCm: 40 } };
+    expect(reduce(b, { type: 'updateSession', session: asFitness, at: NOW })).toBe(b);
+  });
+});
+
+describe('gậy: khôi phục, xoá khi chưa gắn dữ liệu', () => {
+  it('lưu trữ rồi khôi phục → về danh sách đang dùng, rời danh sách lưu trữ', () => {
+    const a = reduce(s0(), { type: 'archiveClub', id: 'cl-pw', at: NOW });
+    expect(archivedClubsOf(a, 'p-minh').map((c) => c.id)).toEqual(['cl-pw']);
+    const r = reduce(a, { type: 'unarchiveClub', id: 'cl-pw' });
+    expect(clubsOf(r, 'p-minh').map((c) => c.id)).toContain('cl-pw');
+    expect(archivedClubsOf(r, 'p-minh')).toEqual([]);
+    expect(clubById(r, 'cl-pw')?.archivedAt).toBeUndefined();
+  });
+  it('xoá gậy chưa gắn phiên/swing nào; gậy đã gắn → không xoá (chỉ lưu trữ được, giữ lịch sử)', () => {
+    const b = s0();
+    expect(clubLinkCount(b, 'cl-pw')).toBe(0);
+    expect(clubLinkCount(b, 'cl-driver')).toBe(7); // 6 phiên + sw-minh-1
+    expect(reduce(b, { type: 'deleteClub', id: 'cl-pw' }).clubs.some((c) => c.id === 'cl-pw')).toBe(false);
+    expect(reduce(b, { type: 'deleteClub', id: 'cl-driver' })).toBe(b);
+  });
+});
+
+describe('dev: giả lập lỗi lưu/xoá', () => {
+  it('bật/tắt cờ; đặt lại dữ liệu mẫu giữ nguyên cờ; dữ liệu mẫu mặc định tắt', () => {
+    expect(s0().simulateFailure).toBe(false);
+    const on = reduce(s0(), { type: 'setSimulateFailure', on: true });
+    expect(on.simulateFailure).toBe(true);
+    expect(reduce(on, { type: 'reset' }).simulateFailure).toBe(true);
+    expect(reduce(on, { type: 'setSimulateFailure', on: false }).simulateFailure).toBe(false);
   });
 });
