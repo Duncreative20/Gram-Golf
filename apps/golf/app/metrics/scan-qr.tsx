@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView, View, type ViewStyle } from 'react-native';
 import { Redirect, router } from 'expo-router';
 import { Button, Divider, Screen, Tag, Text, useTheme } from '@gr/ds';
@@ -10,12 +10,17 @@ import { AlertMessage } from '../../components/Feedback';
 // ponytail: phiên mà mã QR giả lập trỏ tới = file TrackMan mẫu — bản thật lấy mã phiên từ QR rồi tải dữ liệu từ đối tác
 const LINKED_FILE = SAMPLE_FILES.find((f) => f.vendor === 'trackman')!.name;
 
-/** Quét QR ở sân tập (thử nghiệm): khung camera giả lập → "đã liên kết phiên" → nhập dữ liệu phiên qua màn CSV.
- *  Mã không đọc được / không phải mã phiên → báo lỗi + quét lại. */
+/** Quét QR ở sân tập (thử nghiệm): khung camera giả lập → đọc được mã → liên kết phiên (giả lập 1 s) → nhập dữ liệu phiên
+ *  qua màn CSV. Mã không đọc được / không phải mã phiên → báo lỗi + quét lại. */
 export default function MetricsScanQr() {
   const t = useTheme();
   const { me } = useStore();
-  const [result, setResult] = useState<'linked' | 'invalid'>();
+  const [result, setResult] = useState<'linking' | 'linked' | 'invalid'>();
+  useEffect(() => {
+    if (result !== 'linking') return;
+    const timer = setTimeout(() => setResult('linked'), 1000);
+    return () => clearTimeout(timer);
+  }, [result]);
   if (me?.role !== 'player') return <Redirect href="/" />;
   const accent = t.color('Color/Border/Accent/Solid/Default');
   const corner = t.size('Element-Size/Popular/Large');
@@ -48,6 +53,7 @@ export default function MetricsScanQr() {
         <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Base">
           QR của sân tập dùng để liên kết phiên — đang chờ xác nhận định dạng với đối tác
         </Text>
+        {result === 'linking' && <AlertMessage theme="Info" text="Đã đọc mã — đang liên kết phiên với sân tập…" />}
         {result === 'linked' && <AlertMessage theme="Positive" text="Đã liên kết phiên TrackMan #A1F3" />}
         {result === 'invalid' && <AlertMessage theme="Negative" text="Không đọc được mã — mã mờ hoặc không phải mã phiên của sân tập. Căn mã vào giữa khung rồi quét lại." />}
       </ScrollView>
@@ -56,11 +62,13 @@ export default function MetricsScanQr() {
         {result === 'linked' ? (
           // thay màn QR → "quay lại"/lưu xong ở màn CSV về đúng màn đã mở nguồn nhập
           <Button leadingIcon="file-chart-line" text="Nhập dữ liệu phiên" onPress={() => router.replace({ pathname: '/metrics/import-csv', params: { file: LINKED_FILE } })} />
+        ) : result === 'linking' ? (
+          <Button leadingIcon="scan-line" text="Đang liên kết phiên…" disabled />
         ) : result === 'invalid' ? (
           <Button leadingIcon="refresh-cw-01-line" text="Quét lại" onPress={() => setResult(undefined)} />
         ) : (
           <>
-            <Button leadingIcon="scan-line" text="Mô phỏng quét thành công" onPress={() => setResult('linked')} />
+            <Button leadingIcon="scan-line" text="Mô phỏng quét thành công" onPress={() => setResult('linking')} />
             <Button level="Tertiary" text="Mô phỏng mã không đọc được" onPress={() => setResult('invalid')} />
           </>
         )}

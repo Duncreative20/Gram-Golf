@@ -14,3 +14,13 @@
 - Figma: file `wES4PDFvfC7546zuPPVhiW`; đọc màn bằng `get_design_context` theo node-id. **Không** `get_metadata` cả page Design (3 MB).
 - Plugin `expo` cho Claude Code (MCP screenshot/log/tap): cài bằng `/plugin install expo@claude-plugins-official` trong phiên interactive.
 - Spec/plan: `docs/ds/superpowers/`. Research: `docs/ds/research/`. **Nợ Figma: `docs/ds/figma-debt.md`** — Figma sai/tự mâu thuẫn thì code lấy bản nhất quán làm chuẩn tạm + ghi mã `F*` vào bảng, đánh dấu `// NỢ FIGMA F*` trong code; không "chiều" Figma sai. Parity token Figma ↔ code: `packages/ds/src/audit/figmaParity.test.ts` (dump theo variant vào `src/audit/figma/*.json`, script ở plan batch-1 §parity; thêm component = thêm dump + entry `CONFIG`).
+
+## GramGolf app (`apps/golf`)
+
+- Đọc trước: `README.md` (chạy, tài khoản mẫu, mẫu gây lỗi), spec `docs/superpowers/specs/2026-10-07-gramgolf-ui-design.md`, plan `docs/superpowers/plans/2026-10-07-gramgolf-ui.md`. UI tiếng Việt, mobile-first, dữ liệu mock trong bộ nhớ.
+- **State ở `apps/golf/lib/`**: React context + reducer thuần (`domain` kiểu, `mock` NOW + seed, `reducer`, `selectors`, `validation`, `csv`, `simulate`, `format`). Logic mới đặt ở lib kèm `*.test.ts` (vitest) — màn chỉ gọi selector / `dispatch`. Thời điểm mock lấy từ `NOW`, không `Date.now()` trong lib. Lưu chuẩn mph / rpm / độ / mét / kg, hiển thị theo `prefs.units`.
+- **Quyền xem dữ liệu riêng** (thông số, swing, bộ gậy, thể lực) chỉ qua `canViewPrivate(state, viewerId, playerId)`: chủ sở hữu hoặc HLV có kết nối active — follow KHÔNG mở. Cổng quyền đứng trước mọi effect của màn; không có quyền → `NoAccess`.
+- **Ponytail** (luật code tối giản, `.claude/settings.json`): cần không → có sẵn trong repo / DS → stdlib → nền tảng RN/Expo → dependency đã cài → một dòng → mới viết tối thiểu. Không thêm dependency, không abstraction chưa ai cần; component vào `components/` chỉ khi dùng ở ≥ 2 màn; cắt góc có chủ đích ghi `// ponytail: <giới hạn> — <đường nâng cấp>`. Không lazy về a11y, validate input, lỗi + thử lại, phân quyền xem.
+- Tác vụ giả lập (tải lần đầu, tải lên, phân tích, OCR, QR) luôn có đang tải + lỗi + thử lại; mẫu gây lỗi ở `lib/simulate.ts`. Rời một luồng (đăng ký xong, đổi tài khoản, đăng xuất) bằng `resetTo()` (`components/StackHeader.tsx`) để màn cũ không nằm dưới stack. Form có footer cố định bọc `KeyboardAvoid`.
+- Kiểm tra trực quan: web + `?as=<userId>` (chỉ dev) + `scripts/shot-web.mjs`; ảnh mọi route ở `docs/screens/` (bảng: `docs/screens/README.md`).
+- **Không push** — repo GitHub đang public, DS là code private: chỉ commit local.
