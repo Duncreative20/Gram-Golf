@@ -122,26 +122,26 @@ Ra `<outDir>/<story-id>.<light|dark>.png`, khung cố định 390×844 (tham s�
 | F09 | HLV xem học viên | roster (tìm không dấu, lọc Tất cả/Cần phản hồi/Lời mời, rỗng) → chi tiết học viên 5 tab chỉ đọc (Tổng quan, Thông số → phiên không Sửa / Xoá, Swing Chưa review / Đã review, Bộ gậy → gậy không Sửa / Lưu trữ / Xoá, Thể lực) → mở thẳng link: người theo dõi / HLV đã huỷ → 403 (cả chi tiết swing), học viên không tồn tại → 404. Storyboard: `docs/flows/F09.md` |
 | F10 | Cộng đồng | bảng tin (rỗng, của HLV) → bài HLV Tuấn: thích / bỏ thích, bình luận, Ai đã thích → đăng bài (trống, lỗi bắt buộc, tag + đính kèm swing) → toast, bài mới ở đầu bảng tin → khám phá (tìm “lan”, không thấy) → Theo dõi → hồ sơ người chơi (không thông số / swing / bộ gậy; HLV có kết nối thấy “Xem dữ liệu học viên”; người theo dõi / đang theo dõi) → chặn Lê Đăng Khoa (dialog, đã chặn / bị chặn) → bài biến khỏi bảng tin → báo cáo bài HLV Hà (lỗi chưa chọn lý do, Spam → toast). Storyboard: `docs/flows/F10.md` |
 | F11 | Thông báo | chuông (số chưa đọc) → Mới / Trước đó (rỗng theo vai) → chạm từng loại: ghi chú → swing, theo dõi → hồ sơ, thích / bình luận → bài, phân tích xong → swing → đã đọc, chuông hết số → bình luận mới của Khoa → Đánh dấu đã đọc tất cả → HLV: tab Thông báo (không chuông; rỗng) → chấp nhận lời mời → chi tiết học viên; yêu cầu kết nối → Học viên › Lời mời. Thông báo của người đã chặn / bị chặn không hiện. Storyboard: `docs/flows/F11.md` |
-| F12 | Hồ sơ & cài đặt | hồ sơ người chơi / HLV, cài đặt, tài khoản, mật khẩu, quyền riêng tư, thông báo, đơn vị, dev |
+| F12 | Hồ sơ & cài đặt | avatar header → hồ sơ → Chỉnh sửa hồ sơ (Chọn ảnh mẫu / Đổi ảnh / Dùng chữ tắt, họ tên, handicap, CLB; lỗi; đã lưu) → hồ sơ cập nhật → Cài đặt: Quyền riêng tư (công khai bộ gậy, người đã chặn + Bỏ chặn), Thông báo (7 loại người chơi; HLV), Đơn vị đo (yard → Tổng quan theo yd), Mật khẩu, Dev → HLV sửa giới thiệu (dưới 20 ký tự → lỗi; đơn giá “450.000”) → Xoá tài khoản (Dialog 2 bước) → màn chào. Storyboard: `docs/flows/F12.md` |
 | F13 | Trạng thái xuyên suốt | các màn rỗng / lỗi / 403 tiêu biểu (link story ở luồng khác nếu trùng) |
 
 Ngoài các bước: thêm story cho trạng thái khó bấm tới (rỗng / đang tải / lỗi / 403 `NoAccess` / lỗi validate).
 
 ## Phủ route
 
-Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **46/46 route có story** (319 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
+Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **46/46 route có story** (324 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
 
 | Route | Story id | Ghi chú |
 | --- | --- | --- |
 | `index` | `f03--vao-app-nguoi-choi`, `f03--vao-app-hlv`, `f03--da-dang-xuat` | Chỉ chuyển hướng theo vai / chưa đăng nhập (story vẽ “↪ Chuyển hướng tới …”); lượt F01 bắt đầu ở `/` chưa đăng nhập → welcome (`f01--b-01-chao`) |
-| `(auth)/welcome` | `f01--b-01-chao`, `f02--man-chao`, `f03--b-10-ve-chao` |  |
+| `(auth)/welcome` | `f01--b-01-chao`, `f02--man-chao`, `f03--b-10-ve-chao`, `f12--b-14-sau-xoa` | `f12--b-14-sau-xoa` = sau khi xoá tài khoản |
 | `(auth)/register` | `f01--b-02-chon-vai-tro`, `f01--b-03-loi-form`, `f01--dang-ky-thong-tin`, `f01--dang-ky-trung-tai-khoan`, `f02--b-01-dang-ky-hlv`, `f02--dang-ky-chon-vai`, `f02--dang-ky-loi` |  |
 | `(auth)/verify-otp` | `f01--b-04-otp`, `f01--xac-minh-otp-sai`, `f01--xac-minh-otp-thieu-thong-tin`, `f02--xac-minh-otp` | Đếm ngược “Gửi lại mã sau 59 s” chạy theo giây |
 | `(auth)/onboarding` | `f01--b-05-anh-dai-dien`, `f01--onboarding-don-vi`, `f01--b-06-ma-moi`, `f02--onboarding-anh`, `f02--b-02-bio-bat-buoc`, `f02--b-03-bio-ngan`, `f02--b-04-bio-hop-le`, `f02--onboarding-moi-hoc-vien` | HLV có thêm bước 3/4 “Giới thiệu nghề nghiệp” (F02) |
 | `(auth)/login` | `f03--b-01-dang-nhap-sai`, `f03--b-05-ve-dang-nhap`, `f03--dang-nhap`, `f03--dang-nhap-bo-trong` | `?reset=1` = thông báo đã đặt lại mật khẩu (`f03--b-05-ve-dang-nhap`) |
 | `(auth)/forgot-password` | `f03--b-02-quen-mk-loi`, `f03--b-03-da-gui-link`, `f03--quen-mat-khau` | “Mở link (thử)” chỉ `__DEV__` |
 | `(auth)/reset-password` | `f03--b-04-dat-lai-loi`, `f03--b-11-link-het-han`, `f03--b-12-link-sai`, `f03--dat-lai-mat-khau`, `f03--dat-lai-mat-khau-bo-trong` | `?token=GG-RESET-OK` hợp lệ, `GG-RESET-EXPIRED` hết hạn, thiếu / sai = không hợp lệ |
-| `(player)/home` | `f01--b-07-tong-quan-trong`, `f01--b-10-tong-quan-co-du-lieu`, `f03--b-06-vao-app`, `f05--b-01-tong-quan-truoc`, `f05--b-20-tong-quan-sau`, `f11--b-06-chuong-het-so`, `f13--chua-dang-nhap`, `f13--dang-tai-tong-quan` | `f13--chua-dang-nhap` = guard chưa đăng nhập; `f13--dang-tai-tong-quan` = skeleton (`hold: ['firstLoad']`) |
+| `(player)/home` | `f01--b-07-tong-quan-trong`, `f01--b-10-tong-quan-co-du-lieu`, `f03--b-06-vao-app`, `f05--b-01-tong-quan-truoc`, `f05--b-20-tong-quan-sau`, `f11--b-06-chuong-het-so`, `f12--b-08-tong-quan-yard`, `f13--chua-dang-nhap`, `f13--dang-tai-tong-quan` | `f13--chua-dang-nhap` = guard chưa đăng nhập; `f13--dang-tai-tong-quan` = skeleton (`hold: ['firstLoad']`) |
 | `(player)/metrics` | `f05--b-02-lich-su`, `f05--b-06-da-luu`, `f05--b-10-the-luc`, `f05--b-18-yard-lich-su`, `f05--b-19-sau-xoa`, `f05--danh-sach-rong`, `f06--b-01-bo-gay`, `f06--b-04-them-xong`, `f06--b-09-sau-luu-tru` | `f06--b-09-sau-luu-tru` = dòng “Gậy đã lưu trữ” trên lưới |
 | `(player)/swings` | `f07--b-01-danh-sach`, `f07--b-02-luoi`, `f07--b-03-loc-sap-xep`, `f07--b-15-sau-xoa`, `f07--danh-sach`, `f07--danh-sach-rong`, `f07--loc-7-ngay-rong` | Danh sách / Lưới, lọc 7 / 30 ngày, sắp xếp theo ngày quay |
 | `(player)/community` | `f10--b-01-bang-tin`, `f10--b-06-kham-pha`, `f10--b-09-sau-chan`, `f10--bang-tin-rong`, `f10--kham-pha`, `f10--kham-pha-khong-thay` | `f10--b-09-sau-chan` = sau khi chặn Khoa, bài mới của Minh Anh ở đầu |
@@ -149,7 +149,7 @@ Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **46/46 route có story**
 | `(coach)/roster` | `f04--b-01-roster`, `f04--b-02-loi-moi`, `f04--b-13-hlv-duyet`, `f04--b-14-roster-co-khoa`, `f04--b-21-ha-yeu-cau-mau`, `f04--b-25-ha-roster-co-huy`, `f04--b-27-ha-roster-mat-huy`, `f04--b-31-roster-sau-huy`, `f04--loi-moi-da-gui`, `f04--loi-moi-trong`, `f02--b-05-hoc-vien-trong`, `f02--hoc-vien-trong-loi-moi`, `f02--hoc-vien-loi-moi-dang-cho`, `f09--danh-sach`, `f09--b-01-tim`, `f09--tim-khong-thay`, `f09--b-02-can-phan-hoi`, `f09--can-phan-hoi-rong`, `f09--loi-moi`, `f09--loi-moi-rong`, `f09--chua-co-hoc-vien`, `f08--b-04-can-phan-hoi`, `f11--b-12-yeu-cau-den-loi-moi` | Tab HLV; F02 (HLV mới), F08 (Cần phản hồi), F09 (tìm, lọc) |
 | `(coach)/community` | `f10--bang-tin-hlv` |  |
 | `(coach)/inbox` | `f04--b-09-hlv-nhan-thong-bao`, `f04--b-24-ha-nhan-thong-bao`, `f08--b-03-thong-bao-swing-moi`, `f11--b-10-hop-thu-hlv`, `f11--tab-hlv-rong` | Không chuông trên header (chính màn Thông báo); `f11--tab-hlv-rong` = HLV mới đăng ký |
-| `(coach)/me` | `f12--ho-so-hlv-tab`, `f02--b-07-ho-so-hlv` |  |
+| `(coach)/me` | `f12--b-12-ho-so-hlv-moi`, `f02--b-07-ho-so-hlv` |  |
 | `connect/invite` | `f04--b-03-tao-ma`, `f04--b-04-tim-hoc-vien`, `f04--b-05-da-gui-loi-moi`, `f04--hlv-chia-se-ma`, `f04--hlv-chua-co-loi-moi`, `f04--hlv-thu-hoi-dialog`, `f04--tim-khong-co`, `f02--moi-chua-co-ma`, `f02--b-06-ma-moi-dau-tien`, `f13--nguoi-choi-mo-man-hlv` | `f13--nguoi-choi-mo-man-hlv` = guard vai; ShareSheet chỉ giả lập gửi |
 | `connect/accept` | `f04--b-16-ma-sai`, `f04--b-17-ma-het-han`, `f04--b-18-ma-da-dung`, `f04--b-19-ma-thu-hoi`, `f04--b-20-da-ket-noi-ma`, `f04--b-22-xem-truoc-hlv-phu`, `f04--nhap-ma-de-trong`, `f04--xem-truoc-hlv-chinh`, `f04--chap-nhan-ket-noi` |  |
 | `coaches/[id]` | `f04--b-11-ho-so-hlv`, `f04--b-12-da-gui-yeu-cau`, `f04--ho-so-hlv`, `f04--ho-so-hlv-dang-moi`, `f04--ho-so-hlv-khong-co`, `f10--ho-so-hlv-bi-chan` | `f10--ho-so-hlv-bi-chan` = trạng thái bị chặn |
@@ -171,13 +171,13 @@ Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **46/46 route có story**
 | `users/[id]` | `f10--b-07-ho-so-nguoi-choi`, `f10--b-08-chan`, `f10--ho-so-hlv-xem-hoc-vien`, `f10--ho-so-khong-tim-thay`, `f10--da-chan`, `f10--bi-chan`, `f10--bao-cao-nguoi-dung`, `f11--b-04-theo-doi-den-ho-so`, `f13--ho-so-id-hlv` | `f13--ho-so-id-hlv` = id HLV → chuyển sang `coaches/[id]` |
 | `people` | `f10--nguoi-theo-doi`, `f10--dang-theo-doi`, `f10--theo-doi-rong`, `f10--theo-doi-nguoi-da-chan` |  |
 | `notifications` | `f04--b-06-thong-bao-loi-moi`, `f08--b-14-hoc-vien-nhan-thong-bao`, `f11--b-01-trung-tam`, `f11--b-03-da-doc`, `f11--b-07-binh-luan-moi`, `f11--b-08-doc-tat-ca`, `f11--rong` |  |
-| `profile` | `f03--b-09-dang-xuat`, `f03--ho-so`, `f12--ho-so-nguoi-choi`, `f12--ho-so-hlv` | Đăng xuất (dialog) ở F03 |
-| `settings/index` | `f03--cai-dat`, `f12--cai-dat` |  |
-| `settings/account` | `f12--tai-khoan`, `f12--tai-khoan-hlv`, `f12--tai-khoan-loi`, `f12--tai-khoan-da-luu`, `f02--tai-khoan-bio-ngan` | `f02--tai-khoan-bio-ngan` = HLV giới thiệu dưới 20 ký tự |
+| `profile` | `f03--b-09-dang-xuat`, `f03--ho-so`, `f12--b-01-ho-so`, `f12--b-03-ho-so-sau-sua`, `f12--ho-so-hlv` | Đăng xuất (dialog) ở F03 |
+| `settings/index` | `f03--cai-dat`, `f12--b-04-cai-dat` |  |
+| `settings/account` | `f12--b-02-sua-tai-khoan`, `f12--b-11-bio-hlv-loi`, `f12--tai-khoan-hlv`, `f12--tai-khoan-loi`, `f12--tai-khoan-da-luu`, `f02--tai-khoan-bio-ngan` | Ảnh đại diện = ảnh mẫu (Chọn ảnh / Đổi ảnh / Dùng chữ tắt), lưu khi bấm Lưu; `f12--b-11-bio-hlv-loi`, `f02--tai-khoan-bio-ngan` = HLV giới thiệu dưới 20 ký tự |
 | `settings/password` | `f03--b-07-doi-mk-loi`, `f03--b-08-doi-mk-xong`, `f03--doi-mat-khau`, `f12--mat-khau` | Trạng thái lỗi / đã đổi ở F03; chưa đăng nhập → `/` |
-| `settings/privacy` | `f12--quyen-rieng-tu`, `f12--quyen-rieng-tu-da-chan`, `f12--xoa-tai-khoan`, `f12--xoa-tai-khoan-lan-cuoi`, `f12--quyen-rieng-tu-hlv` |  |
-| `settings/notifications` | `f12--cai-dat-thong-bao`, `f12--cai-dat-thong-bao-hlv` |  |
-| `settings/units` | `f12--don-vi-met`, `f12--don-vi-yard` |  |
+| `settings/privacy` | `f12--b-05-quyen-rieng-tu`, `f12--b-09-nguoi-da-chan`, `f12--b-10-bo-chan`, `f12--b-13-xoa-tai-khoan`, `f12--xoa-tai-khoan-lan-cuoi`, `f12--quyen-rieng-tu-hlv` |  |
+| `settings/notifications` | `f12--b-06-cai-dat-thong-bao`, `f12--cai-dat-thong-bao-hlv` |  |
+| `settings/units` | `f12--b-07-don-vi`, `f12--don-vi-met` |  |
 | `settings/dev` | `f12--dev`, `f12--dev-dat-lai` | Chỉ `__DEV__`; Storybook luôn `__DEV__ = true` |
 
 ## Chưa có (Phase 2)
@@ -186,7 +186,7 @@ Bước của luồng cần màn Phase 2 — task luồng xoá dòng của mình
 
 | Luồng | Bước chưa có màn | Task |
 | --- | --- | --- |
-| F12 | Đổi ảnh đại diện ở Tài khoản; Dev › "Kiểm tra theo luồng" | 28, 30 |
+| F12 | Dev › "Kiểm tra theo luồng" | 30 |
 | F13 | 404; 403 có Quay lại; skeleton các màn danh sách; spinner khi lưu/xoá; toast thất bại + Thử lại; Dev › "Giả lập lỗi khi lưu/xoá" | 29 |
 
 ## Lỗi màn hình đã thấy
@@ -205,10 +205,10 @@ Tổng hợp `issues/A.md` … `issues/E.md` + `issues/verify.md` (chi tiết, g
 | thấp | `f01--dang-ky-thong-tin`, `f02--b-01-dang-ky-hlv` | `apps/golf/app/(auth)/register.tsx:85` | Bước cuối vẫn là “Tiếp →” dù bấm là gửi mã OTP | — | không làm: chữ không sai (bước kế là xác minh OTP) |
 | thấp | `f05--b-01-tong-quan-truoc`, `f01--b-10-tong-quan-co-du-lieu` (tối) | `apps/golf/components/charts/ConcentricRings.tsx:6`, `:25` | Tối: vòng ngoài + ô chú giải gậy xa nhất (`Support/Brand/Soft`) gần như chìm vào nền thẻ | — | không làm: chú giải có tên gậy + số, màu chỉ phụ; thang màu chart tối cần thiết kế |
 | thấp | `f06--b-02-16-loai` (sáng) | `packages/ds/src/ui/Popover/popoverItemStyles.ts:48` | Viền radio chưa chọn (`Checkbox/Border/Default`) rất nhạt, có thể < 3:1 — nợ Figma của DS | 15 | đã sửa (Task 15): giữ token Figma, ghi nợ F56 |
-| thấp | `f10--dang-bai`, `f12--tai-khoan` | `packages/ds/src/ui/TextField/TextArea.tsx:18` | Nhãn / chữ TextArea to hơn TextField bên cạnh → form lệch cỡ chữ | — | không làm: đúng Figma (TextArea khác Text-Field) |
+| thấp | `f10--dang-bai`, `f12--b-02-sua-tai-khoan` | `packages/ds/src/ui/TextField/TextArea.tsx:18` | Nhãn / chữ TextArea to hơn TextField bên cạnh → form lệch cỡ chữ | — | không làm: đúng Figma (TextArea khác Text-Field) |
 | thấp | `f11--b-07-binh-luan-moi` | `apps/golf/components/NotificationsScreen.tsx:19` | “Lê Đăng Khoa đã bình luận” thiếu tân ngữ | 27 | đã sửa (Task 27) |
 | thấp | `f11--tab-hlv-rong` | `apps/golf/components/NotificationsScreen.tsx:124` | Thông báo rỗng của HLV ghi câu viết cho người chơi (“Ghi chú của HLV…”) | 27 | đã sửa (Task 27) |
-| thấp | `f12--tai-khoan-hlv` | `apps/golf/app/settings/account.tsx:26` | Đơn giá điền sẵn “450000” không có dấu chấm (placeholder / helpText có) | 28 | chờ Task 28 |
+| thấp | `f12--tai-khoan-hlv` | `apps/golf/app/settings/account.tsx:26` | Đơn giá điền sẵn “450000” không có dấu chấm (placeholder / helpText có) | 28 | đã sửa (Task 28) |
 | thấp | `f12--mat-khau`, `f03--doi-mat-khau` | `apps/golf/app/settings/password.tsx:13,15` | Placeholder “••••••••” ở ô trống trông như đã có mật khẩu | 25 | đã sửa (Task 25) |
 | thấp | `f12--dev` | `packages/ds/src/ui/ListItem/listItemStyles.ts:22` | Hàng `selected` đổi padding → avatar lệch phải vài px | — | không làm: theo variant Figma, chỉ màn Dev |
 | thấp | `f10--kham-pha`, `f10--nguoi-theo-doi`, `f10--dang-theo-doi` | `apps/golf/components/People.tsx:66` | “hcp 14” — màn khác ghi “Handicap 14” | 26 | đã sửa (Task 23) |

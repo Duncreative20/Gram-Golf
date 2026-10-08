@@ -32,7 +32,7 @@ sửa (bước code nằm sẵn trong task sở hữu, cột “Bước”); thu
 | 7 | README · `f02--onboarding-anh` | `(auth)/onboarding.tsx:32`: HLV vẫn đọc "Giúp HLV và bạn bè nhận ra bạn." | 24 | Step 3 | đã sửa (Task 24) |
 | 8 | README · `f11--danh-sach` | `NotificationsScreen.tsx:19`: "… đã bình luận" thiếu tân ngữ | 27 | Step 3 | đã sửa (Task 27) |
 | 9 | README · `f11--tab-hlv-rong` + review Task 13 #3 | `NotificationsScreen.tsx:124`: rỗng của HLV nói "Ghi chú của HLV…" | 27 | Step 3 | đã sửa (Task 27) |
-| 10 | README · `f12--tai-khoan-hlv` + review Task 13 #4 | `settings/account.tsx:26`: đơn giá điền sẵn "450000", placeholder "450.000" | 28 | Step 3 | chờ Task 28 |
+| 10 | README · `f12--tai-khoan-hlv` + review Task 13 #4 | `settings/account.tsx:26`: đơn giá điền sẵn "450000", placeholder "450.000" | 28 | Step 3 | đã sửa (Task 28) |
 | 11 | README · `f12--mat-khau` | `settings/password.tsx:13,15`: placeholder "••••••••" ở ô trống trông như đã có mật khẩu | 25 | Step 5 | đã sửa (Task 25) |
 | 12 | `verify.md` · `f10--kham-pha` | `components/People.tsx:66`: "hcp 14", màn khác "Handicap 14" | 26 | Step 1b | đã sửa (Task 23) |
 | 13 | `verify.md` · `f09--tong-quan-rong` | `students/[id].tsx:72`: "chưa có phiên swing nào" dễ lẫn với video swing | 22 | Step 1b | đã sửa (Task 22) |
@@ -43,7 +43,7 @@ sửa (bước code nằm sẵn trong task sở hữu, cột “Bước”); thu
 | 18 | review Task 12 #7 | Link giả `https://gramgolf.app/p/<id>` (`PostItem.tsx:13`) và `/i/<code>` (`connect/invite.tsx:14`) thiếu comment `ponytail:` | 26, 17 | 26 Step 1b · 17 Step 4 | đã sửa (Task 17) phần `/i/<code>`; đã sửa (Task 23) phần `/p/<id>` |
 | 19 | review Task 12 #8 | `posts/[id].tsx:195`: xoá bài gọi `back()` rồi `dispatch` cùng nhịp → màn đang rời nháy "Không tìm thấy" | 26 | Step 1b | đã sửa (Task 23): `useOnLeave` |
 | 20 | review Task 13 #1 | `settings/password.tsx`: thiếu guard `if (!me) return <Redirect href="/" />` (mở được khi đã đăng xuất) | 25 | Step 5 | đã sửa (Task 25) |
-| 21 | review Task 13 #2 | `settings/privacy.tsx:39,86-92`: Dialog xoá tài khoản trống chữ khi mờ dần lúc đóng | 28 | Step 4 | chờ Task 28 |
+| 21 | review Task 13 #2 | `settings/privacy.tsx:39,86-92`: Dialog xoá tài khoản trống chữ khi mờ dần lúc đóng | 28 | Step 4 | đã sửa (Task 28) |
 | 22 | review Task 13 #5 + report Task 13 | Thông báo của người đã chặn vẫn hiện và vẫn tính vào số trên chuông | 27 | Step 3 | đã sửa (Task 27) |
 | 23 | review Task 14 #1 | `CLAUDE.md:24` nói tải lần đầu có "lỗi + thử lại" — skeleton không có nhánh lỗi | 30 | Step 5 | chờ Task 30 |
 | 24 | review Task 14 #2 | Mẫu `deleteOnLeave` chép ở `metrics/[id].tsx:18-25`, `swings/[id].tsx:179-186`; xoá gậy (Task 21) là nơi thứ 3 | 21 | Step 5 | đã sửa (Task 21): `components/useOnLeave.ts`, dùng ở 3 màn |

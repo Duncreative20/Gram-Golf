@@ -36,7 +36,7 @@ export default function PrivacySettings() {
     .filter((b) => b.blockerId === me.id)
     .map((b) => profileById(state, b.blockedId))
     .filter((p): p is Profile => !!p);
-  const step = DELETE_STEPS[deleteStep];
+  const step = DELETE_STEPS[Math.max(deleteStep, 0)]!; // đóng (-1) vẫn giữ chữ bước đầu trong lúc Dialog mờ dần
   return (
     <Screen>
       <StackHeader title="Quyền riêng tư" />
@@ -84,12 +84,12 @@ export default function PrivacySettings() {
         </Section>
       </ScrollView>
       <Dialog
-        visible={!!step}
+        visible={deleteStep >= 0}
         onRequestClose={() => setDeleteStep(-1)}
         theme="Negative"
-        title={step?.title ?? ''}
-        body={step?.body}
-        primaryText={step?.primaryText ?? ''}
+        title={step.title}
+        body={step.body}
+        primaryText={step.primaryText}
         destructive
         onPrimary={() => {
           if (deleteStep < DELETE_STEPS.length - 1) return setDeleteStep(deleteStep + 1);

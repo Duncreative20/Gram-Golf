@@ -20,7 +20,7 @@ Không sửa màn app; chỉ ghi lại. Ảnh: `storybook-app/__shots__/E/<story
 | `f10--dang-bai`, `f12--tai-khoan` | `packages/ds/src/ui/TextField/TextArea.tsx` | Nhãn và chữ trong TextArea (“Nội dung”, “Giới thiệu”) to hơn nhãn TextField bên cạnh (“Tiêu đề”, “Họ tên”), nên form lệch cỡ chữ. | — | không làm: đúng Figma (TextArea khác Text-Field) |
 | `f11--tab-hlv`, `f11--tab-hlv-rong` | `apps/golf/components/NotificationsScreen.tsx:101` | Tab Thông báo của HLV dùng `TabHeader`, nên header vẫn có nút chuông (kèm badge) mở `/notifications`, tức là chính màn đang xem. Nên ẩn chuông ở tab này. | 27 | đã sửa (Task 27) |
 | `f11--danh-sach` | `apps/golf/components/NotificationsScreen.tsx:19` | “Lê Đăng Khoa đã bình luận” thiếu tân ngữ, khác với like (“đã thích bài viết của bạn”). Gợi ý: “đã bình luận bài viết của bạn”. | 27 | đã sửa (Task 27) |
-| `f12--tai-khoan-hlv` | `apps/golf/app/settings/account.tsx:26` | Đơn giá điền sẵn “450000” không có dấu chấm, trong khi placeholder (“VD: 450.000”) và helpText (“Tối đa 10.000.000 đ”) đều có. | 28 | chờ Task 28 |
+| `f12--tai-khoan-hlv` | `apps/golf/app/settings/account.tsx:26` | Đơn giá điền sẵn “450000” không có dấu chấm, trong khi placeholder (“VD: 450.000”) và helpText (“Tối đa 10.000.000 đ”) đều có. | 28 | đã sửa (Task 28) |
 | `f12--mat-khau` | `apps/golf/app/settings/password.tsx:13,15` | Placeholder “••••••••” ở ô trống trông như đã có mật khẩu, nhất là ở theme tối. Nên dùng placeholder bằng chữ. | 25 | đã sửa (Task 25) |
 | `f12--dev` | `packages/ds` ListItem `selected` | Hàng đang chọn (Nguyễn Minh Anh) có avatar lệch phải vài px so với các hàng khác. | — | không làm: theo variant Figma, chỉ màn Dev |
 
@@ -33,9 +33,9 @@ Không có màn nào crash hoặc trống. Console chỉ có cảnh báo `"shado
 | F10 | Sửa bài viết; xoá / sửa bình luận của mình | Chưa có action / UI |
 | F10 | Ảnh / video trong bài và bình luận | Nút “+” của CommentComposer được thay bằng avatar |
 | F10 | Gửi bài qua ShareSheet thành tin nhắn thật | Hiện chỉ giả lập (ponytail trong `PostItem.tsx`) |
-| F10 | Bỏ chặn ngay ở hồ sơ người dùng | Bỏ chặn chỉ có ở `settings/privacy` (`f12--quyen-rieng-tu-da-chan`) |
+| F10 | Bỏ chặn ngay ở hồ sơ người dùng | Bỏ chặn chỉ có ở `settings/privacy` (`f12--b-09-nguoi-da-chan`) |
 | F11 | Thông báo đẩy (push), lời mời 2 chiều trong danh sách | Phase 2 |
-| F12 | Đổi ảnh đại diện | Chưa có chọn ảnh, `avatarUrl` chỉ đọc |
+| F12 | Đổi ảnh đại diện | Đã có (Task 28): Tài khoản › Chọn ảnh / Đổi ảnh / Dùng chữ tắt bằng ảnh mẫu (`f12--b-02-sua-tai-khoan`); thư viện ảnh / camera chưa có |
 | F12 | Đổi email / xác thực lại SĐT bằng OTP khi sửa | — |
 | F12 | `settings/dev` ở bản release (Redirect khi `!__DEV__`) | Storybook luôn đặt `__DEV__ = true` |
 | F13 | Màn 404 chung cho đường dẫn lạ (`+not-found`) | Phase 2. Hiện mỗi màn chi tiết tự hiện “Không tìm thấy …” |

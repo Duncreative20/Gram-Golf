@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router } from 'expo-router';
-import { Button, Divider, Screen, TextArea, TextField, useTheme, type TextFieldProps } from '@gr/ds';
+import { Avatar, Button, Divider, Screen, TextArea, TextField, useTheme, type TextFieldProps } from '@gr/ds';
 import { useStore } from '../../lib/store';
-import { formatValue, formatVnd } from '../../lib/format';
+import { formatValue, formatVnd, initials } from '../../lib/format';
+import { nextSampleAvatar } from '../../lib/simulate';
 import { BIO_MAX, BIO_MIN, RATE_MAX_VND, validateAccount, type AccountRaw } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
 import { AlertMessage, SavedToast } from '../../components/Feedback';
@@ -23,10 +24,11 @@ export default function AccountSettings() {
     homeClub: me?.homeClub ?? '',
     academy: me?.academy ?? '',
     yearsExperience: me?.yearsExperience === undefined ? '' : String(me.yearsExperience),
-    ratePerHourVnd: me?.ratePerHourVnd === undefined ? '' : String(me.ratePerHourVnd),
+    ratePerHourVnd: me?.ratePerHourVnd === undefined ? '' : formatVnd(me.ratePerHourVnd).replace(' đ', ''), // "450.000" — validateAccount bỏ dấu chấm khi lưu
   }));
   const [submitted, setSubmitted] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState(me?.avatarUrl); // lưu cùng các trường khác khi bấm Lưu
   if (!me) return <Redirect href="/" />;
   const result = validateAccount(me.role, raw, state.profiles.filter((p) => p.id !== me.id));
   const errors = submitted ? result.errors : {};
@@ -37,7 +39,7 @@ export default function AccountSettings() {
   const save = () => {
     setSubmitted(true);
     if (!result.value) return;
-    dispatch({ type: 'updateProfile', id: me.id, patch: result.value });
+    dispatch({ type: 'updateProfile', id: me.id, patch: { ...result.value, avatarUrl } });
     setSaved(true);
   };
   return (
@@ -48,6 +50,14 @@ export default function AccountSettings() {
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Medium') }}
         >
+          <View style={{ alignItems: 'center', gap: t.space('Spacing/Gap/Small') }}>
+            <Avatar size="2XLarge" theme={avatarUrl ? 'Photo' : 'Accent'} source={avatarUrl ? { uri: avatarUrl } : undefined} initials={initials(me.name)} accessibilityLabel={`Ảnh đại diện ${me.name}`} />
+            <View style={{ flexDirection: 'row', gap: t.space('Spacing/Gap/Small') }}>
+              {/* ponytail: ảnh mẫu thay thư viện ảnh/camera (như onboarding) — bản thật dùng expo-image-picker + upload */}
+              <Button level="Secondary" size="Medium (Base)" leadingIcon="image-plus-line" text={avatarUrl ? 'Đổi ảnh' : 'Chọn ảnh'} onPress={() => setAvatarUrl(nextSampleAvatar(avatarUrl))} />
+              {avatarUrl && <Button level="Tertiary" size="Medium (Base)" text="Dùng chữ tắt" onPress={() => setAvatarUrl(undefined)} />}
+            </View>
+          </View>
           {field('name', { label: 'Họ tên', placeholder: 'Nguyễn Văn A', autoComplete: 'name' })}
           {field('phone', { label: 'Số điện thoại', placeholder: '0912345678', autoComplete: 'tel', keyboardType: 'phone-pad' })}
           <TextArea
