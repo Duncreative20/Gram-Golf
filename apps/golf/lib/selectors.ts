@@ -11,7 +11,8 @@ export const canViewPrivate = (s: AppState, viewerId: ID, playerId: ID) =>
 
 export const validateInvite = (s: AppState, code: string, now: ISO, playerId?: ID): InviteCheck => {
   const inv = s.invites.find((i) => i.code.toUpperCase() === code.trim().toUpperCase());
-  if (!inv) return 'not_found';
+  // đã chặn nhau (chiều nào cũng vậy) → như mã không tồn tại, không lộ việc bị chặn
+  if (!inv || (playerId && isBlocked(s, inv.coachId, playerId))) return 'not_found';
   if (inv.revoked) return 'revoked';
   if (inv.usedBy) return 'used';
   if (Date.parse(inv.expiresAt) <= Date.parse(now)) return 'expired';

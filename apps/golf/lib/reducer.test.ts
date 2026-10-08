@@ -33,6 +33,14 @@ describe('kết nối HLV', () => {
     expect(reduce(before, { type: 'acceptInvite', code: 'TUAN24', playerId: 'c-ha', at: NOW, id: 'cx', notificationId: 'n' })).toBe(before);
     expect(roster(before, 'c-tuan').map((p) => p.id)).toEqual(['p-minh', 'p-lan']);
   });
+  it('hai bên đã chặn nhau (chiều nào cũng vậy) → nhập mã báo "not_found", không tạo kết nối, mã không bị tiêu', () => {
+    for (const [blockerId, blockedId] of [['c-tuan', 'p-huy'], ['p-huy', 'c-tuan']]) {
+      const before = reduce(s0(), { type: 'block', blockerId, blockedId });
+      expect(validateInvite(before, 'TUAN24', NOW, 'p-huy')).toBe('not_found');
+      expect(reduce(before, { type: 'acceptInvite', code: 'TUAN24', playerId: 'p-huy', at: NOW, id: 'cx', notificationId: 'n' })).toBe(before);
+      expect(before.invites.find((i) => i.code === 'TUAN24')!.usedBy).toBeUndefined();
+    }
+  });
   it('player đã có HLV chính → kết nối mới không là chính', () => {
     const s = reduce(s0(), { type: 'acceptInvite', code: 'TUAN24', playerId: 'p-khoa', at: NOW, id: 'cx-2', notificationId: 'n' });
     expect(s.connections.find((x) => x.id === 'cx-2')!.isPrimary).toBe(false);
@@ -225,6 +233,13 @@ describe('lời mời / yêu cầu kết nối 2 chiều (D5 xét lúc kích ho�
     expect(no.notifications).toBe(s.notifications);
     expect(canViewPrivate(no, 'c-tuan', 'p-huy')).toBe(false);
     expect(req(no, 'c-tuan', 'p-huy', 'coach', 'rq-2').connections.find((c) => c.id === 'rq-2')!.status).toBe('pending');
+  });
+  it('chặn sau khi đã gửi yêu cầu → trả lời (chấp nhận hay từ chối) không đổi gì', () => {
+    for (const [blockerId, blockedId] of [['c-tuan', 'p-huy'], ['p-huy', 'c-tuan']]) {
+      const s = reduce(req(s0(), 'c-tuan', 'p-huy', 'coach'), { type: 'block', blockerId, blockedId });
+      expect(reduce(s, { type: 'respondConnection', id: 'rq-1', accept: true, at: NOW, notificationId: 'n' })).toBe(s);
+      expect(reduce(s, { type: 'respondConnection', id: 'rq-1', accept: false, at: NOW, notificationId: 'n' })).toBe(s);
+    }
   });
   it('huỷ lời mời/yêu cầu đang chờ bằng revokeConnection; trả lời kết nối không còn chờ → không đổi', () => {
     const s = reduce(req(s0(), 'c-tuan', 'p-huy', 'coach'), { type: 'revokeConnection', id: 'rq-1', at: NOW });

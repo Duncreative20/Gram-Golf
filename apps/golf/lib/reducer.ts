@@ -152,7 +152,7 @@ export function reduce(s: AppState, a: Action): AppState {
     }
     case 'respondConnection': {
       const c = s.connections.find((x) => x.id === a.id);
-      if (!c || c.status !== 'pending') return s;
+      if (!c || c.status !== 'pending' || isBlocked(s, c.coachId, c.playerId)) return s;
       if (!a.accept) return { ...s, connections: s.connections.map((x) => (x === c ? { ...x, status: 'declined', declinedAt: a.at } : x)) };
       // D5 xét lúc kích hoạt: người chơi chưa có HLV chính → kết nối này là chính; có rồi → phụ
       const hasPrimary = s.connections.some((x) => x.playerId === c.playerId && x.status === 'active' && x.isPrimary);
