@@ -129,8 +129,9 @@ export const ocrEdit = (review: OcrReview, values: OcrReview['values']): OcrRevi
 });
 
 /** Độ trễ giả lập (ms) của trạng thái tạm thời. Màn đọc lúc chạy (không chép ra hằng riêng) để Storybook app (`appStory({ hold })`) kéo dài
- *  được khi chụp ảnh. firstLoad = skeleton lần đầu mở màn; toast = toast thành công tự đóng; ocr = "Đang đọc…" khi nhập ảnh. */
-export const DELAYS = { firstLoad: 400, toast: 1200, ocr: 1500 };
+ *  được khi chụp ảnh. firstLoad = skeleton lần đầu mở màn; save = lưu/xoá giả lập có spinner; toast = toast thành công tự đóng;
+ *  toastError = toast thất bại; ocr = "Đang đọc…" khi nhập ảnh. */
+export const DELAYS = { firstLoad: 400, save: 600, toast: 1200, toastError: 4000, ocr: 1500 };
 
 /** Link đặt lại mật khẩu (mô phỏng email): token trong link → trạng thái. Bản thật: server kiểm token dùng 1 lần, hết hạn sau 30 phút. */
 export const RESET_TOKENS = { ok: 'GG-RESET-OK', expired: 'GG-RESET-EXPIRED' } as const;

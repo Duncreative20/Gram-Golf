@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FlatList, ScrollView, View } from 'react-native';
 import { Redirect, router } from 'expo-router';
 import { Button, EmptyState, Screen, SearchField, Skeleton, SkeletonText, TabBar, Text, useTheme } from '@gr/ds';
 import { useStore } from '../lib/store';
 import { discover, feed } from '../lib/selectors';
-import { DELAYS } from '../lib/simulate';
 import { TabHeader } from './TabHeader';
 import { PostItem } from './PostItem';
 import { PersonRow } from './People';
+import { useFirstLoad } from './ListSkeleton';
 
 const TABS = [{ label: 'Bảng tin' }, { label: 'Khám phá' }];
 
@@ -18,12 +18,8 @@ export default function CommunityScreen() {
   const { state, me } = useStore();
   const [tab, setTab] = useState(0);
   const [query, setQuery] = useState('');
-  // Lần đầu mở: giả lập tải bảng tin 400 ms → khung xương bài viết (bản thật: chờ API)
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), DELAYS.firstLoad);
-    return () => clearTimeout(timer);
-  }, []);
+  // Lần đầu mở trong phiên: giả lập tải bảng tin → khung xương bài viết (bản thật: chờ API)
+  const loading = useFirstLoad('feed');
   if (!me) return <Redirect href="/" />;
   const posts = feed(state, me.id);
   const people = discover(state, me.id, query);

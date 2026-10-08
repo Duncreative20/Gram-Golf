@@ -187,6 +187,7 @@ export const B11SauXoa: Story = {
     await askDelete2(ctx);
     await click(screen.findByRole('button', { name: 'Xoá' }));
     await waitForElementToBeRemoved(() => screen.queryByText('Xoá ghi chú này?'));
+    await ctx.canvas.findByText('Đã xoá ghi chú'); // xoá giả lập 0,6 s (DELAYS.save)
     await reveal(ctx.canvas.findByText('Ghi chú HLV'));
   },
 };

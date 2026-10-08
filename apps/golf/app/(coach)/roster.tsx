@@ -11,6 +11,7 @@ import { newId } from '../../lib/ids';
 import { TabHeader } from '../../components/TabHeader';
 import { Section } from '../../components/Section';
 import { SavedToast } from '../../components/Feedback';
+import { ListSkeleton, useFirstLoad } from '../../components/ListSkeleton';
 
 /** Tab Học viên của HLV: hero HLV; lọc Tất cả / Cần phản hồi / Lời mời; tìm học viên theo tên không dấu → chi tiết học viên;
  *  lời mời đang chờ → mở lại mã ở connect/invite để sao chép / chia sẻ lại. */
@@ -25,6 +26,7 @@ export default function CoachRoster() {
     if (segParam === 'loi-moi') setSeg(2);
   }, [segParam, from]);
   const [query, setQuery] = useState('');
+  const loading = useFirstLoad('roster');
   if (!me) return <Redirect href="/" />;
   const students = roster(state, me.id);
   const waiting = needsFeedback(state, me.id);
@@ -173,7 +175,7 @@ export default function CoachRoster() {
           </View>
         )}
 
-        {seg === 2 ? (
+        {loading ? <ListSkeleton /> : seg === 2 ? (
           <View style={{ gap: t.space('Spacing/Gap/Medium') }}>
             {incoming.length > 0 && (
               <Section title="Yêu cầu từ học viên" caption="Duyệt thì bạn xem được dữ liệu và ghi chú swing cho học viên">

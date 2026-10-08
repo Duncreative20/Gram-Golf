@@ -17,6 +17,7 @@ import { TrendChart } from '../../components/charts/TrendChart';
 import { SessionRow } from '../../components/SessionRow';
 import { SwingCard } from '../../components/SwingCard';
 import { NoAccess } from '../../components/NoAccess';
+import { ListSkeleton, useFirstLoad } from '../../components/ListSkeleton';
 import { ClubGrid } from '../clubs';
 
 type Tile = Parameters<typeof StatTile>[0];
@@ -30,6 +31,7 @@ export default function StudentDetail() {
   const [tab, setTab] = useState(0);
   const [review, setReview] = useState(0); // tab Swing của HLV: 0 Chưa review, 1 Đã review
   const [confirmRevoke, setConfirmRevoke] = useState(false);
+  const loading = useFirstLoad(`student-${id}`);
   if (!me) return <Redirect href="/" />;
   const student = profileById(state, id);
   if (student?.role !== 'player' || !canViewPrivate(state, me.id, student.id)) {
@@ -216,7 +218,7 @@ export default function StudentDetail() {
         <TabBar items={TABS} selectedIndex={tab} onChange={setTab} />
       </ScrollView>
       <ScrollView key={tab} contentContainerStyle={{ paddingVertical: t.space('Spacing/Padding/Medium'), gap: t.space('Spacing/Gap/XLarge') }}>
-        {TABS[tab].render()}
+        {loading ? <ListSkeleton /> : TABS[tab].render()}
       </ScrollView>
       <Dialog
         visible={confirmRevoke}

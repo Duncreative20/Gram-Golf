@@ -201,6 +201,7 @@ export const NhapTayDaLuu: Story = {
       ['Carry (m)', '231'],
     ]);
     await save(ctx);
+    await ctx.canvas.findByText('Đã lưu'); // lưu giả lập 0,6 s (DELAYS.save) → chờ toast
   },
 };
 

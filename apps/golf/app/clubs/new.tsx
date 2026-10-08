@@ -8,7 +8,7 @@ import { useStore } from '../../lib/store';
 import { formatValue } from '../../lib/format';
 import { CLUB_FIELDS, clubRaw, defaultLoft, loftOnTypeChange, rangeText, validateClub } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
-import { AlertMessage } from '../../components/Feedback';
+import { AlertMessage, SavedToast, SavingRow, useSimulatedWrite } from '../../components/Feedback';
 import { KeyboardAvoid } from '../../components/KeyboardAvoid';
 
 const WEDGES = CLUB_GROUPS.find((g) => g.label === 'Wedge')!.types;
@@ -25,6 +25,8 @@ export function ClubForm({ initial, onSubmit }: { initial?: Club; onSubmit: (clu
   const [typeOpen, setTypeOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [done, setDone] = useState(false);
+  const { busy, run } = useSimulatedWrite();
+  const [failed, setFailed] = useState(false);
   const result = validateClub(raw);
   const errors = submitted ? result.errors : {};
   const invalid = Object.keys(result.errors).length;
@@ -38,8 +40,14 @@ export function ClubForm({ initial, onSubmit }: { initial?: Club; onSubmit: (clu
   const save = () => {
     setSubmitted(true);
     if (!result.value || !me) return;
-    setDone(true);
-    onSubmit({ ...initial, id, playerId: initial?.playerId ?? me.id, ...result.value });
+    const club = { ...initial, id, playerId: initial?.playerId ?? me.id, ...result.value };
+    run(
+      () => {
+        setDone(true);
+        onSubmit(club);
+      },
+      () => setFailed(true),
+    );
   };
   const text = (key: TextKey, label: string, placeholder: string) => (
     <TextField label={label} placeholder={placeholder} value={raw[key]} onChangeText={(v) => set(key, v)} error={errors[key]} />
@@ -91,7 +99,8 @@ export function ClubForm({ initial, onSubmit }: { initial?: Club; onSubmit: (clu
         <Divider />
         <View style={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
           {submitted && invalid > 0 && <AlertMessage theme="Negative" text={`Chưa lưu: ${invalid} trường cần sửa.`} />}
-          <Button text="Lưu" disabled={done} onPress={save} />
+          {busy && <SavingRow />}
+          <Button text="Lưu" disabled={done || busy} onPress={save} />
         </View>
       </KeyboardAvoid>
       <BottomSheet visible={typeOpen} onClose={() => setTypeOpen(false)} heading="Chọn loại gậy" divider>
@@ -115,6 +124,19 @@ export function ClubForm({ initial, onSubmit }: { initial?: Club; onSubmit: (clu
           </View>
         </ScrollView>
       </BottomSheet>
+      {failed && (
+        <SavedToast
+          type="Negative"
+          title="Lưu thất bại"
+          caption="Mất kết nối — gậy chưa được lưu, form giữ nguyên."
+          actionText="Thử lại"
+          onAction={() => {
+            setFailed(false);
+            save();
+          }}
+          onDone={() => setFailed(false)}
+        />
+      )}
     </>
   );
 }

@@ -12,7 +12,7 @@ import { FITNESS_FIELDS, fitnessRaw, swingRaw, validateFitnessMetrics, validateS
 import { StackHeader } from '../../components/StackHeader';
 import { ClubPicker } from '../../components/ClubPicker';
 import { MetricFields, SwingMetricsForm } from '../../components/SwingMetricsForm';
-import { AlertMessage, SavedToast } from '../../components/Feedback';
+import { AlertMessage, SavedToast, SavingRow, useSimulatedWrite } from '../../components/Feedback';
 import { backToMetrics, SessionDateField } from '../../components/SessionEntry';
 import { KeyboardAvoid } from '../../components/KeyboardAvoid';
 
@@ -35,6 +35,8 @@ export default function MetricsManual() {
   const [fitness, setFitness] = useState(() => (editing?.kind === 'fitness' ? fitnessRaw(editing.fitness) : EMPTY_FITNESS));
   const [submitted, setSubmitted] = useState(false);
   const [saved, setSaved] = useState<string>(); // chú thích Toast, chốt lúc lưu
+  const { busy, run } = useSimulatedWrite();
+  const [failed, setFailed] = useState(false);
   if (me?.role !== 'player') return <Redirect href="/" />;
   // phiên không có / của người khác → màn chi tiết xử lý 404 / 403 (cùng cách clubs/[id]/edit)
   if (id && (!editing || editing.playerId !== me.id)) return <Redirect href={{ pathname: '/metrics/[id]', params: { id } }} />;
@@ -53,8 +55,13 @@ export default function MetricsManual() {
       if (!fitnessResult.value) return;
       session = { ...base, capturedAt, kind: 'fitness', fitness: fitnessResult.value };
     }
-    dispatch(editing ? { type: 'updateSession', session, at: NOW } : { type: 'addSession', session });
-    setSaved(`Phiên ${isSwing ? 'swing' : 'thể lực'} ngày ${formatDate(capturedAt)}`);
+    run(
+      () => {
+        dispatch(editing ? { type: 'updateSession', session, at: NOW } : { type: 'addSession', session });
+        setSaved(`Phiên ${isSwing ? 'swing' : 'thể lực'} ngày ${formatDate(capturedAt)}`);
+      },
+      () => setFailed(true),
+    );
   };
   return (
     <Screen>
@@ -84,10 +91,24 @@ export default function MetricsManual() {
         <Divider />
         <View style={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
           {submitted && invalid > 0 && <AlertMessage theme="Negative" text={`Chưa lưu: ${invalid} trường cần sửa.`} />}
-          <Button text="Lưu" disabled={!!saved} onPress={save} />
+          {busy && <SavingRow />}
+          <Button text="Lưu" disabled={!!saved || busy} onPress={save} />
         </View>
       </KeyboardAvoid>
       {saved && <SavedToast title={editing ? 'Đã lưu thay đổi' : 'Đã lưu'} caption={saved} onDone={backToMetrics} />}
+      {failed && (
+        <SavedToast
+          type="Negative"
+          title="Lưu thất bại"
+          caption="Mất kết nối — số liệu chưa được lưu, form giữ nguyên."
+          actionText="Thử lại"
+          onAction={() => {
+            setFailed(false);
+            save();
+          }}
+          onDone={() => setFailed(false)}
+        />
+      )}
     </Screen>
   );
 }

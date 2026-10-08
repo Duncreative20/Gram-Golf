@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router } from 'expo-router';
-import { Avatar, Button, Dialog, ListItem, Screen, Text, useTheme } from '@gr/ds';
+import { Avatar, Button, Dialog, ListItem, Screen, Text, ToggleRow, useTheme } from '@gr/ds';
 import type { Role } from '../../lib/domain';
 import { useStore } from '../../lib/store';
 import { formatValue, initials } from '../../lib/format';
@@ -12,7 +12,7 @@ const GROUPS: { role: Role; label: string }[] = [
   { role: 'coach', label: 'HLV' },
 ];
 
-/** D13 — chỉ bản dev: đổi hồ sơ mẫu (vai trò), đặt lại dữ liệu, mở gallery DS. */
+/** D13 — chỉ bản dev: đổi hồ sơ mẫu (vai trò), giả lập lỗi khi lưu/xoá, đặt lại dữ liệu, mở gallery DS. */
 export default function DevSettings() {
   const t = useTheme();
   const { state, dispatch } = useStore();
@@ -49,6 +49,17 @@ export default function DevSettings() {
             </View>
           </View>
         ))}
+        <View style={{ gap: t.space('Spacing/Gap/XSmall') }}>
+          {section('Giả lập')}
+          <View style={{ paddingHorizontal: t.layout('Margin-Small') }}>
+            <ToggleRow
+              label="Giả lập lỗi khi lưu/xoá"
+              caption="Lưu số liệu, gậy, tài khoản, bài viết và các nút xoá sẽ thất bại sau 0,6 giây — để xem toast lỗi và Thử lại"
+              select={state.simulateFailure}
+              onChange={(on) => dispatch({ type: 'setSimulateFailure', on })}
+            />
+          </View>
+        </View>
         <View style={{ gap: t.space('Spacing/Gap/XSmall') }}>
           {section('Dữ liệu')}
           <View style={{ paddingHorizontal: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>

@@ -1,4 +1,4 @@
-import { useEffect, useState, type PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router } from 'expo-router';
 import { Avatar, Button, Card, EmptyState, Icon, ListItem, Screen, Skeleton, SkeletonText, Tag, Text, useTheme } from '@gr/ds';
@@ -9,11 +9,11 @@ import {
   carryByClub, clubById, clubLabel, followerCount, followingCount, latestNote, latestSwing, prefsOf, previousSwing, primaryCoach, profileById, speedTrend, swingsOf,
 } from '../../lib/selectors';
 import { formatDate, formatDistance, formatNumber, formatSec, formatSpeed, initials, relativeTime, swingTiles } from '../../lib/format';
-import { DELAYS } from '../../lib/simulate';
 import { TabHeader } from '../../components/TabHeader';
 import { StatTile } from '../../components/StatTile';
 import { TrendChart } from '../../components/charts/TrendChart';
 import { ConcentricRings } from '../../components/charts/ConcentricRings';
+import { useFirstLoad } from '../../components/ListSkeleton';
 
 function Section({ title, caption, children }: PropsWithChildren<{ title: string; caption?: string }>) {
   const t = useTheme();
@@ -31,12 +31,8 @@ function Section({ title, caption, children }: PropsWithChildren<{ title: string
 export default function PlayerHome() {
   const t = useTheme();
   const { state, me } = useStore();
-  // Lần đầu mở: giả lập tải dữ liệu 400 ms → khung xương (bản thật: chờ API)
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), DELAYS.firstLoad);
-    return () => clearTimeout(timer);
-  }, []);
+  // Lần đầu mở trong phiên: giả lập tải dữ liệu → khung xương (bản thật: chờ API)
+  const loading = useFirstLoad('home');
   if (!me) return <Redirect href="/" />;
   if (loading) {
     return (

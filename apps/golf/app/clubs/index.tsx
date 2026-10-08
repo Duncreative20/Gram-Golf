@@ -8,6 +8,7 @@ import { archivedClubsOf, canViewPrivate, clubLabel, clubsOf, groupClubs, profil
 import { formatValue } from '../../lib/format';
 import { StackHeader } from '../../components/StackHeader';
 import { NoAccess } from '../../components/NoAccess';
+import { ListSkeleton, useFirstLoad } from '../../components/ListSkeleton';
 
 /** Lưới thẻ gậy theo nhóm, 2 cột; chạm thẻ → chi tiết gậy (sửa/lưu trữ chỉ chủ gậy thấy ở đó). Không có lề ngoài — màn dùng tự bọc. */
 export function ClubGrid({ clubs }: { clubs: Club[] }) {
@@ -45,6 +46,7 @@ export default function Clubs() {
   const { state, me } = useStore();
   const { playerId, view } = useLocalSearchParams<{ playerId?: string; view?: string }>();
   const [seg, setSeg] = useState(view === 'archived' ? 1 : 0); // MVP "My Clubs — Active / Archived"
+  const loading = useFirstLoad('clubs');
   if (!me || (!playerId && me.role !== 'player')) return <Redirect href="/" />;
   const ownerId = playerId ?? me.id;
   if (!canViewPrivate(state, me.id, ownerId)) {
@@ -80,7 +82,7 @@ export default function Clubs() {
           />
         </View>
       )}
-      {clubs.length ? (
+      {loading ? <ListSkeleton /> : clubs.length ? (
         <>
           {/* chừa chỗ cho nút "+" nổi (chỉ mục Đang dùng) */}
           <ScrollView contentContainerStyle={{ padding: margin, paddingBottom: canEdit && !archivedView ? t.size('Button/Size/Large') + 2 * margin : margin }}>

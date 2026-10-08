@@ -225,6 +225,7 @@ export const NhapTayDaLuu: Story = {
       'Carry (m)': '195',
     });
     await click(ctx.canvas.findByRole('button', { name: 'Lưu' }));
+    await screen.findByText('Đã lưu'); // lưu giả lập 0,6 s (DELAYS.save) → chờ toast
   },
 };
 

@@ -10,6 +10,7 @@ import { StackHeader } from './StackHeader';
 import { TabHeader } from './TabHeader';
 import { Section } from './Section';
 import { profileHref } from './People';
+import { ListSkeleton, useFirstLoad } from './ListSkeleton';
 
 /** Câu theo loại, đứng sau tên người gửi; `analysis_done` là thông báo hệ thống (không có người gửi) nên là cả câu. */
 const SENTENCE: Record<NotificationType, string> = {
@@ -105,6 +106,7 @@ function NotificationRow({ n }: { n: AppNotification }) {
 export default function NotificationsScreen({ tab }: { tab?: boolean }) {
   const t = useTheme();
   const { state, dispatch, me } = useStore();
+  const loading = useFirstLoad('notifications');
   if (!me) return <Redirect href="/" />;
   const all = notificationsOf(state, me.id);
   const fresh = all.filter((n) => !n.readAt);
@@ -112,7 +114,7 @@ export default function NotificationsScreen({ tab }: { tab?: boolean }) {
   return (
     <Screen edges={tab ? ['top'] : undefined}>
       {tab ? <TabHeader title="Thông báo" bell={false} /> : <StackHeader title="Thông báo" />}
-      {all.length ? (
+      {loading ? <ListSkeleton /> : all.length ? (
         <ScrollView contentContainerStyle={{ paddingVertical: t.space('Spacing/Padding/Medium'), gap: t.space('Spacing/Gap/Large') }}>
           {fresh.length > 0 && (
             <View style={{ alignItems: 'flex-end', paddingHorizontal: t.layout('Margin-Small') }}>

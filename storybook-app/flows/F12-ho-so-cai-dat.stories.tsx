@@ -117,6 +117,7 @@ export const TaiKhoanDaLuu: Story = {
   play: async ({ canvas }) => {
     await fill(canvas, { Handicap: '13,5' });
     await click(canvas, 'Lưu');
+    await canvas.findByText('Đã lưu hồ sơ'); // lưu giả lập 0,6 s (DELAYS.save) → chờ toast
   },
 };
 

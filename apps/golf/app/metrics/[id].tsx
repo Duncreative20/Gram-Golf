@@ -10,6 +10,7 @@ import { FITNESS_FIELDS, swingFields } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
 import { NoAccess } from '../../components/NoAccess';
 import { useOnLeave } from '../../components/useOnLeave';
+import { SavedToast, SavingRow, useSimulatedWrite } from '../../components/Feedback';
 
 export default function MetricSessionDetail() {
   const t = useTheme();
@@ -18,6 +19,8 @@ export default function MetricSessionDetail() {
   const [confirmDelete, setConfirmDelete] = useState(false);
   // Xoá sau khi màn đã rời (unmount) — xoá trước khi quay lại thì màn đang rời nháy "Không tìm thấy phiên".
   const deleteOnLeave = useOnLeave(() => dispatch({ type: 'deleteSession', id: id! }));
+  const { busy, run } = useSimulatedWrite();
+  const [failed, setFailed] = useState(false);
   if (!me) return <Redirect href="/" />;
   const session = state.sessions.find((s) => s.id === id);
   const back = () => (router.canGoBack() ? router.back() : router.replace('/'));
@@ -37,6 +40,14 @@ export default function MetricSessionDetail() {
   }
   const units = prefsOf(state, me.id).units;
   const club = clubById(state, session.clubId);
+  const remove = () =>
+    run(
+      () => {
+        deleteOnLeave(); // xoá khi màn đã rời (Task 21)
+        back();
+      },
+      () => setFailed(true),
+    );
   const info = [
     { label: 'Ngày', value: formatDate(session.capturedAt) },
     ...(session.kind === 'swing' ? [{ label: 'Gậy', value: club ? `${clubLabel(club)} · ${club.brand} ${club.model}` : 'Chưa gắn gậy' }] : []),
@@ -81,7 +92,8 @@ export default function MetricSessionDetail() {
         {session.playerId === me.id && (
           <View style={{ paddingHorizontal: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
             <Button level="Secondary" size="Medium (Base)" leadingIcon="edit-02-line" text="Sửa phiên" onPress={() => router.push({ pathname: '/metrics/manual', params: { id: session.id } })} />
-            <Button level="Danger Subtle" size="Medium (Base)" leadingIcon="trash-line" text="Xoá phiên" onPress={() => setConfirmDelete(true)} />
+            <Button level="Danger Subtle" size="Medium (Base)" leadingIcon="trash-line" text={busy ? 'Đang xoá…' : 'Xoá phiên'} disabled={busy} onPress={() => setConfirmDelete(true)} />
+            {busy && <SavingRow text="Đang xoá…" />}
           </View>
         )}
       </ScrollView>
@@ -95,11 +107,23 @@ export default function MetricSessionDetail() {
         destructive
         onPrimary={() => {
           setConfirmDelete(false);
-          deleteOnLeave();
-          back();
+          remove();
         }}
         secondaryText="Huỷ"
       />
+      {failed && (
+        <SavedToast
+          type="Negative"
+          title="Xoá thất bại"
+          caption="Mất kết nối — phiên vẫn còn."
+          actionText="Thử lại"
+          onAction={() => {
+            setFailed(false);
+            remove();
+          }}
+          onDone={() => setFailed(false)}
+        />
+      )}
     </Screen>
   );
 }

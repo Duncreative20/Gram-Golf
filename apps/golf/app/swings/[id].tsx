@@ -16,7 +16,7 @@ import { StackHeader } from '../../components/StackHeader';
 import { KeyboardAvoid } from '../../components/KeyboardAvoid';
 import { StatTile } from '../../components/StatTile';
 import { SwingUpload } from '../../components/SwingUpload';
-import { AlertMessage } from '../../components/Feedback';
+import { AlertMessage, SavedToast, SavingRow, useSimulatedWrite } from '../../components/Feedback';
 import { NoAccess } from '../../components/NoAccess';
 import { useOnLeave } from '../../components/useOnLeave';
 
@@ -183,6 +183,8 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
   const [confirmNoteDelete, setConfirmNoteDelete] = useState(false);
   // Xoá sau khi màn đã rời (unmount) — xoá trước khi quay lại thì màn đang rời nháy "Không tìm thấy swing".
   const deleteOnLeave = useOnLeave(() => dispatch({ type: 'deleteSwing', id: swing.id }));
+  const { busy, run } = useSimulatedWrite();
+  const [failed, setFailed] = useState<{ title: string; caption: string; retry: () => void }>();
 
   // Phát giả lập (chưa có video thật): vị trí chạy theo thời gian thực tới hết video.
   useEffect(() => {
@@ -231,6 +233,27 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
     setPlaying(false);
     setPositionSec(sec);
   };
+  const removeSwing = () =>
+    run(
+      () => {
+        deleteOnLeave(); // xoá khi màn đã rời (Task 21)
+        if (router.canGoBack()) router.back();
+        else router.replace('/(player)/swings');
+      },
+      () => setFailed({ title: 'Xoá thất bại', caption: 'Mất kết nối — swing vẫn còn.', retry: removeSwing }),
+    );
+  const removeNote = (n: CoachNote) =>
+    run(
+      () => {
+        dispatch({ type: 'deleteNote', id: n.id, coachId: me.id });
+        if (editing?.id === n.id) {
+          setEditing(undefined);
+          setNote('');
+        }
+        setSent('Đã xoá ghi chú');
+      },
+      () => setFailed({ title: 'Xoá thất bại', caption: 'Mất kết nối — ghi chú vẫn còn.', retry: () => removeNote(n) }),
+    );
   // Thử lại sau lỗi: job chạy tiếp từ tiến độ lúc lỗi (lần đầu: 0)
   const analyze = () => dispatch({ type: 'jobUpdate', id: swing.id, status: 'queued', progress: swing.job.progress, at: NOW, notificationId: newId('nt') });
   const sendNote = (text: string) => {
@@ -349,6 +372,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
         // ponytail: "menu" của chủ swing chỉ có 1 mục (Xoá) → action thẳng trên header; thêm mục thì đổi sang BottomSheet menu
         actions={own ? [{ icon: 'trash-line', accessibilityLabel: 'Xoá swing', onPress: () => setConfirmDelete(true) }] : undefined}
       />
+      {busy && <SavingRow text="Đang xoá…" />}
       <KeyboardAvoid>
         <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingVertical: t.space('Spacing/Padding/Medium'), gap: t.space('Spacing/Gap/XLarge') }}>
           {uploaded ? (
@@ -504,9 +528,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
         destructive
         onPrimary={() => {
           setConfirmDelete(false);
-          deleteOnLeave();
-          if (router.canGoBack()) router.back();
-          else router.replace('/(player)/swings');
+          removeSwing();
         }}
         secondaryText="Huỷ"
       />
@@ -520,16 +542,24 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
         destructive
         onPrimary={() => {
           setConfirmNoteDelete(false);
-          if (!deleting) return;
-          dispatch({ type: 'deleteNote', id: deleting.id, coachId: me.id });
-          if (editing?.id === deleting.id) {
-            setEditing(undefined);
-            setNote('');
-          }
-          setSent('Đã xoá ghi chú');
+          if (deleting) removeNote(deleting);
         }}
         secondaryText="Huỷ"
       />
+      {failed && (
+        <SavedToast
+          type="Negative"
+          title={failed.title}
+          caption={failed.caption}
+          actionText="Thử lại"
+          onAction={() => {
+            const retry = failed.retry;
+            setFailed(undefined);
+            retry();
+          }}
+          onDone={() => setFailed(undefined)}
+        />
+      )}
     </Screen>
   );
 }

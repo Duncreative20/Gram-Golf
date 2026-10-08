@@ -233,6 +233,7 @@ export const B05BaiMoi: Story = {
   play: async ({ canvas }) => {
     await fillPost(canvas);
     await userEvent.click(await canvas.findByRole('button', { name: 'Đăng' }));
+    await canvas.findByText('Đã đăng bài'); // lưu giả lập 0,6 s (DELAYS.save) → chờ toast
   },
 };
 

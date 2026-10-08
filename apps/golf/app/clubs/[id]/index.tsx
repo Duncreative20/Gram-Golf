@@ -11,7 +11,7 @@ import { CLUB_FIELDS } from '../../../lib/validation';
 import { StackHeader } from '../../../components/StackHeader';
 import { Section } from '../../../components/Section';
 import { NoAccess } from '../../../components/NoAccess';
-import { SavedToast } from '../../../components/Feedback';
+import { SavedToast, SavingRow, useSimulatedWrite } from '../../../components/Feedback';
 import { useOnLeave } from '../../../components/useOnLeave';
 
 // ponytail: mỗi danh sách chỉ hiện 3 mục gần nhất, chưa có màn lọc theo gậy — cần xem hết thì thêm bộ lọc gậy ở tab Thông số / Swing.
@@ -25,9 +25,19 @@ export default function ClubDetail() {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [toast, setToast] = useState<string>();
   const deleteOnLeave = useOnLeave(() => dispatch({ type: 'deleteClub', id })); // xoá SAU khi rời màn — không nháy "Không tìm thấy gậy"
+  const { busy, run } = useSimulatedWrite();
+  const [failed, setFailed] = useState(false);
   if (!me) return <Redirect href="/" />;
   const club = clubById(state, id);
   const back = () => (router.canGoBack() ? router.back() : router.replace('/clubs'));
+  const removeClub = () =>
+    run(
+      () => {
+        deleteOnLeave();
+        back();
+      },
+      () => setFailed(true),
+    );
   if (!club || !canViewPrivate(state, me.id, club.playerId)) {
     return (
       <Screen>
@@ -143,7 +153,10 @@ export default function ClubDetail() {
               <Button level="Danger Subtle" size="Medium (Base)" leadingIcon="archive-line" text="Lưu trữ gậy" onPress={() => setConfirmArchive(true)} />
             )}
             {linked === 0 ? (
-              <Button level="Danger Subtle" size="Medium (Base)" leadingIcon="trash-line" text="Xoá gậy" onPress={() => setConfirmDelete(true)} />
+              <>
+                <Button level="Danger Subtle" size="Medium (Base)" leadingIcon="trash-line" text="Xoá gậy" disabled={busy} onPress={() => setConfirmDelete(true)} />
+                {busy && <SavingRow text="Đang xoá…" />}
+              </>
             ) : (
               <Text variant="Caption/Regular" color="Color/Content/Neutral/Light">
                 {`Gậy đã gắn với ${linked} phiên/swing nên chỉ lưu trữ được — không xoá để giữ lịch sử.`}
@@ -177,12 +190,24 @@ export default function ClubDetail() {
         destructive
         onPrimary={() => {
           setConfirmDelete(false);
-          deleteOnLeave();
-          back();
+          removeClub();
         }}
         secondaryText="Huỷ"
       />
       {toast && <SavedToast title={toast} onDone={() => setToast(undefined)} />}
+      {failed && (
+        <SavedToast
+          type="Negative"
+          title="Xoá thất bại"
+          caption="Mất kết nối — gậy vẫn còn."
+          actionText="Thử lại"
+          onAction={() => {
+            setFailed(false);
+            removeClub();
+          }}
+          onDone={() => setFailed(false)}
+        />
+      )}
     </Screen>
   );
 }

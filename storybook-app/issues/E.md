@@ -38,8 +38,8 @@ Không có màn nào crash hoặc trống. Console chỉ có cảnh báo `"shado
 | F12 | Đổi ảnh đại diện | Đã có (Task 28): Tài khoản › Chọn ảnh / Đổi ảnh / Dùng chữ tắt bằng ảnh mẫu (`f12--b-02-sua-tai-khoan`); thư viện ảnh / camera chưa có |
 | F12 | Đổi email / xác thực lại SĐT bằng OTP khi sửa | — |
 | F12 | `settings/dev` ở bản release (Redirect khi `!__DEV__`) | Storybook luôn đặt `__DEV__ = true` |
-| F13 | Màn 404 chung cho đường dẫn lạ (`+not-found`) | Phase 2. Hiện mỗi màn chi tiết tự hiện “Không tìm thấy …” |
-| F13 | Mất mạng / lỗi máy chủ / đang tải dữ liệu | App chạy dữ liệu mẫu trong bộ nhớ, chưa có lớp API |
+| F13 | Màn 404 chung cho đường dẫn lạ (`+not-found`) | Đã có (Task 29): `app/+not-found.tsx` “Không tìm thấy trang” + Về trang chủ (`f13--b-01-404`) |
+| F13 | Mất mạng / lỗi máy chủ / đang tải dữ liệu | Giả lập (Task 29): khung xương lần đầu mở màn danh sách (`f13--b-02-skeleton-swing`, `f13--dang-tai-*`), spinner khi lưu/xoá (`f13--b-08-dang-luu`, `f13--b-11-dang-xoa`), Dev › “Giả lập lỗi khi lưu/xoá” → toast thất bại + Thử lại (`f13--b-09-luu-that-bai`, `f13--b-10-xoa-that-bai`). Lớp API thật chưa có |
 | F13 | Guard vai ở `(player)/_layout`, `(coach)/_layout` | Storybook không vẽ `_layout` |
 
 ## Trùng luồng khác (link, không nhân bản)

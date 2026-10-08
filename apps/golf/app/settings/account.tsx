@@ -7,7 +7,7 @@ import { formatValue, formatVnd, initials } from '../../lib/format';
 import { nextSampleAvatar } from '../../lib/simulate';
 import { BIO_MAX, BIO_MIN, RATE_MAX_VND, validateAccount, type AccountRaw } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
-import { AlertMessage, SavedToast } from '../../components/Feedback';
+import { AlertMessage, SavedToast, SavingRow, useSimulatedWrite } from '../../components/Feedback';
 import { KeyboardAvoid } from '../../components/KeyboardAvoid';
 
 const back = () => (router.canGoBack() ? router.back() : router.replace('/profile'));
@@ -29,6 +29,8 @@ export default function AccountSettings() {
   const [submitted, setSubmitted] = useState(false);
   const [saved, setSaved] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(me?.avatarUrl); // lưu cùng các trường khác khi bấm Lưu
+  const { busy, run } = useSimulatedWrite();
+  const [failed, setFailed] = useState(false);
   if (!me) return <Redirect href="/" />;
   const result = validateAccount(me.role, raw, state.profiles.filter((p) => p.id !== me.id));
   const errors = submitted ? result.errors : {};
@@ -39,8 +41,14 @@ export default function AccountSettings() {
   const save = () => {
     setSubmitted(true);
     if (!result.value) return;
-    dispatch({ type: 'updateProfile', id: me.id, patch: { ...result.value, avatarUrl } });
-    setSaved(true);
+    const patch = { ...result.value, avatarUrl };
+    run(
+      () => {
+        dispatch({ type: 'updateProfile', id: me.id, patch });
+        setSaved(true);
+      },
+      () => setFailed(true),
+    );
   };
   return (
     <Screen>
@@ -86,10 +94,24 @@ export default function AccountSettings() {
         <Divider />
         <View style={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
           {submitted && invalid > 0 && <AlertMessage theme="Negative" text={`Chưa lưu: ${invalid} trường cần sửa.`} />}
-          <Button text="Lưu" disabled={saved} onPress={save} />
+          {busy && <SavingRow />}
+          <Button text="Lưu" disabled={saved || busy} onPress={save} />
         </View>
       </KeyboardAvoid>
       {saved && <SavedToast title="Đã lưu hồ sơ" onDone={back} />}
+      {failed && (
+        <SavedToast
+          type="Negative"
+          title="Lưu thất bại"
+          caption="Mất kết nối — thông tin tài khoản chưa được lưu."
+          actionText="Thử lại"
+          onAction={() => {
+            setFailed(false);
+            save();
+          }}
+          onDone={() => setFailed(false)}
+        />
+      )}
     </Screen>
   );
 }

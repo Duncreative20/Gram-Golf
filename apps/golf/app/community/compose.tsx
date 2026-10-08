@@ -10,7 +10,7 @@ import { clubById, clubLabel, swingsOf } from '../../lib/selectors';
 import { formatDate } from '../../lib/format';
 import { POST_CONTENT_MAX, POST_TAGS_MAX, POST_TITLE_MAX, addTags, validatePost } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
-import { SavedToast } from '../../components/Feedback';
+import { SavedToast, SavingRow, useSimulatedWrite } from '../../components/Feedback';
 
 /** Đăng bài: tiêu đề + nội dung bắt buộc (lỗi theo trường sau lần bấm Đăng đầu), tag (Enter / dấu phẩy → Chip, chạm để bỏ,
  *  tối đa 5, chữ thường, bỏ trùng), đính kèm một swing đã tải lên của mình (tuỳ chọn). Đăng → addPost → Toast → về bảng tin. */
@@ -25,6 +25,8 @@ export default function ComposePost() {
   const [picking, setPicking] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [posted, setPosted] = useState(false);
+  const { busy, run } = useSimulatedWrite();
+  const [failed, setFailed] = useState(false);
   if (!me) return <Redirect href="/" />;
   const result = validatePost({ title, content });
   const errors = submitted ? result.errors : {};
@@ -44,9 +46,15 @@ export default function ComposePost() {
   const submit = () => {
     setSubmitted(true);
     if (!result.value) return;
-    setPosted(true);
     // tag còn trong ô (chưa Enter / dấu phẩy) vẫn được tính
-    dispatch({ type: 'addPost', post: { id: newId('post'), authorId: me.id, createdAt: NOW, ...result.value, tags: addTags(tags, tagInput), swingId } });
+    const post = { id: newId('post'), authorId: me.id, createdAt: NOW, ...result.value, tags: addTags(tags, tagInput), swingId };
+    run(
+      () => {
+        setPosted(true);
+        dispatch({ type: 'addPost', post });
+      },
+      () => setFailed(true),
+    );
   };
   const backToFeed = () => (router.canGoBack() ? router.back() : router.replace(me.role === 'player' ? '/(player)/community' : '/(coach)/community'));
   return (
@@ -95,7 +103,8 @@ export default function ComposePost() {
             accessibilityLabel={`Đính kèm swing, ${attached ? describe(attached) : 'không đính kèm'}`}
           />
         )}
-        <Button size="Medium (Base)" leadingIcon="send-01-line" text="Đăng" disabled={posted} onPress={submit} />
+        {busy && <SavingRow text="Đang đăng…" />}
+        <Button size="Medium (Base)" leadingIcon="send-01-line" text="Đăng" disabled={posted || busy} onPress={submit} />
       </ScrollView>
       <BottomSheet visible={picking} onClose={() => setPicking(false)} heading="Đính kèm swing" divider>
         <ScrollView>
@@ -117,6 +126,19 @@ export default function ComposePost() {
         </ScrollView>
       </BottomSheet>
       {posted && <SavedToast title="Đã đăng bài" onDone={backToFeed} />}
+      {failed && (
+        <SavedToast
+          type="Negative"
+          title="Đăng bài thất bại"
+          caption="Mất kết nối — bài chưa được đăng, nội dung giữ nguyên."
+          actionText="Thử lại"
+          onAction={() => {
+            setFailed(false);
+            submit();
+          }}
+          onDone={() => setFailed(false)}
+        />
+      )}
     </Screen>
   );
 }

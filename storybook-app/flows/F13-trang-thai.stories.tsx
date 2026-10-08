@@ -1,37 +1,64 @@
 /**
- * F13 · Trạng thái xuyên suốt
+ * F13 · Trạng thái xuyên suốt — kịch bản: docs/flows/F13/steps.json, storyboard: docs/flows/F13.md
  *
- * Gom các màn rỗng / lỗi / 403 / không tìm thấy / chuyển hướng tiêu biểu. Trạng thái đã có story ở luồng khác → chỉ LINK
- * (story “00 · Mục lục trạng thái”, bấm là mở story gốc), không nhân bản. Chỉ dựng story mới cho trạng thái chưa luồng nào có:
- * guard theo vai / đăng nhập ở màn sâu (story vẽ `<Redirect>` thành “↪ Chuyển hướng tới …”).
+ * Trạng thái tạm thời (skeleton, spinner khi lưu/xoá, toast thất bại) đứng yên nhờ `appStory({ hold })`. Trạng thái đã có story ở luồng
+ * khác → chỉ LINK (story “00 · Mục lục trạng thái”, bấm là mở story gốc), không nhân bản.
  *
- * Các bước (mỗi bước = một story; ✓ = đã có):
+ * Các bước (mỗi bước shot = một story `f13--b-<nn>-<slug>`; ✓ = đã có):
+ *  ✓ 01 · 404 — đường dẫn lạ                       +not-found                      as p-minh
+ *  ✓ 02 · Khung xương — tab Swing                  (player)/swings                 hold firstLoad
+ *  ✓ 03 · Khung xương — tab Thông số               (player)/metrics                hold firstLoad
+ *  ✓ 04 · Swing rỗng                               (player)/swings                 as p-huy
+ *  ✓ 05 · Thông số rỗng                            (player)/metrics                as p-huy
+ *  ✓ 06 · Bộ gậy rỗng                              (player)/metrics                as p-huy; play: Bộ gậy
+ *  ✓ 07 · Dev — bật Giả lập lỗi khi lưu/xoá        settings/dev                    FAIL
+ *  ✓ 08 · Nhập tay → Lưu — đang lưu                metrics/manual                  hold save; play: SAT7_FORM
+ *  ✓ 09 · Lưu thất bại + Thử lại                   metrics/manual                  FAIL, hold toastError; play: SAT7_FORM
+ *  ✓ 10 · Xoá phiên thất bại                       metrics/[id] ss-w1              FAIL, hold toastError; play: Xoá phiên → Xoá
+ *  ✓ 11 · Xoá phiên — đang xoá                     metrics/[id] ss-w1              hold save; play: Xoá phiên → Xoá
+ *  ✓ 12 · Xoá xong — phiên Gỗ 3 05/10 không còn    (player)/metrics                deleteSession ss-w1
+ *  ✓ 13 · 403 — người theo dõi mở link học viên    students/[id] p-minh            as p-khoa
+ *  ✓ 14 · Quay lại từ 403 → Tổng quan              (player)/home                   as p-khoa
+ * Biến thể:
  *  ✓ 00 · Mục lục trạng thái                       link tới story gốc ở F01–F12
- *  ✓ 01 · Chưa đăng nhập mở màn trong app          (player)/home          chưa đăng nhập → ↪ /
- *  ✓ 02 · HLV mở màn chỉ dành cho người chơi       swings/new             as c-tuan → ↪ /
- *  ✓ 03 · Người chơi mở màn chỉ dành cho HLV       connect/invite         as p-minh → ↪ /
- *  ✓ 04 · Sửa gậy không phải của mình             clubs/[id]/edit cl-driver   as c-tuan → ↪ chi tiết gậy
- *  ✓ 05 · Hồ sơ người chơi mở bằng id HLV          users/[id] c-tuan      as p-minh → ↪ /coaches/c-tuan
- *  ✓ 90 · Đang tải — Tổng quan (giữ skeleton)     (player)/home          as p-minh, hold firstLoad
- *  ✓ 91 · Toast — đã lưu phiên thể lực            metrics/manual?kind=fitness + gõ 4 ô + Lưu, hold toast
+ *  ✓ 02a–02d · Đang tải — Học viên / chi tiết học viên / Thông báo / Bộ gậy        hold firstLoad
+ *  ✓ 02e · Đang tải — Tổng quan                    (player)/home                   hold firstLoad
+ *  ✓ 08a–08c · Đang lưu — thêm gậy / tài khoản / đăng bài                          hold save; play: điền hợp lệ → Lưu / Đăng
+ *  ✓ 10a–10c · Xoá thất bại — swing / ghi chú (HLV) / gậy                           FAIL, hold toastError; play: Xoá → Dialog Xoá
+ *  ✓ 12a · Toast thành công — đã lưu phiên thể lực metrics/manual?kind=fitness     hold toast
+ *  ✓ 13a–13e · Không vào được (guard chuyển hướng): chưa đăng nhập, HLV mở màn người chơi, người chơi mở màn HLV, sửa gậy người khác,
+ *              hồ sơ người chơi bằng id HLV (story vẽ `<Redirect>` thành “↪ Chuyển hướng tới …”)
  *
- * Chưa có (route không tồn tại — không dựng UI giả):
- *  - Màn 404 chung cho đường dẫn lạ (+not-found) — Phase 2; hiện mỗi màn chi tiết tự hiện “Không tìm thấy …”.
- *  - Mất mạng / lỗi máy chủ / đang tải dữ liệu — app chạy dữ liệu mẫu trong bộ nhớ, chưa có lớp gọi API.
+ * Chưa có:
+ *  - Mất mạng / lỗi máy chủ thật — app chạy dữ liệu mẫu trong bộ nhớ; lỗi lưu/xoá là giả lập (Dev › “Giả lập lỗi khi lưu/xoá”).
  *  - Guard ở `(player)/_layout`, `(coach)/_layout` (vai sai mở nhóm tab) — Storybook không vẽ `_layout`.
  */
 import { ScrollView, Text as RNText, View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
-import { userEvent } from 'storybook/test';
+import { screen, userEvent } from 'storybook/test';
 import { Screen, Text, TopNavigation, useTheme } from '@gr/ds';
+import NotFound from '../../apps/golf/app/+not-found';
 import Home from '../../apps/golf/app/(player)/home';
-import SwingNew from '../../apps/golf/app/swings/new';
-import CreateInvite from '../../apps/golf/app/connect/invite';
+import PlayerSwings from '../../apps/golf/app/(player)/swings';
+import PlayerMetrics from '../../apps/golf/app/(player)/metrics';
+import CoachRoster from '../../apps/golf/app/(coach)/roster';
+import StudentDetail from '../../apps/golf/app/students/[id]';
+import Notifications from '../../apps/golf/app/notifications';
+import Clubs from '../../apps/golf/app/clubs/index';
+import ClubNew from '../../apps/golf/app/clubs/new';
+import ClubDetail from '../../apps/golf/app/clubs/[id]/index';
 import ClubEdit from '../../apps/golf/app/clubs/[id]/edit';
-import UserProfile from '../../apps/golf/app/users/[id]';
+import DevSettings from '../../apps/golf/app/settings/dev';
+import AccountSettings from '../../apps/golf/app/settings/account';
+import ComposePost from '../../apps/golf/app/community/compose';
 import MetricsManual from '../../apps/golf/app/metrics/manual';
+import MetricSessionDetail from '../../apps/golf/app/metrics/[id]';
+import SwingNew from '../../apps/golf/app/swings/new';
+import SwingDetail from '../../apps/golf/app/swings/[id]';
+import CreateInvite from '../../apps/golf/app/connect/invite';
+import UserProfile from '../../apps/golf/app/users/[id]';
 import { Section } from '../../apps/golf/components/Section';
-import { appStory, typeIn } from '../lib/appStory';
+import { appStory, typeIn, type AppStoryOptions } from '../lib/appStory';
 
 const meta = { title: 'Luồng/F13 · Trạng thái xuyên suốt', id: 'f13' } satisfies Meta;
 export default meta;
@@ -42,13 +69,13 @@ const GROUPS: { title: string; caption?: string; items: [string, string][] }[] =
   {
     title: 'Rỗng',
     items: [
-      ['f01--tong-quan-trong', 'Tổng quan — người chơi mới'],
+      ['f01--b-07-tong-quan-trong', 'Tổng quan — người chơi mới'],
       ['f05--danh-sach-rong', 'Thông số — chưa có phiên'],
       ['f06--danh-sach-rong', 'Bộ gậy — chưa có gậy'],
       ['f07--danh-sach-rong', 'Swing — chưa có swing'],
       ['f04--tab-hlv-chua-ket-noi', 'Tab HLV — chưa kết nối HLV'],
       ['f04--hlv-chua-co-loi-moi', 'Mời học viên — chưa có lời mời'],
-      ['f02--hoc-vien-trong', 'Học viên — HLV mới'],
+      ['f02--b-05-hoc-vien-trong', 'Học viên — HLV mới'],
       ['f09--chua-co-hoc-vien', 'Học viên — đã huỷ hết kết nối'],
       ['f09--can-phan-hoi-rong', 'Học viên — “Cần phản hồi” rỗng'],
       ['f09--loi-moi-rong', 'Học viên — “Lời mời” rỗng'],
@@ -60,33 +87,33 @@ const GROUPS: { title: string; caption?: string; items: [string, string][] }[] =
       ['f10--theo-doi-rong', 'Người theo dõi — rỗng'],
       ['f11--rong', 'Thông báo — rỗng'],
       ['f11--tab-hlv-rong', 'Tab Thông báo HLV — rỗng'],
-      ['f12--quyen-rieng-tu', 'Người đã chặn — chưa chặn ai'],
+      ['f12--b-05-quyen-rieng-tu', 'Quyền riêng tư — chưa chặn ai'],
     ],
   },
   {
     title: 'Lỗi nhập / kiểm tra',
     items: [
-      ['f01--dang-ky-loi-bo-trong', 'Đăng ký — bỏ trống'],
+      ['f01--b-03-loi-form', 'Đăng ký — bỏ trống'],
       ['f01--dang-ky-trung-tai-khoan', 'Đăng ký — email / SĐT đã có tài khoản'],
       ['f02--dang-ky-loi', 'Đăng ký HLV — lỗi thông tin'],
       ['f01--xac-minh-otp-sai', 'OTP — sai mã'],
       ['f01--xac-minh-otp-thieu-thong-tin', 'OTP — thiếu thông tin đăng ký'],
       ['f03--dang-nhap-bo-trong', 'Đăng nhập — bỏ trống'],
-      ['f03--dang-nhap-sai', 'Đăng nhập — sai tài khoản / mật khẩu'],
-      ['f03--quen-mat-khau-email-sai', 'Quên mật khẩu — email không hợp lệ'],
-      ['f03--doi-mat-khau-loi', 'Đổi mật khẩu — lỗi'],
+      ['f03--b-01-dang-nhap-sai', 'Đăng nhập — sai tài khoản / mật khẩu'],
+      ['f03--b-02-quen-mk-loi', 'Quên mật khẩu — email không hợp lệ'],
+      ['f03--b-07-doi-mk-loi', 'Đổi mật khẩu — lỗi'],
       ['f12--tai-khoan-loi', 'Tài khoản — lỗi'],
       ['f04--nhap-ma-de-trong', 'Mã mời — để trống'],
-      ['f04--nhap-ma-sai', 'Mã mời — không tồn tại'],
-      ['f04--nhap-ma-het-han', 'Mã mời — hết hạn'],
-      ['f04--nhap-ma-da-dung', 'Mã mời — đã dùng'],
-      ['f04--nhap-ma-da-thu-hoi', 'Mã mời — đã thu hồi'],
-      ['f04--nhap-ma-da-ket-noi', 'Mã mời — đã kết nối HLV này'],
-      ['f05--nhap-tay-loi', 'Nhập tay — lỗi'],
-      ['f05--csv-xem-truoc', 'CSV — dòng lỗi'],
+      ['f04--b-16-ma-sai', 'Mã mời — không tồn tại'],
+      ['f04--b-17-ma-het-han', 'Mã mời — hết hạn'],
+      ['f04--b-18-ma-da-dung', 'Mã mời — đã dùng'],
+      ['f04--b-19-ma-thu-hoi', 'Mã mời — đã thu hồi'],
+      ['f04--b-20-da-ket-noi-ma', 'Mã mời — đã kết nối HLV này'],
+      ['f05--b-04-loi-truong', 'Nhập tay — lỗi'],
+      ['f05--b-12-csv-xem-truoc', 'CSV — dòng lỗi'],
       ['f05--csv-file-la', 'CSV — file lạ'],
       ['f05--csv-thieu-gay', 'CSV — thiếu gậy'],
-      ['f05--anh-kiem-tra', 'Ảnh OCR — trường tin cậy thấp'],
+      ['f05--b-16-ocr-kiem-tra', 'Ảnh OCR — trường tin cậy thấp'],
       ['f06--them-gay-loi', 'Thêm gậy — lỗi'],
       ['f07--loi-chua-chon-gay', 'Đăng swing — chưa chọn gậy'],
       ['f08--loi-trong', 'Ghi chú HLV — trống'],
@@ -98,10 +125,10 @@ const GROUPS: { title: string; caption?: string; items: [string, string][] }[] =
     title: 'Lỗi tác vụ',
     caption: 'Tải lên, phân tích swing, đọc ảnh',
     items: [
-      ['f07--loi-tai', 'Tải swing lên — mất mạng'],
-      ['f05--anh-khong-doc-duoc', 'Ảnh OCR — không đọc được (ảnh mờ)'],
-      ['f07--chi-tiet-loi-phan-tich', 'Phân tích swing — lỗi'],
-      ['f07--chi-tiet-can-xem-lai', 'Phân tích swing — cần xem lại'],
+      ['f07--b-09-loi-mang', 'Tải swing lên — mất mạng'],
+      ['f05--b-15-ocr-loi', 'Ảnh OCR — không đọc được (ảnh mờ)'],
+      ['f07--b-17-phan-tich-loi', 'Phân tích swing — lỗi'],
+      ['f07--b-16-can-xem-lai', 'Phân tích swing — cần xem lại'],
     ],
   },
   {
@@ -112,8 +139,8 @@ const GROUPS: { title: string; caption?: string; items: [string, string][] }[] =
       ['f06--khong-quyen-bo-gay', 'Bộ gậy của học viên'],
       ['f06--khong-quyen-chi-tiet', 'Chi tiết gậy'],
       ['f08--khong-co-quyen', 'Swing của học viên — kết nối đã huỷ'],
-      ['f09--khong-quyen-da-huy', 'Chi tiết học viên — kết nối đã huỷ'],
-      ['f09--khong-quyen-nguoi-theo-doi', 'Chi tiết học viên — chỉ là người theo dõi'],
+      ['f09--b-11-403-da-huy', 'Chi tiết học viên — kết nối đã huỷ'],
+      ['f09--b-10-403-nguoi-theo-doi', 'Chi tiết học viên — chỉ là người theo dõi'],
       ['f10--swing-dinh-kem-rieng-tu', 'Swing đính kèm bài viết — riêng tư'],
     ],
   },
@@ -133,7 +160,7 @@ const GROUPS: { title: string; caption?: string; items: [string, string][] }[] =
       ['f05--chi-tiet-khong-thay', 'Phiên số liệu'],
       ['f06--khong-tim-thay', 'Gậy'],
       ['f07--da-xoa', 'Swing (đã xoá)'],
-      ['f09--khong-tim-thay', 'Học viên'],
+      ['f09--b-13-404-hoc-vien', 'Học viên'],
       ['f04--ho-so-hlv-khong-co', 'Hồ sơ HLV'],
       ['f10--ho-so-khong-tim-thay', 'Hồ sơ người dùng'],
       ['f10--bai-khong-tim-thay', 'Bài viết'],
@@ -189,50 +216,246 @@ export const MucLuc: Story = {
   ...appStory(),
 };
 
+// ── Bước của luồng ───────────────────────────────────────────────────────────
+type Play = NonNullable<Story['play']>;
+const FAIL = { type: 'setSimulateFailure', on: true } as const;
+const PLAYER_TAB = (active: string): AppStoryOptions => ({ as: 'p-minh', tabs: { role: 'player', active } });
+const HUY_TAB = (active: string): AppStoryOptions => ({ as: 'p-huy', tabs: { role: 'player', active } });
+const click = (el: Promise<HTMLElement>) => el.then((e) => userEvent.click(e));
+// Bước 08: Sắt 7 + 6 chỉ số hợp lệ → Lưu (như steps.json). Sheet chọn gậy / Dialog là Modal ngoài #storybook-root → `screen`.
+const SAT7_FORM: Play = async ({ canvas }) => {
+  await click(canvas.findByRole('combobox', { name: 'Gậy, chưa chọn' }));
+  await click(screen.findByRole('radio', { name: /^Sắt 7/ }));
+  for (const [label, v] of [['Tốc độ đầu gậy (mph)', '85'], ['Tốc độ bóng (mph)', '116'], ['Smash factor', '1,36'], ['Spin (rpm)', '6700'], ['Góc bắn (°)', '17,5'], ['Carry (m)', '150']]) {
+    await typeIn(await canvas.findByLabelText(label), v);
+  }
+  await click(canvas.findByRole('button', { name: 'Lưu' }));
+};
+// Xoá → Dialog xác nhận "Xoá". `trigger` = nút / nút icon mở Dialog.
+const confirmDelete = (trigger: RegExp | string): Play => async ({ canvas }) => {
+  await click(canvas.findAllByRole('button', { name: trigger }).then((all) => all[0]!));
+  await click(screen.findByRole('button', { name: 'Xoá' }));
+};
+// Chờ trạng thái cuối của play hiện ra (spinner / toast sau DELAYS.save 0,6 s) để ảnh không chụp giữa chừng.
+const thenShows = (play: Play, text: string): Play => async (ctx) => {
+  await play(ctx);
+  await screen.findAllByText(text); // "Đang xoá…" có ở cả nút lẫn SavingRow
+};
+
+export const B01_404: Story = {
+  name: '01 · Mở link không có màn',
+  render: () => <NotFound />,
+  ...appStory({ as: 'p-minh' }),
+};
+
+export const B02SkeletonSwing: Story = {
+  name: '02 · Tab Swing lần đầu — khung xương',
+  render: () => <PlayerSwings />,
+  ...appStory({ ...PLAYER_TAB('swings'), hold: ['firstLoad'] }),
+};
+
+export const DangTaiHocVien: Story = {
+  name: '02a · Đang tải — Học viên',
+  render: () => <CoachRoster />,
+  ...appStory({ as: 'c-tuan', tabs: { role: 'coach', active: 'roster' }, hold: ['firstLoad'] }),
+};
+
+export const DangTaiChiTietHocVien: Story = {
+  name: '02b · Đang tải — chi tiết học viên',
+  render: () => <StudentDetail />,
+  ...appStory({ as: 'c-tuan', params: { id: 'p-minh' }, hold: ['firstLoad'] }),
+};
+
+export const DangTaiThongBao: Story = {
+  name: '02c · Đang tải — Thông báo',
+  render: () => <Notifications />,
+  ...appStory({ as: 'p-minh', hold: ['firstLoad'] }),
+};
+
+export const DangTaiBoGay: Story = {
+  name: '02d · Đang tải — Bộ gậy',
+  render: () => <Clubs />,
+  ...appStory({ as: 'p-minh', hold: ['firstLoad'] }),
+};
+
+export const DangTaiTongQuan: Story = {
+  name: '02e · Đang tải — Tổng quan',
+  render: () => <Home />,
+  ...appStory({ ...PLAYER_TAB('home'), hold: ['firstLoad'] }),
+};
+
+export const B03SkeletonThongSo: Story = {
+  name: '03 · Tab Thông số lần đầu — khung xương',
+  render: () => <PlayerMetrics />,
+  ...appStory({ ...PLAYER_TAB('metrics'), hold: ['firstLoad'] }),
+};
+
+export const B04TrongSwing: Story = {
+  name: '04 · Phạm Quốc Huy mở tab Swing',
+  render: () => <PlayerSwings />,
+  ...appStory(HUY_TAB('swings')),
+};
+
+export const B05TrongThongSo: Story = {
+  name: '05 · Tab Thông số',
+  render: () => <PlayerMetrics />,
+  ...appStory(HUY_TAB('metrics')),
+};
+
+export const B06TrongBoGay: Story = {
+  name: '06 · Segment Bộ gậy',
+  render: () => <PlayerMetrics />,
+  ...appStory(HUY_TAB('metrics')),
+  play: ({ canvas }) => click(canvas.findByRole('tab', { name: /Bộ gậy/ })),
+};
+
+export const B07BatGiaLapLoi: Story = {
+  name: '07 · Dev → bật Giả lập lỗi khi lưu/xoá',
+  render: () => <DevSettings />,
+  ...appStory({ as: 'p-minh', setup: [FAIL] }),
+};
+
+export const B08DangLuu: Story = {
+  name: '08 · Nhập tay đủ 6 chỉ số → Lưu',
+  render: () => <MetricsManual />,
+  ...appStory({ as: 'p-minh', hold: ['save'] }),
+  play: thenShows(SAT7_FORM, 'Đang lưu…'),
+};
+
+export const DangLuuThemGay: Story = {
+  name: '08a · Đang lưu — thêm gậy',
+  render: () => <ClubNew />,
+  ...appStory({ as: 'p-minh', hold: ['save'] }),
+  play: thenShows(async ({ canvas }) => {
+    await click(canvas.findByRole('combobox', { name: 'Loại gậy, chưa chọn' }));
+    await click(screen.findByRole('radio', { name: 'Hybrid 3' }));
+    for (const [label, v] of [['Hãng', 'Ping'], ['Model', 'G430'], ['Hãng cán', 'Alta CB'], ['Loft (°)', '19'], ['Lie (°)', '59']]) {
+      await typeIn(await canvas.findByLabelText(label), v);
+    }
+    await click(canvas.findByRole('button', { name: 'Lưu' }));
+  }, 'Đang lưu…'),
+};
+
+export const DangLuuTaiKhoan: Story = {
+  name: '08b · Đang lưu — tài khoản',
+  render: () => <AccountSettings />,
+  ...appStory({ as: 'p-minh', hold: ['save'] }),
+  play: thenShows(async ({ canvas }) => {
+    await typeIn(await canvas.findByLabelText('CLB / sân tập (tuỳ chọn)'), 'Sân tập Hồ Tây');
+    await click(canvas.findByRole('button', { name: 'Lưu' }));
+  }, 'Đang lưu…'),
+};
+
+export const DangDangBai: Story = {
+  name: '08c · Đang đăng bài',
+  render: () => <ComposePost />,
+  ...appStory({ as: 'p-minh', hold: ['save'] }),
+  play: thenShows(async ({ canvas }) => {
+    await typeIn(await canvas.findByLabelText('Tiêu đề'), '3 bài tập giữ tempo cho driver');
+    await typeIn(await canvas.findByLabelText('Nội dung'), 'Đếm nhịp 1-2-3 khi lên gậy, giữ đỉnh nửa nhịp rồi mới xuống.');
+    await click(canvas.findByRole('button', { name: 'Đăng' }));
+  }, 'Đang đăng…'),
+};
+
+export const B09LuuThatBai: Story = {
+  name: '09 · Chờ 0,6 giây — Lưu thất bại',
+  render: () => <MetricsManual />,
+  ...appStory({ as: 'p-minh', setup: [FAIL], hold: ['toastError'] }),
+  play: thenShows(SAT7_FORM, 'Lưu thất bại'),
+};
+
+export const B10XoaThatBai: Story = {
+  name: '10 · Phiên Gỗ 3 05/10 → Xoá phiên → Xoá',
+  render: () => <MetricSessionDetail />,
+  ...appStory({ as: 'p-minh', params: { id: 'ss-w1' }, setup: [FAIL], hold: ['toastError'] }),
+  play: thenShows(confirmDelete('Xoá phiên'), 'Xoá thất bại'),
+};
+
+export const XoaSwingThatBai: Story = {
+  name: '10a · Xoá swing thất bại',
+  render: () => <SwingDetail />,
+  ...appStory({ as: 'p-minh', params: { id: 'sw-minh-2' }, setup: [FAIL], hold: ['toastError'] }),
+  play: thenShows(confirmDelete('Xoá swing'), 'Xoá thất bại'),
+};
+
+export const XoaGhiChuThatBai: Story = {
+  name: '10b · Xoá ghi chú thất bại (HLV)',
+  render: () => <SwingDetail />,
+  ...appStory({ as: 'c-tuan', params: { id: 'sw-minh-1' }, setup: [FAIL], hold: ['toastError'] }),
+  play: thenShows(confirmDelete(/^Xoá ghi chú/), 'Xoá thất bại'),
+};
+
+export const XoaGayThatBai: Story = {
+  name: '10c · Xoá gậy thất bại',
+  render: () => <ClubDetail />,
+  ...appStory({ as: 'p-minh', params: { id: 'cl-pw' }, setup: [FAIL], hold: ['toastError'] }),
+  play: thenShows(confirmDelete('Xoá gậy'), 'Xoá thất bại'),
+};
+
+export const B11DangXoa: Story = {
+  name: '11 · Tắt giả lập → xoá lại phiên Gỗ 3',
+  render: () => <MetricSessionDetail />,
+  ...appStory({ as: 'p-minh', params: { id: 'ss-w1' }, hold: ['save'] }),
+  play: thenShows(confirmDelete('Xoá phiên'), 'Đang xoá…'),
+};
+
+export const B12XoaThanhCong: Story = {
+  name: '12 · Xoá xong — về danh sách',
+  render: () => <PlayerMetrics />,
+  ...appStory({ ...PLAYER_TAB('metrics'), setup: [{ type: 'deleteSession', id: 'ss-w1' }] }),
+};
+
+export const ToastDaLuu: Story = {
+  name: '12a · Toast thành công — đã lưu phiên thể lực',
+  render: () => <MetricsManual />,
+  ...appStory({ as: 'p-minh', params: { kind: 'fitness' }, hold: ['toast'] }),
+  play: thenShows(async ({ canvas }) => {
+    for (const [label, value] of [['Cân nặng (kg)', '72,5'], ['Độ dẻo (/10)', '7'], ['Lực nắm (kg)', '45'], ['Bật cao (cm)', '48']] as const) {
+      await typeIn(await canvas.findByLabelText(label), value);
+    }
+    await click(canvas.findByRole('button', { name: 'Lưu' }));
+  }, 'Đã lưu'),
+};
+
+export const B13_403: Story = {
+  name: '13 · Người theo dõi mở link dữ liệu học viên',
+  render: () => <StudentDetail />,
+  ...appStory({ as: 'p-khoa', params: { id: 'p-minh' } }),
+};
+
+// ── Không vào được: guard chuyển hướng (story vẽ <Redirect> thành “↪ Chuyển hướng tới …”) ──
 export const ChuaDangNhap: Story = {
-  name: '01 · Chưa đăng nhập mở màn trong app',
+  name: '13a · Chưa đăng nhập mở màn trong app',
   render: () => <Home />,
   ...appStory(),
 };
 
 export const HlvMoManNguoiChoi: Story = {
-  name: '02 · HLV mở màn chỉ dành cho người chơi',
+  name: '13b · HLV mở màn chỉ dành cho người chơi',
   render: () => <SwingNew />,
   ...appStory({ as: 'c-tuan' }),
 };
 
 export const NguoiChoiMoManHlv: Story = {
-  name: '03 · Người chơi mở màn chỉ dành cho HLV',
+  name: '13c · Người chơi mở màn chỉ dành cho HLV',
   render: () => <CreateInvite />,
   ...appStory({ as: 'p-minh' }),
 };
 
 export const SuaGayNguoiKhac: Story = {
-  name: '04 · Sửa gậy không phải của mình',
+  name: '13d · Sửa gậy không phải của mình',
   render: () => <ClubEdit />,
   ...appStory({ as: 'c-tuan', params: { id: 'cl-driver' } }),
 };
 
 export const HoSoIdHlv: Story = {
-  name: '05 · Hồ sơ người chơi mở bằng id HLV',
+  name: '13e · Hồ sơ người chơi mở bằng id HLV',
   render: () => <UserProfile />,
   ...appStory({ as: 'p-minh', params: { id: 'c-tuan' } }),
 };
 
-export const DangTaiTongQuan: Story = {
-  name: '90 · Đang tải — Tổng quan (giữ skeleton)',
+export const B14QuayLaiTu403: Story = {
+  name: '14 · Chạm Quay lại → Tổng quan của Khoa',
   render: () => <Home />,
-  ...appStory({ as: 'p-minh', tabs: { role: 'player', active: 'home' }, hold: ['firstLoad'] }),
-};
-
-export const ToastDaLuu: Story = {
-  name: '91 · Toast — đã lưu phiên thể lực (giữ toast)',
-  render: () => <MetricsManual />,
-  ...appStory({ as: 'p-minh', params: { kind: 'fitness' }, hold: ['toast'] }),
-  play: async ({ canvas }) => {
-    for (const [label, value] of [['Cân nặng (kg)', '72,5'], ['Độ dẻo (/10)', '7'], ['Lực nắm (kg)', '45'], ['Bật cao (cm)', '48']] as const) {
-      await typeIn(await canvas.findByLabelText(label), value);
-    }
-    await userEvent.click(await canvas.findByRole('button', { name: 'Lưu' }));
-  },
+  ...appStory({ as: 'p-khoa', tabs: { role: 'player', active: 'home' } }),
 };

@@ -9,6 +9,7 @@ import { clubById, clubLabel, filterSwings, swingsOf, type SwingPeriod } from '.
 import { formatDate } from '../../lib/format';
 import { TabHeader } from '../../components/TabHeader';
 import { SwingCard, swingStatus } from '../../components/SwingCard';
+import { ListSkeleton, useFirstLoad } from '../../components/ListSkeleton';
 
 const VIEWS = [
   { label: 'Danh sách', icon: 'menu-01-line' as const },
@@ -57,6 +58,7 @@ export default function PlayerSwings() {
   const [view, setView] = useState(0);
   const [period, setPeriod] = useState<SwingPeriod>('all');
   const [order, setOrder] = useState<'newest' | 'oldest'>('newest');
+  const loading = useFirstLoad('swings');
   if (!me) return <Redirect href="/" />;
   const all = swingsOf(state, me.id);
   const swings = filterSwings(all, period, order, NOW);
@@ -65,7 +67,7 @@ export default function PlayerSwings() {
   return (
     <Screen edges={['top']}>
       <TabHeader title="Swing" />
-      {all.length > 0 ? (
+      {loading ? <ListSkeleton /> : all.length > 0 ? (
         <>
           <View style={{ paddingHorizontal: margin, paddingBottom: t.space('Spacing/Padding/XSmall'), gap: t.space('Spacing/Gap/Small') }}>
             <Segmented size="Small" items={VIEWS} selectedIndex={view} onChange={setView} />

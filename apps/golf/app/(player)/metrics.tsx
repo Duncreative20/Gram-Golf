@@ -6,6 +6,7 @@ import { useStore } from '../../lib/store';
 import { archivedClubsOf, clubsOf, prefsOf, sessionsOf } from '../../lib/selectors';
 import { TabHeader } from '../../components/TabHeader';
 import { SessionRow } from '../../components/SessionRow';
+import { ListSkeleton, useFirstLoad } from '../../components/ListSkeleton';
 import { ClubGrid } from '../clubs';
 
 const SEGMENTS = [{ label: 'Swing' }, { label: 'Thể lực' }, { label: 'Bộ gậy' }];
@@ -20,6 +21,7 @@ export default function PlayerMetrics() {
   const t = useTheme();
   const { state, me } = useStore();
   const [seg, setSeg] = useState(0);
+  const loading = useFirstLoad('metrics');
   if (!me) return <Redirect href="/" />;
   const units = prefsOf(state, me.id).units;
   const add = ADD[seg];
@@ -33,7 +35,7 @@ export default function PlayerMetrics() {
       <View style={{ paddingHorizontal: t.layout('Margin-Small'), paddingBottom: t.space('Spacing/Padding/Small') }}>
         <Segmented items={SEGMENTS} selectedIndex={seg} onChange={setSeg} />
       </View>
-      {(seg === 2 ? clubs.length : rows.length) > 0 ? (
+      {loading ? <ListSkeleton /> : (seg === 2 ? clubs.length : rows.length) > 0 ? (
         <>
           {/* chừa chỗ cho nút "+" nổi */}
           <ScrollView contentContainerStyle={{ paddingBottom: t.size('Button/Size/Large') + 2 * t.layout('Margin-Small') }}>

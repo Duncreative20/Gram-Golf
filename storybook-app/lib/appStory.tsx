@@ -23,7 +23,8 @@ export type AppStoryOptions = {
   /** Màn thuộc nhóm tab → vẽ thanh tab thật, `active` = tên route tab (home, metrics, roster…). */
   tabs?: { role: 'player' | 'coach'; active: string };
   /** Giữ trạng thái tạm thời để ảnh tất định: khoá `DELAYS` (apps/golf/lib/simulate.ts) liệt kê ở đây thành vô hạn trong story này —
-   *  'firstLoad' giữ skeleton, 'toast' giữ toast thành công, 'ocr' giữ "Đang đọc…"; Task 29 thêm 'save' (spinner) và 'toastError'. */
+   *  'firstLoad' giữ skeleton, 'save' giữ spinner "Đang lưu…" / "Đang xoá…", 'toast' giữ toast thành công, 'toastError' giữ toast thất bại,
+   *  'ocr' giữ "Đang đọc…". */
   hold?: (keyof typeof DELAYS)[];
 };
 
