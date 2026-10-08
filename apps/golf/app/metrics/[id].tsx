@@ -46,6 +46,7 @@ export default function MetricSessionDetail() {
     { label: 'Ngày', value: formatDate(session.capturedAt) },
     ...(session.kind === 'swing' ? [{ label: 'Gậy', value: club ? `${clubLabel(club)} · ${club.brand} ${club.model}` : 'Chưa gắn gậy' }] : []),
     { label: 'Nguồn', value: [SOURCE_LABELS[session.source], session.vendor && VENDOR_LABELS[session.vendor]].filter(Boolean).join(' · ') },
+    ...(session.editedAt ? [{ label: 'Đã sửa', value: formatDate(session.editedAt) }] : []),
   ];
   const metrics =
     session.kind === 'swing'
@@ -83,7 +84,8 @@ export default function MetricSessionDetail() {
           </View>
         )}
         {session.playerId === me.id && (
-          <View style={{ paddingHorizontal: t.layout('Margin-Small') }}>
+          <View style={{ paddingHorizontal: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}>
+            <Button level="Secondary" size="Medium (Base)" leadingIcon="edit-02-line" text="Sửa phiên" onPress={() => router.push({ pathname: '/metrics/manual', params: { id: session.id } })} />
             <Button level="Danger Subtle" size="Medium (Base)" leadingIcon="trash-line" text="Xoá phiên" onPress={() => setConfirmDelete(true)} />
           </View>
         )}

@@ -23,8 +23,8 @@ sửa (bước code nằm sẵn trong task sở hữu, cột “Bước”); thu
 
 | # | Nguồn | Lỗi | Task | Bước | Trạng thái |
 |---|---|---|---|---|---|
-| 1 | README · `f01--tong-quan-co-du-lieu` | `charts/ConcentricRings.tsx:17-21`: 1 gậy → vẽ một đĩa đặc to | 20 | Step 4b | chờ Task 20 |
-| 2 | README · `f01--tong-quan-co-du-lieu` | "Xu hướng … (Driver, 1 buổi)" vẽ biểu đồ một điểm (`charts/TrendChart.tsx`, dùng ở `(player)/home.tsx:173`, `students/[id].tsx:90`) | 20 | Step 4b | chờ Task 20 |
+| 1 | README · `f01--tong-quan-co-du-lieu` | `charts/ConcentricRings.tsx:17-21`: 1 gậy → vẽ một đĩa đặc to | 20 | Step 4b | đã sửa (Task 20) |
+| 2 | README · `f01--tong-quan-co-du-lieu` | "Xu hướng … (Driver, 1 buổi)" vẽ biểu đồ một điểm (`charts/TrendChart.tsx`, dùng ở `(player)/home.tsx:173`, `students/[id].tsx:90`) | 20 | Step 4b | đã sửa (Task 20) |
 | 3 | README · `f10--chi-tiet-bai` | DS `Comment/Comment.tsx:70`: "⋯" của bình luận của mình bấm không làm gì | 15 | Step 13 | đã sửa (Task 15) |
 | 4 | README · `f10--tra-loi-binh-luan` | DS `Comment/Comment.tsx:155-156`: "Thêm ảnh" / "Thêm địa điểm" không có handler | 15 | Step 13 | đã sửa (Task 15) |
 | 5 | README · `f11--tab-hlv` + report Task 13 | `NotificationsScreen.tsx:101`: tab Thông báo của HLV vẫn có chuông mở chính màn đó | 27 | Step 3 | chờ Task 27 |

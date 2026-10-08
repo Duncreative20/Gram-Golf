@@ -21,7 +21,8 @@ export function TrendChart({
 }) {
   const t = useTheme();
   const [width, setWidth] = useState(0);
-  if (!data.length) return null;
+  // 1 buổi chưa phải xu hướng: chữ thay biểu đồ một điểm (caller tự xử lý 0 buổi)
+  if (data.length < 2) return <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Light">Cần ít nhất 2 buổi để thấy xu hướng.</Text>;
   const h = height ?? t.primitive('gr-dm-160');
   const accent = t.color('Color/Content/Accent/Base');
   const stroke = t.weight('Emphasis/Border-Weight/Active');
