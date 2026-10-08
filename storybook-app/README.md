@@ -111,7 +111,7 @@ Ra `<outDir>/<story-id>.<light|dark>.png`, khung cố định 390×844 (tham s�
 
 | Mã | Luồng | Các bước |
 | --- | --- | --- |
-| F01 | Người chơi mới | welcome → đăng ký (Người chơi) → OTP → onboarding → Tổng quan trống → nhập số liệu đầu tiên → Tổng quan có dữ liệu |
+| F01 | Người chơi mới | welcome → đăng ký (Người chơi; lỗi bỏ trống, email / SĐT đã có) → OTP (sai mã, thiếu thông tin) → onboarding (ảnh mẫu / chữ tắt, đơn vị đo, mã mời → Để sau) → Tổng quan trống → nhập tay: chưa có gậy → “Thêm gậy mới” → về form đã chọn sẵn gậy vừa thêm → lưu → Tổng quan có dữ liệu (1 buổi: chữ thay biểu đồ, 1 gậy: chỉ chú giải). Storyboard: `docs/flows/F01.md` |
 | F02 | HLV mới | welcome → đăng ký (HLV) → OTP → onboarding → Học viên trống → tạo mã mời |
 | F03 | Tài khoản | đăng nhập (đúng/sai), quên mật khẩu, đổi mật khẩu, đăng xuất (hồ sơ) |
 | F04 | Kết nối HLV–học viên | HLV tạo/chia sẻ/thu hồi mã, mời học viên cụ thể → học viên Chấp nhận / Từ chối ở tab HLV; học viên gửi yêu cầu từ hồ sơ HLV → HLV Duyệt / Từ chối ở Học viên › Lời mời; nhập mã (lỗi: sai/hết hạn/đã dùng/đã thu hồi/đã kết nối) → xem trước HLV chính/phụ → chấp nhận; đặt làm HLV chính; học viên / HLV huỷ kết nối → 403 ngay. Storyboard: `docs/flows/F04.md` |
@@ -129,18 +129,18 @@ Ngoài các bước: thêm story cho trạng thái khó bấm tới (rỗng / đ
 
 ## Phủ route
 
-Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **45/45 route có story** (296 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
+Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **45/45 route có story** (297 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
 
 | Route | Story id | Ghi chú |
 | --- | --- | --- |
-| `index` | `f03--vao-app-nguoi-choi`, `f03--vao-app-hlv`, `f03--da-dang-xuat` | Chỉ chuyển hướng theo vai / chưa đăng nhập (story vẽ “↪ Chuyển hướng tới …”) |
-| `(auth)/welcome` | `f01--man-chao`, `f02--man-chao` |  |
-| `(auth)/register` | `f01--dang-ky-chon-vai`, `f01--dang-ky-thong-tin`, `f01--dang-ky-loi-bo-trong`, `f01--dang-ky-trung-tai-khoan`, `f02--dang-ky-chon-vai`, `f02--dang-ky-thong-tin`, `f02--dang-ky-loi` |  |
-| `(auth)/verify-otp` | `f01--xac-minh-otp`, `f01--xac-minh-otp-sai`, `f01--xac-minh-otp-thieu-thong-tin`, `f02--xac-minh-otp` | Đếm ngược “Gửi lại mã sau 59 s” chạy theo giây |
-| `(auth)/onboarding` | `f01--onboarding-anh`, `f01--onboarding-don-vi`, `f01--onboarding-ma-moi`, `f02--onboarding-anh`, `f02--onboarding-moi-hoc-vien` |  |
+| `index` | `f03--vao-app-nguoi-choi`, `f03--vao-app-hlv`, `f03--da-dang-xuat` | Chỉ chuyển hướng theo vai / chưa đăng nhập (story vẽ “↪ Chuyển hướng tới …”); lượt F01 bắt đầu ở `/` chưa đăng nhập → welcome (`f01--b-01-chao`) |
+| `(auth)/welcome` | `f01--b-01-chao`, `f02--man-chao` |  |
+| `(auth)/register` | `f01--b-02-chon-vai-tro`, `f01--b-03-loi-form`, `f01--dang-ky-thong-tin`, `f01--dang-ky-trung-tai-khoan`, `f02--dang-ky-chon-vai`, `f02--dang-ky-thong-tin`, `f02--dang-ky-loi` |  |
+| `(auth)/verify-otp` | `f01--b-04-otp`, `f01--xac-minh-otp-sai`, `f01--xac-minh-otp-thieu-thong-tin`, `f02--xac-minh-otp` | Đếm ngược “Gửi lại mã sau 59 s” chạy theo giây |
+| `(auth)/onboarding` | `f01--b-05-anh-dai-dien`, `f01--onboarding-don-vi`, `f01--b-06-ma-moi`, `f02--onboarding-anh`, `f02--onboarding-moi-hoc-vien` |  |
 | `(auth)/login` | `f03--dang-nhap`, `f03--dang-nhap-bo-trong`, `f03--dang-nhap-sai` |  |
 | `(auth)/forgot-password` | `f03--quen-mat-khau`, `f03--quen-mat-khau-email-sai`, `f03--quen-mat-khau-da-gui` |  |
-| `(player)/home` | `f01--tong-quan-trong`, `f01--tong-quan-co-du-lieu`, `f05--b-01-tong-quan-truoc`, `f05--b-20-tong-quan-sau`, `f13--chua-dang-nhap`, `f13--dang-tai-tong-quan` | `f13--chua-dang-nhap` = guard chưa đăng nhập; `f13--dang-tai-tong-quan` = skeleton (`hold: ['firstLoad']`) |
+| `(player)/home` | `f01--b-07-tong-quan-trong`, `f01--b-10-tong-quan-co-du-lieu`, `f05--b-01-tong-quan-truoc`, `f05--b-20-tong-quan-sau`, `f13--chua-dang-nhap`, `f13--dang-tai-tong-quan` | `f13--chua-dang-nhap` = guard chưa đăng nhập; `f13--dang-tai-tong-quan` = skeleton (`hold: ['firstLoad']`) |
 | `(player)/metrics` | `f05--b-02-lich-su`, `f05--b-06-da-luu`, `f05--b-10-the-luc`, `f05--b-18-yard-lich-su`, `f05--b-19-sau-xoa`, `f05--danh-sach-rong`, `f06--b-01-bo-gay`, `f06--b-04-them-xong`, `f06--b-09-sau-luu-tru` | `f06--b-09-sau-luu-tru` = dòng “Gậy đã lưu trữ” trên lưới |
 | `(player)/swings` | `f07--b-01-danh-sach`, `f07--b-02-luoi`, `f07--b-03-loc-sap-xep`, `f07--b-15-sau-xoa`, `f07--danh-sach`, `f07--danh-sach-rong`, `f07--loc-7-ngay-rong` | Danh sách / Lưới, lọc 7 / 30 ngày, sắp xếp theo ngày quay |
 | `(player)/community` | `f10--bang-tin`, `f10--bang-tin-rong`, `f10--kham-pha`, `f10--kham-pha-tim`, `f10--kham-pha-khong-thay`, `f10--bang-tin-sau-khi-chan` |  |
@@ -153,7 +153,7 @@ Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **45/45 route có story**
 | `connect/accept` | `f04--b-16-ma-sai`, `f04--b-17-ma-het-han`, `f04--b-18-ma-da-dung`, `f04--b-19-ma-thu-hoi`, `f04--b-20-da-ket-noi-ma`, `f04--b-22-xem-truoc-hlv-phu`, `f04--nhap-ma-de-trong`, `f04--xem-truoc-hlv-chinh`, `f04--chap-nhan-ket-noi` |  |
 | `coaches/[id]` | `f04--b-11-ho-so-hlv`, `f04--b-12-da-gui-yeu-cau`, `f04--ho-so-hlv`, `f04--ho-so-hlv-dang-moi`, `f04--ho-so-hlv-khong-co`, `f10--ho-so-hlv-bi-chan` | `f10--ho-so-hlv-bi-chan` = trạng thái bị chặn |
 | `metrics/add` | `f01--chon-nguon-so-lieu`, `f05--b-03-chon-nguon` | `presentation: modal` của layout không thể hiện |
-| `metrics/manual` | `f01--nhap-tay-chua-co-gay`, `f01--nhap-tay-loi`, `f01--nhap-tay-da-luu`, `f05--b-04-loi-truong`, `f05--b-05-ngoai-khoang`, `f05--b-08-sua-loi`, `f05--nhap-tay`, `f05--nhap-tay-the-luc`, `f05--nhap-tay-yard`, `f05--nhap-tay-da-luu`, `f05--sua-phien-yard`, `f05--sua-phien-the-luc`, `f06--b-05-gay-moi-trong-picker`, `f06--b-06-chon-san-gay-moi`, `f13--toast-da-luu` | `?id=<phiên>` = sửa phiên (`f05--b-08-sua-loi`, `f05--sua-phien-*`); `f05--nhap-tay-da-luu`, `f13--toast-da-luu` = toast giữ nguyên (`hold: ['toast']`) |
+| `metrics/manual` | `f01--b-08-chua-co-gay`, `f01--b-09-gay-chon-san`, `f01--nhap-tay-loi`, `f01--nhap-tay-da-luu`, `f05--b-04-loi-truong`, `f05--b-05-ngoai-khoang`, `f05--b-08-sua-loi`, `f05--nhap-tay`, `f05--nhap-tay-the-luc`, `f05--nhap-tay-yard`, `f05--nhap-tay-da-luu`, `f05--sua-phien-yard`, `f05--sua-phien-the-luc`, `f06--b-05-gay-moi-trong-picker`, `f06--b-06-chon-san-gay-moi`, `f13--toast-da-luu` | `?id=<phiên>` = sửa phiên (`f05--b-08-sua-loi`, `f05--sua-phien-*`); `f05--nhap-tay-da-luu`, `f13--toast-da-luu` = toast giữ nguyên (`hold: ['toast']`) |
 | `metrics/import-csv` | `f05--b-12-csv-xem-truoc`, `f05--b-13-csv-da-nhap`, `f05--csv-chon-file`, `f05--csv-file-la`, `f05--csv-xac-nhan`, `f05--csv-thieu-gay` | Chọn file mẫu ngay trong màn (chưa mở file hệ điều hành) |
 | `metrics/import-photo` | `f05--b-14-ocr-dang-doc`, `f05--b-15-ocr-loi`, `f05--b-16-ocr-kiem-tra`, `f05--anh-chon-hang` | OCR giả lập `DELAYS.ocr` 1,5 s — `hold: ['ocr']` giữ “Đang đọc…”, story khác chờ kết quả trong `play` |
 | `metrics/scan-qr` | `f05--b-17-qr`, `f05--quet-qr` | Thử nghiệm: nút mô phỏng quét |
@@ -197,15 +197,15 @@ Tổng hợp `issues/A.md` … `issues/E.md` + `issues/verify.md` (chi tiết, g
 
 | Mức | Story id | File:dòng | Hiện tượng | Task | Trạng thái |
 | --- | --- | --- | --- | --- | --- |
-| vừa | `f01--tong-quan-co-du-lieu` | `apps/golf/app/(player)/home.tsx:187-190` + `apps/golf/components/charts/ConcentricRings.tsx:19` | Một gậy → “Carry theo gậy” vẽ một đĩa đặc to, không còn là vòng đồng tâm | 20 | đã sửa (Task 20) |
-| vừa | `f01--tong-quan-co-du-lieu` | `apps/golf/app/(player)/home.tsx:173` | “Xu hướng … (Driver, 1 buổi)” vẽ biểu đồ một điểm | 20 | đã sửa (Task 20) |
+| vừa | `f01--b-10-tong-quan-co-du-lieu` | `apps/golf/app/(player)/home.tsx:187-190` + `apps/golf/components/charts/ConcentricRings.tsx:19` | Một gậy → “Carry theo gậy” vẽ một đĩa đặc to, không còn là vòng đồng tâm | 20 | đã sửa (Task 20) |
+| vừa | `f01--b-10-tong-quan-co-du-lieu` | `apps/golf/app/(player)/home.tsx:173` | “Xu hướng … (Driver, 1 buổi)” vẽ biểu đồ một điểm | 20 | đã sửa (Task 20) |
 | vừa | `f10--chi-tiet-bai`, `f10--da-gui-binh-luan` | `packages/ds/src/ui/Comment/Comment.tsx:70` + `apps/golf/app/posts/[id].tsx:140` | Bình luận của mình vẫn có nút “⋯”, bấm không làm gì (DS luôn vẽ dù `onMore` trống) | 15 | đã sửa (Task 15) |
 | vừa | `f10--tra-loi-binh-luan` | `packages/ds/src/ui/Comment/Comment.tsx:155-156` + `apps/golf/app/posts/[id].tsx:151` | Ô bình luận mở rộng hiện “Thêm ảnh” / “Thêm địa điểm” nhưng màn không truyền handler — bấm không làm gì | 15 | đã sửa (Task 15) |
 | vừa | `f11--tab-hlv`, `f11--tab-hlv-rong` | `apps/golf/components/NotificationsScreen.tsx:101` | Tab Thông báo của HLV dùng `TabHeader` → vẫn có chuông (kèm badge) mở chính màn đang xem | 27 | chờ Task 27 |
 | thấp | `f04--ho-so-hlv`, `f04--hlv-chia-se-ma`, `f10--*` | `packages/ds/src/ui/PostCard/PostCard.tsx:56`, `packages/ds/src/ui/Social/Social.tsx:91`, `packages/ds/src/ui/Comment/Comment.tsx:57` | Avatar không ảnh lấy `name.slice(0, 1)` → mọi HLV hiện “H”, khác “MT” ở màn app (`initials()`) | 15 | đã sửa (Task 15) |
 | thấp | `f02--onboarding-anh` | `apps/golf/app/(auth)/onboarding.tsx:32` | Onboarding của HLV vẫn ghi “Giúp HLV và bạn bè nhận ra bạn.” | 24 | chờ Task 24 |
 | thấp | `f01--dang-ky-thong-tin`, `f02--dang-ky-thong-tin` | `apps/golf/app/(auth)/register.tsx:85` | Bước cuối vẫn là “Tiếp →” dù bấm là gửi mã OTP | — | không làm: chữ không sai (bước kế là xác minh OTP) |
-| thấp | `f05--b-01-tong-quan-truoc`, `f01--tong-quan-co-du-lieu` (tối) | `apps/golf/components/charts/ConcentricRings.tsx:6`, `:25` | Tối: vòng ngoài + ô chú giải gậy xa nhất (`Support/Brand/Soft`) gần như chìm vào nền thẻ | — | không làm: chú giải có tên gậy + số, màu chỉ phụ; thang màu chart tối cần thiết kế |
+| thấp | `f05--b-01-tong-quan-truoc`, `f01--b-10-tong-quan-co-du-lieu` (tối) | `apps/golf/components/charts/ConcentricRings.tsx:6`, `:25` | Tối: vòng ngoài + ô chú giải gậy xa nhất (`Support/Brand/Soft`) gần như chìm vào nền thẻ | — | không làm: chú giải có tên gậy + số, màu chỉ phụ; thang màu chart tối cần thiết kế |
 | thấp | `f06--b-02-16-loai` (sáng) | `packages/ds/src/ui/Popover/popoverItemStyles.ts:48` | Viền radio chưa chọn (`Checkbox/Border/Default`) rất nhạt, có thể < 3:1 — nợ Figma của DS | 15 | đã sửa (Task 15): giữ token Figma, ghi nợ F56 |
 | thấp | `f10--dang-bai`, `f12--tai-khoan` | `packages/ds/src/ui/TextField/TextArea.tsx:18` | Nhãn / chữ TextArea to hơn TextField bên cạnh → form lệch cỡ chữ | — | không làm: đúng Figma (TextArea khác Text-Field) |
 | thấp | `f11--danh-sach` | `apps/golf/components/NotificationsScreen.tsx:19` | “Lê Đăng Khoa đã bình luận” thiếu tân ngữ | 27 | chờ Task 27 |
@@ -213,7 +213,7 @@ Tổng hợp `issues/A.md` … `issues/E.md` + `issues/verify.md` (chi tiết, g
 | thấp | `f12--tai-khoan-hlv` | `apps/golf/app/settings/account.tsx:26` | Đơn giá điền sẵn “450000” không có dấu chấm (placeholder / helpText có) | 28 | chờ Task 28 |
 | thấp | `f12--mat-khau`, `f03--doi-mat-khau` | `apps/golf/app/settings/password.tsx:13,15` | Placeholder “••••••••” ở ô trống trông như đã có mật khẩu | 25 | chờ Task 25 |
 | thấp | `f12--dev` | `packages/ds/src/ui/ListItem/listItemStyles.ts:22` | Hàng `selected` đổi padding → avatar lệch phải vài px | — | không làm: theo variant Figma, chỉ màn Dev |
-| thấp | `f10--kham-pha`, `f10--nguoi-theo-doi`, `f10--dang-theo-doi` | `apps/golf/components/People.tsx:66` | “hcp 14” — màn khác ghi “Handicap 14” | 26 | chờ Task 26 |
+| thấp | `f10--kham-pha`, `f10--nguoi-theo-doi`, `f10--dang-theo-doi` | `apps/golf/components/People.tsx:66` | “hcp 14” — màn khác ghi “Handicap 14” | 26 | đã sửa (Task 23) |
 | thấp | `f10--tra-loi-binh-luan` | `packages/ds/src/ui/Comment/commentStyles.ts:54` | Chip “↩ Trả lời … ⊗” gap quá nhỏ, icon dính chữ | — | không làm: token Figma `Badge/Spacing/Small/Gap` |
 | thấp | `f09--tong-quan-rong` | `apps/golf/app/students/[id].tsx:72` | “Học viên chưa có phiên swing nào.” trong khi tab Swing có 1 video — dễ lẫn số liệu với video | 22 | đã sửa (Task 22) |
 

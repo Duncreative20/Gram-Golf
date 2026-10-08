@@ -3,12 +3,11 @@ import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { Button, EmptyState, InlineMessage, Screen, Tag, Text, useTheme } from '@gr/ds';
 import { NOW } from '../../lib/mock';
 import { useStore } from '../../lib/store';
-import { activeCoaches, isBlocked, openConnection, postsBy, profileById } from '../../lib/selectors';
+import { activeCoaches, isBlocked, openConnection, profileById } from '../../lib/selectors';
 import { newId } from '../../lib/ids';
 import { StackHeader } from '../../components/StackHeader';
-import { Section } from '../../components/Section';
 import { CoachSummary } from '../../components/CoachSummary';
-import { PostItem } from '../../components/PostItem';
+import { PostsSection } from '../../components/PostItem';
 import { BlockedNotice, FollowButton, FollowCounts } from '../../components/People';
 
 /** Hồ sơ công khai HLV: ai cũng xem được; theo dõi KHÔNG mở dữ liệu riêng (D6). Một trong hai đã chặn người kia → không theo dõi, không xem bài. */
@@ -36,7 +35,6 @@ export default function CoachPublicProfile() {
   }
   const blocked = isBlocked(state, me.id, coach.id);
   const myCoach = activeCoaches(state, me.id).some((c) => c.coach.id === coach.id);
-  const posts = postsBy(state, coach.id);
   // Người chơi tự tìm HLV: gửi yêu cầu (HLV duyệt ở tab Học viên › Lời mời); HLV đang mời mình → trả lời luôn ở đây
   const canRequest = me.role === 'player' && !myCoach && !isBlocked(state, me.id, coach.id);
   const conn = canRequest ? openConnection(state, coach.id, me.id) : undefined; // chỉ có thể là kết nối đang chờ
@@ -90,21 +88,7 @@ export default function CoachPublicProfile() {
             </>
           )}
         </View>
-        {!blocked && (
-          <Section title="Bài đăng" caption={posts.length ? `${posts.length} bài` : undefined}>
-            {posts.length ? (
-              <View style={{ gap: t.space('Spacing/Gap/Small') }}>
-                {posts.map((p) => (
-                  <PostItem key={p.id} post={p} onOpen={() => router.push(`/posts/${p.id}`)} />
-                ))}
-              </View>
-            ) : (
-              <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Light" style={{ paddingHorizontal: t.layout('Margin-Small') }}>
-                Chưa có bài đăng.
-              </Text>
-            )}
-          </Section>
-        )}
+        {!blocked && <PostsSection authorId={coach.id} />}
       </ScrollView>
     </Screen>
   );

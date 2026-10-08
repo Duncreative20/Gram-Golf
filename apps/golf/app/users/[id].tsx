@@ -3,11 +3,10 @@ import { ScrollView, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { Avatar, Button, Dialog, EmptyState, Screen, Text, useTheme, type TopNavAction } from '@gr/ds';
 import { useStore } from '../../lib/store';
-import { canViewPrivate, isBlocked, postsBy, profileById } from '../../lib/selectors';
+import { canViewPrivate, isBlocked, profileById } from '../../lib/selectors';
 import { formatValue, initials } from '../../lib/format';
 import { StackHeader } from '../../components/StackHeader';
-import { Section } from '../../components/Section';
-import { PostItem } from '../../components/PostItem';
+import { PostsSection } from '../../components/PostItem';
 import { ReportSheet } from '../../components/ReportSheet';
 import { SavedToast } from '../../components/Feedback';
 import { BlockedNotice, FollowButton, FollowCounts } from '../../components/People';
@@ -39,7 +38,6 @@ export default function UserProfile() {
   const self = user.id === me.id;
   const blocked = isBlocked(state, me.id, user.id);
   const coaching = !self && canViewPrivate(state, me.id, user.id); // người xem là HLV có kết nối active với người chơi này
-  const posts = postsBy(state, user.id);
   const details = [user.handicap !== undefined && `Handicap ${formatValue(user.handicap)}`, user.homeClub].filter(Boolean).join(' · ');
   // ponytail: "menu ⋯" (Chặn, Báo cáo) thành 2 action thẳng trên header — chọn mục trong menu BottomSheet rồi mở ngay Dialog / sheet
   // khác bị kẹt trên iOS (Modal đang đóng, Task 9–10); DS có callback đóng sheet thì gộp lại thành menu.
@@ -81,21 +79,7 @@ export default function UserProfile() {
             </>
           )}
         </View>
-        {!blocked && (
-          <Section title="Bài đăng" caption={posts.length ? `${posts.length} bài` : undefined}>
-            {posts.length ? (
-              <View style={{ gap: t.space('Spacing/Gap/Small') }}>
-                {posts.map((p) => (
-                  <PostItem key={p.id} post={p} onOpen={() => router.push(`/posts/${p.id}`)} />
-                ))}
-              </View>
-            ) : (
-              <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Light" style={{ paddingHorizontal: t.layout('Margin-Small') }}>
-                Chưa có bài đăng.
-              </Text>
-            )}
-          </Section>
-        )}
+        {!blocked && <PostsSection authorId={user.id} />}
       </ScrollView>
       <ReportSheet
         visible={reporting}

@@ -58,12 +58,12 @@ export function FollowCounts({ userId, centered }: { userId: ID; centered?: bool
   );
 }
 
-/** Hàng người dùng: avatar, tên + Badge HLV, "hcp 14" · CLB / học viện → hồ sơ; nút Theo dõi tách riêng bên phải
+/** Hàng người dùng: avatar, tên + Badge HLV, "Handicap 14" · CLB / học viện → hồ sơ; nút Theo dõi tách riêng bên phải
  *  (không lồng nút trong nút — cả hai đều tới được bằng trình đọc màn hình). */
 export function PersonRow({ person: p }: { person: Profile }) {
   const t = useTheme();
   const coach = p.role === 'coach';
-  const caption = coach ? p.academy : [p.handicap !== undefined && `hcp ${formatValue(p.handicap)}`, p.homeClub].filter(Boolean).join(' · ');
+  const caption = coach ? p.academy : [p.handicap !== undefined && `Handicap ${formatValue(p.handicap)}`, p.homeClub].filter(Boolean).join(' · ');
   return (
     <View
       style={{

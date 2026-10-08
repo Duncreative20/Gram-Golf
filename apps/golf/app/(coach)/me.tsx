@@ -2,19 +2,16 @@ import { ScrollView, View } from 'react-native';
 import { Redirect, router } from 'expo-router';
 import { Button, Screen, Text, useTheme } from '@gr/ds';
 import { useStore } from '../../lib/store';
-import { postsBy } from '../../lib/selectors';
 import { TabHeader } from '../../components/TabHeader';
-import { Section } from '../../components/Section';
 import { CoachSummary } from '../../components/CoachSummary';
-import { PostItem } from '../../components/PostItem';
+import { PostsSection } from '../../components/PostItem';
 import { FollowCounts } from '../../components/People';
 
 /** Tab Hồ sơ của HLV: hồ sơ công khai của chính mình (như người khác thấy ở coaches/[id]) + sửa hồ sơ, cài đặt; bài đã đăng. */
 export default function CoachMe() {
   const t = useTheme();
-  const { state, me } = useStore();
+  const { me } = useStore();
   if (!me) return <Redirect href="/" />;
-  const posts = postsBy(state, me.id);
   return (
     <Screen edges={['top']}>
       <TabHeader title="Hồ sơ" />
@@ -32,19 +29,7 @@ export default function CoachMe() {
             </View>
           </View>
         </View>
-        <Section title="Bài đăng" caption={posts.length ? `${posts.length} bài` : undefined}>
-          {posts.length ? (
-            <View style={{ gap: t.space('Spacing/Gap/Small') }}>
-              {posts.map((p) => (
-                <PostItem key={p.id} post={p} onOpen={() => router.push(`/posts/${p.id}`)} />
-              ))}
-            </View>
-          ) : (
-            <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Light" style={{ paddingHorizontal: t.layout('Margin-Small') }}>
-              Chưa có bài đăng.
-            </Text>
-          )}
-        </Section>
+        <PostsSection authorId={me.id} />
       </ScrollView>
     </Screen>
   );

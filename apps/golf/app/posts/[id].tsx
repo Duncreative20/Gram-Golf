@@ -15,6 +15,7 @@ import { PostItem } from '../../components/PostItem';
 import { SwingCard } from '../../components/SwingCard';
 import { ReportSheet } from '../../components/ReportSheet';
 import { SavedToast } from '../../components/Feedback';
+import { useOnLeave } from '../../components/useOnLeave';
 import { profileHref } from '../../components/People';
 
 const COMMENT_MAX = 1000; // ký tự mỗi bình luận
@@ -36,6 +37,7 @@ export default function PostDetail() {
   const [report, setReport] = useState<{ heading: string; targetUserId: ID }>();
   const [reportOpen, setReportOpen] = useState(false);
   const [toast, setToast] = useState<{ key: number; title: string }>();
+  const deleteOnLeave = useOnLeave(() => dispatch({ type: 'deletePost', id })); // xoá SAU khi rời màn
   if (!me) return <Redirect href="/" />;
   const post = state.posts.find((p) => p.id === id);
   if (!post || isBlocked(state, me.id, post.authorId)) {
@@ -192,8 +194,8 @@ export default function PostDetail() {
         destructive
         onPrimary={() => {
           setConfirmDelete(false);
+          deleteOnLeave();
           back();
-          dispatch({ type: 'deletePost', id: post.id });
         }}
         secondaryText="Huỷ"
       />

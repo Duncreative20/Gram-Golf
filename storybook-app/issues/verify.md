@@ -17,7 +17,7 @@ Còn lại phía chụp (không phải lỗi màn): ảnh có dialog / sheet th�
 
 | Story id | File:dòng | Hiện tượng | Mức | Task | Trạng thái |
 | --- | --- | --- | --- | --- | --- |
-| `f10--kham-pha`, `f10--nguoi-theo-doi`, `f10--dang-theo-doi` | `apps/golf/components/People.tsx:66` | Hàng người dùng ghi “hcp 14”, các màn khác ghi “Handicap 14”. | thấp | 26 | chờ Task 26 |
+| `f10--kham-pha`, `f10--nguoi-theo-doi`, `f10--dang-theo-doi` | `apps/golf/components/People.tsx:66` | Hàng người dùng ghi “hcp 14”, các màn khác ghi “Handicap 14”. | thấp | 26 | đã sửa (Task 23) |
 | `f11--tab-hlv-rong` | `apps/golf/components/NotificationsScreen.tsx:124` | Thông báo rỗng của HLV vẫn ghi “Ghi chú của HLV, người theo dõi mới…” (câu viết cho người chơi). | thấp | 27 | chờ Task 27 |
 | `f10--tra-loi-binh-luan` | `packages/ds/src/ui/Comment/commentStyles.ts:54` | Chip “↩ Trả lời HLV Đỗ Minh Tuấn ⊗”: gap `Badge/Spacing/Small/Gap` quá nhỏ, icon dính sát chữ. | thấp | — | không làm: token Figma `Badge/Spacing/Small/Gap` |
 | `f09--tong-quan-rong` | `apps/golf/app/students/[id].tsx:72` | Tab Tổng quan ghi “Học viên chưa có phiên swing nào.” trong khi tab Swing có badge 1 (một video swing) — “phiên swing” (số liệu) dễ lẫn với video swing. | thấp | 22 | đã sửa (Task 22) |
