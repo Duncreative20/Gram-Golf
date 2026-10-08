@@ -1,0 +1,115 @@
+import { useState } from 'react';
+import { AccessibilityInfo, Clipboard, Pressable, View } from 'react-native';
+import { router } from 'expo-router';
+import { Badge, Identity, ShareSheet, SocialAction, Tag, Text, useTheme } from '@gr/ds';
+import type { Post } from '../lib/domain';
+import { NOW } from '../lib/mock';
+import { useStore } from '../lib/store';
+import { commentsOf, discover, likeCount, likedBy, profileById } from '../lib/selectors';
+import { relativeTime } from '../lib/format';
+import { newId } from '../lib/ids';
+import { profileHref } from './People';
+
+const postLink = (id: string) => `https://gramgolf.app/p/${id}`;
+
+/** Bài cộng đồng (DS Identity + SocialAction; PostCard bắt buộc khung ảnh nên không dùng cho bài chữ): tác giả + Badge HLV
+ *  (+ xác minh) → hồ sơ, thời gian tương đối, tiêu đề, nội dung, tag; Thích · Bình luận · Chia sẻ (ShareSheet).
+ *  Có `onOpen` (bảng tin, hồ sơ): nội dung rút gọn 4 dòng, chạm bài / Bình luận → mở bài. Không có (posts/[id]): bài đầy đủ. */
+export function PostItem({ post, onOpen }: { post: Post; onOpen?: () => void }) {
+  const t = useTheme();
+  const { state, dispatch, me } = useStore();
+  const [sharing, setSharing] = useState(false);
+  const [selected, setSelected] = useState<string[]>([]);
+  const [message, setMessage] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [sent, setSent] = useState(false);
+  if (!me) return null;
+  const author = profileById(state, post.authorId);
+  const name = author?.name ?? 'Người dùng';
+  const coach = author?.role === 'coach';
+  const time = relativeTime(post.createdAt, NOW);
+  const liked = likedBy(state, me.id, post.id);
+  const likes = likeCount(state, post.id);
+  const comments = commentsOf(state, post.id, me.id).length;
+  const pad = { paddingHorizontal: t.layout('Margin-Small') };
+  const closeShare = () => {
+    setSharing(false);
+    setSelected([]);
+    setMessage('');
+    setCopied(false);
+  };
+  return (
+    <View style={{ backgroundColor: t.color('Color/Background/Surface/Default'), paddingVertical: t.space('Spacing/Padding/Medium'), gap: t.space('Spacing/Gap/Small') }}>
+      <View style={[pad, { flexDirection: 'row', alignItems: 'center', gap: t.space('Spacing/Gap/XSmall') }]}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`${name}${coach ? ', HLV' : ''}, ${time}`}
+          disabled={!author}
+          onPress={() => author && router.push(profileHref(author))}
+          style={{ flex: 1 }}
+        >
+          <Identity user={{ name, verified: author?.verified, avatar: author?.avatarUrl ? { uri: author.avatarUrl } : undefined }} meta={time} avatarSize="Small" />
+        </Pressable>
+        {coach && <Badge text="HLV" theme="Accent" />}
+      </View>
+      {onOpen ? (
+        <Pressable accessibilityRole="button" onPress={onOpen} style={[pad, { gap: t.space('Spacing/Gap/2XSmall') }]}>
+          <Text variant="Heading/Subheading">{post.title}</Text>
+          <Text variant="Body/Base/Regular" numberOfLines={4}>{post.content}</Text>
+        </Pressable>
+      ) : (
+        <View style={[pad, { gap: t.space('Spacing/Gap/2XSmall') }]}>
+          <Text variant="Heading/Subheading" accessibilityRole="header">{post.title}</Text>
+          <Text variant="Body/Base/Regular" selectable>{post.content}</Text>
+        </View>
+      )}
+      {post.tags.length > 0 && (
+        <View style={[pad, { flexDirection: 'row', flexWrap: 'wrap', gap: t.space('Spacing/Gap/XSmall') }]}>
+          {post.tags.map((tag) => (
+            <Tag key={tag} size="Small" text={`#${tag}`} />
+          ))}
+        </View>
+      )}
+      <View style={[pad, { flexDirection: 'row', alignItems: 'center', gap: t.space('Spacing/Gap/XLarge') }]}>
+        <SocialAction
+          type="Like"
+          active={liked}
+          label={likes ? String(likes) : undefined}
+          accessibilityLabel={`Thích, ${likes} lượt thích`}
+          onPress={() => dispatch({ type: 'toggleLike', userId: me.id, postId: post.id, at: NOW, notificationId: newId('nt') })}
+        />
+        {/* bài đầy đủ: phần Bình luận nằm ngay dưới, không cần nút mở */}
+        {onOpen && <SocialAction type="Comment" label={comments ? String(comments) : undefined} accessibilityLabel={`Bình luận, ${comments} bình luận`} onPress={onOpen} />}
+        <SocialAction type="Share" label={sent ? 'Đã gửi' : undefined} accessibilityLabel="Chia sẻ" onPress={() => setSharing(true)} />
+      </View>
+      <ShareSheet
+        visible={sharing}
+        onClose={closeShare}
+        heading="Chia sẻ bài viết"
+        users={discover(state, me.id, '').map((p) => ({ id: p.id, name: p.name, avatar: p.avatarUrl ? { uri: p.avatarUrl } : undefined }))}
+        selectedIds={selected}
+        onToggleUser={(u) => setSelected(selected.includes(u.id) ? selected.filter((x) => x !== u.id) : [...selected, u.id])}
+        message={message}
+        onChangeMessage={setMessage}
+        onSend={() => {
+          // ponytail: gửi trong app chỉ giả lập (chưa có tin nhắn) — nâng cấp: hộp thư + thông báo cho người nhận.
+          AccessibilityInfo.announceForAccessibility(`Đã gửi bài viết cho ${selected.length} người`);
+          setSent(true);
+          closeShare();
+        }}
+        actions={[
+          {
+            icon: copied ? 'check-line' : 'copy-line',
+            label: copied ? 'Đã sao chép' : 'Sao chép liên kết',
+            active: copied,
+            onPress: () => {
+              // ponytail: Clipboard của RN core (deprecated) vì không thêm dependency — nâng cấp: expo-clipboard.
+              Clipboard.setString(postLink(post.id));
+              setCopied(true);
+            },
+          },
+        ]}
+      />
+    </View>
+  );
+}
