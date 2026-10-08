@@ -6,6 +6,7 @@ import type { ID, Role } from '../../lib/domain';
 import { useStore } from '../../lib/store';
 import { formatValue, initials } from '../../lib/format';
 import { resetTo, StackHeader } from '../../components/StackHeader';
+import { resetFirstLoad } from '../../components/ListSkeleton';
 
 const GROUPS: { role: Role; label: string }[] = [
   { role: 'player', label: 'Người chơi' },
@@ -39,6 +40,7 @@ export default function DevSettings() {
   const [confirmReset, setConfirmReset] = useState(false);
   if (!__DEV__) return <Redirect href="/" />; // D13: deep link ở bản release không được đổi tài khoản
   const startFlow = (f: (typeof FLOWS)[number]) => {
+    resetFirstLoad(); // skeleton "lần đầu mở" hiện lại như phiên mới (F13 bước 02/03), giống appStory.tsx
     dispatch({ type: 'reset' });
     dispatch({ type: 'setSimulateFailure', on: false });
     dispatch(f.account ? { type: 'signIn', userId: f.account } : { type: 'signOut' });
