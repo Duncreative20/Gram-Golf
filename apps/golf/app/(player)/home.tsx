@@ -128,7 +128,7 @@ export default function PlayerHome() {
                 caption="HLV chính"
                 leading={
                   <View aria-hidden>
-                    <Avatar size="Medium" theme="Accent" initials={initials(coach.name)} />
+                    <Avatar size="Medium" theme={coach.avatarUrl ? 'Photo' : 'Accent'} source={coach.avatarUrl ? { uri: coach.avatarUrl } : undefined} initials={initials(coach.name)} />
                   </View>
                 }
                 trailing={<Icon name="chevron-right-line-medium" size={t.size('Element-Size/Popular/Base')} color="Color/Content/Neutral/Light" />}
@@ -205,7 +205,7 @@ export default function PlayerHome() {
               <View style={{ gap: t.space('Spacing/Gap/Small') }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space('Spacing/Gap/XSmall') }}>
                   <View aria-hidden>
-                    <Avatar size="Small" theme="Accent" initials={initials(noteCoach?.name ?? '')} />
+                    <Avatar size="Small" theme={noteCoach?.avatarUrl ? 'Photo' : 'Accent'} source={noteCoach?.avatarUrl ? { uri: noteCoach.avatarUrl } : undefined} initials={initials(noteCoach?.name ?? '')} />
                   </View>
                   <View style={{ flex: 1 }}>
                     <Text variant="Body/Base/DemiBold" numberOfLines={1}>{noteCoach?.name ?? 'HLV'}</Text>

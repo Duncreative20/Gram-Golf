@@ -422,14 +422,15 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
               <Section title="Ghi chú HLV">
                 {notes.length
                   ? notes.map((n) => {
-                      const author = profileById(state, n.coachId)?.name ?? 'HLV';
+                      const authorP = profileById(state, n.coachId);
+                      const author = authorP?.name ?? 'HLV';
                       const when = [n.atSec !== undefined && `Tại ${formatSec(n.atSec)}`, relativeTime(n.createdAt, NOW), n.editedAt && 'đã sửa'].filter(Boolean).join(' · ');
                       const marks = noteMarks(n.text);
                       const mine = coach && n.coachId === me.id; // chỉ tác giả sửa/xoá — reducer cũng chặn người khác và HLV đã mất kết nối
                       return (
                         <View key={n.id}>
                           <SeekRow sec={n.atSec} onSeek={seek} label={`${author}, ${when}: ${n.text}`}>
-                            <Avatar size="Small" theme="Accent" initials={initials(author)} />
+                            <Avatar size="Small" theme={authorP?.avatarUrl ? 'Photo' : 'Accent'} source={authorP?.avatarUrl ? { uri: authorP.avatarUrl } : undefined} initials={initials(author)} />
                             <View style={{ flex: 1, gap: t.space('Spacing/Gap/3XSmall') }}>
                               <Text variant="Body/Base/DemiBold" numberOfLines={1}>{author}</Text>
                               <Text variant="Caption/Regular" color="Color/Content/Neutral/Light">{when}</Text>
