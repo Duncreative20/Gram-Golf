@@ -57,7 +57,7 @@ export function CommentItem({ comment, onLike, onReply, onAttachment, onMore }: 
       <View style={s.avatarRing}><Avatar size="XSmall" source={comment.user.avatar} initials={comment.user.name.slice(0, 1)} theme={comment.user.avatar ? 'Photo' : 'Neutral'} /></View>
       <View style={s.container}>
         <View style={s.body}>
-          <Identity user={{ ...comment.user, avatar: undefined }} meta={comment.time} />
+          <Identity user={comment.user} meta={comment.time} showAvatar={false} />
           <RNText style={s.text}>{comment.text}</RNText>
         </View>
         {comment.media?.length ? <View style={s.mediaRow}>{comment.media.map((m, i) => <CommentMediaItem key={i} size="Small" {...m} />)}</View> : null}

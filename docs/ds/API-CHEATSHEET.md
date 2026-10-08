@@ -2057,7 +2057,7 @@ const [open, setOpen] = useState(false);
 > - The sheets do not pass `type='Modal'`. They get it from `BottomSheet`'s default.
 > - "Count fields are strings" has exceptions: `CollectionData.count`, `CommentMediaItem.more`, and `StoryHeader` `count`/`active`/`progress` are numbers.
 > - The `More-item` ("Thêm") action always renders in `PostCard`, `StoryHeader` and `CommentItem`, even without `onMore`.
-> - `CommentItem` may render a second, initials-only avatar (see its gotchas).
+> - `CommentItem` used to render a second, initials-only avatar; fixed 2026-10-08 with `Identity showAvatar={false}` (see its gotchas).
 > - Added the hard-coded placeholders and accessibility labels, the "+" / image / location button wiring in `CommentComposer`, and the `CommentMediaItem` label when a video has no `duration`.
 
 Everything below comes from the source files under `/Users/duncreative/Coding Agent/Gram-Golf/packages/ds/src/ui/{PostCard,Story,Comment,Social}/` and the galleries in `/Users/duncreative/Coding Agent/Gram-Golf/apps/golf/app/(dev)/ds/{post,story,comment,social}.tsx`. The usage snippets are copied or adapted from those galleries. `apps/golf` passes `tsc --noEmit` with exit 0, so the gallery code compiles.
@@ -2129,6 +2129,7 @@ Gotchas:
 | `location` | `string` | — | |
 | `overlay` | `boolean` | — | |
 | `avatarSize` | `'XSmall' \| 'Small' \| 'Medium'` | `'XSmall'` | |
+| `showAvatar` | `boolean` (`false` drops the avatar; `CommentItem` uses it because it draws its own ringed avatar) | `true` | |
 
 ```tsx
 <Identity user={{ name: 'Nguyễn Minh Anh', avatar: { uri: '…' }, verified: true }} meta="2 giờ" location="Sân golf Long Thành" />
@@ -2136,7 +2137,7 @@ Gotchas:
 Gotchas:
 - **`user.handle` is NOT rendered.** To show a handle, pass it as `meta` (this is what `LikesSheet` does).
 - The "·" separator dot only appears when `meta` is set. `location` gets its own second row with a `marker-pin-01-line` icon.
-- **An avatar is always rendered.** With no `avatar`, it shows the first character of `name` using the `'Neutral'` theme. With an avatar it uses the `'Photo'` theme.
+- **An avatar is rendered unless `showAvatar={false}`.** With no `avatar`, it shows the first character of `name` using the `'Neutral'` theme. With an avatar it uses the `'Photo'` theme.
 - The root has `flex: 1`, so it takes all free space in a row.
 
 ### `MediaInfoPill`
@@ -2418,7 +2419,7 @@ Gotchas:
 - Media renders at size `Small` unless an item sets its own `size`.
 - The attachment action has no accessibility label, so it is announced by its visible text.
 - `user.handle` is not shown.
-- **Possible double avatar.** `CommentItem` draws its own ringed XSmall avatar, then passes `{ ...user, avatar: undefined }` into `Identity`. `Identity` always renders an `Avatar`, so the source suggests a second, initials-only avatar appears beside the name. Check this visually before shipping.
+- **One avatar only.** `CommentItem` draws its own ringed XSmall avatar and renders `Identity` with `showAvatar={false}` (before 2026-10-08 a second, initials-only avatar appeared beside the name).
 
 ### `CommentThread`
 It accepts everything in `CommentItemProps` except `comment` (that is, the four handlers, which are passed down to every item), plus:

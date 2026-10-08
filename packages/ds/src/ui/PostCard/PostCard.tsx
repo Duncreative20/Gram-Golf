@@ -44,14 +44,16 @@ export interface IdentityProps {
   location?: string;
   overlay?: boolean;
   avatarSize?: 'XSmall' | 'Small' | 'Medium';
+  /** false: bỏ avatar — Comment-Item tự vẽ avatar có viền ở cột trái, header chỉ còn tên · thời gian */
+  showAvatar?: boolean;
 }
 /** Author block: Avatar + Username · verified · time (+ location) */
-export function Identity({ user, meta, location, overlay, avatarSize }: IdentityProps) {
+export function Identity({ user, meta, location, overlay, avatarSize, showAvatar = true }: IdentityProps) {
   const t = useTheme();
   const s = identityStyles(t, { overlay });
   return (
     <View style={s.row}>
-      <Avatar size={avatarSize ?? s.avatarSize} source={user.avatar} initials={user.name.slice(0, 1)} theme={user.avatar ? 'Photo' : 'Neutral'} />
+      {showAvatar ? <Avatar size={avatarSize ?? s.avatarSize} source={user.avatar} initials={user.name.slice(0, 1)} theme={user.avatar ? 'Photo' : 'Neutral'} /> : null}
       <View style={s.text}>
         <View style={s.nameRow}>
           <RNText style={s.name} numberOfLines={1}>{user.name}</RNText>
