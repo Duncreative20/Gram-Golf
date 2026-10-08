@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
-import { Avatar, Card, Dialog, EmptyState, Screen, TabBar, Text, useTheme } from '@gr/ds';
+import { Avatar, Card, Dialog, EmptyState, Screen, Segmented, TabBar, Text, useTheme } from '@gr/ds';
 import { SOURCE_LABELS } from '../../lib/domain';
 import { NOW } from '../../lib/mock';
 import { useStore } from '../../lib/store';
 import {
-  awaitsFeedback, canViewPrivate, clubById, clubLabel, clubsOf, latestFitness, latestSwing, openConnection, prefsOf, previousSwing, profileById, sessionsOf, speedTrend, swingsOf,
+  awaitsFeedback, canViewPrivate, clubById, clubLabel, clubsOf, latestFitness, latestSwing, openConnection, prefsOf, previousSwing, profileById, sessionsOf, speedTrend, swingsByReview, swingsOf,
 } from '../../lib/selectors';
 import { formatDate, formatNumber, formatSpeed, formatValue, initials, swingTiles } from '../../lib/format';
 import { FITNESS_FIELDS } from '../../lib/validation';
@@ -28,6 +28,7 @@ export default function StudentDetail() {
   const { state, dispatch, me } = useStore();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [tab, setTab] = useState(0);
+  const [review, setReview] = useState(0); // tab Swing của HLV: 0 Chưa review, 1 Đã review
   const [confirmRevoke, setConfirmRevoke] = useState(false);
   if (!me) return <Redirect href="/" />;
   const student = profileById(state, id);
@@ -120,14 +121,36 @@ export default function StudentDetail() {
 
   const swingList = () => {
     if (!swings.length) return empty('Học viên chưa đăng swing nào.');
+    if (me.role !== 'coach') {
+      return (
+        <View style={[pad, { gap: t.space('Spacing/Gap/Small') }]}>
+          {swings.map((w) => (
+            <SwingCard key={w.id} swing={w} />
+          ))}
+        </View>
+      );
+    }
+    // MVP "Đã review / Chưa review": theo ghi chú của chính HLV đang xem (swingsByReview)
+    const groups = swingsByReview(state, student.id, me.id);
+    const list = review === 0 ? groups.unreviewed : groups.reviewed;
     return (
       <View style={[pad, { gap: t.space('Spacing/Gap/Small') }]}>
-        {me.role === 'coach' && (
-          <Text variant="Body/Small/Regular" color="Color/Content/Neutral/Light">Chạm một swing để xem phân tích và ghi chú theo mốc thời gian.</Text>
+        <Segmented
+          items={[
+            { label: 'Chưa review', badge: String(groups.unreviewed.length) },
+            { label: 'Đã review', badge: String(groups.reviewed.length) },
+          ]}
+          selectedIndex={review}
+          onChange={setReview}
+        />
+        <Text variant="Body/Small/Regular" color="Color/Content/Neutral/Light">Chạm một swing để xem phân tích, chèn mốc và ghi chú.</Text>
+        {list.length ? (
+          list.map((w) => <SwingCard key={w.id} swing={w} awaitingFeedback={awaiting.includes(w)} />)
+        ) : (
+          <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Light">
+            {review === 0 ? 'Không còn swing nào chờ bạn review.' : 'Bạn chưa ghi chú swing nào của học viên này.'}
+          </Text>
         )}
-        {swings.map((w) => (
-          <SwingCard key={w.id} swing={w} awaitingFeedback={awaiting.includes(w)} />
-        ))}
       </View>
     );
   };

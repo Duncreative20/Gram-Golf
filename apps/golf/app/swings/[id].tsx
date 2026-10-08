@@ -2,14 +2,15 @@ import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import {
-  AlertBanner, Avatar, Button, Dialog, Divider, EmptyState, Icon, MessageInput, ProgressBar, Screen, Tag, Text, VideoControlOverlay, useTheme, type VideoState,
+  AlertBanner, Avatar, Button, Chip, Dialog, Divider, EmptyState, Icon, InlineMessage, MessageInput, ProgressBar, Screen, Tag, Text, VideoControlOverlay, useTheme,
+  type VideoState,
 } from '@gr/ds';
 import { CAMERA_VIEW_LABELS, type CoachNote, type JobStatus, type Profile, type Swing, type SwingAnalysis } from '../../lib/domain';
 import { NOW } from '../../lib/mock';
 import { newId } from '../../lib/ids';
 import { useStore } from '../../lib/store';
 import { canViewPrivate, clubById, clubLabel, notesFor, profileById } from '../../lib/selectors';
-import { formatDate, formatNumber, formatSec, formatTempo, initials, relativeTime } from '../../lib/format';
+import { formatDate, formatNumber, formatSec, formatTempo, initials, insertMark, noteMarks, relativeTime } from '../../lib/format';
 import { ANALYSIS_QUEUE_MS, ANALYSIS_TICK_MS, analysisTick } from '../../lib/simulate';
 import { StackHeader } from '../../components/StackHeader';
 import { KeyboardAvoid } from '../../components/KeyboardAvoid';
@@ -176,6 +177,9 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
   const [note, setNote] = useState('');
   const [noteError, setNoteError] = useState<string>();
   const [sent, setSent] = useState<string>();
+  const [editing, setEditing] = useState<CoachNote>(); // ghi chú của chính HLV đang sửa trong ô dưới cùng
+  const [deleting, setDeleting] = useState<CoachNote>(); // giữ ghi chú để Dialog không trống khi mờ dần
+  const [confirmNoteDelete, setConfirmNoteDelete] = useState(false);
   // Xoá sau khi màn đã rời (unmount) — xoá trước khi quay lại thì màn đang rời nháy "Không tìm thấy swing".
   const deleteOnLeave = useRef(false);
   useEffect(
@@ -237,10 +241,28 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
   const sendNote = (text: string) => {
     const body = text.trim();
     if (!body) return setNoteError('Nhập nội dung ghi chú');
-    const atSec = Math.round(positionSec * 100) / 100;
+    if (editing) {
+      dispatch({ type: 'editNote', id: editing.id, coachId: me.id, text: body, at: NOW });
+      setEditing(undefined);
+      setNote('');
+      setSent('Đã lưu ghi chú');
+      return;
+    }
+    // mốc của ghi chú = mốc đầu tiên HLV chèn vào nội dung; không chèn → vị trí đang phát (như Task 9)
+    const atSec = noteMarks(body)[0] ?? Math.round(positionSec * 100) / 100;
     dispatch({ type: 'addNote', note: { id: newId('note'), swingId: swing.id, coachId: me.id, atSec, text: body, createdAt: NOW }, notificationId: newId('nt') });
     setNote('');
     setSent(`Đã gửi ghi chú tại ${formatSec(atSec)}`);
+  };
+  const startEdit = (n: CoachNote) => {
+    setEditing(n);
+    setNote(n.text);
+    setNoteError(undefined);
+    setSent(undefined);
+  };
+  const askDeleteNote = (n: CoachNote) => {
+    setDeleting(n);
+    setConfirmNoteDelete(true);
   };
   const overlay: VideoState = playing ? 'Playing' : positionSec >= duration ? 'Ended' : 'Paused';
   const tags = (a: SwingAnalysis) => (
@@ -371,21 +393,39 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
                 {notes.length
                   ? notes.map((n) => {
                       const author = profileById(state, n.coachId)?.name ?? 'HLV';
-                      const when = [n.atSec !== undefined && `Tại ${formatSec(n.atSec)}`, relativeTime(n.createdAt, NOW)].filter(Boolean).join(' · ');
+                      const when = [n.atSec !== undefined && `Tại ${formatSec(n.atSec)}`, relativeTime(n.createdAt, NOW), n.editedAt && 'đã sửa'].filter(Boolean).join(' · ');
+                      const marks = noteMarks(n.text);
+                      const mine = coach && n.coachId === me.id; // chỉ tác giả sửa/xoá — reducer cũng chặn người khác và HLV đã mất kết nối
                       return (
-                        <SeekRow key={n.id} sec={n.atSec} onSeek={seek} label={`${author}, ${when}: ${n.text}`}>
-                          <Avatar size="Small" theme="Accent" initials={initials(author)} />
-                          <View style={{ flex: 1, gap: t.space('Spacing/Gap/3XSmall') }}>
-                            <Text variant="Body/Base/DemiBold" numberOfLines={1}>{author}</Text>
-                            <Text variant="Caption/Regular" color="Color/Content/Neutral/Light">{when}</Text>
-                            <Text variant="Body/Base/Regular">{n.text}</Text>
-                          </View>
-                        </SeekRow>
+                        <View key={n.id}>
+                          <SeekRow sec={n.atSec} onSeek={seek} label={`${author}, ${when}: ${n.text}`}>
+                            <Avatar size="Small" theme="Accent" initials={initials(author)} />
+                            <View style={{ flex: 1, gap: t.space('Spacing/Gap/3XSmall') }}>
+                              <Text variant="Body/Base/DemiBold" numberOfLines={1}>{author}</Text>
+                              <Text variant="Caption/Regular" color="Color/Content/Neutral/Light">{when}</Text>
+                              <Text variant="Body/Base/Regular">{n.text}</Text>
+                            </View>
+                          </SeekRow>
+                          {/* hàng nút nằm ngoài SeekRow: không lồng nút trong nút (web) */}
+                          {(marks.length > 0 || mine) && (
+                            <View style={[pad, { flexDirection: 'row', flexWrap: 'wrap', gap: t.space('Spacing/Gap/XSmall'), paddingBottom: t.space('Spacing/Padding/XSmall') }]}>
+                              {marks.map((m, i) => (
+                                <Chip key={`${m}-${i}`} size="XSmall" icon="play-circle-line" text={`Tua tới ${formatSec(m)}`} onPress={() => seek(m)} />
+                              ))}
+                              {mine && (
+                                <>
+                                  <Button level="Tertiary" size="XSmall" leadingIcon="edit-02-line" text="Sửa" accessibilityLabel={`Sửa ghi chú ${when}`} onPress={() => startEdit(n)} />
+                                  <Button level="Tertiary" size="XSmall" leadingIcon="trash-line" text="Xoá" accessibilityLabel={`Xoá ghi chú ${when}`} onPress={() => askDeleteNote(n)} />
+                                </>
+                              )}
+                            </View>
+                          )}
+                        </View>
                       );
                     })
                   : (
                     <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Light" style={pad}>
-                      {coach ? 'Chưa có ghi chú. Tua tới mốc cần nhận xét rồi viết ghi chú ở dưới.' : 'Chưa có ghi chú từ HLV.'}
+                      {coach ? 'Chưa có ghi chú. Tua tới mốc cần nhận xét, bấm Chèn mốc rồi viết ghi chú ở dưới.' : 'Chưa có ghi chú từ HLV.'}
                     </Text>
                   )}
               </Section>
@@ -402,9 +442,33 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
         {coach && uploaded && (
           <>
             <Divider />
-            <View style={{ padding: t.layout('Margin-Small') }}>
+            <View style={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/XSmall') }}>
+              {editing && (
+                <InlineMessage
+                  theme="Info"
+                  text={`Đang sửa ghi chú${editing.atSec !== undefined ? ` tại ${formatSec(editing.atSec)}` : ''}`}
+                  actionText="Huỷ sửa"
+                  onAction={() => {
+                    setEditing(undefined);
+                    setNote('');
+                  }}
+                />
+              )}
+              <View style={{ flexDirection: 'row' }}>
+                {/* MVP "Nút chèn Timestamp": chèn vị trí đang phát vào nội dung, chạm được để tua ở chip dưới ghi chú */}
+                <Chip
+                  size="Small"
+                  icon="clock-line"
+                  text={`Chèn mốc ${formatSec(positionSec)}`}
+                  onPress={() => {
+                    setNote((v) => insertMark(v, positionSec));
+                    setNoteError(undefined);
+                    setSent(undefined);
+                  }}
+                />
+              </View>
               <MessageInput
-                placeholder={`Ghi chú tại ${formatSec(positionSec)}`}
+                placeholder={editing ? 'Sửa ghi chú' : `Ghi chú tại ${formatSec(positionSec)}`}
                 value={note}
                 onChangeText={(v) => {
                   setNote(v);
@@ -414,7 +478,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
                 onSend={sendNote}
                 maxLength={500}
                 error={noteError}
-                helpText={sent ?? (note ? `Ghi chú tại ${formatSec(positionSec)}` : undefined)}
+                helpText={sent ?? (note && !editing ? `Ghi chú tại ${formatSec(noteMarks(note)[0] ?? positionSec)}` : undefined)}
               />
             </View>
           </>
@@ -437,6 +501,26 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
           deleteOnLeave.current = true;
           if (router.canGoBack()) router.back();
           else router.replace('/(player)/swings');
+        }}
+        secondaryText="Huỷ"
+      />
+      <Dialog
+        visible={confirmNoteDelete}
+        onRequestClose={() => setConfirmNoteDelete(false)}
+        theme="Warning"
+        title="Xoá ghi chú này?"
+        body="Học viên sẽ không còn thấy ghi chú này. Không khôi phục được."
+        primaryText="Xoá"
+        destructive
+        onPrimary={() => {
+          setConfirmNoteDelete(false);
+          if (!deleting) return;
+          dispatch({ type: 'deleteNote', id: deleting.id, coachId: me.id });
+          if (editing?.id === deleting.id) {
+            setEditing(undefined);
+            setNote('');
+          }
+          setSent('Đã xoá ghi chú');
         }}
         secondaryText="Huỷ"
       />

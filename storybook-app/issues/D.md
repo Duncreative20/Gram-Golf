@@ -24,7 +24,7 @@ Story: `flows/F07-swing.stories.tsx` (19 story), `flows/F08-hlv-review-swing.sto
 | F07 | Swing dạng lưới / lọc theo gậy, trạng thái | Phase 2 — tab Swing chỉ có danh sách |
 | F07 | Popup báo file video lỗi / không đọc được khi chọn video | Phase 2 — bản thử chỉ chọn video mẫu, chưa mở thư viện |
 | F07 | Quay video trong app (camera) | Phase 2 |
-| F08 | Sửa / xoá ghi chú HLV | Phase 2 — ghi chú chỉ thêm được |
+| F08 | Sửa / xoá ghi chú HLV | Đã làm (Task 18): nút Sửa / Xoá dưới ghi chú của chính HLV, Chèn mốc, chip “Tua tới …” — story `f08--b-09-dang-sua`, `f08--b-10-xoa-ghi-chu` |
 | F08 | Ghi chú vẽ / đánh dấu trên khung hình video | Phase 2 |
 
 ## Phủ route
