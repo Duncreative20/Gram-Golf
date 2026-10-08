@@ -1,43 +1,51 @@
 /**
- * F07 · Swing của người chơi
+ * F07 · Swing của người chơi — kịch bản: docs/flows/F07/steps.json, storyboard: docs/flows/F07.md
  *
- * Tài khoản: p-minh (Nguyễn Minh Anh — có gậy, 3 swing mẫu, ghi chú của HLV Tuấn); p-huy cho danh sách rỗng.
- * Story danh sách / chi tiết thêm 6 swing mẫu (SWINGS dưới đây) để đủ mọi trạng thái tải lên + phân tích.
+ * Tài khoản: p-minh (Nguyễn Minh Anh — có gậy, 3 swing mẫu: Gỗ 3 06/10, Driver 05/10, Sắt 7 28/09); p-huy cho danh sách rỗng.
+ * Story biến thể danh sách / chi tiết thêm 6 swing mẫu (SWINGS dưới đây) để đủ mọi trạng thái tải lên + phân tích.
  *
- * Các bước (mỗi bước = một story; ✓ = đã có):
- *  ✓ 01 · Danh sách swing — đủ trạng thái     (player)/swings           as p-minh + 6 swing mẫu, tab swings
- *  ✓ 02 · Danh sách rỗng                      (player)/swings           as p-huy, tab swings
- *  ✓ 03 · Đăng swing — hướng dẫn quay         swings/new                as p-minh
- *  ✓ 04 · Chọn video, gậy, góc quay           swings/new (bước 2)       play: Tiếp tục → chọn Driver
- *  ✓ 04a · Sheet chọn gậy                     swings/new (bước 2)       play: mở ô Gậy
- *  ✓ 04b · Lỗi chưa chọn gậy                  swings/new (bước 2)       play: Tải lên khi chưa chọn gậy
- *  ✓ 05 · Đang tải lên 45 %                   swings/new (bước 3)       mô phỏng chạy 9 nhịp rồi đứng yên
- *  ✓ 05a · Tạm dừng                           swings/new (bước 3)       play: Tạm dừng ở 45 %
- *  ✓ 05b · Lỗi tải lên ở 60 %                 swings/new (bước 3)       video wedge_mang_yeu.mp4 (lỗi ở mốc 60 %)
- *  ✓ 05c · Thử lại → tải xong                 swings/new (bước 3)       play: Thử lại → Để sau / Phân tích ngay
- *  ✓ 06 · Chi tiết — video tải dở (tạm dừng)  swings/[id] sw-sb-paused
- *  ✓ 07 · Chi tiết — chưa phân tích           swings/[id] sw-minh-3
- *  ✓ 08 · Chi tiết — đang phân tích 40 %      swings/[id] sw-sb-processing (mô phỏng đứng yên)
- *  ✓ 09 · Chi tiết — đã phân tích + gợi ý theo mốc   swings/[id] sw-minh-1
- *  ✓ 09a · Bấm gợi ý → tua tới mốc            swings/[id] sw-minh-1     play: bấm gợi ý 1,3s
- *  ✓ 10 · Chi tiết — cần xem lại              swings/[id] sw-sb-review (video ngược sáng)
- *  ✓ 11 · Chi tiết — lỗi phân tích            swings/[id] sw-sb-failed
- *  ✓ 12 · Dialog xoá swing                    swings/[id] sw-minh-2 (2 ghi chú HLV)
- *  ✓ 12a · Sau khi xoá — không tìm thấy swing swings/[id] sw-minh-2 đã xoá
+ * Các bước (mỗi bước shot = một story `f07--b-<nn>-<slug>`; ✓ = đã có):
+ *  ✓ 01 · Tab Swing — danh sách                 (player)/swings             as p-minh, tab swings
+ *  ✓ 02 · Lưới                                  (player)/swings             play: Lưới
+ *  ✓ 03 · Lọc 7 ngày, cũ nhất trước             (player)/swings             play: Lưới → 7 ngày → Mới nhất trước
+ *  ✓ 04 · Đăng swing — hướng dẫn quay           swings/new                  as p-minh
+ *  ✓ 05 · Popup video quá dung lượng            swings/new                  play: Tiếp tục → swing_4k_120fps_dai.mov
+ *  ✓ 06 · Popup file không phải video           swings/new                  play: Tiếp tục → anh_tu_the_chuan_bi.jpg
+ *  ✓ 07 · Chọn video, gậy SW, ngày 05/10        swings/new                  play: Tiếp tục → wedge_mang_yeu.mp4 → SW → Ngày → 5 tháng 10
+ *  ✓ 08 · Tạm dừng tải lên                      swings/new (bước 3)         play: như 07 → Tải lên → Tạm dừng ở 45 %
+ *  ✓ 09 · Lỗi tải lên ở 60 %                    swings/new (bước 3)         play: như 07 → Tải lên (wedge_mang_yeu.mp4 lỗi ở mốc 60 %)
+ *  ✓ 10 · Đang phân tích (40 %)                 swings/[id] sw-sw           (mô phỏng đứng yên)
+ *  ✓ 11 · Phân tích xong + mục Gậy              swings/[id] sw-sw           swing SW vừa đăng (SW_PHAN_TICH)
+ *  ✓ 12 · Bấm gợi ý → tua tới 1,3 s             swings/[id] sw-sw           play: bấm gợi ý đầu tiên
+ *  ✓ 13 · Gậy của swing                         clubs/[id] cl-sw            Swing gần đây có swing 05/10
+ *  ✓ 14 · Dialog xoá swing                      swings/[id] sw-sw           play: Xoá swing
+ *  ✓ 15 · Sau khi xoá — danh sách               (player)/swings             as p-minh, tab swings
+ *  ✓ 16 · Cần xem lại (video ngược sáng)        swings/[id] sw-sb-review    play: cuộn tới Quay lại hướng dẫn
+ *  ✓ 17 · Lỗi phân tích                         swings/[id] sw-pw           pw_may_chu_ban.mp4 lỗi ở 50 % (PW_LOI)
+ * Biến thể:
+ *  ✓ 01a · Danh sách — đủ trạng thái            (player)/swings             + 6 swing mẫu
+ *  ✓ 01b · Danh sách rỗng                       (player)/swings             as p-huy
+ *  ✓ 03a · Lọc 7 ngày — không có swing          (player)/swings             xoá sw-minh-3, sw-minh-1; play: 7 ngày
+ *  ✓ 07a · Chọn gậy — sheet                     swings/new (bước 2)         play: mở ô Gậy
+ *  ✓ 07b · Lỗi — chưa chọn gậy                  swings/new (bước 2)         play: Tải lên khi chưa chọn gậy
+ *  ✓ 08a · Đang tải lên (45 %)                  swings/new (bước 3)         mô phỏng chạy 9 nhịp rồi đứng yên
+ *  ✓ 08b · Chi tiết — video tải dở              swings/[id] sw-sb-paused
+ *  ✓ 09a · Thử lại → tải xong                   swings/new (bước 3)         play: Thử lại → Để sau / Phân tích ngay
+ *  ✓ 10a · Chi tiết — chưa phân tích            swings/[id] sw-minh-3
+ *  ✓ 15a · Mở swing đã xoá — không tìm thấy     swings/[id] sw-minh-2 đã xoá
  *
- * Chưa có (route không tồn tại — không dựng UI giả):
- *  - Swing dạng lưới / lọc theo gậy, trạng thái — Phase 2 (tab Swing chỉ có danh sách).
- *  - Popup báo file video lỗi / không đọc được khi chọn video — Phase 2 (bản thử chỉ chọn video mẫu, chưa mở thư viện).
- *  - Quay video trong app (camera) — Phase 2.
+ * Chưa có: quay video trong app (camera); chọn video từ thư viện (bản thử chọn video mẫu) — ngoài Phase 2.
  */
 import { useLayoutEffect, type PropsWithChildren } from 'react';
 import type { Decorator, Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { userEvent, within } from 'storybook/test';
+import ClubDetail from '../../apps/golf/app/clubs/[id]/index';
 import PlayerSwings from '../../apps/golf/app/(player)/swings';
 import SwingNew from '../../apps/golf/app/swings/new';
 import SwingDetail from '../../apps/golf/app/swings/[id]';
 import type { Action } from '../../apps/golf/lib/reducer';
-import type { Swing } from '../../apps/golf/lib/domain';
+import type { Swing, SwingAnalysis } from '../../apps/golf/lib/domain';
+import { NOW } from '../../apps/golf/lib/mock';
 import { ANALYSIS_TICK_MS, UPLOAD_TICK_MS, mockAnalysis } from '../../apps/golf/lib/simulate';
 import { appStory, type AppStoryOptions } from '../lib/appStory';
 
@@ -101,35 +109,114 @@ const upload = (club: string, video?: string): Play => async (ctx) => {
   await click(ctx.canvas.findByRole('button', { name: 'Tải lên' }));
 };
 
+// Swing SW của bước 07–14: Minh Anh đăng wedge_mang_yeu.mp4 (gậy SW, ngày 05/10) → tải xong; job theo bước (đang phân tích / xong).
+const swSw = (job: Swing['job'], analysis?: SwingAnalysis): Action => ({
+  type: 'addSwing',
+  swing: { ...base, id: 'sw-sw', clubId: 'cl-sw', capturedAt: '2026-10-05T08:00:00Z', fileName: 'wedge_mang_yeu.mp4', durationSec: 3.1, upload: done, job, analysis },
+});
+const SW_PHAN_TICH = swSw({ status: 'succeeded', progress: 1 }, mockAnalysis('wedge_mang_yeu.mp4', 3.1).analysis);
+// Bước 17: pw_may_chu_ban.mp4 (gậy PW) — máy chủ bận, phân tích lỗi ở 50 %.
+const PW_LOI = { type: 'addSwing', swing: { ...base, id: 'sw-pw', clubId: 'cl-pw', capturedAt: NOW, fileName: 'pw_may_chu_ban.mp4', durationSec: 3.4, cameraView: 'down-the-line', upload: done, job: { status: 'failed', progress: 0.5 } } } as const;
+const SW_DETAIL: AppStoryOptions = { as: 'p-minh', params: { id: 'sw-sw' }, setup: [SW_PHAN_TICH] };
+const TAB_SWING: AppStoryOptions = { as: 'p-minh', tabs: { role: 'player', active: 'swings' } };
+// Khung ảnh cố định 390×844: cuộn phần bước đó kiểm vào giữa màn (như lượt đi CDP).
+const reveal = (el: Promise<HTMLElement>) => el.then((e) => e.scrollIntoView({ block: 'center' }));
+// Bước 07: wedge_mang_yeu.mp4 + gậy SW + ngày 05/10 — bước 08, 09 tải lên tiếp từ đây.
+const chonSwNgay: Play = async (ctx) => {
+  await pick('SW', 'wedge_mang_yeu.mp4')(ctx);
+  await click(ctx.canvas.findByRole('button', { name: 'Ngày, 07/10/2026' }));
+  await click(page(ctx.canvasElement).findByRole('button', { name: /, 5 tháng 10/ }));
+  await ctx.canvas.findByRole('button', { name: 'Ngày, 05/10/2026' });
+};
+const grid: Play = ({ canvas }) => click(canvas.findByRole('tab', { name: 'Lưới' }));
+// chọn file lỗi → Dialog (Modal, ngoài canvas)
+const reject = (file: string, title: string): Play => async (ctx) => {
+  await toStep2(ctx);
+  await click(ctx.canvas.findByText(file));
+  await page(ctx.canvasElement).findByText(title);
+};
+
 // ── Danh sách ────────────────────────────────────────────────────────────────
-export const DanhSach: Story = {
-  name: '01 · Danh sách swing — đủ trạng thái',
+export const B01DanhSach: Story = {
+  name: '01 · Minh Anh mở tab Swing',
   render: () => <PlayerSwings />,
-  ...appStory({ as: 'p-minh', setup: addSwings, tabs: { role: 'player', active: 'swings' } }),
+  ...appStory(TAB_SWING),
+};
+
+export const DanhSach: Story = {
+  name: '01a · Danh sách — đủ trạng thái',
+  render: () => <PlayerSwings />,
+  ...appStory({ ...TAB_SWING, setup: addSwings }),
 };
 
 export const DanhSachRong: Story = {
-  name: '02 · Danh sách rỗng',
+  name: '01b · Danh sách rỗng',
   render: () => <PlayerSwings />,
   ...appStory({ as: 'p-huy', tabs: { role: 'player', active: 'swings' } }),
 };
 
+export const B02Luoi: Story = {
+  name: '02 · Chọn Lưới',
+  render: () => <PlayerSwings />,
+  ...appStory(TAB_SWING),
+  play: grid,
+};
+
+export const B03LocSapXep: Story = {
+  name: '03 · Lọc 7 ngày → đổi sắp xếp',
+  render: () => <PlayerSwings />,
+  ...appStory(TAB_SWING),
+  play: async (ctx) => {
+    await grid(ctx);
+    await click(ctx.canvas.findByRole('button', { name: '7 ngày' }));
+    await click(ctx.canvas.findByRole('button', { name: 'Mới nhất trước' }));
+    await ctx.canvas.findByRole('button', { name: 'Cũ nhất trước' });
+  },
+};
+
+export const Loc7NgayRong: Story = {
+  name: '03a · Lọc 7 ngày — không có swing',
+  render: () => <PlayerSwings />,
+  ...appStory({ ...TAB_SWING, setup: [{ type: 'deleteSwing', id: 'sw-minh-3' }, { type: 'deleteSwing', id: 'sw-minh-1' }] }),
+  play: async ({ canvas }) => {
+    await click(canvas.findByRole('button', { name: '7 ngày' }));
+    await canvas.findByText('Không có swing nào trong 7 ngày qua.');
+  },
+};
+
 // ── Đăng swing ───────────────────────────────────────────────────────────────
-export const HuongDanQuay: Story = {
-  name: '03 · Đăng swing — hướng dẫn quay',
+export const B04HuongDan: Story = {
+  name: '04 · Đăng swing — hướng dẫn quay',
   render: () => <SwingNew />,
   ...appStory({ as: 'p-minh' }),
 };
 
-export const ChonVideo: Story = {
-  name: '04 · Chọn video, gậy, góc quay',
+export const B05QuaDungLuong: Story = {
+  name: '05 · Chọn swing_4k_120fps_dai.mov — quá dung lượng',
   render: () => <SwingNew />,
   ...appStory({ as: 'p-minh' }),
-  play: pick('Driver'),
+  play: reject('swing_4k_120fps_dai.mov', 'Video quá dung lượng'),
+};
+
+export const B06KhongPhaiVideo: Story = {
+  name: '06 · Chọn anh_tu_the_chuan_bi.jpg — không phải video',
+  render: () => <SwingNew />,
+  ...appStory({ as: 'p-minh' }),
+  play: reject('anh_tu_the_chuan_bi.jpg', 'File không phải video'),
+};
+
+export const B07ChonVideoGayNgay: Story = {
+  name: '07 · Chọn wedge_mang_yeu.mp4, gậy SW, ngày 05/10',
+  render: () => <SwingNew />,
+  ...appStory({ as: 'p-minh' }),
+  play: async (ctx) => {
+    await chonSwNgay(ctx);
+    await reveal(ctx.canvas.findByRole('button', { name: 'Ngày, 05/10/2026' }));
+  },
 };
 
 export const ChonGay: Story = {
-  name: '04a · Chọn gậy — sheet danh sách gậy',
+  name: '07a · Chọn gậy — sheet',
   render: () => <SwingNew />,
   ...story({ as: 'p-minh' }),
   play: async (ctx) => {
@@ -139,45 +226,60 @@ export const ChonGay: Story = {
 };
 
 export const LoiChuaChonGay: Story = {
-  name: '04b · Lỗi — chưa chọn gậy',
+  name: '07b · Lỗi — chưa chọn gậy',
   render: () => <SwingNew />,
   ...appStory({ as: 'p-minh' }),
   play: async (ctx) => {
     await toStep2(ctx);
     await click(ctx.canvas.findByRole('button', { name: 'Tải lên' }));
+    await reveal(ctx.canvas.findByRole('combobox', { name: /^Gậy/ }));
   },
 };
 
-export const DangTai: Story = {
-  name: '05 · Đang tải lên (45 %)',
+export const B08TamDung: Story = {
+  name: '08 · Tải lên → Tạm dừng',
   render: () => <SwingNew />,
   ...story({ as: 'p-minh' }, ticks(9)),
   play: async (ctx) => {
-    await upload('Driver')(ctx);
-    await ctx.canvas.findByText('Đang tải lên 45%');
-  },
-};
-
-export const TamDung: Story = {
-  name: '05a · Tạm dừng tải lên',
-  render: () => <SwingNew />,
-  ...story({ as: 'p-minh' }, ticks(9)),
-  play: async (ctx) => {
-    await upload('Driver')(ctx);
+    await chonSwNgay(ctx);
+    await click(ctx.canvas.findByRole('button', { name: 'Tải lên' }));
     await ctx.canvas.findByText('Đang tải lên 45%');
     await click(ctx.canvas.findByRole('button', { name: 'Tạm dừng' }));
   },
 };
 
-export const LoiTai: Story = {
-  name: '05b · Lỗi tải lên (mất mạng ở 60 %)',
+export const DangTai: Story = {
+  name: '08a · Đang tải lên (45 %)',
+  render: () => <SwingNew />,
+  ...story({ as: 'p-minh' }, ticks(9)),
+  play: async (ctx) => {
+    await upload('Driver')(ctx);
+    await ctx.canvas.findByText('Đang tải lên 45%');
+  },
+};
+
+// ── Chi tiết ─────────────────────────────────────────────────────────────────
+const detail = (id: string): AppStoryOptions => ({ as: 'p-minh', params: { id }, setup: addSwings });
+
+export const ChiTietTaiDo: Story = {
+  name: '08b · Chi tiết — video tải dở',
+  render: () => <SwingDetail />,
+  ...appStory(detail('sw-sb-paused')),
+};
+
+export const B09LoiMang: Story = {
+  name: '09 · Tiếp tục → lỗi tải lên ở 60 %',
   render: () => <SwingNew />,
   ...story({ as: 'p-minh' }, ticks(20)),
-  play: upload('SW', 'wedge_mang_yeu.mp4'),
+  play: async (ctx) => {
+    await chonSwNgay(ctx);
+    await click(ctx.canvas.findByRole('button', { name: 'Tải lên' }));
+    await ctx.canvas.findByText('Lỗi tải lên ở 60%');
+  },
 };
 
 export const ThuLaiTaiXong: Story = {
-  name: '05c · Thử lại → tải xong',
+  name: '09a · Thử lại → tải xong',
   render: () => <SwingNew />,
   ...story({ as: 'p-minh' }, ticks(20)),
   play: async (ctx) => {
@@ -187,65 +289,71 @@ export const ThuLaiTaiXong: Story = {
   },
 };
 
-// ── Chi tiết ─────────────────────────────────────────────────────────────────
-const detail = (id: string): AppStoryOptions => ({ as: 'p-minh', params: { id }, setup: addSwings });
-
-export const ChiTietTaiDo: Story = {
-  name: '06 · Chi tiết — video tải dở (tạm dừng)',
+export const B10DangPhanTich: Story = {
+  name: '10 · Thử lại → Phân tích ngay — đang phân tích',
   render: () => <SwingDetail />,
-  ...appStory(detail('sw-sb-paused')),
+  ...story({ ...SW_DETAIL, setup: [swSw({ status: 'processing', progress: 0.4 })] }, ticks(0)),
 };
 
 export const ChiTietChuaPhanTich: Story = {
-  name: '07 · Chi tiết — chưa phân tích',
+  name: '10a · Chi tiết — chưa phân tích',
   render: () => <SwingDetail />,
   ...appStory(detail('sw-minh-3')),
 };
 
-export const ChiTietDangPhanTich: Story = {
-  name: '08 · Chi tiết — đang phân tích (40 %)',
+export const B11PhanTichXong: Story = {
+  name: '11 · Phân tích xong — mục Gậy có thông số',
   render: () => <SwingDetail />,
-  ...story(detail('sw-sb-processing'), ticks(0)),
+  ...appStory(SW_DETAIL),
 };
 
-export const ChiTietDaPhanTich: Story = {
-  name: '09 · Chi tiết — đã phân tích + gợi ý theo mốc',
+export const B12TuaTheoTip: Story = {
+  name: '12 · Chạm gợi ý đầu tiên — tua tới 1,3 s',
   render: () => <SwingDetail />,
-  ...appStory(detail('sw-minh-1')),
-};
-
-export const BamGoiY: Story = {
-  name: '09a · Bấm gợi ý → tua video tới mốc',
-  render: () => <SwingDetail />,
-  ...appStory(detail('sw-minh-1')),
+  ...appStory(SW_DETAIL),
   play: async ({ canvas }) => {
-    await click(canvas.findByRole('button', { name: /^1,3 ?s: Giữ góc cổ tay/ }));
+    await click(canvas.findByRole('button', { name: /^1,3 ?s: Giữ góc cổ tay lâu hơn ở đầu downswing/ }));
+    await reveal(canvas.findByText('1,3 s / 3,1 s'));
   },
 };
 
-export const ChiTietCanXemLai: Story = {
-  name: '10 · Chi tiết — cần xem lại (video chưa đủ rõ)',
-  render: () => <SwingDetail />,
-  ...appStory(detail('sw-sb-review')),
+export const B13GayCuaSwing: Story = {
+  name: '13 · Chạm mục Gậy — chi tiết gậy SW',
+  render: () => <ClubDetail />,
+  ...appStory({ as: 'p-minh', params: { id: 'cl-sw' }, setup: [SW_PHAN_TICH] }),
 };
 
-export const ChiTietLoiPhanTich: Story = {
-  name: '11 · Chi tiết — lỗi phân tích',
+export const B14XoaSwing: Story = {
+  name: '14 · Quay lại → Xoá swing',
   render: () => <SwingDetail />,
-  ...appStory(detail('sw-sb-failed')),
-};
-
-export const XoaDialog: Story = {
-  name: '12 · Dialog xoá swing',
-  render: () => <SwingDetail />,
-  ...story(detail('sw-minh-2')),
-  play: async ({ canvas }) => {
+  ...appStory(SW_DETAIL),
+  play: async ({ canvas, canvasElement }) => {
     await click(canvas.findByRole('button', { name: 'Xoá swing' }));
+    await page(canvasElement).findByText('Xoá swing này?');
   },
+};
+
+export const B15SauXoa: Story = {
+  name: '15 · Xoá — về danh sách',
+  render: () => <PlayerSwings />,
+  ...appStory(TAB_SWING),
 };
 
 export const DaXoa: Story = {
-  name: '12a · Sau khi xoá — không tìm thấy swing',
+  name: '15a · Mở swing đã xoá — không tìm thấy',
   render: () => <SwingDetail />,
   ...appStory({ as: 'p-minh', params: { id: 'sw-minh-2' }, setup: [{ type: 'deleteSwing', id: 'sw-minh-2' }] }),
+};
+
+export const B16CanXemLai: Story = {
+  name: '16 · Đăng driver_nguoc_sang.mp4 — cần xem lại',
+  render: () => <SwingDetail />,
+  ...appStory(detail('sw-sb-review')),
+  play: ({ canvas }) => reveal(canvas.findByRole('button', { name: 'Quay lại hướng dẫn' })),
+};
+
+export const B17PhanTichLoi: Story = {
+  name: '17 · Đăng pw_may_chu_ban.mp4 — phân tích lỗi',
+  render: () => <SwingDetail />,
+  ...appStory({ as: 'p-minh', params: { id: 'sw-pw' }, setup: [PW_LOI] }),
 };

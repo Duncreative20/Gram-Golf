@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import {
-  AlertBanner, Avatar, Button, Chip, Dialog, Divider, EmptyState, Icon, InlineMessage, MessageInput, ProgressBar, Screen, Tag, Text, VideoControlOverlay, useTheme,
+  AlertBanner, Avatar, Button, Chip, Dialog, Divider, EmptyState, Icon, InlineMessage, ListItem, MessageInput, ProgressBar, Screen, Tag, Text, VideoControlOverlay, useTheme,
   type VideoState,
 } from '@gr/ds';
 import { CAMERA_VIEW_LABELS, type CoachNote, type JobStatus, type Profile, type Swing, type SwingAnalysis } from '../../lib/domain';
@@ -10,7 +10,7 @@ import { NOW } from '../../lib/mock';
 import { newId } from '../../lib/ids';
 import { useStore } from '../../lib/store';
 import { canViewPrivate, clubById, clubLabel, notesFor, profileById } from '../../lib/selectors';
-import { formatDate, formatNumber, formatSec, formatTempo, initials, insertMark, noteMarks, relativeTime } from '../../lib/format';
+import { formatDate, formatNumber, formatSec, formatTempo, formatValue, initials, insertMark, noteMarks, relativeTime } from '../../lib/format';
 import { ANALYSIS_QUEUE_MS, ANALYSIS_TICK_MS, analysisTick } from '../../lib/simulate';
 import { StackHeader } from '../../components/StackHeader';
 import { KeyboardAvoid } from '../../components/KeyboardAvoid';
@@ -388,6 +388,17 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
                 </View>
                 <Timeline duration={duration} position={positionSec} phases={swing.analysis?.phases} notes={notes} onSeek={seek} />
               </View>
+              {club && (
+                <Section title="Gậy">
+                  {/* MVP "hiển thị thông số gậy": loft, lie, cán, flex; chạm → chi tiết gậy (đã qua cổng quyền nên HLV cũng xem được) */}
+                  <ListItem
+                    title={`${clubLabel(club)} · ${club.brand} ${club.model}`}
+                    caption={[`Loft ${formatValue(club.loftDeg, '°')}`, `Lie ${formatValue(club.lieDeg, '°')}`, club.shaftBrand, club.shaftFlex].join(' · ')}
+                    trailing={<Icon name="chevron-right-line-medium" size={t.size('Element-Size/Popular/Base')} color="Color/Content/Neutral/Light" />}
+                    onPress={() => router.push(`/clubs/${club.id}`)}
+                  />
+                </Section>
+              )}
               <Section title="Phân tích">{analysis()}</Section>
               <Section title="Ghi chú HLV">
                 {notes.length

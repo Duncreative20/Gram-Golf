@@ -15,7 +15,7 @@ const JOB: Record<JobStatus, { text: string; theme: BadgeTheme }> = {
   failed: { text: 'Lỗi phân tích', theme: 'Red' },
 };
 /** Trạng thái của swing: tải lên chưa xong thì theo tải lên, xong rồi theo job phân tích. */
-const statusOf = ({ upload, job }: Swing): { text: string; theme: BadgeTheme } =>
+export const swingStatus = ({ upload, job }: Swing): { text: string; theme: BadgeTheme } =>
   upload.status === 'uploading' ? { text: `Đang tải ${Math.round(upload.progress * 100)}%`, theme: 'Blue' }
   : upload.status === 'paused' ? { text: 'Tạm dừng', theme: 'Yellow' }
   : upload.status === 'failed' ? { text: 'Lỗi tải lên', theme: 'Red' }
@@ -27,7 +27,7 @@ export function SwingCard({ swing: w, awaitingFeedback }: { swing: Swing; awaiti
   const t = useTheme();
   const { state } = useStore();
   const club = clubById(state, w.clubId);
-  const status = statusOf(w);
+  const status = swingStatus(w);
   const notes = notesFor(state, w.id).length;
   return (
     <Card theme="Border" spacing="Small" onPress={() => router.push(`/swings/${w.id}`)}>

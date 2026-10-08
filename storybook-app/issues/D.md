@@ -21,8 +21,8 @@ Story: `flows/F07-swing.stories.tsx` (19 story), `flows/F08-hlv-review-swing.sto
 
 | Luồng | Bước | Ghi chú |
 | --- | --- | --- |
-| F07 | Swing dạng lưới / lọc theo gậy, trạng thái | Phase 2 — tab Swing chỉ có danh sách |
-| F07 | Popup báo file video lỗi / không đọc được khi chọn video | Phase 2 — bản thử chỉ chọn video mẫu, chưa mở thư viện |
+| F07 | Swing dạng lưới / lọc theo gậy, trạng thái | Đã làm (Task 19): Danh sách / Lưới, lọc 7 / 30 ngày, Mới nhất ⇄ Cũ nhất trước — story `f07--b-02-luoi`, `f07--b-03-loc-sap-xep`; lọc theo gậy / trạng thái không có trong MVP |
+| F07 | Popup báo file video lỗi / không đọc được khi chọn video | Đã làm (Task 19): popup “Video quá dung lượng” / “File không phải video” + Chọn video khác — story `f07--b-05-qua-dung-luong`, `f07--b-06-khong-phai-video`; vẫn chọn video mẫu, chưa mở thư viện |
 | F07 | Quay video trong app (camera) | Phase 2 |
 | F08 | Sửa / xoá ghi chú HLV | Đã làm (Task 18): nút Sửa / Xoá dưới ghi chú của chính HLV, Chèn mốc, chip “Tua tới …” — story `f08--b-09-dang-sua`, `f08--b-10-xoa-ghi-chu` |
 | F08 | Ghi chú vẽ / đánh dấu trên khung hình video | Phase 2 |

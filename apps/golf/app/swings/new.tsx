@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router } from 'expo-router';
-import { Button, Card, Divider, Icon, InlineMessage, ListItem, Screen, Segmented, Stepper, Text, useTheme, type ButtonProps } from '@gr/ds';
+import { Button, Card, Dialog, Divider, Icon, InlineMessage, ListItem, Screen, Segmented, Stepper, Text, useTheme, type ButtonProps } from '@gr/ds';
 import { CAMERA_VIEW_LABELS, type CameraView, type ID } from '../../lib/domain';
 import { NOW } from '../../lib/mock';
 import { newId } from '../../lib/ids';
 import { useStore } from '../../lib/store';
 import { clubById, clubLabel } from '../../lib/selectors';
-import { formatSec } from '../../lib/format';
+import { formatDate, formatSec, formatSize } from '../../lib/format';
+import { MAX_VIDEO_MB, videoFileError } from '../../lib/validation';
 import { SAMPLE_VIDEOS } from '../../lib/simulate';
 import { StackHeader } from '../../components/StackHeader';
 import { ClubPicker } from '../../components/ClubPicker';
 import { SwingUpload } from '../../components/SwingUpload';
 import { AlertMessage } from '../../components/Feedback';
+import { SessionDateField } from '../../components/SessionEntry';
 
 const STEPS = [{ title: 'Hướng dẫn quay' }, { title: 'Chọn video' }, { title: 'Tải lên' }];
 const VIEWS: CameraView[] = ['face-on', 'down-the-line'];
@@ -34,6 +36,9 @@ export default function SwingNew() {
   const [clubId, setClubId] = useState<ID>();
   const [submitted, setSubmitted] = useState(false);
   const [swingId] = useState(() => newId('sw')); // id cố định từ lúc mở màn → bấm "Tải lên" 2 lần không tạo 2 swing
+  const [capturedAt, setCapturedAt] = useState(NOW); // MVP: chọn ngày quay; mặc định hôm nay, không chọn được ngày sau hôm nay
+  const [rejected, setRejected] = useState<(typeof SAMPLE_VIDEOS)[number]>(); // file vừa bị từ chối (giữ để Dialog không trống khi mờ dần)
+  const [rejectOpen, setRejectOpen] = useState(false);
   if (me?.role !== 'player') return <Redirect href="/" />;
   const video = SAMPLE_VIDEOS[videoIndex];
   const swing = state.swings.find((w) => w.id === swingId);
@@ -44,7 +49,7 @@ export default function SwingNew() {
     dispatch({
       type: 'addSwing',
       swing: {
-        id: swingId, playerId: me.id, clubId, capturedAt: NOW, fileName: video.fileName, durationSec: video.durationSec, cameraView: view,
+        id: swingId, playerId: me.id, clubId, capturedAt, fileName: video.fileName, durationSec: video.durationSec, cameraView: view,
         upload: { status: 'uploading', progress: 0 }, job: { status: 'none', progress: 0 },
       },
     });
@@ -132,9 +137,15 @@ export default function SwingNew() {
                   key={v.fileName}
                   type="Radio-Card"
                   title={v.fileName}
-                  caption={`${formatSec(v.durationSec)} · ${CAMERA_VIEW_LABELS[v.cameraView]}`}
+                  caption={`${formatSize(v.sizeMb)} · ${v.mimeType.startsWith('video/') ? `${formatSec(v.durationSec)} · ${CAMERA_VIEW_LABELS[v.cameraView]}` : 'Ảnh'}`}
                   selected={i === videoIndex}
                   onPress={() => {
+                    // MVP §6 popup lỗi file: file quá dung lượng / không phải video bị từ chối, giữ video đang chọn
+                    if (videoFileError(v)) {
+                      setRejected(v);
+                      setRejectOpen(true);
+                      return;
+                    }
                     setVideoIndex(i);
                     setView(v.cameraView); // góc quay mặc định theo video, vẫn sửa được bên dưới
                   }}
@@ -143,6 +154,7 @@ export default function SwingNew() {
             </View>
           </View>
           <ClubPicker playerId={me.id} value={clubId} onChange={setClubId} error={submitted && !clubId ? 'Bắt buộc' : undefined} />
+          <SessionDateField value={capturedAt} onChange={setCapturedAt} />
           <View role="group" aria-label="Góc quay" style={{ gap: t.space('Spacing/Gap/XSmall') }}>
             <Text variant="Label/Small/DemiBold">Góc quay</Text>
             <Segmented items={VIEWS.map((v) => ({ label: CAMERA_VIEW_LABELS[v] }))} selectedIndex={VIEWS.indexOf(view)} onChange={(i) => setView(VIEWS[i])} />
@@ -163,7 +175,7 @@ export default function SwingNew() {
           <Card theme="Border" spacing="Small">
             <Text variant="Body/Base/DemiBold" numberOfLines={1}>{video.fileName}</Text>
             <Text variant="Body/Small/Regular" color="Color/Content/Neutral/Light">
-              {[club && clubLabel(club), CAMERA_VIEW_LABELS[view], formatSec(video.durationSec)].filter(Boolean).join(' · ')}
+              {[club && clubLabel(club), CAMERA_VIEW_LABELS[view], formatDate(capturedAt), formatSec(video.durationSec)].filter(Boolean).join(' · ')}
             </Text>
           </Card>
           {swing && <SwingUpload swing={swing} />}
@@ -188,6 +200,21 @@ export default function SwingNew() {
         <Stepper current={step} steps={STEPS} />
       </View>
       {body}
+      <Dialog
+        visible={rejectOpen}
+        onRequestClose={() => setRejectOpen(false)}
+        theme="Negative"
+        title={rejected && videoFileError(rejected) === 'too_large' ? 'Video quá dung lượng' : 'File không phải video'}
+        body={
+          !rejected
+            ? ''
+            : videoFileError(rejected) === 'too_large'
+              ? `${rejected.fileName} nặng ${formatSize(rejected.sizeMb)} — tối đa ${MAX_VIDEO_MB} MB. Cắt ngắn đoạn swing hoặc quay ở 1080p rồi chọn lại.`
+              : `${rejected.fileName} là ảnh, không phân tích swing được. Chọn một video (.mp4, .mov).`
+        }
+        primaryText="Chọn video khác"
+        onPrimary={() => setRejectOpen(false)}
+      />
     </Screen>
   );
 }
