@@ -12,7 +12,8 @@
 //       bấm phần tử nhìn thấy, không bị Dialog/BottomSheet che; contains = khớp một phần (chữ hoặc aria-label)
 //   { "type": "<chữ>", "into": "<aria-label | placeholder>" ("^…" = bắt đầu bằng), "append"?: true }   xoá ô rồi gõ (append: gõ tiếp)
 //   { "key": "Enter" } · { "wait": ms } · { "back": true } · { "expect": "<chữ>", "timeout"?: ms } · { "expectNot": "<chữ>" }
-//   { "switch": "<tên hồ sơ>" } · { "open": "<route>", "account"?: "<nhãn>" } · { "read": "<regex>", "as": "<biến>" } → "${biến}" ở bước sau
+//   { "switch": "<tên hồ sơ>" } · { "open": "<route>" } · { "read": "<regex>", "as": "<biến>" } → "${biến}" ở bước sau
+//   mọi bước nhận thêm "account"?: "<nhãn>" — đổi cột Tài khoản từ bước đó (vd tài khoản vừa tạo trong luồng, open ?as=…)
 //   { "shot": "<nn>-<tên>", "do": "<thao tác>", "see": "<kết quả mong đợi>", "settle"?: ms }   (nn hai chữ số, tên chữ thường không dấu)
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -182,6 +183,7 @@ const rows = [];
 await open(spec.start);
 for (const [i, raw] of spec.steps.entries()) {
   const s = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, fill(v)]));
+  if (s.account) account = s.account;
   try {
     if ('click' in s) {
       await click(s.click, s);
@@ -207,7 +209,6 @@ for (const [i, raw] of spec.steps.entries()) {
       account = s.switch;
     } else if ('open' in s) {
       await open(s.open);
-      if (s.account) account = s.account;
     } else if ('read' in s) vars[s.as] = await waitFor(() => inPage(READ, s.read), `không đọc được chữ khớp /${s.read}/`);
     else if ('shot' in s) {
       if (!/^\d\d-[a-z0-9-]+$/.test(s.shot)) throw new Error(`tên shot "${s.shot}" phải là <nn>-<chữ thường không dấu>`);

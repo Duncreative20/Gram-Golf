@@ -21,7 +21,7 @@
     { "click": "Tiếp" },
     { "expect": "Nhập mã 6 số" },
     { "shot": "04-otp", "do": "Điền họ tên, email, SĐT, mật khẩu, handicap 24,5 → Tiếp", "see": "Xác minh số điện thoại: OtpField 6 ô, Mã thử 123456, Gửi lại mã sau … s" },
-    { "type": "123456", "into": "OTP" },
+    { "type": "123456", "into": "OTP", "account": "Lê Văn Hải (vừa tạo)" },
     { "expect": "Ảnh đại diện" },
     { "click": "Chọn ảnh" },
     { "shot": "05-anh-dai-dien", "do": "Nhập 123456", "see": "Onboarding 1/3: Chọn ảnh → ảnh mẫu; Dùng chữ tắt (ảnh tuỳ chọn)" },
