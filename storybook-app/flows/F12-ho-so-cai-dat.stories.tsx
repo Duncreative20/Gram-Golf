@@ -24,7 +24,8 @@
  *  ✓ 02b · Tài khoản — lỗi                        xoá tên, SĐT trùng p-lan, handicap 60 → Lưu
  *  ✓ 02c · Tài khoản — đã lưu                     Lưu → Toast “Đã lưu hồ sơ” (giữ nguyên)
  *  ✓ 04a · Mật khẩu                               settings/password
- *  ✓ 04b · Dev / 04c · Dev — đặt lại dữ liệu mẫu  settings/dev
+ *  ✓ 04b · Dev / 04c · Dev — đặt lại dữ liệu mẫu  settings/dev           04b cuộn tới nhóm hồ sơ mẫu
+ *  ✓ 04d · Dev — Kiểm tra theo luồng              settings/dev           13 luồng F1–F13 (đầu màn)
  *  ✓ 05a · Quyền riêng tư — HLV                   as c-tuan (không có mục công khai dữ liệu)
  *  ✓ 06a · Cài đặt thông báo — HLV                đã tắt một số + giờ yên lặng
  *  ✓ 07a · Đơn vị đo — mét
@@ -144,6 +145,8 @@ export const Dev: Story = {
   name: '04b · Dev',
   render: () => <DevSettings />,
   ...appStory({ as: 'p-minh' }),
+  // đầu màn là "Kiểm tra theo luồng" (04d) → cuộn tới nhóm hồ sơ mẫu
+  play: async ({ canvas }) => (await canvas.findByText('Người chơi')).scrollIntoView({ block: 'start' }),
 };
 
 export const DevDatLai: Story = {
@@ -153,6 +156,12 @@ export const DevDatLai: Story = {
   play: async ({ canvas }) => {
     await click(canvas, /Đặt lại dữ liệu mẫu/);
   },
+};
+
+export const DevKiemTraTheoLuong: Story = {
+  name: '04d · Dev — Kiểm tra theo luồng',
+  render: () => <DevSettings />,
+  ...appStory({ as: 'p-minh' }),
 };
 
 export const B05QuyenRiengTu: Story = {

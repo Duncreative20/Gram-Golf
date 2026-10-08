@@ -62,6 +62,12 @@ pnpm test             # vitest: DS + lib của app
 pnpm check:literals   # cấm hex / fontSize / padding / margin / gap bằng số trong app và DS
 ```
 
+## Kiểm tra theo luồng
+13 luồng chức năng (F1–F13), mỗi luồng có storyboard ảnh, story trong Storybook app và kịch bản chạy tự động: [docs/flows/README.md](docs/flows/README.md).
+- Storybook màn app (màn thật theo luồng, cả trạng thái lỗi / rỗng / đang tải): `pnpm storybook:app --no-open` → http://localhost:6007
+  (`storybook-app/`; Storybook design system vẫn là `pnpm -F @gr/ds storybook`, cổng 6006).
+- Đối chiếu MVP issue #1: [docs/product/mvp-checklist.md](docs/product/mvp-checklist.md).
+
 ## Tài liệu
 
 - Spec: [docs/superpowers/specs/2026-10-07-gramgolf-ui-design.md](docs/superpowers/specs/2026-10-07-gramgolf-ui-design.md)

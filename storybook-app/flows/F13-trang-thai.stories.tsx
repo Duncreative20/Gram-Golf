@@ -313,6 +313,8 @@ export const B07BatGiaLapLoi: Story = {
   name: '07 · Dev → bật Giả lập lỗi khi lưu/xoá',
   render: () => <DevSettings />,
   ...appStory({ as: 'p-minh', setup: [FAIL] }),
+  // đầu màn Dev là "Kiểm tra theo luồng" (Task 30) → cuộn tới công tắc
+  play: async ({ canvas }) => (await canvas.findByText('Giả lập lỗi khi lưu/xoá')).scrollIntoView({ block: 'center' }),
 };
 
 export const B08DangLuu: Story = {

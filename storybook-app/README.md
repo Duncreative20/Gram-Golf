@@ -122,7 +122,7 @@ Ra `<outDir>/<story-id>.<light|dark>.png`, khung cố định 390×844 (tham s�
 | F09 | HLV xem học viên | roster (tìm không dấu, lọc Tất cả/Cần phản hồi/Lời mời, rỗng) → chi tiết học viên 5 tab chỉ đọc (Tổng quan, Thông số → phiên không Sửa / Xoá, Swing Chưa review / Đã review, Bộ gậy → gậy không Sửa / Lưu trữ / Xoá, Thể lực) → mở thẳng link: người theo dõi / HLV đã huỷ → 403 (cả chi tiết swing), học viên không tồn tại → 404. Storyboard: `docs/flows/F09.md` |
 | F10 | Cộng đồng | bảng tin (rỗng, của HLV) → bài HLV Tuấn: thích / bỏ thích, bình luận, Ai đã thích → đăng bài (trống, lỗi bắt buộc, tag + đính kèm swing) → toast, bài mới ở đầu bảng tin → khám phá (tìm “lan”, không thấy) → Theo dõi → hồ sơ người chơi (không thông số / swing / bộ gậy; HLV có kết nối thấy “Xem dữ liệu học viên”; người theo dõi / đang theo dõi) → chặn Lê Đăng Khoa (dialog, đã chặn / bị chặn) → bài biến khỏi bảng tin → báo cáo bài HLV Hà (lỗi chưa chọn lý do, Spam → toast). Storyboard: `docs/flows/F10.md` |
 | F11 | Thông báo | chuông (số chưa đọc) → Mới / Trước đó (rỗng theo vai) → chạm từng loại: ghi chú → swing, theo dõi → hồ sơ, thích / bình luận → bài, phân tích xong → swing → đã đọc, chuông hết số → bình luận mới của Khoa → Đánh dấu đã đọc tất cả → HLV: tab Thông báo (không chuông; rỗng) → chấp nhận lời mời → chi tiết học viên; yêu cầu kết nối → Học viên › Lời mời. Thông báo của người đã chặn / bị chặn không hiện. Storyboard: `docs/flows/F11.md` |
-| F12 | Hồ sơ & cài đặt | avatar header → hồ sơ → Chỉnh sửa hồ sơ (Chọn ảnh mẫu / Đổi ảnh / Dùng chữ tắt, họ tên, handicap, CLB; lỗi; đã lưu) → hồ sơ cập nhật → Cài đặt: Quyền riêng tư (công khai bộ gậy, người đã chặn + Bỏ chặn), Thông báo (7 loại người chơi; HLV), Đơn vị đo (yard → Tổng quan theo yd), Mật khẩu, Dev → HLV sửa giới thiệu (dưới 20 ký tự → lỗi; đơn giá “450.000”) → Xoá tài khoản (Dialog 2 bước) → màn chào. Storyboard: `docs/flows/F12.md` |
+| F12 | Hồ sơ & cài đặt | avatar header → hồ sơ → Chỉnh sửa hồ sơ (Chọn ảnh mẫu / Đổi ảnh / Dùng chữ tắt, họ tên, handicap, CLB; lỗi; đã lưu) → hồ sơ cập nhật → Cài đặt: Quyền riêng tư (công khai bộ gậy, người đã chặn + Bỏ chặn), Thông báo (7 loại người chơi; HLV), Đơn vị đo (yard → Tổng quan theo yd), Mật khẩu, Dev (Kiểm tra theo luồng F1–F13) → HLV sửa giới thiệu (dưới 20 ký tự → lỗi; đơn giá “450.000”) → Xoá tài khoản (Dialog 2 bước) → màn chào. Storyboard: `docs/flows/F12.md` |
 | F13 | Trạng thái xuyên suốt | link lạ → 404 → Về trang chủ → khung xương lần đầu mở tab Swing / Thông số (+ Học viên, chi tiết học viên, Thông báo, Bộ gậy, Tổng quan) → rỗng (Swing, Thông số, Bộ gậy) → Dev › Giả lập lỗi khi lưu/xoá → đang lưu → Lưu thất bại + Thử lại (thêm gậy, tài khoản, đăng bài) → Xoá thất bại (phiên, swing, ghi chú, gậy) → đang xoá → xoá xong → 403 có Quay lại → Tổng quan; mục lục link trạng thái ở F01–F12; guard chuyển hướng. Storyboard: `docs/flows/F13.md` |
 
 Ngoài các bước: thêm story cho trạng thái khó bấm tới (rỗng / đang tải / lỗi / 403 `NoAccess` / lỗi validate).
@@ -179,15 +179,13 @@ Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **47/47 route có story**
 | `settings/privacy` | `f12--b-05-quyen-rieng-tu`, `f12--b-09-nguoi-da-chan`, `f12--b-10-bo-chan`, `f12--b-13-xoa-tai-khoan`, `f12--xoa-tai-khoan-lan-cuoi`, `f12--quyen-rieng-tu-hlv` |  |
 | `settings/notifications` | `f12--b-06-cai-dat-thong-bao`, `f12--cai-dat-thong-bao-hlv` |  |
 | `settings/units` | `f12--b-07-don-vi`, `f12--don-vi-met` |  |
-| `settings/dev` | `f12--dev`, `f12--dev-dat-lai`, `f13--b-07-bat-gia-lap-loi` | Chỉ `__DEV__`; Storybook luôn `__DEV__ = true`; công tắc “Giả lập lỗi khi lưu/xoá” (F13) |
+| `settings/dev` | `f12--dev`, `f12--dev-dat-lai`, `f12--dev-kiem-tra-theo-luong`, `f13--b-07-bat-gia-lap-loi` | Chỉ `__DEV__`; Storybook luôn `__DEV__ = true`; “Kiểm tra theo luồng” 13 mục (đầu màn, `docs/flows/README.md`); công tắc “Giả lập lỗi khi lưu/xoá” (F13) |
 
 ## Chưa có (Phase 2)
 
 Bước của luồng cần màn Phase 2 — task luồng xoá dòng của mình khi story đã có. Bước ngoài Phase 2: mục "Đã biết / chưa làm" của `docs/flows/F<nn>.md`.
 
-| Luồng | Bước chưa có màn | Task |
-| --- | --- | --- |
-| F12 | Dev › "Kiểm tra theo luồng" | 30 |
+Không còn — mọi bước Phase 2 đã có story (Task 30).
 
 ## Lỗi màn hình đã thấy
 
