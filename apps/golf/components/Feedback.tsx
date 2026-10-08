@@ -1,6 +1,6 @@
 // Phản hồi sau thao tác, dùng ở nhiều màn (số liệu, gậy, swing, kết nối HLV, cộng đồng, cài đặt).
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, Keyboard, View } from 'react-native';
 import { InlineMessage, Text, Toast, useTheme, type InlineMessageProps } from '@gr/ds';
 import { DELAYS } from '../lib/simulate';
 import { useStore } from '../lib/store';
@@ -21,6 +21,7 @@ export function SavedToast({ title, caption, onDone, type = 'Positive', actionTe
 }) {
   const t = useTheme();
   useEffect(() => {
+    Keyboard.dismiss(); // toast nằm ngoài KeyboardAvoid — bấm Lưu khi bàn phím đang mở thì bàn phím che toast (iOS)
     // ponytail: Toast hiện trên màn vừa lưu rồi mới quay lại — app chưa có toast toàn cục; cần toast sống qua điều hướng thì nâng lên provider ở _layout.
     const timer = setTimeout(onDone, type === 'Negative' ? DELAYS.toastError : DELAYS.toast);
     return () => clearTimeout(timer);
