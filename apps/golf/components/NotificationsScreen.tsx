@@ -1,7 +1,7 @@
 import { Pressable, ScrollView, View } from 'react-native';
 import { Redirect, router, type Href } from 'expo-router';
 import { Avatar, Button, DockIcon, EmptyState, Screen, Text, useTheme } from '@gr/ds';
-import type { AppNotification, NotificationType, Profile } from '../lib/domain';
+import type { AppNotification, NotificationType, Profile, Role } from '../lib/domain';
 import { NOW } from '../lib/mock';
 import { useStore } from '../lib/store';
 import { notificationsOf, profileById } from '../lib/selectors';
@@ -23,8 +23,14 @@ const SENTENCE: Record<NotificationType, string> = {
   swing_uploaded: 'vừa tải lên swing mới',
 };
 
-/** Chạm thông báo → swing / hồ sơ người theo dõi / bài viết / học viên vừa nhận lời mời; thiếu id → chỉ đánh dấu đã đọc. */
-function target(n: AppNotification, actor?: Profile): Href | undefined {
+/** Câu cho người nhận vai `role`: HLV nhận "muốn kết nối", người chơi nhận "HLV đã duyệt yêu cầu" (cùng loại, khác chiều). */
+const sentenceFor = (n: AppNotification, role?: Role) =>
+  n.type === 'connect_request' && role === 'coach' ? 'muốn kết nối với bạn'
+  : n.type === 'invite_accepted' && role === 'player' ? 'đã duyệt yêu cầu kết nối của bạn'
+  : SENTENCE[n.type];
+
+/** Chạm thông báo → swing / hồ sơ người theo dõi / bài viết / học viên / tab HLV / mục Lời mời; thiếu id → chỉ đánh dấu đã đọc. */
+function target(n: AppNotification, actor: Profile | undefined, role?: Role): Href | undefined {
   switch (n.type) {
     case 'swing_uploaded':
     case 'coach_note':
@@ -36,23 +42,25 @@ function target(n: AppNotification, actor?: Profile): Href | undefined {
     case 'follow':
       return actor ? profileHref(actor) : undefined;
     case 'invite_accepted':
-      return n.actorId ? `/students/${n.actorId}` : undefined;
+      // HLV: học viên vừa nhận lời → chi tiết học viên; người chơi: HLV vừa duyệt yêu cầu của mình → tab HLV
+      return role === 'player' ? '/(player)/coach' : n.actorId ? `/students/${n.actorId}` : undefined;
     case 'connect_request':
-      return '/(player)/coach';
+      // `from` đổi theo từng thông báo → roster mở lại mục Lời mời kể cả khi tab đã mở sẵn
+      return role === 'coach' ? { pathname: '/(coach)/roster', params: { seg: 'loi-moi', from: n.id } } : '/(player)/coach';
   }
 }
 
 function NotificationRow({ n }: { n: AppNotification }) {
   const t = useTheme();
-  const { state, dispatch } = useStore();
+  const { state, dispatch, me } = useStore();
   const actor = n.actorId ? profileById(state, n.actorId) : undefined;
   const name = n.actorId ? actor?.name ?? 'Người dùng' : undefined;
-  const sentence = name ? `${name} ${SENTENCE[n.type]}` : SENTENCE[n.type];
+  const sentence = name ? `${name} ${sentenceFor(n, me?.role)}` : sentenceFor(n, me?.role);
   const time = relativeTime(n.createdAt, NOW);
   const unread = !n.readAt;
   const open = () => {
     dispatch({ type: 'markRead', userId: n.userId, at: NOW, ids: [n.id] });
-    const href = target(n, actor);
+    const href = target(n, actor, me?.role);
     if (href) router.push(href);
   };
   return (

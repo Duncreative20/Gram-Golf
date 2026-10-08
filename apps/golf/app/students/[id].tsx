@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
-import { Avatar, Card, EmptyState, Screen, TabBar, Text, useTheme } from '@gr/ds';
+import { Avatar, Card, Dialog, EmptyState, Screen, TabBar, Text, useTheme } from '@gr/ds';
 import { SOURCE_LABELS } from '../../lib/domain';
+import { NOW } from '../../lib/mock';
 import { useStore } from '../../lib/store';
 import {
-  awaitsFeedback, canViewPrivate, clubById, clubLabel, clubsOf, latestFitness, latestSwing, prefsOf, previousSwing, profileById, sessionsOf, speedTrend, swingsOf,
+  awaitsFeedback, canViewPrivate, clubById, clubLabel, clubsOf, latestFitness, latestSwing, openConnection, prefsOf, previousSwing, profileById, sessionsOf, speedTrend, swingsOf,
 } from '../../lib/selectors';
 import { formatDate, formatNumber, formatSpeed, formatValue, initials, swingTiles } from '../../lib/format';
 import { FITNESS_FIELDS } from '../../lib/validation';
@@ -24,13 +25,14 @@ type Tile = Parameters<typeof StatTile>[0];
  *  người theo dõi, HLV đã bị huỷ kết nối → NoAccess. 5 tab: Tổng quan · Thông số · Swing (→ swings/[id] để ghi chú) · Bộ gậy · Thể lực. */
 export default function StudentDetail() {
   const t = useTheme();
-  const { state, me } = useStore();
+  const { state, dispatch, me } = useStore();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [tab, setTab] = useState(0);
+  const [confirmRevoke, setConfirmRevoke] = useState(false);
   if (!me) return <Redirect href="/" />;
   const student = profileById(state, id);
   if (student?.role !== 'player' || !canViewPrivate(state, me.id, student.id)) {
-    const revoked = state.connections.some((c) => c.coachId === me.id && c.playerId === id && c.status === 'revoked');
+    const revoked = state.connections.some((c) => c.coachId === me.id && c.playerId === id && c.status === 'revoked' && c.acceptedAt);
     return (
       <Screen>
         <StackHeader title="Học viên" />
@@ -52,6 +54,8 @@ export default function StudentDetail() {
   }
 
   const units = prefsOf(state, me.id).units; // hiển thị theo đơn vị của người xem
+  // HLV đang có kết nối active (đã qua cổng canViewPrivate) được tự huỷ kết nối — MVP §5 "Hủy kết nối học viên/HLV"
+  const connection = me.role === 'coach' ? openConnection(state, me.id, student.id) : undefined;
   const swings = swingsOf(state, student.id);
   const awaiting = me.role === 'coach' ? swings.filter((w) => awaitsFeedback(state, w, me.id)) : [];
   const pad = { paddingHorizontal: t.layout('Margin-Small') };
@@ -168,7 +172,10 @@ export default function StudentDetail() {
   ];
   return (
     <Screen>
-      <StackHeader title="Học viên" />
+      <StackHeader
+        title="Học viên"
+        actions={connection ? [{ icon: 'user-minus-line', accessibilityLabel: `Huỷ kết nối với ${student.name}`, onPress: () => setConfirmRevoke(true) }] : undefined}
+      />
       <View style={[pad, { flexDirection: 'row', alignItems: 'center', gap: t.space('Spacing/Gap/Medium'), paddingBottom: t.space('Spacing/Padding/Small') }]}>
         <View aria-hidden>
           <Avatar size="Large" theme={student.avatarUrl ? 'Photo' : 'Accent'} source={student.avatarUrl ? { uri: student.avatarUrl } : undefined} initials={initials(student.name)} />
@@ -188,6 +195,21 @@ export default function StudentDetail() {
       <ScrollView key={tab} contentContainerStyle={{ paddingVertical: t.space('Spacing/Padding/Medium'), gap: t.space('Spacing/Gap/XLarge') }}>
         {TABS[tab].render()}
       </ScrollView>
+      <Dialog
+        visible={confirmRevoke}
+        onRequestClose={() => setConfirmRevoke(false)}
+        theme="Warning"
+        title={`Huỷ kết nối với ${student.name}?`}
+        body="Bạn sẽ mất quyền xem thông số, swing, bộ gậy và thể lực của học viên ngay lập tức. Ghi chú đã gửi vẫn được giữ."
+        primaryText="Huỷ kết nối"
+        destructive
+        onPrimary={() => {
+          setConfirmRevoke(false);
+          // vẽ lại ngay → nhánh NoAccess "Kết nối … đã bị huỷ" (403) — đúng điều HLV vừa được cảnh báo
+          if (connection) dispatch({ type: 'revokeConnection', id: connection.id, at: NOW });
+        }}
+        secondaryText="Giữ kết nối"
+      />
     </Screen>
   );
 }

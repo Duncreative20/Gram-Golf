@@ -12,7 +12,7 @@ Người viết story ghi tiếp vào đây. **Không sửa màn app** từ vi�
 
 | Luồng | Bước | Ghi chú |
 | --- | --- | --- |
-| F04 | Lời mời 2 chiều (HLV gửi lời mời trong app, học viên nhận / từ chối) | Phase 2; hiện `ShareSheet` ở `connect/invite` chỉ giả lập gửi |
+| F04 | Lời mời 2 chiều (HLV gửi lời mời trong app, học viên nhận / từ chối) | Đã làm (Task 17): mục “Mời học viên cụ thể” ở `connect/invite`; `ShareSheet` vẫn chỉ giả lập gửi |
 
 ## Phân loại Phase 2
 
@@ -40,7 +40,7 @@ sửa (bước code nằm sẵn trong task sở hữu, cột “Bước”); thu
 | 15 | review Task 12 #1 | Khối "Bài đăng" chép y hệt ở `coaches/[id].tsx:60`, `users/[id].tsx:85`, `(coach)/me.tsx:35` | 26 | Step 1b | chờ Task 26 |
 | 16 | review Task 12 #3 | `PostItem.tsx:83`: nhãn Chia sẻ kẹt "Đã sao chép" mãi sau một lần gửi | 26 | Step 1b | chờ Task 26 |
 | 17 | review Task 12 #5 | `PostItem.tsx` thân bài (Pressable) không có nhãn / gợi ý a11y | 26 | Step 1b | chờ Task 26 |
-| 18 | review Task 12 #7 | Link giả `https://gramgolf.app/p/<id>` (`PostItem.tsx:13`) và `/i/<code>` (`connect/invite.tsx:14`) thiếu comment `ponytail:` | 26, 17 | 26 Step 1b · 17 Step 4 | chờ Task 26, 17 |
+| 18 | review Task 12 #7 | Link giả `https://gramgolf.app/p/<id>` (`PostItem.tsx:13`) và `/i/<code>` (`connect/invite.tsx:14`) thiếu comment `ponytail:` | 26, 17 | 26 Step 1b · 17 Step 4 | đã sửa (Task 17) phần `/i/<code>`; chờ Task 26 |
 | 19 | review Task 12 #8 | `posts/[id].tsx:195`: xoá bài gọi `back()` rồi `dispatch` cùng nhịp → màn đang rời nháy "Không tìm thấy" | 26 | Step 1b | chờ Task 26 |
 | 20 | review Task 13 #1 | `settings/password.tsx`: thiếu guard `if (!me) return <Redirect href="/" />` (mở được khi đã đăng xuất) | 25 | Step 5 | chờ Task 25 |
 | 21 | review Task 13 #2 | `settings/privacy.tsx:39,86-92`: Dialog xoá tài khoản trống chữ khi mờ dần lúc đóng | 28 | Step 4 | chờ Task 28 |

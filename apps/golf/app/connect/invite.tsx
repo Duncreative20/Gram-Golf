@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { Clipboard, ScrollView, View } from 'react-native';
 import { Redirect, useLocalSearchParams } from 'expo-router';
-import { Button, Card, Dialog, ListItem, Screen, ShareSheet, Text, useTheme } from '@gr/ds';
+import { Avatar, Button, Card, Dialog, ListItem, Screen, SearchField, ShareSheet, Text, useTheme } from '@gr/ds';
+import type { Profile } from '../../lib/domain';
 import { NOW } from '../../lib/mock';
 import { useStore } from '../../lib/store';
-import { discover, pendingInvites, roster } from '../../lib/selectors';
-import { formatDate, timeLeft } from '../../lib/format';
-import { newInvite } from '../../lib/ids';
+import { discover, findPlayers, pendingInvites, roster } from '../../lib/selectors';
+import { formatDate, formatValue, initials, timeLeft } from '../../lib/format';
+import { newId, newInvite } from '../../lib/ids';
 import { StackHeader } from '../../components/StackHeader';
 import { Section } from '../../components/Section';
 import { SavedToast } from '../../components/Feedback';
 
+// ponytail: link mời giả (chưa có domain / deep link thật) — có backend thì lấy link từ server, mở app bằng universal link.
 const inviteLink = (code: string) => `https://gramgolf.app/i/${code}`;
 
 /** HLV tạo mã mời 6 ký tự (hạn 7 ngày), chia sẻ / sao chép link, xem và thu hồi lời mời đang chờ.
@@ -27,10 +29,16 @@ export default function CreateInvite() {
   const [revoking, setRevoking] = useState<string>(); // giữ mã để tiêu đề Dialog không trống khi Dialog mờ dần lúc đóng
   const [confirm, setConfirm] = useState(false);
   const [toast, setToast] = useState<{ key: number; title: string }>();
+  const [query, setQuery] = useState(''); // ô tìm học viên để gửi lời mời trong app
   if (me?.role !== 'coach') return <Redirect href="/" />; // chưa đăng nhập → welcome; học viên nhập mã ở connect/accept
   const pending = pendingInvites(state, me.id, NOW);
   const shown = pending.find((i) => i.code === current); // thu hồi / hết hạn → ẩn thẻ mã
   const notify = (title: string) => setToast((prev) => ({ key: (prev?.key ?? 0) + 1, title })); // key mới → Toast hiện lại từ đầu
+  const found = findPlayers(state, me.id, query);
+  const sendRequest = (p: Profile) => {
+    dispatch({ type: 'requestConnection', id: newId('cn'), coachId: me.id, playerId: p.id, by: 'coach', at: NOW, notificationId: newId('nt') });
+    notify(`Đã gửi lời mời tới ${p.name}`);
+  };
   const create = () => {
     const invite = newInvite(me.id, NOW, state.invites.map((i) => i.code));
     dispatch({ type: 'createInvite', invite });
@@ -87,6 +95,32 @@ export default function CreateInvite() {
           )}
           <Button level={shown ? 'Tertiary' : 'Primary'} size="Medium (Base)" leadingIcon="plus-line" text={shown ? 'Tạo mã khác' : 'Tạo mã mời'} onPress={create} />
         </View>
+        <Section title="Mời học viên cụ thể" caption="Tìm theo tên, email hoặc số điện thoại — học viên nhận lời mời ở tab HLV và chọn Chấp nhận / Từ chối">
+          <View style={{ paddingHorizontal: t.layout('Margin-Small'), paddingBottom: t.space('Spacing/Padding/XSmall') }}>
+            <SearchField placeholder="Tên, email hoặc số điện thoại" value={query} onChangeText={setQuery} />
+          </View>
+          {query.trim() !== '' &&
+            (found.length ? (
+              found.map((p) => (
+                <ListItem
+                  key={p.id}
+                  title={p.name}
+                  caption={[p.handicap !== undefined && `Handicap ${formatValue(p.handicap)}`, p.homeClub].filter(Boolean).join(' · ') || p.email}
+                  leading={
+                    <View aria-hidden>
+                      <Avatar size="Medium" theme={p.avatarUrl ? 'Photo' : 'Accent'} source={p.avatarUrl ? { uri: p.avatarUrl } : undefined} initials={initials(p.name)} />
+                    </View>
+                  }
+                  trailing={<Button level="Secondary" size="Small" text="Gửi lời mời" accessibilityLabel={`Gửi lời mời kết nối tới ${p.name}`} onPress={() => sendRequest(p)} />}
+                  trailingInteractive
+                />
+              ))
+            ) : (
+              <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Light" style={{ paddingHorizontal: t.layout('Margin-Small') }}>
+                Không có người chơi phù hợp — hoặc người đó đã kết nối / đang chờ trả lời lời mời của bạn.
+              </Text>
+            ))}
+        </Section>
         <Section title="Lời mời đang chờ" caption={pending.length ? 'Mã còn hạn, chưa có học viên dùng' : undefined}>
           {pending.length ? (
             pending.map((i) => (

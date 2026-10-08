@@ -1,8 +1,10 @@
 import { ScrollView, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
-import { EmptyState, Screen, Tag, Text, useTheme } from '@gr/ds';
+import { Button, EmptyState, InlineMessage, Screen, Tag, Text, useTheme } from '@gr/ds';
+import { NOW } from '../../lib/mock';
 import { useStore } from '../../lib/store';
-import { activeCoaches, isBlocked, postsBy, profileById } from '../../lib/selectors';
+import { activeCoaches, isBlocked, openConnection, postsBy, profileById } from '../../lib/selectors';
+import { newId } from '../../lib/ids';
 import { StackHeader } from '../../components/StackHeader';
 import { Section } from '../../components/Section';
 import { CoachSummary } from '../../components/CoachSummary';
@@ -12,7 +14,7 @@ import { BlockedNotice, FollowButton, FollowCounts } from '../../components/Peop
 /** Hồ sơ công khai HLV: ai cũng xem được; theo dõi KHÔNG mở dữ liệu riêng (D6). Một trong hai đã chặn người kia → không theo dõi, không xem bài. */
 export default function CoachPublicProfile() {
   const t = useTheme();
-  const { state, me } = useStore();
+  const { state, dispatch, me } = useStore();
   const { id } = useLocalSearchParams<{ id: string }>();
   if (!me) return <Redirect href="/" />;
   const coach = profileById(state, id);
@@ -35,6 +37,12 @@ export default function CoachPublicProfile() {
   const blocked = isBlocked(state, me.id, coach.id);
   const myCoach = activeCoaches(state, me.id).some((c) => c.coach.id === coach.id);
   const posts = postsBy(state, coach.id);
+  // Người chơi tự tìm HLV: gửi yêu cầu (HLV duyệt ở tab Học viên › Lời mời); HLV đang mời mình → trả lời luôn ở đây
+  const canRequest = me.role === 'player' && !myCoach && !isBlocked(state, me.id, coach.id);
+  const conn = canRequest ? openConnection(state, coach.id, me.id) : undefined; // chỉ có thể là kết nối đang chờ
+  const hasPrimary = activeCoaches(state, me.id).some((c) => c.connection.isPrimary);
+  const request = () => dispatch({ type: 'requestConnection', id: newId('cn'), coachId: coach.id, playerId: me.id, by: 'player', at: NOW, notificationId: newId('nt') });
+  const respond = (accept: boolean) => conn && dispatch({ type: 'respondConnection', id: conn.id, accept, at: NOW, notificationId: newId('nt') });
   return (
     <Screen>
       <StackHeader title="Hồ sơ HLV" />
@@ -53,6 +61,32 @@ export default function CoachPublicProfile() {
                 </View>
                 <FollowButton userId={coach.id} size="Medium (Base)" />
               </View>
+              {canRequest &&
+                (conn?.requestedBy === 'player' ? (
+                  <View style={{ gap: t.space('Spacing/Gap/XSmall') }}>
+                    <InlineMessage theme="Info" text="Đã gửi yêu cầu kết nối — chờ HLV duyệt." />
+                    <Button level="Tertiary" size="Medium (Base)" text="Huỷ yêu cầu" accessibilityLabel={`Huỷ yêu cầu kết nối với ${coach.name}`} onPress={() => dispatch({ type: 'revokeConnection', id: conn.id, at: NOW })} />
+                  </View>
+                ) : conn ? (
+                  <View style={{ gap: t.space('Spacing/Gap/XSmall') }}>
+                    <InlineMessage theme="Info" text={`${coach.name} mời bạn kết nối — nhận lời thì là ${hasPrimary ? 'HLV phụ' : 'HLV chính'} của bạn.`} />
+                    <View style={{ flexDirection: 'row', gap: t.space('Spacing/Gap/Small') }}>
+                      <View style={{ flex: 1 }}>
+                        <Button size="Medium (Base)" leadingIcon="user-check-line" text="Chấp nhận" accessibilityLabel={`Chấp nhận lời mời của ${coach.name}`} onPress={() => respond(true)} />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Button level="Tertiary" size="Medium (Base)" text="Từ chối" accessibilityLabel={`Từ chối lời mời của ${coach.name}`} onPress={() => respond(false)} />
+                      </View>
+                    </View>
+                  </View>
+                ) : (
+                  <View style={{ gap: t.space('Spacing/Gap/XSmall') }}>
+                    <Button size="Medium (Base)" leadingIcon="user-plus-line" text="Gửi yêu cầu kết nối" onPress={request} />
+                    <Text variant="Caption/Regular" color="Color/Content/Neutral/Light">
+                      {hasPrimary ? 'Bạn đã có HLV chính — HLV này duyệt thì thành HLV phụ.' : 'HLV duyệt thì đây là HLV chính của bạn.'}
+                    </Text>
+                  </View>
+                ))}
             </>
           )}
         </View>

@@ -114,7 +114,7 @@ Ra `<outDir>/<story-id>.<light|dark>.png`, khung cố định 390×844 (tham s�
 | F01 | Người chơi mới | welcome → đăng ký (Người chơi) → OTP → onboarding → Tổng quan trống → nhập số liệu đầu tiên → Tổng quan có dữ liệu |
 | F02 | HLV mới | welcome → đăng ký (HLV) → OTP → onboarding → Học viên trống → tạo mã mời |
 | F03 | Tài khoản | đăng nhập (đúng/sai), quên mật khẩu, đổi mật khẩu, đăng xuất (hồ sơ) |
-| F04 | Kết nối HLV–học viên | HLV tạo/chia sẻ/thu hồi mã → học viên nhập mã (lỗi: sai/hết hạn/đã dùng/đã thu hồi/đã kết nối) → xem trước → chấp nhận → tab HLV (HLV chính/phụ, đặt làm chính, huỷ kết nối + dialog) → hồ sơ HLV |
+| F04 | Kết nối HLV–học viên | HLV tạo/chia sẻ/thu hồi mã, mời học viên cụ thể → học viên Chấp nhận / Từ chối ở tab HLV; học viên gửi yêu cầu từ hồ sơ HLV → HLV Duyệt / Từ chối ở Học viên › Lời mời; nhập mã (lỗi: sai/hết hạn/đã dùng/đã thu hồi/đã kết nối) → xem trước HLV chính/phụ → chấp nhận; đặt làm HLV chính; học viên / HLV huỷ kết nối → 403 ngay. Storyboard: `docs/flows/F04.md` |
 | F05 | Số liệu | chọn nguồn → nhập tay (lỗi + hợp lệ) / CSV (chọn file, xem trước có dòng lỗi, xác nhận, file lạ) / ảnh OCR (chọn hãng, đang đọc, review trường độ tin cậy thấp) / QR → danh sách Swing/Thể lực → chi tiết phiên → Tổng quan |
 | F06 | Bộ gậy | danh sách theo nhóm → thêm (lỗi validate, wedge bounce, tuỳ chỉnh) → chi tiết → sửa → dialog lưu trữ; HLV xem chỉ đọc; không quyền → 403 |
 | F07 | Swing của người chơi | danh sách (các trạng thái, rỗng) → đăng swing (hướng dẫn, chọn video/gậy/góc, đang tải, tạm dừng, lỗi tải + thử lại) → chi tiết (chưa phân tích, đang phân tích, đã phân tích + tip theo mốc, cần xem lại, lỗi) → dialog xoá |
@@ -129,7 +129,7 @@ Ngoài các bước: thêm story cho trạng thái khó bấm tới (rỗng / đ
 
 ## Phủ route
 
-Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **45/45 route có story** (227 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
+Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **45/45 route có story** (253 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
 
 | Route | Story id | Ghi chú |
 | --- | --- | --- |
@@ -144,14 +144,14 @@ Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **45/45 route có story**
 | `(player)/metrics` | `f05--danh-sach-swing`, `f05--danh-sach-the-luc`, `f05--danh-sach-rong`, `f06--tab-thong-so` |  |
 | `(player)/swings` | `f07--danh-sach`, `f07--danh-sach-rong` |  |
 | `(player)/community` | `f10--bang-tin`, `f10--bang-tin-rong`, `f10--kham-pha`, `f10--kham-pha-tim`, `f10--kham-pha-khong-thay`, `f10--bang-tin-sau-khi-chan` |  |
-| `(player)/coach` | `f04--tab-hlv`, `f04--tab-hlv-chua-ket-noi`, `f04--dat-lam-hlv-chinh`, `f04--huy-ket-noi-dialog`, `f04--da-huy-hlv-chinh` |  |
-| `(coach)/roster` | `f02--hoc-vien-trong`, `f02--hoc-vien-trong-loi-moi`, `f02--hoc-vien-loi-moi-dang-cho`, `f09--danh-sach`, `f09--tim-hoc-vien`, `f09--tim-khong-thay`, `f09--can-phan-hoi`, `f09--can-phan-hoi-rong`, `f09--loi-moi`, `f09--loi-moi-rong`, `f09--chua-co-hoc-vien`, `f08--can-phan-hoi` | Tab HLV; F02 (HLV mới), F08 (Cần phản hồi), F09 (tìm, lọc) |
+| `(player)/coach` | `f04--b-07-tab-hlv-loi-moi`, `f04--b-08-da-ket-noi`, `f04--b-15-doi-hlv-chinh`, `f04--b-23-hai-hlv`, `f04--b-26-hoc-vien-huy`, `f04--tab-hlv-chua-ket-noi`, `f04--tu-choi-loi-moi`, `f04--tab-hlv`, `f04--huy-ket-noi-dialog`, `f04--da-huy-hlv-chinh` |  |
+| `(coach)/roster` | `f04--b-01-roster`, `f04--b-02-loi-moi`, `f04--b-13-hlv-duyet`, `f04--b-14-roster-co-khoa`, `f04--b-21-ha-yeu-cau-mau`, `f04--b-25-ha-roster-co-huy`, `f04--b-27-ha-roster-mat-huy`, `f04--b-31-roster-sau-huy`, `f04--loi-moi-da-gui`, `f04--loi-moi-trong`, `f02--hoc-vien-trong`, `f02--hoc-vien-trong-loi-moi`, `f02--hoc-vien-loi-moi-dang-cho`, `f09--danh-sach`, `f09--tim-hoc-vien`, `f09--tim-khong-thay`, `f09--can-phan-hoi`, `f09--can-phan-hoi-rong`, `f09--loi-moi`, `f09--loi-moi-rong`, `f09--chua-co-hoc-vien`, `f08--can-phan-hoi` | Tab HLV; F02 (HLV mới), F08 (Cần phản hồi), F09 (tìm, lọc) |
 | `(coach)/community` | `f10--bang-tin-hlv` |  |
-| `(coach)/inbox` | `f11--tab-hlv`, `f11--tab-hlv-rong` |  |
+| `(coach)/inbox` | `f04--b-09-hlv-nhan-thong-bao`, `f04--b-24-ha-nhan-thong-bao`, `f11--tab-hlv`, `f11--tab-hlv-rong` |  |
 | `(coach)/me` | `f12--ho-so-hlv-tab` |  |
-| `connect/invite` | `f02--moi-chua-co-ma`, `f02--moi-da-tao-ma`, `f04--hlv-tao-ma`, `f04--hlv-chua-co-loi-moi`, `f04--hlv-chia-se-ma`, `f04--hlv-thu-hoi-dialog`, `f04--hlv-da-thu-hoi`, `f13--nguoi-choi-mo-man-hlv` | `f13--nguoi-choi-mo-man-hlv` = guard vai; ShareSheet chỉ giả lập gửi |
-| `connect/accept` | `f04--hoc-vien-nhap-ma`, `f04--nhap-ma-de-trong`, `f04--nhap-ma-sai`, `f04--nhap-ma-het-han`, `f04--nhap-ma-da-dung`, `f04--nhap-ma-da-thu-hoi`, `f04--nhap-ma-da-ket-noi`, `f04--xem-truoc-hlv-chinh`, `f04--xem-truoc-hlv-phu`, `f04--chap-nhan-ket-noi` |  |
-| `coaches/[id]` | `f04--ho-so-hlv`, `f04--ho-so-hlv-khong-co`, `f10--ho-so-hlv-bi-chan` | `f10--ho-so-hlv-bi-chan` = trạng thái bị chặn |
+| `connect/invite` | `f04--b-03-tao-ma`, `f04--b-04-tim-hoc-vien`, `f04--b-05-da-gui-loi-moi`, `f04--hlv-chia-se-ma`, `f04--hlv-chua-co-loi-moi`, `f04--hlv-thu-hoi-dialog`, `f04--tim-khong-co`, `f02--moi-chua-co-ma`, `f02--moi-da-tao-ma`, `f13--nguoi-choi-mo-man-hlv` | `f13--nguoi-choi-mo-man-hlv` = guard vai; ShareSheet chỉ giả lập gửi |
+| `connect/accept` | `f04--b-16-ma-sai`, `f04--b-17-ma-het-han`, `f04--b-18-ma-da-dung`, `f04--b-19-ma-thu-hoi`, `f04--b-20-da-ket-noi-ma`, `f04--b-22-xem-truoc-hlv-phu`, `f04--nhap-ma-de-trong`, `f04--xem-truoc-hlv-chinh`, `f04--chap-nhan-ket-noi` |  |
+| `coaches/[id]` | `f04--b-11-ho-so-hlv`, `f04--b-12-da-gui-yeu-cau`, `f04--ho-so-hlv`, `f04--ho-so-hlv-dang-moi`, `f04--ho-so-hlv-khong-co`, `f10--ho-so-hlv-bi-chan` | `f10--ho-so-hlv-bi-chan` = trạng thái bị chặn |
 | `metrics/add` | `f01--chon-nguon-so-lieu`, `f05--chon-nguon` | `presentation: modal` của layout không thể hiện |
 | `metrics/manual` | `f01--nhap-tay-chua-co-gay`, `f01--nhap-tay-loi`, `f01--nhap-tay-da-luu`, `f05--nhap-tay`, `f05--nhap-tay-loi`, `f05--nhap-tay-da-luu`, `f05--nhap-tay-the-luc`, `f05--nhap-tay-yard`, `f13--toast-da-luu` | `f13--toast-da-luu` = toast giữ nguyên (`hold: ['toast']`) |
 | `metrics/import-csv` | `f05--csv-chon-file`, `f05--csv-xem-truoc`, `f05--csv-file-la`, `f05--csv-xac-nhan`, `f05--csv-da-nhap`, `f05--csv-thieu-gay` | Chọn file mẫu ngay trong màn (chưa mở file hệ điều hành) |
@@ -164,12 +164,12 @@ Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **45/45 route có story**
 | `clubs/[id]/edit` | `f06--sua-gay`, `f06--sua-gay-da-luu-tru`, `f13--sua-gay-nguoi-khac` | `f06--sua-gay-da-luu-tru`, `f13--sua-gay-nguoi-khac` = guard → chi tiết gậy |
 | `swings/new` | `f07--huong-dan-quay`, `f07--chon-video`, `f07--chon-gay`, `f07--loi-chua-chon-gay`, `f07--dang-tai`, `f07--tam-dung`, `f07--loi-tai`, `f07--thu-lai-tai-xong`, `f13--hlv-mo-man-nguoi-choi` | Mô phỏng tải lên chạy theo nhịp (`ticks`); `f13--hlv-mo-man-nguoi-choi` = guard vai |
 | `swings/[id]` | `f07--chi-tiet-tai-do`, `f07--chi-tiet-chua-phan-tich`, `f07--chi-tiet-dang-phan-tich`, `f07--chi-tiet-da-phan-tich`, `f07--bam-goi-y`, `f07--chi-tiet-can-xem-lai`, `f07--chi-tiet-loi-phan-tich`, `f07--xoa-dialog`, `f07--da-xoa`, `f08--swing-hoc-vien`, `f08--chua-co-ghi-chu`, `f08--dang-viet`, `f08--loi-trong`, `f08--da-gui`, `f08--khong-co-quyen`, `f08--hoc-vien-xem-ghi-chu` | F07 người chơi, F08 HLV ghi chú |
-| `students/[id]` | `f09--tong-quan`, `f09--tong-quan-rong`, `f09--thong-so`, `f09--swing`, `f09--swing-can-phan-hoi`, `f09--bo-gay`, `f09--the-luc`, `f09--khong-quyen-da-huy`, `f09--khong-quyen-nguoi-theo-doi`, `f09--khong-tim-thay`, `f08--tab-swing` |  |
+| `students/[id]` | `f04--b-10-chi-tiet-hoc-vien`, `f04--b-28-ha-mat-quyen-403`, `f04--b-29-hlv-huy-ket-noi`, `f04--b-30-mat-quyen-403`, `f09--tong-quan`, `f09--tong-quan-rong`, `f09--thong-so`, `f09--swing`, `f09--swing-can-phan-hoi`, `f09--bo-gay`, `f09--the-luc`, `f09--khong-quyen-da-huy`, `f09--khong-quyen-nguoi-theo-doi`, `f09--khong-tim-thay`, `f08--tab-swing` |  |
 | `community/compose` | `f10--dang-bai`, `f10--dang-bai-loi`, `f10--dang-bai-hop-le`, `f10--dang-bai-chon-swing`, `f10--dang-bai-da-dang` |  |
 | `posts/[id]` | `f10--chi-tiet-bai`, `f10--chi-tiet-bai-cua-minh`, `f10--tra-loi-binh-luan`, `f10--da-gui-binh-luan`, `f10--ai-da-thich`, `f10--xoa-bai-dialog`, `f10--swing-dinh-kem-co-quyen`, `f10--swing-dinh-kem-rieng-tu`, `f10--bai-khong-tim-thay`, `f10--bai-nguoi-da-chan`, `f10--bao-cao-bai`, `f10--bao-cao-loi` |  |
 | `users/[id]` | `f10--ho-so-nguoi-dung`, `f10--ho-so-hlv-xem-hoc-vien`, `f10--ho-so-khong-tim-thay`, `f10--chan-dialog`, `f10--da-chan`, `f10--bi-chan`, `f10--bao-cao-nguoi-dung`, `f13--ho-so-id-hlv` | `f13--ho-so-id-hlv` = id HLV → chuyển sang `coaches/[id]` |
 | `people` | `f10--nguoi-theo-doi`, `f10--dang-theo-doi`, `f10--theo-doi-rong`, `f10--theo-doi-nguoi-da-chan` |  |
-| `notifications` | `f11--danh-sach`, `f11--da-doc-tat-ca`, `f11--rong` |  |
+| `notifications` | `f04--b-06-thong-bao-loi-moi`, `f11--danh-sach`, `f11--da-doc-tat-ca`, `f11--rong` |  |
 | `profile` | `f03--ho-so`, `f03--ho-so-dang-xuat`, `f12--ho-so-nguoi-choi`, `f12--ho-so-hlv` | Đăng xuất (dialog) ở F03 |
 | `settings/index` | `f03--cai-dat`, `f12--cai-dat` |  |
 | `settings/account` | `f12--tai-khoan`, `f12--tai-khoan-hlv`, `f12--tai-khoan-loi`, `f12--tai-khoan-da-luu` |  |
@@ -187,7 +187,6 @@ Bước của luồng cần màn Phase 2 — task luồng xoá dòng của mình
 | --- | --- | --- |
 | F02 | Onboarding HLV: bước "Giới thiệu nghề nghiệp" (bắt buộc, 20–300 ký tự) | 24 |
 | F03 | Đặt lại mật khẩu từ link (hợp lệ / hết hạn / sai); "Mở link (thử)" ở quên mật khẩu; đăng nhập sau khi đặt lại | 25 |
-| F04 | Lời mời 2 chiều: HLV mời học viên cụ thể → học viên Chấp nhận / Từ chối; học viên gửi yêu cầu từ hồ sơ HLV → HLV Duyệt / Từ chối; HLV huỷ kết nối → 403 ngay | 17 |
 | F05 | Sửa phiên (swing, thể lực, theo yard); dòng "Đã sửa" | 20 |
 | F06 | Đang dùng / Lưu trữ; khôi phục; xoá gậy chưa gắn dữ liệu | 21 |
 | F07 | Danh sách / Lưới, lọc + sắp xếp theo ngày; ô Ngày khi đăng; popup file quá dung lượng / không phải video; mục Gậy có thông số | 19 |

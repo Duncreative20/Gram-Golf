@@ -5,8 +5,9 @@ import { Accordion, Avatar, Button, Card, Dialog, EmptyState, Icon, InlineMessag
 import type { CoachConnection, Profile } from '../../lib/domain';
 import { NOW } from '../../lib/mock';
 import { useStore } from '../../lib/store';
-import { activeCoaches } from '../../lib/selectors';
-import { formatDate, initials } from '../../lib/format';
+import { activeCoaches, connectionRequests, profileById } from '../../lib/selectors';
+import { formatDate, initials, relativeTime } from '../../lib/format';
+import { newId } from '../../lib/ids';
 import { TabHeader } from '../../components/TabHeader';
 import { Section } from '../../components/Section';
 import { CoachSummary } from '../../components/CoachSummary';
@@ -42,10 +43,68 @@ export default function PlayerCoach() {
   };
   const pad = { paddingHorizontal: t.layout('Margin-Small') };
   const chevron = <Icon name="chevron-right-line-medium" size={t.size('Element-Size/Popular/Base')} color="Color/Content/Neutral/Light" />;
+  const { incoming, outgoing } = connectionRequests(state, me.id);
+  const avatar = (p: Profile) => (
+    <View aria-hidden>
+      <Avatar size="Medium" theme={p.avatarUrl ? 'Photo' : 'Accent'} source={p.avatarUrl ? { uri: p.avatarUrl } : undefined} initials={initials(p.name)} />
+    </View>
+  );
+  // D5 khi kích hoạt: chưa có HLV chính → lời mời nhận lời thành HLV chính, có rồi → HLV phụ (reducer quyết, chữ ở đây chỉ báo trước)
+  const becomes = primary ? 'HLV phụ' : 'HLV chính';
+  const respond = (c: CoachConnection, accept: boolean) => {
+    const name = profileById(state, c.coachId)?.name ?? 'HLV';
+    dispatch({ type: 'respondConnection', id: c.id, accept, at: NOW, notificationId: newId('nt') });
+    notify(accept ? `Đã kết nối với ${name} — ${becomes}` : `Đã từ chối lời mời của ${name}`);
+  };
+  const requestRow = (c: CoachConnection, kind: 'incoming' | 'outgoing') => {
+    const coach = profileById(state, c.coachId)!;
+    const when = relativeTime(c.invitedAt, NOW).toLowerCase();
+    return (
+      <View key={c.id}>
+        <ListItem
+          title={coach.name}
+          // khoảng trắng không ngắt trong từng cụm → hàng xuống dòng ở " · ", không tách "HLV | chính" (như roster)
+          caption={(kind === 'incoming' ? ['Mời bạn kết nối', when, `nhận lời → ${becomes}`] : ['Bạn gửi yêu cầu', when, 'chờ HLV duyệt']).map((x) => x.replace(/ /g, '\u00a0')).join(' · ')}
+          leading={avatar(coach)}
+          trailing={chevron}
+          onPress={() => router.push(`/coaches/${coach.id}`)}
+        />
+        <View style={{ ...pad, flexDirection: 'row', flexWrap: 'wrap', gap: t.space('Spacing/Gap/XSmall'), paddingBottom: t.space('Spacing/Padding/XSmall') }}>
+          {kind === 'incoming' ? (
+            <>
+              <Button size="Small" leadingIcon="user-check-line" text="Chấp nhận" accessibilityLabel={`Chấp nhận lời mời của ${coach.name}`} onPress={() => respond(c, true)} />
+              <Button level="Tertiary" size="Small" text="Từ chối" accessibilityLabel={`Từ chối lời mời của ${coach.name}`} onPress={() => respond(c, false)} />
+            </>
+          ) : (
+            <Button
+              level="Tertiary"
+              size="Small"
+              text="Huỷ yêu cầu"
+              accessibilityLabel={`Huỷ yêu cầu kết nối với ${coach.name}`}
+              onPress={() => {
+                dispatch({ type: 'revokeConnection', id: c.id, at: NOW });
+                notify(`Đã huỷ yêu cầu gửi ${coach.name}`);
+              }}
+            />
+          )}
+        </View>
+      </View>
+    );
+  };
   return (
     <Screen edges={['top']}>
       <TabHeader title="HLV" />
       <ScrollView contentContainerStyle={{ paddingVertical: t.space('Spacing/Padding/Medium'), gap: t.space('Spacing/Gap/XLarge') }}>
+        {incoming.length > 0 && (
+          <Section title="Lời mời từ HLV" caption="Nhận lời thì HLV xem được thông số, swing, bộ gậy và thể lực của bạn">
+            {incoming.map((c) => requestRow(c, 'incoming'))}
+          </Section>
+        )}
+        {outgoing.length > 0 && (
+          <Section title="Yêu cầu đã gửi" caption="Chờ HLV duyệt">
+            {outgoing.map((c) => requestRow(c, 'outgoing'))}
+          </Section>
+        )}
         {coaches.length === 0 ? (
           <View style={pad}>
             <EmptyState
@@ -54,6 +113,8 @@ export default function PlayerCoach() {
               caption="Nhập mã mời HLV gửi cho bạn để HLV xem thông số, swing, bộ gậy và góp ý cho bạn."
               primaryText="Nhập mã mời"
               onPrimary={enterCode}
+              secondaryText="Tìm HLV"
+              onSecondary={() => router.push('/(player)/community')}
             />
           </View>
         ) : (
@@ -127,6 +188,9 @@ export default function PlayerCoach() {
             <View style={pad}>
               <Button level="Secondary" size="Medium (Base)" leadingIcon="key-line" text="Nhập mã mời" onPress={enterCode} />
             </View>
+            <Text variant="Body/Small/Regular" color="Color/Content/Neutral/Light" style={pad}>
+              Hoặc tìm HLV ở Cộng đồng › Khám phá rồi gửi yêu cầu kết nối từ hồ sơ HLV.
+            </Text>
           </>
         )}
         <View style={pad}>
