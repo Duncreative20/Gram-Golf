@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router, type Href } from 'expo-router';
-import { Avatar, Button, PageIndicator, RadioRow, Screen, Text, useTheme } from '@gr/ds';
+import { Avatar, Button, PageIndicator, RadioRow, Screen, Text, TextArea, useTheme } from '@gr/ds';
 import type { Units } from '../../lib/domain';
 import { useStore } from '../../lib/store';
 import { prefsOf } from '../../lib/selectors';
 import { initials } from '../../lib/format';
 import { nextSampleAvatar } from '../../lib/simulate';
+import { BIO_MAX, BIO_MIN, validateBio } from '../../lib/validation';
+import { KeyboardAvoid } from '../../components/KeyboardAvoid';
 
 const UNITS: { value: Units; label: string; caption: string }[] = [
   { value: 'metric', label: 'Mét', caption: 'Khoảng cách theo mét (m)' },
@@ -17,15 +19,18 @@ export default function Onboarding() {
   const t = useTheme();
   const { state, dispatch, me } = useStore();
   const [step, setStep] = useState(0);
+  const [bio, setBio] = useState('');
+  const [bioTried, setBioTried] = useState(false); // chỉ báo lỗi sau lần bấm Tiếp đầu tiên ở bước này
   if (!me) return <Redirect href="/" />;
   const units = prefsOf(state, me.id).units;
   // Thay cả nhóm (auth) ở stack gốc → không quay lại được luồng đăng ký.
   const finish = (href: Href = '/') => router.replace(href);
   const pickAvatar = () => dispatch({ type: 'updateProfile', id: me.id, patch: { avatarUrl: nextSampleAvatar(me.avatarUrl) } });
-  const pages = [
+  const bioError = validateBio(bio);
+  const pages: { title: string; caption: string; body: ReactNode; next?: () => boolean }[] = [
     {
       title: 'Ảnh đại diện',
-      caption: 'Giúp HLV và bạn bè nhận ra bạn.',
+      caption: me.role === 'coach' ? 'Giúp học viên và bạn bè nhận ra bạn.' : 'Giúp HLV và bạn bè nhận ra bạn.',
       body: (
         <View style={{ alignItems: 'center', gap: t.space('Spacing/Gap/Medium') }}>
           <Avatar size="3XLarge" theme={me.avatarUrl ? 'Photo' : 'Accent'} source={me.avatarUrl ? { uri: me.avatarUrl } : undefined} initials={initials(me.name)} accessibilityLabel={`Ảnh đại diện ${me.name}`} />
@@ -47,6 +52,32 @@ export default function Onboarding() {
         </View>
       ),
     },
+    ...(me.role === 'coach'
+      ? [
+          {
+            title: 'Giới thiệu nghề nghiệp',
+            caption: 'Học viên đọc phần này ở hồ sơ HLV của bạn trước khi kết nối.',
+            body: (
+              <TextArea
+                label="Giới thiệu"
+                placeholder="VD: 8 năm dạy swing cơ bản và tempo cho người mới, chuyên short game."
+                value={bio}
+                onChangeText={setBio}
+                maxLength={BIO_MAX}
+                error={bioTried ? bioError : undefined}
+                helpText={`${bio.trim().length}/${BIO_MAX} ký tự · tối thiểu ${BIO_MIN}`}
+              />
+            ),
+            // MVP §2 "với HLV cần thêm Bio nghề nghiệp": bắt buộc — hợp lệ mới lưu vào hồ sơ và sang bước sau
+            next: () => {
+              setBioTried(true);
+              if (bioError) return false;
+              dispatch({ type: 'updateProfile', id: me.id, patch: { bio: bio.trim() } });
+              return true;
+            },
+          },
+        ]
+      : []),
     me.role === 'player'
       ? {
           title: 'Bạn có mã mời từ HLV?',
@@ -63,26 +94,37 @@ export default function Onboarding() {
   const last = step === pages.length - 1;
   return (
     <Screen>
-      <View style={{ flex: 1, padding: t.layout('Margin-Comfortable'), gap: t.space('Spacing/Gap/Large') }}>
-        <View style={{ alignItems: 'center' }}>
-          <PageIndicator count={pages.length} active={step} state="Accent" />
+      {/* bước Giới thiệu nghề nghiệp (HLV) có ô nhập: bàn phím không che ô và nút Tiếp */}
+      <KeyboardAvoid>
+        <View style={{ flex: 1, padding: t.layout('Margin-Comfortable'), gap: t.space('Spacing/Gap/Large') }}>
+          <View style={{ alignItems: 'center' }}>
+            <PageIndicator count={pages.length} active={step} state="Accent" />
+          </View>
+          <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', gap: t.space('Spacing/Gap/XLarge') }}>
+            <View style={{ gap: t.space('Spacing/Gap/XSmall') }}>
+              <Text variant="Heading/2" accessibilityRole="header" style={{ textAlign: 'center' }}>{page.title}</Text>
+              <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Light" style={{ textAlign: 'center' }}>{page.caption}</Text>
+            </View>
+            {page.body}
+          </ScrollView>
+          <View style={{ flexDirection: 'row', gap: t.space('Spacing/Gap/Small') }}>
+            <View style={{ flex: 1 }}>
+              {step > 0 && <Button level="Tertiary" text="Quay lại" onPress={() => setStep(step - 1)} />}
+            </View>
+            <View style={{ flex: 1 }}>
+              <Button
+                level={last ? 'Tertiary' : 'Primary'}
+                text={last ? 'Để sau' : 'Tiếp'}
+                onPress={() => {
+                  if (page.next && !page.next()) return;
+                  if (last) finish();
+                  else setStep(step + 1);
+                }}
+              />
+            </View>
+          </View>
         </View>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', gap: t.space('Spacing/Gap/XLarge') }}>
-          <View style={{ gap: t.space('Spacing/Gap/XSmall') }}>
-            <Text variant="Heading/2" accessibilityRole="header" style={{ textAlign: 'center' }}>{page.title}</Text>
-            <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Light" style={{ textAlign: 'center' }}>{page.caption}</Text>
-          </View>
-          {page.body}
-        </ScrollView>
-        <View style={{ flexDirection: 'row', gap: t.space('Spacing/Gap/Small') }}>
-          <View style={{ flex: 1 }}>
-            {step > 0 && <Button level="Tertiary" text="Quay lại" onPress={() => setStep(step - 1)} />}
-          </View>
-          <View style={{ flex: 1 }}>
-            <Button level={last ? 'Tertiary' : 'Primary'} text={last ? 'Để sau' : 'Tiếp'} onPress={() => (last ? finish() : setStep(step + 1))} />
-          </View>
-        </View>
-      </View>
+      </KeyboardAvoid>
     </Screen>
   );
 }

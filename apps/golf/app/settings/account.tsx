@@ -4,7 +4,7 @@ import { Redirect, router } from 'expo-router';
 import { Button, Divider, Screen, TextArea, TextField, useTheme, type TextFieldProps } from '@gr/ds';
 import { useStore } from '../../lib/store';
 import { formatValue, formatVnd } from '../../lib/format';
-import { BIO_MAX, RATE_MAX_VND, validateAccount, type AccountRaw } from '../../lib/validation';
+import { BIO_MAX, BIO_MIN, RATE_MAX_VND, validateAccount, type AccountRaw } from '../../lib/validation';
 import { StackHeader } from '../../components/StackHeader';
 import { AlertMessage, SavedToast } from '../../components/Feedback';
 import { KeyboardAvoid } from '../../components/KeyboardAvoid';
@@ -52,8 +52,10 @@ export default function AccountSettings() {
           {field('phone', { label: 'Số điện thoại', placeholder: '0912345678', autoComplete: 'tel', keyboardType: 'phone-pad' })}
           <TextArea
             label="Giới thiệu"
-            placeholder="Vài dòng về lối chơi, mục tiêu của bạn"
-            helpText={`Tuỳ chọn, tối đa ${BIO_MAX} ký tự`}
+            placeholder={me.role === 'coach' ? 'VD: 8 năm dạy swing cơ bản và tempo cho người mới, chuyên short game.' : 'Vài dòng về lối chơi, mục tiêu của bạn'}
+            // HLV: bắt buộc 20–300 ký tự như bước onboarding; người chơi: tuỳ chọn
+            helpText={me.role === 'coach' ? `${raw.bio.trim().length}/${BIO_MAX} ký tự · tối thiểu ${BIO_MIN}` : `Tuỳ chọn, tối đa ${BIO_MAX} ký tự`}
+            maxLength={BIO_MAX}
             value={raw.bio}
             onChangeText={(bio) => setRaw((r) => ({ ...r, bio }))}
             error={errors.bio}

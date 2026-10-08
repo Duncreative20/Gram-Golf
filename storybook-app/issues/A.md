@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- | --- |
 | `f01--tong-quan-co-du-lieu` | `apps/golf/app/(player)/home.tsx:146-151` + `apps/golf/components/charts/ConcentricRings.tsx:19` | Người chơi mới có 1 gậy: "Carry theo gậy" vẽ **một đĩa đặc to** (bán kính = max) trông như vết màu, không còn là vòng đồng tâm; caption vẫn ghi "Carry trung bình của 3 gậy xa nhất". | Chỉ hiện mục khi ≥ 2 gậy, hoặc caption theo số gậy thật. | 20 | đã sửa (Task 20) |
 | `f01--tong-quan-co-du-lieu` | `apps/golf/app/(player)/home.tsx:132-143` | "Xu hướng tốc độ đầu gậy (Driver, 1 buổi)" vẽ biểu đồ chỉ một điểm — chưa phải xu hướng. | Dưới 2 buổi → dòng gợi ý ("Cần ít nhất 2 buổi Driver") thay cho biểu đồ. | 20 | đã sửa (Task 20) |
-| `f02--onboarding-anh` | `apps/golf/app/(auth)/onboarding.tsx:32` | Trang "Ảnh đại diện" của **HLV** vẫn ghi "Giúp HLV và bạn bè nhận ra bạn." | Theo vai: HLV → "Giúp học viên và bạn bè nhận ra bạn." | 24 | chờ Task 24 |
+| `f02--onboarding-anh` | `apps/golf/app/(auth)/onboarding.tsx:32` | Trang "Ảnh đại diện" của **HLV** vẫn ghi "Giúp HLV và bạn bè nhận ra bạn." | Theo vai: HLV → "Giúp học viên và bạn bè nhận ra bạn." | 24 | đã sửa (Task 24) |
 | `f01--dang-ky-thong-tin`, `f02--dang-ky-thong-tin` | `apps/golf/app/(auth)/register.tsx:83` | Bước cuối (Thông tin) nút vẫn là "Tiếp →" dù bấm là gửi mã OTP. Nhỏ, không vỡ. | "Tạo tài khoản" / "Gửi mã xác minh" ở bước 2. | — | không làm: chữ không sai (bước kế là xác minh OTP) |
 
 Console chỉ có cảnh báo DS `"shadow*" style props are deprecated` (không vỡ màn).

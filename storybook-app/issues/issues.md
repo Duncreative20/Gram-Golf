@@ -29,7 +29,7 @@ sửa (bước code nằm sẵn trong task sở hữu, cột “Bước”); thu
 | 4 | README · `f10--tra-loi-binh-luan` | DS `Comment/Comment.tsx:155-156`: "Thêm ảnh" / "Thêm địa điểm" không có handler | 15 | Step 13 | đã sửa (Task 15) |
 | 5 | README · `f11--tab-hlv` + report Task 13 | `NotificationsScreen.tsx:101`: tab Thông báo của HLV vẫn có chuông mở chính màn đó | 27 | Step 3 | chờ Task 27 |
 | 6 | README · `f04--ho-so-hlv`, `f10--*` | DS `PostCard.tsx:56`, `Social.tsx:91`, `Comment.tsx:57`: chữ tắt `name.slice(0, 1)` → mọi HLV hiện "H" | 15 | Step 13 | đã sửa (Task 15) |
-| 7 | README · `f02--onboarding-anh` | `(auth)/onboarding.tsx:32`: HLV vẫn đọc "Giúp HLV và bạn bè nhận ra bạn." | 24 | Step 3 | chờ Task 24 |
+| 7 | README · `f02--onboarding-anh` | `(auth)/onboarding.tsx:32`: HLV vẫn đọc "Giúp HLV và bạn bè nhận ra bạn." | 24 | Step 3 | đã sửa (Task 24) |
 | 8 | README · `f11--danh-sach` | `NotificationsScreen.tsx:19`: "… đã bình luận" thiếu tân ngữ | 27 | Step 3 | chờ Task 27 |
 | 9 | README · `f11--tab-hlv-rong` + review Task 13 #3 | `NotificationsScreen.tsx:124`: rỗng của HLV nói "Ghi chú của HLV…" | 27 | Step 3 | chờ Task 27 |
 | 10 | README · `f12--tai-khoan-hlv` + review Task 13 #4 | `settings/account.tsx:26`: đơn giá điền sẵn "450000", placeholder "450.000" | 28 | Step 3 | chờ Task 28 |
