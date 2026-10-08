@@ -1,15 +1,6 @@
-import { View } from 'react-native';
-import { EmptyState, Screen } from '@gr/ds';
-import { TabHeader } from '../../components/TabHeader';
+import NotificationsScreen from '../../components/NotificationsScreen';
 
-// Tạm — Task 13 dựng màn thật.
+/** Tab Thông báo của HLV = màn thông báo chung, header kiểu tab. */
 export default function CoachInbox() {
-  return (
-    <Screen edges={['top']}>
-      <TabHeader title="Thông báo" />
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <EmptyState icon="bell-01-line" title="Thông báo" caption="Đang dựng" />
-      </View>
-    </Screen>
-  );
+  return <NotificationsScreen tab />;
 }

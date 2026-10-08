@@ -96,6 +96,16 @@ describe('xã hội', () => {
       expect(reduce(s, { type: 'toggleFollow', followerId, followedId, at: NOW, notificationId: 'n' })).toBe(s);
     }
   });
+  it('bỏ chặn: chỉ gỡ đúng chiều mình chặn, không khôi phục follow; người kia hiện lại ở khám phá', () => {
+    const blocked = reduce(s0(), { type: 'block', blockerId: 'p-minh', blockedId: 'p-khoa' });
+    const s = reduce(blocked, { type: 'unblock', blockerId: 'p-minh', blockedId: 'p-khoa' });
+    expect(s.blocks).toEqual([]);
+    expect(discover(s, 'p-minh', '').some((p) => p.id === 'p-khoa')).toBe(true);
+    expect(s.follows).toEqual(blocked.follows);
+    // hai chiều cùng chặn → bỏ chặn của mình vẫn còn chặn của người kia
+    const both = reduce(blocked, { type: 'block', blockerId: 'p-khoa', blockedId: 'p-minh' });
+    expect(reduce(both, { type: 'unblock', blockerId: 'p-minh', blockedId: 'p-khoa' }).blocks).toEqual([{ blockerId: 'p-khoa', blockedId: 'p-minh' }]);
+  });
   it('toggleLike idempotent theo cặp', () => {
     const post = s0().posts[0]!;
     const s = reduce(s0(), { type: 'toggleLike', userId: 'p-huy', postId: post.id, at: NOW, notificationId: 'n' });

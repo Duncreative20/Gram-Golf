@@ -3,7 +3,7 @@ import { ScrollView, View } from 'react-native';
 import { Redirect, router } from 'expo-router';
 import { Avatar, Badge, Button, Dialog, Screen, Text, useTheme } from '@gr/ds';
 import { useStore } from '../lib/store';
-import { initials } from '../lib/format';
+import { formatValue, initials } from '../lib/format';
 import { StackHeader } from '../components/StackHeader';
 import { FollowCounts } from '../components/People';
 
@@ -14,14 +14,14 @@ export default function Profile() {
   if (!me) return <Redirect href="/" />;
   const details =
     me.role === 'player'
-      ? [me.handicap !== undefined && `Handicap ${me.handicap}`, me.homeClub]
+      ? [me.handicap !== undefined && `Handicap ${formatValue(me.handicap)}`, me.homeClub]
       : [me.academy, me.yearsExperience !== undefined && `${me.yearsExperience} năm kinh nghiệm`];
   return (
     <Screen>
       <StackHeader title="Hồ sơ" />
       <ScrollView contentContainerStyle={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Large') }}>
         <View style={{ alignItems: 'center', gap: t.space('Spacing/Gap/XSmall') }}>
-          <Avatar size="2XLarge" initials={initials(me.name)} theme="Accent" accessibilityLabel={`Ảnh đại diện ${me.name}`} />
+          <Avatar size="2XLarge" theme={me.avatarUrl ? 'Photo' : 'Accent'} source={me.avatarUrl ? { uri: me.avatarUrl } : undefined} initials={initials(me.name)} accessibilityLabel={`Ảnh đại diện ${me.name}`} />
           <Text variant="Heading/3" style={{ textAlign: 'center' }}>{me.name}</Text>
           <View>
             <Badge text={me.role === 'player' ? 'Người chơi' : 'Huấn luyện viên'} theme="Accent" />

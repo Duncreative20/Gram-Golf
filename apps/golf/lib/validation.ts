@@ -106,6 +106,24 @@ export function clubRaw(c?: Club): ClubRaw {
 }
 
 export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/** SĐT VN (đã bỏ khoảng trắng): 10 số bắt đầu bằng 0, không trùng SĐT trong `others` (seed lưu có khoảng trắng). */
+const phoneError = (phone: string, others: Pick<Profile, 'phone'>[]) =>
+  !phone ? 'Bắt buộc'
+  : !/^0\d{9}$/.test(phone) ? 'Gồm 10 số, bắt đầu bằng 0'
+  : others.some((p) => p.phone.replace(/\s/g, '') === phone) ? 'Số điện thoại đã có tài khoản'
+  : undefined;
+const passwordError = (pw: string) => (!pw ? 'Bắt buộc' : pw.length < 8 || !/\d/.test(pw) ? 'Tối thiểu 8 ký tự, có ít nhất 1 chữ số' : undefined);
+/** Ô số bắt buộc trong 0–max, viết kiểu VN ("18,5") → số; không hợp lệ → chuỗi lỗi. */
+const bounded = (raw: string, max: number, integer: boolean): number | string => {
+  const n = parseNumberVN(raw);
+  if (n === null) return raw.trim() ? 'Không phải số' : 'Bắt buộc';
+  if (n < 0 || n > max || (integer && !Number.isInteger(n))) return `${integer ? 'Số nguyên' : 'Trong khoảng'} 0–${max}`;
+  return n;
+};
+/** Bỏ trường không lỗi → `Object.keys(errors).length` = số trường cần sửa. */
+const onlyErrors = <K extends string>(e: Partial<Record<K, string | undefined>>) =>
+  Object.fromEntries(Object.entries(e).filter(([, v]) => v)) as Partial<Record<K, string>>;
+
 export interface RegistrationRaw { name: string; email: string; phone: string; password: string; handicap: string; academy: string; yearsExperience: string }
 export type Registration = Pick<Profile, 'role' | 'name' | 'email' | 'phone' | 'handicap' | 'academy' | 'yearsExperience'>;
 /** Form đăng ký (B2). Mật khẩu chỉ kiểm, không nằm trong `value`. `profiles` để chặn email (không phân biệt hoa thường) / SĐT đã có. */
@@ -118,16 +136,14 @@ export function validateRegistration(role: Role, raw: RegistrationRaw, profiles:
   if (!email) errors.email = 'Bắt buộc';
   else if (!EMAIL_RE.test(email)) errors.email = 'Email không hợp lệ';
   else if (profiles.some((p) => p.email.toLowerCase() === email.toLowerCase())) errors.email = 'Email đã có tài khoản';
-  if (!phone) errors.phone = 'Bắt buộc';
-  else if (!/^0\d{9}$/.test(phone)) errors.phone = 'Gồm 10 số, bắt đầu bằng 0';
-  else if (profiles.some((p) => p.phone.replace(/\s/g, '') === phone)) errors.phone = 'Số điện thoại đã có tài khoản';
-  if (!raw.password) errors.password = 'Bắt buộc';
-  else if (raw.password.length < 8 || !/\d/.test(raw.password)) errors.password = 'Tối thiểu 8 ký tự, có ít nhất 1 chữ số';
+  const phoneErr = phoneError(phone, profiles);
+  if (phoneErr) errors.phone = phoneErr;
+  const passwordErr = passwordError(raw.password);
+  if (passwordErr) errors.password = passwordErr;
   const num = (k: 'handicap' | 'yearsExperience', max: number, integer: boolean) => {
-    const n = parseNumberVN(raw[k]);
-    if (n === null) errors[k] = raw[k].trim() ? 'Không phải số' : 'Bắt buộc';
-    else if (n < 0 || n > max || (integer && !Number.isInteger(n))) errors[k] = `${integer ? 'Số nguyên' : 'Trong khoảng'} 0–${max}`;
-    else return n;
+    const r = bounded(raw[k], max, integer);
+    if (typeof r === 'string') errors[k] = r;
+    else return r;
   };
   const extra: Partial<Registration> = {};
   if (role === 'player') extra.handicap = num('handicap', 54, false);
@@ -139,6 +155,47 @@ export function validateRegistration(role: Role, raw: RegistrationRaw, profiles:
   const value: Registration | null = Object.keys(errors).length ? null : { role, name, email, phone, ...extra };
   return { errors, value };
 }
+
+export const BIO_MAX = 300;
+export const RATE_MAX_VND = 10_000_000;
+export interface AccountRaw { name: string; phone: string; bio: string; handicap: string; homeClub: string; academy: string; yearsExperience: string; ratePerHourVnd: string }
+/** Form Tài khoản (settings/account): như đăng ký nhưng không email/mật khẩu; `others` = hồ sơ KHÁC mình (SĐT không trùng).
+ *  Trường tuỳ chọn (giới thiệu, CLB, đơn giá) để trống → undefined = xoá giá trị cũ. Đơn giá VND: "450.000" hoặc "450000". */
+export function validateAccount(role: Role, raw: AccountRaw, others: Pick<Profile, 'phone'>[]) {
+  const name = raw.name.trim().replace(/\s+/g, ' ');
+  const phone = raw.phone.replace(/\s/g, '');
+  const bio = raw.bio.trim();
+  const e: Partial<Record<keyof AccountRaw, string>> = {
+    name: name ? undefined : 'Bắt buộc',
+    phone: phoneError(phone, others),
+    bio: bio.length > BIO_MAX ? `Tối đa ${BIO_MAX} ký tự` : undefined,
+  };
+  const base = { name, phone, bio: bio || undefined };
+  let value: Partial<Profile>;
+  if (role === 'player') {
+    const handicap = bounded(raw.handicap, 54, false);
+    if (typeof handicap === 'string') e.handicap = handicap;
+    value = { ...base, handicap: handicap as number, homeClub: raw.homeClub.trim() || undefined };
+  } else {
+    const academy = raw.academy.trim();
+    const years = bounded(raw.yearsExperience, 60, true);
+    const rate = raw.ratePerHourVnd.replace(/[.\s]/g, '');
+    if (!academy) e.academy = 'Bắt buộc';
+    if (typeof years === 'string') e.yearsExperience = years;
+    if (rate && (!/^\d+$/.test(rate) || Number(rate) > RATE_MAX_VND)) e.ratePerHourVnd = 'Số tiền không hợp lệ';
+    value = { ...base, academy, yearsExperience: years as number, ratePerHourVnd: rate ? Number(rate) : undefined };
+  }
+  const errors = onlyErrors(e);
+  return { errors, value: Object.keys(errors).length ? null : value };
+}
+
+/** Đổi mật khẩu (mock — không kiểm mật khẩu hiện tại với server): mới theo luật đăng ký, khác mật khẩu hiện tại; nhập lại khớp. */
+export const validatePasswordChange = (raw: { current: string; next: string; confirm: string }) =>
+  onlyErrors({
+    current: raw.current ? undefined : 'Bắt buộc',
+    next: passwordError(raw.next) ?? (raw.next === raw.current ? 'Phải khác mật khẩu hiện tại' : undefined),
+    confirm: !raw.confirm ? 'Bắt buộc' : raw.confirm !== raw.next ? 'Mật khẩu nhập lại không khớp' : undefined,
+  });
 
 export const POST_TITLE_MAX = 120;
 export const POST_CONTENT_MAX = 2000;

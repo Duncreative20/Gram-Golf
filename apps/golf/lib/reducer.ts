@@ -23,7 +23,7 @@ export type Action =
   | { type: 'addPost'; post: Post } | { type: 'deletePost'; id: ID }
   | { type: 'toggleLike'; userId: ID; postId: ID; at: ISO; notificationId: ID }
   | { type: 'addComment'; comment: Comment; notificationId: ID }
-  | { type: 'block'; blockerId: ID; blockedId: ID }
+  | { type: 'block'; blockerId: ID; blockedId: ID } | { type: 'unblock'; blockerId: ID; blockedId: ID }
   | { type: 'report'; report: Report }
   | { type: 'markRead'; userId: ID; at: ISO; ids?: ID[] }
   | { type: 'reset' };
@@ -103,6 +103,8 @@ export function reduce(s: AppState, a: Action): AppState {
       blocks: [...s.blocks, { blockerId: a.blockerId, blockedId: a.blockedId }],
       follows: s.follows.filter((f) => !((f.followerId === a.blockerId && f.followedId === a.blockedId) || (f.followerId === a.blockedId && f.followedId === a.blockerId))),
     };
+    // chỉ gỡ chiều mình chặn; follow đã gỡ lúc chặn không tự quay lại
+    case 'unblock': return { ...s, blocks: s.blocks.filter((b) => !(b.blockerId === a.blockerId && b.blockedId === a.blockedId)) };
     case 'report': return { ...s, reports: [...s.reports, a.report] };
     case 'markRead': return { ...s, notifications: s.notifications.map((n) => (n.userId === a.userId && !n.readAt && (!a.ids || a.ids.includes(n.id)) ? { ...n, readAt: a.at } : n)) };
     case 'reset': return { ...seedState(), sessionUserId: s.sessionUserId };

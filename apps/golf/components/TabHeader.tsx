@@ -41,7 +41,7 @@ export function TabHeader({ title }: { title?: string }) {
       </View>
       {me && (
         <Pressable accessibilityRole="button" accessibilityLabel="Hồ sơ của tôi" onPress={() => router.push('/profile')}>
-          <Avatar size="XSmall" initials={initials(me.name)} theme="Accent" />
+          <Avatar size="XSmall" theme={me.avatarUrl ? 'Photo' : 'Accent'} source={me.avatarUrl ? { uri: me.avatarUrl } : undefined} initials={initials(me.name)} />
         </Pressable>
       )}
     </View>

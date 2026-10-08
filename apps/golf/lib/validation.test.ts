@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CLUB_TYPES } from './domain';
 import { seedState } from './mock';
-import { validateSwingMetrics, validateFitnessMetrics, validateClub, validateRegistration, validatePost, addTags, SWING_FIELDS, swingFields, rangeText, defaultLoft, loftOnTypeChange, clubRaw, type ClubRaw } from './validation';
+import { validateSwingMetrics, validateFitnessMetrics, validateClub, validateRegistration, validateAccount, validatePasswordChange, validatePost, addTags, SWING_FIELDS, swingFields, rangeText, defaultLoft, loftOnTypeChange, clubRaw, type ClubRaw } from './validation';
 
 describe('validation', () => {
   it('chấp nhận bộ số hợp lệ', () => {
@@ -146,6 +146,43 @@ describe('validateRegistration', () => {
     const r = validateRegistration('player', { ...base, email: ' minh@gramgolf.VN', phone: '0901234567' }, profiles);
     expect(r.value).toBeNull();
     expect(Object.keys(r.errors).sort()).toEqual(['email', 'phone']);
+  });
+});
+
+describe('validateAccount', () => {
+  const player = { name: ' Nguyễn  Minh Anh ', phone: '0912 345 678', bio: ' Tập driver. ', handicap: '13,5', homeClub: ' ', academy: '', yearsExperience: '', ratePerHourVnd: '' };
+  const coach = { ...player, handicap: '', academy: ' GramGolf Academy ', yearsExperience: '12', ratePerHourVnd: '450.000' };
+  const others = [{ phone: '0904 888 999' }];
+  it('player hợp lệ: chuẩn hoá tên/SĐT, handicap kiểu VN, trường tuỳ chọn để trống → undefined', () => {
+    expect(validateAccount('player', player, others)).toEqual({
+      errors: {},
+      value: { name: 'Nguyễn Minh Anh', phone: '0912345678', bio: 'Tập driver.', handicap: 13.5, homeClub: undefined },
+    });
+  });
+  it('coach hợp lệ: học viện, số năm, đơn giá viết "450.000"', () => {
+    expect(validateAccount('coach', coach, others).value).toEqual({
+      name: 'Nguyễn Minh Anh', phone: '0912345678', bio: 'Tập driver.', academy: 'GramGolf Academy', yearsExperience: 12, ratePerHourVnd: 450000,
+    });
+    expect(validateAccount('coach', { ...coach, ratePerHourVnd: '' }, others).value?.ratePerHourVnd).toBeUndefined();
+  });
+  it('lỗi theo trường: trống, sai định dạng, ngoài khoảng, SĐT của người khác', () => {
+    expect(validateAccount('player', { ...player, name: ' ', phone: '', handicap: '' }, others).errors).toEqual({ name: 'Bắt buộc', phone: 'Bắt buộc', handicap: 'Bắt buộc' });
+    expect(validateAccount('player', { ...player, phone: '0904888999', handicap: '55', bio: 'x'.repeat(301) }, others).errors).toEqual({
+      phone: 'Số điện thoại đã có tài khoản', handicap: 'Trong khoảng 0–54', bio: 'Tối đa 300 ký tự',
+    });
+    expect(validateAccount('coach', { ...coach, academy: '', yearsExperience: '2,5', ratePerHourVnd: '45k' }, others).errors).toEqual({
+      academy: 'Bắt buộc', yearsExperience: 'Số nguyên 0–60', ratePerHourVnd: 'Số tiền không hợp lệ',
+    });
+  });
+});
+
+describe('validatePasswordChange', () => {
+  it('mật khẩu hiện tại bắt buộc; mới ≥ 8 ký tự có chữ số, khác mật khẩu cũ; nhập lại khớp', () => {
+    expect(validatePasswordChange({ current: 'golf2025', next: 'golf2026', confirm: 'golf2026' })).toEqual({});
+    expect(validatePasswordChange({ current: '', next: '', confirm: '' })).toEqual({ current: 'Bắt buộc', next: 'Bắt buộc', confirm: 'Bắt buộc' });
+    expect(validatePasswordChange({ current: 'x', next: 'golfgolf', confirm: 'golfgolf' })).toEqual({ next: 'Tối thiểu 8 ký tự, có ít nhất 1 chữ số' });
+    expect(validatePasswordChange({ current: 'golf2026', next: 'golf2026', confirm: 'golf2026' })).toEqual({ next: 'Phải khác mật khẩu hiện tại' });
+    expect(validatePasswordChange({ current: 'x', next: 'golf2026', confirm: 'golf2027' })).toEqual({ confirm: 'Mật khẩu nhập lại không khớp' });
   });
 });
 

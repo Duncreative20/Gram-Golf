@@ -4,7 +4,7 @@ import { Redirect, router } from 'expo-router';
 import { Avatar, Button, Dialog, ListItem, Screen, Text, useTheme } from '@gr/ds';
 import type { Role } from '../../lib/domain';
 import { useStore } from '../../lib/store';
-import { initials } from '../../lib/format';
+import { formatValue, initials } from '../../lib/format';
 import { StackHeader } from '../../components/StackHeader';
 
 const GROUPS: { role: Role; label: string }[] = [
@@ -37,7 +37,7 @@ export default function DevSettings() {
                   <ListItem
                     key={p.id}
                     title={p.name}
-                    caption={p.role === 'player' ? `${p.id} · Handicap ${p.handicap ?? '—'}` : `${p.id} · ${p.academy ?? ''}`}
+                    caption={p.role === 'player' ? `${p.id} · Handicap ${p.handicap === undefined ? '—' : formatValue(p.handicap)}` : `${p.id} · ${p.academy ?? ''}`}
                     leading={<Avatar size="Medium" initials={initials(p.name)} theme="Accent" />}
                     selected={p.id === state.sessionUserId}
                     onPress={() => {
