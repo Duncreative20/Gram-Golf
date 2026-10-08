@@ -74,7 +74,7 @@ export default function StudentDetail() {
 
   const overview = () => {
     const latest = latestSwing(state, student.id);
-    if (!latest) return empty('Học viên chưa có phiên swing nào.');
+    if (!latest) return empty('Học viên chưa có phiên số liệu swing nào (nhập tay, CSV, ảnh). Video swing ở tab Swing.');
     const prev = previousSwing(state, latest);
     const club = clubById(state, latest.clubId);
     const trend = speedTrend(state, student.id).map((p) => ({ x: formatDate(p.date).slice(0, 5), y: p.clubSpeedMph }));
@@ -109,7 +109,7 @@ export default function StudentDetail() {
 
   const metrics = () => {
     const sessions = sessionsOf(state, student.id, 'swing');
-    if (!sessions.length) return empty('Học viên chưa có phiên swing nào.');
+    if (!sessions.length) return empty('Học viên chưa có phiên số liệu swing nào (nhập tay, CSV, ảnh). Video swing ở tab Swing.');
     return (
       <View>
         {sessions.map((s) => (

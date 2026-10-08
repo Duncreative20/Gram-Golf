@@ -35,7 +35,7 @@ sửa (bước code nằm sẵn trong task sở hữu, cột “Bước”); thu
 | 10 | README · `f12--tai-khoan-hlv` + review Task 13 #4 | `settings/account.tsx:26`: đơn giá điền sẵn "450000", placeholder "450.000" | 28 | Step 3 | chờ Task 28 |
 | 11 | README · `f12--mat-khau` | `settings/password.tsx:13,15`: placeholder "••••••••" ở ô trống trông như đã có mật khẩu | 25 | Step 5 | chờ Task 25 |
 | 12 | `verify.md` · `f10--kham-pha` | `components/People.tsx:66`: "hcp 14", màn khác "Handicap 14" | 26 | Step 1b | chờ Task 26 |
-| 13 | `verify.md` · `f09--tong-quan-rong` | `students/[id].tsx:72`: "chưa có phiên swing nào" dễ lẫn với video swing | 22 | Step 1b | chờ Task 22 |
+| 13 | `verify.md` · `f09--tong-quan-rong` | `students/[id].tsx:72`: "chưa có phiên swing nào" dễ lẫn với video swing | 22 | Step 1b | đã sửa (Task 22) |
 | 14 | README · `f06--them-gay-chon-loai` + review Task 14 #3 | Viền Radio chưa chọn (`Checkbox/Border/Default`) và Toggle tắt (`Color/Border/Neutral/Pale/Default`) < 3:1 trên nền sáng — token Figma | 15 | Step 13 (nợ Figma F56, giữ token) | đã sửa (Task 15): ghi nợ F56 |
 | 15 | review Task 12 #1 | Khối "Bài đăng" chép y hệt ở `coaches/[id].tsx:60`, `users/[id].tsx:85`, `(coach)/me.tsx:35` | 26 | Step 1b | chờ Task 26 |
 | 16 | review Task 12 #3 | `PostItem.tsx:83`: nhãn Chia sẻ kẹt "Đã sao chép" mãi sau một lần gửi | 26 | Step 1b | chờ Task 26 |

@@ -20,7 +20,7 @@ Còn lại phía chụp (không phải lỗi màn): ảnh có dialog / sheet th�
 | `f10--kham-pha`, `f10--nguoi-theo-doi`, `f10--dang-theo-doi` | `apps/golf/components/People.tsx:66` | Hàng người dùng ghi “hcp 14”, các màn khác ghi “Handicap 14”. | thấp | 26 | chờ Task 26 |
 | `f11--tab-hlv-rong` | `apps/golf/components/NotificationsScreen.tsx:124` | Thông báo rỗng của HLV vẫn ghi “Ghi chú của HLV, người theo dõi mới…” (câu viết cho người chơi). | thấp | 27 | chờ Task 27 |
 | `f10--tra-loi-binh-luan` | `packages/ds/src/ui/Comment/commentStyles.ts:54` | Chip “↩ Trả lời HLV Đỗ Minh Tuấn ⊗”: gap `Badge/Spacing/Small/Gap` quá nhỏ, icon dính sát chữ. | thấp | — | không làm: token Figma `Badge/Spacing/Small/Gap` |
-| `f09--tong-quan-rong` | `apps/golf/app/students/[id].tsx:72` | Tab Tổng quan ghi “Học viên chưa có phiên swing nào.” trong khi tab Swing có badge 1 (một video swing) — “phiên swing” (số liệu) dễ lẫn với video swing. | thấp | 22 | chờ Task 22 |
+| `f09--tong-quan-rong` | `apps/golf/app/students/[id].tsx:72` | Tab Tổng quan ghi “Học viên chưa có phiên swing nào.” trong khi tab Swing có badge 1 (một video swing) — “phiên swing” (số liệu) dễ lẫn với video swing. | thấp | 22 | đã sửa (Task 22) |
 | `f12--dev` | `packages/ds/src/ui/ListItem/listItemStyles.ts:22` | Gốc của lỗi “avatar lệch phải” (E): hàng `selected` đổi `paddingHorizontal` sang `Margin-Comfortable`. | thấp | — | không làm: theo variant Figma, chỉ màn Dev |
 
 Lỗi đã ghi ở A–E vẫn còn (chụp lại xác nhận): xem tổng hợp ở `README.md` mục “Lỗi màn hình đã thấy”. Riêng `f01--tong-quan-co-du-lieu`: caption “Carry trung bình của 3 gậy” đã thành “của 1 gậy” (đúng số), nhưng vẫn vẽ một đĩa đặc.
