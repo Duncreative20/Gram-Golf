@@ -47,7 +47,7 @@ export const carryByClub = (s: AppState, playerId: ID, n = 3) => {
   const acc = new Map<ID, number[]>();
   for (const x of sessionsOf(s, playerId, 'swing') as Extract<MetricSession, { kind: 'swing' }>[]) if (x.clubId) acc.set(x.clubId, [...(acc.get(x.clubId) ?? []), x.swing.carryM]);
   return [...acc].map(([clubId, v]) => ({ club: clubById(s, clubId)!, carryM: v.reduce((a, b) => a + b, 0) / v.length }))
-    .filter((x) => x.club).sort((a, b) => b.carryM - a.carryM).slice(0, n);
+    .filter((x) => x.club && !x.club.archivedAt).sort((a, b) => b.carryM - a.carryM).slice(0, n);
 };
 
 export const clubById = (s: AppState, id?: ID): Club | undefined => (id ? s.clubs.find((c) => c.id === id) : undefined);

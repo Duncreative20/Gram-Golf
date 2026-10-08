@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { formatDistance, formatSpeed, formatTempo, formatDate, relativeTime, parseNumberVN, mToYd, ydToM, initials, statDelta, formatValue, vnDay, withVnDay, formatSec, timeLeft, formatVnd, parseInviteCode, swingTiles } from './format';
 
 describe('format', () => {
-  it('mốc thời gian video: 1 chữ số thập phân kiểu VN + "s" (như "Ghi chú tại 1,3s")', () => {
-    expect(formatSec(1.32)).toBe('1,3s');
-    expect(formatSec(4.2)).toBe('4,2s');
-    expect(formatSec(0)).toBe('0,0s');
-    expect(formatSec(0.1 + 0.2)).toBe('0,3s'); // vị trí phát cộng dồn 0,1 s không lộ sai số thực
+  it('mốc thời gian video: 1 chữ số thập phân kiểu VN + " s" (như "Ghi chú tại 1,3 s") — một kiểu cho mọi màn', () => {
+    expect(formatSec(1.32)).toBe('1,3 s');
+    expect(formatSec(4.2)).toBe('4,2 s');
+    expect(formatSec(0)).toBe('0,0 s');
+    expect(formatSec(0.1 + 0.2)).toBe('0,3 s'); // vị trí phát cộng dồn 0,1 s không lộ sai số thực
   });
   it('đổi mét ↔ yard', () => {
     expect(mToYd(100)).toBeCloseTo(109.36, 2);

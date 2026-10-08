@@ -7,8 +7,8 @@ const vn = (n: number, digits = 0) => n.toFixed(digits).replace('.', ',');
 export const formatDistance = (m: number, units: Units) => (units === 'imperial' ? `${Math.round(mToYd(m))} yd` : `${Math.round(m)} m`);
 export const formatSpeed = (mph: number) => `${Math.round(mph)} mph`;
 export const formatTempo = (ratio: number) => `${vn(ratio, 1)} : 1`;
-/** Mốc thời gian trong video swing: "1,3s". */
-export const formatSec = (sec: number) => `${vn(sec, 1)}s`;
+/** Thời điểm / độ dài tính bằng giây, một kiểu cho mọi màn: "1,3 s". */
+export const formatSec = (sec: number) => `${vn(sec, 1)} s`;
 export const formatNumber = (n: number, digits = 0) => vn(n, digits);
 /** Số kiểu VN kèm đơn vị: "104 mph", "12,4°", "7/10", "1,46". Bỏ `digits` = giữ nguyên số ("1,56", "-10"). */
 export const formatValue = (n: number, unit = '', digits?: number) =>

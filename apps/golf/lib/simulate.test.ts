@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { JobStatus, UploadStatus } from './domain';
-import { mockAnalysis, mockOcr, ocrPrefill, LOW_CONFIDENCE, SAMPLE_VIDEOS, uploadTick, UPLOAD_TICK_MS, analysisTick, ANALYSIS_QUEUE_MS, ANALYSIS_TICK_MS } from './simulate';
+import { mockAnalysis, mockOcr, ocrPrefill, ocrEdit, readPhoto, LOW_CONFIDENCE, SAMPLE_PHOTOS, SAMPLE_VIDEOS, uploadTick, UPLOAD_TICK_MS, analysisTick, ANALYSIS_QUEUE_MS, ANALYSIS_TICK_MS } from './simulate';
 import { validateSwingMetrics } from './validation';
 
 /** Chạy liên tiếp từng nhịp tải lên tới khi rời trạng thái 'uploading'; trả mọi nhịp đã đi qua. */
@@ -50,6 +50,17 @@ describe('mô phỏng job phân tích swing', () => {
     expect(s).toEqual({ status: 'succeeded', progress: 1, analysis: mockAnalysis('driver_face_on_60fps.mp4', 4.2).analysis });
     expect(ANALYSIS_QUEUE_MS + seen.length * ANALYSIS_TICK_MS).toBe(3000);
   });
+  it('video "máy chủ bận": lỗi đúng tại mốc lần đầu; thử lại chạy tiếp từ mốc lỗi nên thành công (nhánh failed đi tới được)', () => {
+    const v = SAMPLE_VIDEOS.find((x) => x.analysisFailAt !== undefined)!;
+    const run = (progress: number) => {
+      let s: ReturnType<typeof analysisTick> = { status: 'processing', progress };
+      while (s.status === 'processing') s = analysisTick(s.progress, v.fileName, v.durationSec);
+      return s;
+    };
+    expect(run(0)).toEqual({ status: 'failed', progress: v.analysisFailAt });
+    expect(run(v.analysisFailAt!)).toMatchObject({ status: 'succeeded', progress: 1 });
+    expect(run(0.6).status).toBe('succeeded'); // video khác / đã qua mốc: không lỗi
+  });
   it('video ngược sáng → needs_review khi xong; tiếp tục từ tiến độ dở dang (mở lại màn) không chạy lại từ đầu', () => {
     expect(analysisTick(0.9, 'driver_nguoc_sang.mp4', 4)).toMatchObject({ status: 'needs_review', progress: 1 });
     expect(analysisTick(0.5, 'driver_nguoc_sang.mp4', 4)).toEqual({ status: 'processing', progress: 0.6 });
@@ -68,6 +79,18 @@ describe('simulate', () => {
   });
   it('OCR có đúng 1 trường dưới ngưỡng', () => {
     expect(mockOcr('trackman').filter((f) => f.confidence < LOW_CONFIDENCE).map((f) => f.key)).toEqual(['spinRpm']);
+  });
+  it('ảnh mẫu mờ → không đọc được (null, màn báo lỗi + chọn ảnh khác); ảnh rõ → điền sẵn như ocrPrefill', () => {
+    const blurry = SAMPLE_PHOTOS.find((p) => !p.readable)!;
+    const clear = SAMPLE_PHOTOS.find((p) => p.readable)!;
+    expect(readPhoto(blurry.fileName, 'trackman', 'metric')).toBeNull();
+    expect(readPhoto(clear.fileName, 'foresight', 'imperial')).toEqual(ocrPrefill(mockOcr('foresight'), 'imperial'));
+  });
+  it('ocrEdit: sửa trường độ tin cậy thấp → bỏ cảnh báo của trường đó, trường khác giữ nguyên', () => {
+    const r = { values: { ...ocrPrefill(mockOcr('trackman'), 'metric').values }, highlight: { spinRpm: true, carryM: true } };
+    const once = ocrEdit(r, { ...r.values, spinRpm: '2610' });
+    expect(once).toEqual({ values: { ...r.values, spinRpm: '2610' }, highlight: { carryM: true } });
+    expect(ocrEdit(once, { ...once.values, clubSpeedMph: '105' }).highlight).toEqual({ carryM: true }); // sửa trường không cảnh báo: không đổi
   });
   it('ocrPrefill: điền sẵn nguyên chuỗi OCR, tô trường dưới ngưỡng tin cậy', () => {
     const r = ocrPrefill(mockOcr('trackman'), 'metric');

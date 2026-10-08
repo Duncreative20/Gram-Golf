@@ -30,11 +30,14 @@ export const SAMPLE_FILES: { name: string; vendor: Vendor | null; content: strin
   },
 ];
 
-export const SAMPLE_VIDEOS: { fileName: string; durationSec: number; cameraView: CameraView; failAt?: number; quality: 'good' | 'low' }[] = [
+/** Video mẫu cho màn đăng swing. `failAt` = tải lên lỗi tại mốc đó; `analysisFailAt` = job phân tích lỗi tại mốc đó (máy chủ bận);
+ *  thử lại chạy tiếp từ mốc lỗi nên lần sau thành công. `quality: 'low'` → kết quả needs_review. */
+export const SAMPLE_VIDEOS: { fileName: string; durationSec: number; cameraView: CameraView; failAt?: number; analysisFailAt?: number; quality: 'good' | 'low' }[] = [
   { fileName: 'driver_face_on_60fps.mp4', durationSec: 4.2, cameraView: 'face-on', quality: 'good' },
   { fileName: 'sat7_dtl_sang_som.mp4', durationSec: 3.8, cameraView: 'down-the-line', quality: 'good' },
   { fileName: 'wedge_mang_yeu.mp4', durationSec: 3.1, cameraView: 'face-on', failAt: 0.6, quality: 'good' },
   { fileName: 'driver_nguoc_sang.mp4', durationSec: 4.0, cameraView: 'face-on', quality: 'low' },
+  { fileName: 'pw_may_chu_ban.mp4', durationSec: 3.4, cameraView: 'down-the-line', analysisFailAt: 0.5, quality: 'good' },
 ];
 
 /** Kết quả phân tích giả lập, xác định theo tên file (không ngẫu nhiên → test được). */
@@ -74,9 +77,12 @@ export function uploadTick(progress: number, failAt?: number): { status: UploadS
 /** Job phân tích giả lập ≈ 3 s: chờ `queued` 0,5 s → `processing` +10 % mỗi `ANALYSIS_TICK_MS` → kết quả `mockAnalysis`. */
 export const ANALYSIS_QUEUE_MS = 500;
 export const ANALYSIS_TICK_MS = 250;
-/** Một nhịp của job đang `processing`; đủ 100 % → trạng thái cuối (succeeded / needs_review) kèm kết quả. */
+/** Một nhịp của job đang `processing`; đủ 100 % → trạng thái cuối (succeeded / needs_review) kèm kết quả.
+ *  Đi qua mốc `analysisFailAt` của video → `failed` tại mốc; thử lại tiếp từ mốc (như tải lên) nên không lỗi lần hai. */
 export function analysisTick(progress: number, fileName: string, durationSec: number): { status: JobStatus; progress: number; analysis?: SwingAnalysis } {
   const next = Math.min(1, round2(progress + 0.1));
+  const failAt = SAMPLE_VIDEOS.find((v) => v.fileName === fileName)?.analysisFailAt;
+  if (failAt !== undefined && progress < failAt && next >= failAt) return { status: 'failed', progress: failAt };
   if (next < 1) return { status: 'processing', progress: next };
   const r = mockAnalysis(fileName, durationSec);
   return { status: r.status, progress: 1, analysis: r.analysis };
@@ -91,6 +97,12 @@ export function mockOcr(vendor: Vendor): OcrField[] {
   return (Object.keys(v) as (keyof SwingMetrics)[]).map((key) => ({ key, raw: v[key], confidence: key === 'spinRpm' ? 0.62 : 0.97 }));
 }
 export const LOW_CONFIDENCE = 0.8;
+
+/** Ảnh chụp màn hình mẫu (bản thử chưa mở thư viện ảnh). `readable: false` = ảnh mờ, loá → OCR không đọc được (nhánh lỗi). */
+export const SAMPLE_PHOTOS: { fileName: string; readable: boolean }[] = [
+  { fileName: 'ket_qua_may_do.jpg', readable: true },
+  { fileName: 'chup_nghieng_bi_loa.jpg', readable: false },
+];
 /** Kết quả OCR → giá trị điền sẵn cho `SwingMetricsForm` + trường cần kiểm tra lại (dưới ngưỡng tin cậy).
  *  Carry của OCR là mét (D9); ô carry nhập theo đơn vị hiển thị → imperial đổi sang yard. Chuỗi không phải số giữ nguyên để form báo lỗi. */
 export function ocrPrefill(fields: OcrField[], units: Units) {
@@ -103,3 +115,12 @@ export function ocrPrefill(fields: OcrField[], units: Units) {
   }
   return { values, highlight };
 }
+export type OcrReview = ReturnType<typeof ocrPrefill>;
+/** Đọc ảnh mẫu (giả lập): ảnh mờ → null; ảnh rõ → giá trị điền sẵn + trường cần kiểm tra. */
+export const readPhoto = (fileName: string, vendor: Vendor, units: Units): OcrReview | null =>
+  SAMPLE_PHOTOS.find((p) => p.fileName === fileName)?.readable === false ? null : ocrPrefill(mockOcr(vendor), units);
+/** Người dùng sửa ô → bỏ cảnh báo độ tin cậy thấp của các ô vừa đổi (đã tự kiểm tra lại). */
+export const ocrEdit = (review: OcrReview, values: OcrReview['values']): OcrReview => ({
+  values,
+  highlight: Object.fromEntries(Object.entries(review.highlight).filter(([k]) => values[k as keyof SwingMetrics] === review.values[k as keyof SwingMetrics])),
+});

@@ -15,6 +15,10 @@ describe('selectors', () => {
     expect(c.length).toBe(3);
     expect(c[0]!.carryM).toBeGreaterThanOrEqual(c[1]!.carryM);
   });
+  it('carry theo gậy: bỏ gậy đã lưu trữ (gậy đã thay không chiếm chỗ của gậy đang dùng)', () => {
+    const s2: AppState = { ...s, clubs: s.clubs.map((c) => (c.id === 'cl-driver' ? { ...c, archivedAt: NOW } : c)) };
+    expect(carryByClub(s2, 'p-minh').map((c) => c.club.id)).toEqual(['cl-wood3', 'cl-iron7']);
+  });
   it('phiên swing mới nhất', () => { expect(latestSwing(s, 'p-minh')?.kind).toBe('swing'); });
   it('phiên swing liền trước cùng gậy (để tính chênh lệch)', () => {
     const at = (id: string) => s.sessions.find((x) => x.id === id)!;
