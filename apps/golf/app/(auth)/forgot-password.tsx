@@ -3,6 +3,7 @@ import { ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
 import { Button, EmptyState, Screen, Text, TextField, useTheme } from '@gr/ds';
 import { EMAIL_RE } from '../../lib/validation';
+import { RESET_TOKENS } from '../../lib/simulate';
 import { StackHeader } from '../../components/StackHeader';
 
 export default function ForgotPassword() {
@@ -18,16 +19,24 @@ export default function ForgotPassword() {
       {sent ? (
         // Không tiết lộ email có tài khoản hay không — luôn báo đã gửi.
         <View style={{ flex: 1, justifyContent: 'center', padding: t.layout('Margin-Small') }}>
-          <EmptyState icon="mail-01-line" title="Kiểm tra hộp thư" caption={`Đã gửi hướng dẫn đặt lại mật khẩu tới ${value}.`} primaryText="Về đăng nhập" onPrimary={() => (router.canGoBack() ? router.back() : router.replace('/(auth)/login'))} />
+          <EmptyState
+            icon="mail-01-line"
+            title="Kiểm tra hộp thư"
+            caption={`Đã gửi link đặt lại mật khẩu tới ${value}. Link có hiệu lực 30 phút.`}
+            primaryText="Về đăng nhập"
+            onPrimary={() => (router.canGoBack() ? router.back() : router.replace('/(auth)/login'))}
+            // bản dev: mô phỏng bấm link trong email (như "Mã thử: 123456" ở OTP)
+            {...(__DEV__ ? { secondaryText: 'Mở link (thử)', onSecondary: () => router.push({ pathname: '/(auth)/reset-password', params: { token: RESET_TOKENS.ok } }) } : {})}
+          />
         </View>
       ) : (
         <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Medium') }}>
           <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Base">
-            Nhập email đã đăng ký, chúng tôi sẽ gửi hướng dẫn đặt lại mật khẩu.
+            Nhập email đã đăng ký, chúng tôi sẽ gửi link đặt lại mật khẩu.
           </Text>
           <TextField label="Email" placeholder="ban@email.com" value={email} onChangeText={setEmail} error={error} leadingIcon="mail-01-line" autoCapitalize="none" autoComplete="email" keyboardType="email-address" />
           <Button
-            text="Gửi hướng dẫn"
+            text="Gửi link"
             onPress={() => {
               setSubmitted(true);
               if (EMAIL_RE.test(value)) setSent(true);

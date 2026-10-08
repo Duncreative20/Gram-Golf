@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { Button, Divider, Screen, TextField, useTheme } from '@gr/ds';
 import { validatePasswordChange } from '../../lib/validation';
+import { useStore } from '../../lib/store';
 import { StackHeader } from '../../components/StackHeader';
 import { AlertMessage, SavedToast } from '../../components/Feedback';
 import { KeyboardAvoid } from '../../components/KeyboardAvoid';
@@ -10,18 +11,20 @@ import { KeyboardAvoid } from '../../components/KeyboardAvoid';
 const back = () => (router.canGoBack() ? router.back() : router.replace('/settings'));
 type Key = 'current' | 'next' | 'confirm';
 const FIELDS: { key: Key; label: string; placeholder: string; helpText?: string; autoComplete: 'current-password' | 'new-password' }[] = [
-  { key: 'current', label: 'Mật khẩu hiện tại', placeholder: '••••••••', autoComplete: 'current-password' },
+  { key: 'current', label: 'Mật khẩu hiện tại', placeholder: 'Nhập mật khẩu đang dùng', autoComplete: 'current-password' },
   { key: 'next', label: 'Mật khẩu mới', placeholder: 'Tối thiểu 8 ký tự, có chữ số', helpText: 'Tối thiểu 8 ký tự, có ít nhất 1 chữ số', autoComplete: 'new-password' },
-  { key: 'confirm', label: 'Nhập lại mật khẩu mới', placeholder: '••••••••', autoComplete: 'new-password' },
+  { key: 'confirm', label: 'Nhập lại mật khẩu mới', placeholder: 'Nhập lại mật khẩu mới', autoComplete: 'new-password' },
 ];
 
 /** Đổi mật khẩu (mock — không gọi server, không lưu mật khẩu). */
 export default function PasswordSettings() {
   const t = useTheme();
+  const { me } = useStore();
   const [raw, setRaw] = useState<Record<Key, string>>({ current: '', next: '', confirm: '' });
   const [show, setShow] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [done, setDone] = useState(false);
+  if (!me) return <Redirect href="/" />;
   const all = validatePasswordChange(raw);
   const errors = submitted ? all : {};
   const invalid = Object.keys(all).length;

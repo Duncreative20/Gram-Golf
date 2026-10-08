@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Button, InlineMessage, Screen, TextField, useTheme } from '@gr/ds';
 import { useStore } from '../../lib/store';
 import { StackHeader } from '../../components/StackHeader';
@@ -13,6 +13,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [failed, setFailed] = useState(false);
+  const { reset } = useLocalSearchParams<{ reset?: string }>();
   const q = account.trim();
   const submit = () => {
     setSubmitted(true);
@@ -28,6 +29,7 @@ export default function Login() {
     <Screen>
       <StackHeader title="Đăng nhập" />
       <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Medium') }}>
+        {reset === '1' && !failed && <InlineMessage theme="Positive" text="Đã đặt lại mật khẩu. Đăng nhập bằng mật khẩu mới." />}
         {failed && <InlineMessage theme="Negative" text="Email/SĐT hoặc mật khẩu không đúng" />}
         <TextField
           label="Email hoặc số điện thoại"

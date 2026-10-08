@@ -21,7 +21,7 @@ Không sửa màn app; chỉ ghi lại. Ảnh: `storybook-app/__shots__/E/<story
 | `f11--tab-hlv`, `f11--tab-hlv-rong` | `apps/golf/components/NotificationsScreen.tsx:101` | Tab Thông báo của HLV dùng `TabHeader`, nên header vẫn có nút chuông (kèm badge) mở `/notifications`, tức là chính màn đang xem. Nên ẩn chuông ở tab này. | 27 | chờ Task 27 |
 | `f11--danh-sach` | `apps/golf/components/NotificationsScreen.tsx:19` | “Lê Đăng Khoa đã bình luận” thiếu tân ngữ, khác với like (“đã thích bài viết của bạn”). Gợi ý: “đã bình luận bài viết của bạn”. | 27 | chờ Task 27 |
 | `f12--tai-khoan-hlv` | `apps/golf/app/settings/account.tsx:26` | Đơn giá điền sẵn “450000” không có dấu chấm, trong khi placeholder (“VD: 450.000”) và helpText (“Tối đa 10.000.000 đ”) đều có. | 28 | chờ Task 28 |
-| `f12--mat-khau` | `apps/golf/app/settings/password.tsx:13,15` | Placeholder “••••••••” ở ô trống trông như đã có mật khẩu, nhất là ở theme tối. Nên dùng placeholder bằng chữ. | 25 | chờ Task 25 |
+| `f12--mat-khau` | `apps/golf/app/settings/password.tsx:13,15` | Placeholder “••••••••” ở ô trống trông như đã có mật khẩu, nhất là ở theme tối. Nên dùng placeholder bằng chữ. | 25 | đã sửa (Task 25) |
 | `f12--dev` | `packages/ds` ListItem `selected` | Hàng đang chọn (Nguyễn Minh Anh) có avatar lệch phải vài px so với các hàng khác. | — | không làm: theo variant Figma, chỉ màn Dev |
 
 Không có màn nào crash hoặc trống. Console chỉ có cảnh báo `"shadow*" style props are deprecated` (từ DS).
@@ -44,7 +44,7 @@ Không có màn nào crash hoặc trống. Console chỉ có cảnh báo `"shado
 
 ## Trùng luồng khác (link, không nhân bản)
 
-- Đổi mật khẩu lỗi / đã đổi → `f03--doi-mat-khau-loi`, `f03--doi-mat-khau-xong`. Đăng xuất → `f03--ho-so-dang-xuat`. Hồ sơ HLV bình thường → `f04--ho-so-hlv`.
+- Đổi mật khẩu lỗi / đã đổi → `f03--b-07-doi-mk-loi`, `f03--b-08-doi-mk-xong`. Đăng xuất → `f03--b-09-dang-xuat`. Hồ sơ HLV bình thường → `f04--ho-so-hlv`.
 - F12 vẫn giữ `01 · Hồ sơ`, `03 · Cài đặt`, `05 · Mật khẩu` làm bước của luồng. Ảnh giống `f03--ho-so`, `f03--cai-dat`, `f03--doi-mat-khau`.
 - F13 `00 · Mục lục trạng thái` (`f13--muc-luc`) link tới 76 story trạng thái của F01–F13 (bấm là mở story gốc). Lúc viết, mọi id đều có trong `index.json`. Luồng gốc đổi tên export thì sửa `GROUPS` trong `F13-trang-thai.stories.tsx`.
 

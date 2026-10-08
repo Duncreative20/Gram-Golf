@@ -26,8 +26,8 @@
  *  ✓ 09  · Dev                                 settings/dev           as p-minh
  *  ✓ 09a · Dev — đặt lại dữ liệu mẫu (dialog)
  *
- * Trùng F03 — không nhân bản: lỗi / đã đổi mật khẩu = f03--doi-mat-khau-loi, f03--doi-mat-khau-xong;
- * đăng xuất (Dialog ở profile) = f03--ho-so-dang-xuat. 01 · Hồ sơ, 03 · Cài đặt, 05 · Mật khẩu giữ làm bước của luồng này.
+ * Trùng F03 — không nhân bản: lỗi / đã đổi mật khẩu = f03--b-07-doi-mk-loi, f03--b-08-doi-mk-xong;
+ * đăng xuất (Dialog ở profile) = f03--b-09-dang-xuat. 01 · Hồ sơ, 03 · Cài đặt, 05 · Mật khẩu giữ làm bước của luồng này.
  *
  * Chưa có (route không tồn tại — không dựng UI giả):
  *  - Đổi ảnh đại diện (chưa có chọn ảnh; avatarUrl chỉ đọc).

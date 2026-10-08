@@ -113,7 +113,7 @@ Ra `<outDir>/<story-id>.<light|dark>.png`, khung cố định 390×844 (tham s�
 | --- | --- | --- |
 | F01 | Người chơi mới | welcome → đăng ký (Người chơi; lỗi bỏ trống, email / SĐT đã có) → OTP (sai mã, thiếu thông tin) → onboarding (ảnh mẫu / chữ tắt, đơn vị đo, mã mời → Để sau) → Tổng quan trống → nhập tay: chưa có gậy → “Thêm gậy mới” → về form đã chọn sẵn gậy vừa thêm → lưu → Tổng quan có dữ liệu (1 buổi: chữ thay biểu đồ, 1 gậy: chỉ chú giải). Storyboard: `docs/flows/F01.md` |
 | F02 | HLV mới | welcome → đăng ký (HLV) → OTP → onboarding 4 bước (ảnh, đơn vị đo, giới thiệu nghề nghiệp bắt buộc 20–300 ký tự: trống / quá ngắn / hợp lệ, mời học viên đầu tiên → Để sau) → Học viên trống → tạo mã mời → tab Hồ sơ có giới thiệu vừa nhập; Tài khoản HLV cùng luật giới thiệu. Storyboard: `docs/flows/F02.md` |
-| F03 | Tài khoản | đăng nhập (đúng/sai), quên mật khẩu, đổi mật khẩu, đăng xuất (hồ sơ) |
+| F03 | Tài khoản | đăng nhập sai → quên mật khẩu (email sai dạng, đã gửi link + “Mở link (thử)” bản dev) → đặt lại mật khẩu từ link (lỗi, hợp lệ → Đăng nhập kèm thông báo; link hết hạn / thiếu token → Gửi lại link) → đăng nhập → đổi mật khẩu (nhập lại khác, đã đổi) → đăng xuất → màn chào. Storyboard: `docs/flows/F03.md` |
 | F04 | Kết nối HLV–học viên | HLV tạo/chia sẻ/thu hồi mã, mời học viên cụ thể → học viên Chấp nhận / Từ chối ở tab HLV; học viên gửi yêu cầu từ hồ sơ HLV → HLV Duyệt / Từ chối ở Học viên › Lời mời; nhập mã (lỗi: sai/hết hạn/đã dùng/đã thu hồi/đã kết nối) → xem trước HLV chính/phụ → chấp nhận; đặt làm HLV chính; học viên / HLV huỷ kết nối → 403 ngay. Storyboard: `docs/flows/F04.md` |
 | F05 | Số liệu | Tổng quan → Thông số (lịch sử Swing / Thể lực, rỗng) → chọn nguồn → nhập tay (bắt buộc, ngoài khoảng, đã lưu; thể lực; theo yard) → chi tiết phiên → sửa phiên (lỗi “Không phải số”, theo yard, thể lực) → dòng “Đã sửa” / CSV (chọn file, xem trước có dòng lỗi, xác nhận gậy + ngày, thiếu gậy, file lạ, đã nhập) / ảnh OCR (chọn hãng, đang đọc, không đọc được → chọn ảnh khác, review trường độ tin cậy thấp) / QR → đơn vị Yard → xoá phiên → Tổng quan sau. Storyboard: `docs/flows/F05.md` |
 | F06 | Bộ gậy | tab Thông số › Bộ gậy → thêm (16 loại, tuỳ chỉnh, lỗi validate, wedge bounce) → gậy mới có ở chọn gậy (nhập tay, đăng swing); “Thêm gậy mới” từ chọn gậy → về form đã chọn sẵn gậy vừa thêm → sửa → lưu trữ → dòng “Gậy đã lưu trữ” → Bộ gậy › Đang dùng / Lưu trữ → khôi phục (toast) → xoá gậy chưa gắn phiên/swing (dialog); gậy đã gắn chỉ lưu trữ; HLV xem chỉ đọc; không quyền → 403. Storyboard: `docs/flows/F06.md` |
@@ -129,17 +129,18 @@ Ngoài các bước: thêm story cho trạng thái khó bấm tới (rỗng / đ
 
 ## Phủ route
 
-Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **45/45 route có story** (302 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
+Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **46/46 route có story** (308 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
 
 | Route | Story id | Ghi chú |
 | --- | --- | --- |
-| `index` | `f03--vao-app-nguoi-choi`, `f03--vao-app-hlv`, `f03--da-dang-xuat` | Chỉ chuyển hướng theo vai / chưa đăng nhập (story vẽ “↪ Chuyển hướng tới …”); lượt F01 bắt đầu ở `/` chưa đăng nhập → welcome (`f01--b-01-chao`) |
+| `index` | `f03--b-06-vao-app`, `f03--vao-app-hlv`, `f03--b-10-ve-chao` | Chỉ chuyển hướng theo vai / chưa đăng nhập (story vẽ “↪ Chuyển hướng tới …”); lượt F01 bắt đầu ở `/` chưa đăng nhập → welcome (`f01--b-01-chao`) |
 | `(auth)/welcome` | `f01--b-01-chao`, `f02--man-chao` |  |
 | `(auth)/register` | `f01--b-02-chon-vai-tro`, `f01--b-03-loi-form`, `f01--dang-ky-thong-tin`, `f01--dang-ky-trung-tai-khoan`, `f02--b-01-dang-ky-hlv`, `f02--dang-ky-chon-vai`, `f02--dang-ky-loi` |  |
 | `(auth)/verify-otp` | `f01--b-04-otp`, `f01--xac-minh-otp-sai`, `f01--xac-minh-otp-thieu-thong-tin`, `f02--xac-minh-otp` | Đếm ngược “Gửi lại mã sau 59 s” chạy theo giây |
 | `(auth)/onboarding` | `f01--b-05-anh-dai-dien`, `f01--onboarding-don-vi`, `f01--b-06-ma-moi`, `f02--onboarding-anh`, `f02--b-02-bio-bat-buoc`, `f02--b-03-bio-ngan`, `f02--b-04-bio-hop-le`, `f02--onboarding-moi-hoc-vien` | HLV có thêm bước 3/4 “Giới thiệu nghề nghiệp” (F02) |
-| `(auth)/login` | `f03--dang-nhap`, `f03--dang-nhap-bo-trong`, `f03--dang-nhap-sai` |  |
-| `(auth)/forgot-password` | `f03--quen-mat-khau`, `f03--quen-mat-khau-email-sai`, `f03--quen-mat-khau-da-gui` |  |
+| `(auth)/login` | `f03--b-01-dang-nhap-sai`, `f03--b-05-ve-dang-nhap`, `f03--dang-nhap`, `f03--dang-nhap-bo-trong` | `?reset=1` = thông báo đã đặt lại mật khẩu (`f03--b-05-ve-dang-nhap`) |
+| `(auth)/forgot-password` | `f03--b-02-quen-mk-loi`, `f03--b-03-da-gui-link`, `f03--quen-mat-khau` | “Mở link (thử)” chỉ `__DEV__` |
+| `(auth)/reset-password` | `f03--b-04-dat-lai-loi`, `f03--b-11-link-het-han`, `f03--b-12-link-sai`, `f03--dat-lai-mat-khau`, `f03--dat-lai-mat-khau-bo-trong` | `?token=GG-RESET-OK` hợp lệ, `GG-RESET-EXPIRED` hết hạn, thiếu / sai = không hợp lệ |
 | `(player)/home` | `f01--b-07-tong-quan-trong`, `f01--b-10-tong-quan-co-du-lieu`, `f05--b-01-tong-quan-truoc`, `f05--b-20-tong-quan-sau`, `f13--chua-dang-nhap`, `f13--dang-tai-tong-quan` | `f13--chua-dang-nhap` = guard chưa đăng nhập; `f13--dang-tai-tong-quan` = skeleton (`hold: ['firstLoad']`) |
 | `(player)/metrics` | `f05--b-02-lich-su`, `f05--b-06-da-luu`, `f05--b-10-the-luc`, `f05--b-18-yard-lich-su`, `f05--b-19-sau-xoa`, `f05--danh-sach-rong`, `f06--b-01-bo-gay`, `f06--b-04-them-xong`, `f06--b-09-sau-luu-tru` | `f06--b-09-sau-luu-tru` = dòng “Gậy đã lưu trữ” trên lưới |
 | `(player)/swings` | `f07--b-01-danh-sach`, `f07--b-02-luoi`, `f07--b-03-loc-sap-xep`, `f07--b-15-sau-xoa`, `f07--danh-sach`, `f07--danh-sach-rong`, `f07--loc-7-ngay-rong` | Danh sách / Lưới, lọc 7 / 30 ngày, sắp xếp theo ngày quay |
@@ -170,10 +171,10 @@ Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **45/45 route có story**
 | `users/[id]` | `f10--ho-so-nguoi-dung`, `f10--ho-so-hlv-xem-hoc-vien`, `f10--ho-so-khong-tim-thay`, `f10--chan-dialog`, `f10--da-chan`, `f10--bi-chan`, `f10--bao-cao-nguoi-dung`, `f13--ho-so-id-hlv` | `f13--ho-so-id-hlv` = id HLV → chuyển sang `coaches/[id]` |
 | `people` | `f10--nguoi-theo-doi`, `f10--dang-theo-doi`, `f10--theo-doi-rong`, `f10--theo-doi-nguoi-da-chan` |  |
 | `notifications` | `f04--b-06-thong-bao-loi-moi`, `f08--b-14-hoc-vien-nhan-thong-bao`, `f11--danh-sach`, `f11--da-doc-tat-ca`, `f11--rong` |  |
-| `profile` | `f03--ho-so`, `f03--ho-so-dang-xuat`, `f12--ho-so-nguoi-choi`, `f12--ho-so-hlv` | Đăng xuất (dialog) ở F03 |
+| `profile` | `f03--b-09-dang-xuat`, `f03--ho-so`, `f12--ho-so-nguoi-choi`, `f12--ho-so-hlv` | Đăng xuất (dialog) ở F03 |
 | `settings/index` | `f03--cai-dat`, `f12--cai-dat` |  |
 | `settings/account` | `f12--tai-khoan`, `f12--tai-khoan-hlv`, `f12--tai-khoan-loi`, `f12--tai-khoan-da-luu`, `f02--tai-khoan-bio-ngan` | `f02--tai-khoan-bio-ngan` = HLV giới thiệu dưới 20 ký tự |
-| `settings/password` | `f03--doi-mat-khau`, `f03--doi-mat-khau-loi`, `f03--doi-mat-khau-xong`, `f12--mat-khau` | Trạng thái lỗi / đã đổi ở F03 |
+| `settings/password` | `f03--b-07-doi-mk-loi`, `f03--b-08-doi-mk-xong`, `f03--doi-mat-khau`, `f12--mat-khau` | Trạng thái lỗi / đã đổi ở F03; chưa đăng nhập → `/` |
 | `settings/privacy` | `f12--quyen-rieng-tu`, `f12--quyen-rieng-tu-da-chan`, `f12--xoa-tai-khoan`, `f12--xoa-tai-khoan-lan-cuoi`, `f12--quyen-rieng-tu-hlv` |  |
 | `settings/notifications` | `f12--cai-dat-thong-bao`, `f12--cai-dat-thong-bao-hlv` |  |
 | `settings/units` | `f12--don-vi-met`, `f12--don-vi-yard` |  |
@@ -185,7 +186,6 @@ Bước của luồng cần màn Phase 2 — task luồng xoá dòng của mình
 
 | Luồng | Bước chưa có màn | Task |
 | --- | --- | --- |
-| F03 | Đặt lại mật khẩu từ link (hợp lệ / hết hạn / sai); "Mở link (thử)" ở quên mật khẩu; đăng nhập sau khi đặt lại | 25 |
 | F11 | Thông báo `connect_request`, `swing_uploaded` | 27 |
 | F12 | Đổi ảnh đại diện ở Tài khoản; Dev › "Kiểm tra theo luồng" | 28, 30 |
 | F13 | 404; 403 có Quay lại; skeleton các màn danh sách; spinner khi lưu/xoá; toast thất bại + Thử lại; Dev › "Giả lập lỗi khi lưu/xoá" | 29 |
@@ -210,7 +210,7 @@ Tổng hợp `issues/A.md` … `issues/E.md` + `issues/verify.md` (chi tiết, g
 | thấp | `f11--danh-sach` | `apps/golf/components/NotificationsScreen.tsx:19` | “Lê Đăng Khoa đã bình luận” thiếu tân ngữ | 27 | chờ Task 27 |
 | thấp | `f11--tab-hlv-rong` | `apps/golf/components/NotificationsScreen.tsx:124` | Thông báo rỗng của HLV ghi câu viết cho người chơi (“Ghi chú của HLV…”) | 27 | chờ Task 27 |
 | thấp | `f12--tai-khoan-hlv` | `apps/golf/app/settings/account.tsx:26` | Đơn giá điền sẵn “450000” không có dấu chấm (placeholder / helpText có) | 28 | chờ Task 28 |
-| thấp | `f12--mat-khau`, `f03--doi-mat-khau` | `apps/golf/app/settings/password.tsx:13,15` | Placeholder “••••••••” ở ô trống trông như đã có mật khẩu | 25 | chờ Task 25 |
+| thấp | `f12--mat-khau`, `f03--doi-mat-khau` | `apps/golf/app/settings/password.tsx:13,15` | Placeholder “••••••••” ở ô trống trông như đã có mật khẩu | 25 | đã sửa (Task 25) |
 | thấp | `f12--dev` | `packages/ds/src/ui/ListItem/listItemStyles.ts:22` | Hàng `selected` đổi padding → avatar lệch phải vài px | — | không làm: theo variant Figma, chỉ màn Dev |
 | thấp | `f10--kham-pha`, `f10--nguoi-theo-doi`, `f10--dang-theo-doi` | `apps/golf/components/People.tsx:66` | “hcp 14” — màn khác ghi “Handicap 14” | 26 | đã sửa (Task 23) |
 | thấp | `f10--tra-loi-binh-luan` | `packages/ds/src/ui/Comment/commentStyles.ts:54` | Chip “↩ Trả lời … ⊗” gap quá nhỏ, icon dính chữ | — | không làm: token Figma `Badge/Spacing/Small/Gap` |
