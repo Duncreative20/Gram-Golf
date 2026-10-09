@@ -34,7 +34,7 @@ export default function Register() {
   };
   return (
     <Screen>
-      <StackHeader title="Tạo tài khoản" />
+      <StackHeader title="Tạo tài khoản" onBack={step === 1 ? () => setStep(0) : undefined} />
       <KeyboardAvoid>
         <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Large') }}>
           <Stepper current={step} steps={[{ title: 'Vai trò', caption: 'Bạn là ai' }, { title: 'Thông tin', caption: 'Hồ sơ cơ bản' }]} />
@@ -47,7 +47,7 @@ export default function Register() {
                   spacing="Small"
                   style={role === r.role ? { borderColor: t.color('Color/Border/Accent/Solid/Default') } : undefined}
                 >
-                  <RadioRow label={r.label} caption={r.caption} select={role === r.role} onPress={() => setRole(r.role)} />
+                  <RadioRow label={r.label} caption={r.caption} select={role === r.role} onPress={() => { setRole(r.role); setSubmitted(false); }} />
                 </Card>
               ))}
             </View>
@@ -66,7 +66,7 @@ export default function Register() {
                 onTrailingPress: () => setShowPassword((s) => !s),
               })}
               {role === 'player'
-                ? field('handicap', { label: 'Handicap', placeholder: 'VD: 18,5', helpText: 'Từ 0 đến 54', keyboardType: 'decimal-pad' })
+                ? field('handicap', { label: 'Handicap', placeholder: 'VD: 18,5', helpText: 'Từ 0 đến 54 — mới chơi, chưa có handicap thì nhập 54', keyboardType: 'decimal-pad' })
                 : (
                   <>
                     {field('academy', { label: 'Học viện / CLB', placeholder: 'VD: Học viện Golf Sông Bé' })}

@@ -1,12 +1,13 @@
 import { router, type Href } from 'expo-router';
 import { TopNavigation, type TopNavAction } from '@gr/ds';
 
-/** Header màn stack: nút quay lại + tiêu đề trái. Mở thẳng bằng URL (không có lịch sử) thì "quay lại" về `/`. */
-export function StackHeader({ title, subtitle, actions }: { title: string; subtitle?: string; actions?: TopNavAction[] }) {
+/** Header màn stack: nút quay lại + tiêu đề trái. Mở thẳng bằng URL (không có lịch sử) thì "quay lại" về `/`.
+ *  `onBack`: màn nhiều bước tự lùi một bước thay vì rời màn (vd Đăng ký bước 2 → bước 1). */
+export function StackHeader({ title, subtitle, actions, onBack }: { title: string; subtitle?: string; actions?: TopNavAction[]; onBack?: () => void }) {
   const back: TopNavAction = {
     icon: 'chevron-left-line-medium',
     accessibilityLabel: 'Quay lại',
-    onPress: () => (router.canGoBack() ? router.back() : router.replace('/')),
+    onPress: onBack ?? (() => (router.canGoBack() ? router.back() : router.replace('/'))),
   };
   return <TopNavigation heading={title} subtitle={subtitle} align="Left" leadingAction={back} trailingActions={actions} />;
 }

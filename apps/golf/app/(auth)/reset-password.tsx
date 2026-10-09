@@ -3,8 +3,8 @@ import { ScrollView, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Button, EmptyState, Screen, Text, TextField, useTheme } from '@gr/ds';
 import { resetTokenStatus } from '../../lib/simulate';
-import { validateNewPassword } from '../../lib/validation';
-import { StackHeader } from '../../components/StackHeader';
+import { PASSWORD_RULE, validateNewPassword } from '../../lib/validation';
+import { resetTo, StackHeader } from '../../components/StackHeader';
 
 /** Đặt lại mật khẩu từ link trong email (mô phỏng): `?token=` hợp lệ → nhập mật khẩu mới 2 lần → Đăng nhập (kèm thông báo).
  *  Link hết hạn / thiếu / sai → xin link mới. Deep link: gramgolf://reset-password?token=… */
@@ -21,7 +21,7 @@ export default function ResetPassword() {
     setSubmitted(true);
     if (Object.keys(validateNewPassword(password, confirm)).length) return;
     // ponytail: bản mock không lưu mật khẩu (đăng nhập nhận mọi mật khẩu ≥ 6 ký tự) — backend thật đổi mật khẩu + vô hiệu token.
-    router.replace({ pathname: '/(auth)/login', params: { reset: '1' } });
+    resetTo({ pathname: '/(auth)/login', params: { reset: '1' } }); // quên mật khẩu (đã gửi) không còn dưới Đăng nhập → back không hiện lại "Kiểm tra hộp thư"
   };
   if (status !== 'ok') {
     const expired = status === 'expired';
@@ -48,6 +48,7 @@ export default function ResetPassword() {
         <TextField
           label="Mật khẩu mới"
           placeholder="Tối thiểu 8 ký tự, có chữ số"
+          helpText={PASSWORD_RULE}
           value={password}
           onChangeText={setPassword}
           error={errors.password}
