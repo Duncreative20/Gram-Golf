@@ -1,3 +1,5 @@
+> Ảnh chụp lịch sử (08/10) — id story hiện hành: `storybook-app/README.md` › Phủ route.
+
 # Nhóm C — F05 Số liệu, F06 Bộ gậy
 
 Story: `flows/F05-so-lieu.stories.tsx` (27 story), `flows/F06-bo-gay.stories.tsx` (18 story). Ảnh sáng + tối 390: `__shots__/C/` (90 ảnh, đã xem từng ảnh — đều đúng màn / trạng thái / tài khoản, không crash, không trống, có thanh tab ở màn tab).

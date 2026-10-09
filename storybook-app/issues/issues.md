@@ -45,11 +45,11 @@ sửa (bước code nằm sẵn trong task sở hữu, cột “Bước”); thu
 | 20 | review Task 13 #1 | `settings/password.tsx`: thiếu guard `if (!me) return <Redirect href="/" />` (mở được khi đã đăng xuất) | 25 | Step 5 | đã sửa (Task 25) |
 | 21 | review Task 13 #2 | `settings/privacy.tsx:39,86-92`: Dialog xoá tài khoản trống chữ khi mờ dần lúc đóng | 28 | Step 4 | đã sửa (Task 28) |
 | 22 | review Task 13 #5 + report Task 13 | Thông báo của người đã chặn vẫn hiện và vẫn tính vào số trên chuông | 27 | Step 3 | đã sửa (Task 27) |
-| 23 | review Task 14 #1 | `CLAUDE.md:24` nói tải lần đầu có "lỗi + thử lại" — skeleton không có nhánh lỗi | 30 | Step 5 | chờ Task 30 |
+| 23 | review Task 14 #1 | `CLAUDE.md:24` nói tải lần đầu có "lỗi + thử lại" — skeleton không có nhánh lỗi | 30 | Step 5 | đã sửa (Task 30) |
 | 24 | review Task 14 #2 | Mẫu `deleteOnLeave` chép ở `metrics/[id].tsx:18-25`, `swings/[id].tsx:179-186`; xoá gậy (Task 21) là nơi thứ 3 | 21 | Step 5 | đã sửa (Task 21): `components/useOnLeave.ts`, dùng ở 3 màn |
 | 25 | review Task 14 #5 | Story F01/F03/F05/F10/F13 vẽ Tổng quan / bảng tin có skeleton 400 ms | 15 | Step 5, 6 (`DELAYS` + `hold`; story dùng `find*`) | đã sửa (Task 15) |
 | 26 | issues A–E "Hạ tầng" + `verify.md` | `userEvent.type` không tới `onChangeText`; Modal ra ngoài ảnh / thừa 32 px; toast tự tắt; script chụp treo | 15 | Step 6, 8, 9 | đã sửa (Task 15) |
-| 27 | review Task 14 cannot-verify + report Task 14 | Bàn phím iOS/Android (`KeyboardAvoid`), `resetTo` và xoá-khi-rời trên native chỉ kiểm trên web | 30 | Step 3 (mục "Kiểm trên điện thoại") | chờ Task 30 |
+| 27 | review Task 14 cannot-verify + report Task 14 | Bàn phím iOS/Android (`KeyboardAvoid`), `resetTo` và xoá-khi-rời trên native chỉ kiểm trên web | 30 | Step 3 (mục "Kiểm trên điện thoại") | đã sửa (Task 30) |
 
 **Không làm (nice-to-have):**
 - `(auth)/register.tsx:85` nút "Tiếp" ở bước gửi OTP — chữ không sai (bước kế là xác minh OTP).
@@ -74,7 +74,8 @@ sửa (bước code nằm sẵn trong task sở hữu, cột “Bước”); thu
 - `ShareSheet` chọn người nhận nhưng "Gửi (N)" chép cùng một lời nhắn (review Task 14 #4) — có `ponytail:`; mời người cụ thể trong app là mục
   "Mời học viên cụ thể" (Task 17).
 - Công khai bộ gậy / swing và tắt từng loại thông báo chưa có hiệu lực thấy được (report Task 13) — mock không có push, không có màn xem dữ liệu
-  công khai.
+  công khai. → Đã ghi rõ (nhánh fix/gramgolf-minors, nhóm account): `ponytail:` trên 2 công tắc ở `settings/privacy.tsx` + dòng "Đã biết / chưa
+  làm" ở `docs/flows/F12.md`; công tắc vẫn chỉ lưu tuỳ chọn.
 
 Kiểm đếm: 27 dòng → Task 15 (6: #3, #4, #6, #14, #25, #26), 17 (1, chung #18), 20 (2), 21 (1), 22 (1), 24 (1), 25 (2), 26 (6, gồm #18), 27 (4),
 28 (2), 30 (2); 16 mục không làm.

@@ -1,3 +1,5 @@
+> Ảnh chụp lịch sử (08/10) — id story hiện hành: `storybook-app/README.md` › Phủ route.
+
 # Nhóm D — F07 Swing của người chơi · F08 HLV review swing
 
 Story: `flows/F07-swing.stories.tsx` (19 story), `flows/F08-hlv-review-swing.stories.tsx` (9 story). Ảnh sáng/tối: `__shots__/D/` (2026-10-08) — đã xem từng ảnh, tất cả đúng trạng thái.

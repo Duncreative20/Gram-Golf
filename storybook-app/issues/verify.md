@@ -1,3 +1,5 @@
+> Ảnh chụp lịch sử (08/10) — id story hiện hành: `storybook-app/README.md` › Phủ route.
+
 # Rà soát toàn bộ Storybook màn app (2026-10-08)
 
 Chụp 225 story × sáng/tối (390 px) vào `storybook-app/__shots__/all/` — xem hết 450 ảnh. Không story nào crash, trống hay hiện lớp lỗi; tài khoản / dữ liệu đúng như mô tả ở đầu từng file luồng; chế độ tối không vỡ.

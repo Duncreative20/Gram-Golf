@@ -98,14 +98,14 @@ Store mới tinh mỗi story (`seedState()`), không rò trạng thái giữa c�
 
 ## Chụp ảnh
 
-Storybook 6007 đang chạy, từ gốc repo (`<outDir>` phải nằm trong `storybook-app/__shots__/`; regex lọc theo story id):
+Storybook 6007 đang chạy, từ gốc repo (`storybook-app/__shots__/` cho ảnh tạm; storyboard luồng chụp thẳng vào `docs/flows/Fxx/`; regex lọc theo story id):
 
 ```sh
 SB_URL=http://localhost:6007 CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
   node scripts/shot-storybook.mjs storybook-app/__shots__/f04 '^f04--' 390 844
 ```
 
-Ra `<outDir>/<story-id>.<light|dark>.png`, khung cố định 390×844 (tham số cuối) — Dialog / sheet nằm trong khung. Bỏ tham số cuối thì ảnh cao theo nội dung (tối thiểu 844, `shot.css`). Story treo quá 60 s → script khởi động lại Chrome, thử lại 1 lần (dòng `TIMEOUT`); lỗi trang (exception, `console.error`) in sau dấu `|`. Storyboard của luồng chụp thẳng vào `docs/flows/Fxx/` (xem `docs/flows/README.md`).
+Ra `<outDir>/<story-id>.<light|dark>.png`, khung cố định 390×844 (tham số cuối) — Dialog / sheet nằm trong khung. Bỏ tham số cuối thì ảnh cao theo nội dung (tối thiểu 844, `shot.css`). Story treo quá 60 s → script khởi động lại Chrome, thử lại 1 lần (dòng `TIMEOUT`); lỗi trang (exception, `console.error`) in sau dấu `|`. Có dòng `ERROR`, `TIMEOUT` cả 2 lần hoặc regex không khớp story nào → thoát mã 1. Storyboard của luồng chụp thẳng vào `docs/flows/Fxx/` (xem `docs/flows/README.md`).
 
 ## Luồng
 
@@ -183,7 +183,7 @@ Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **47/47 route có story**
 
 ## Chưa có (Phase 2)
 
-Bước của luồng cần màn Phase 2 — task luồng xoá dòng của mình khi story đã có. Bước ngoài Phase 2: mục "Đã biết / chưa làm" của `docs/flows/F<nn>.md`.
+Bước ngoài Phase 2: mục "Đã biết / chưa làm" của `docs/flows/F<nn>.md`.
 
 Không còn — mọi bước Phase 2 đã có story (Task 30).
 

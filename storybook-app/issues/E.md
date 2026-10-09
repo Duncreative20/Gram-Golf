@@ -1,3 +1,5 @@
+> Ảnh chụp lịch sử (08/10) — id story hiện hành: `storybook-app/README.md` › Phủ route.
+
 # Vấn đề — luồng F10 · F11 · F12 · F13 (người viết E, 2026-10-08)
 
 Không sửa màn app; chỉ ghi lại. Ảnh: `storybook-app/__shots__/E/<story-id>.<light|dark>.png`.
