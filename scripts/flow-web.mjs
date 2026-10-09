@@ -47,7 +47,12 @@ for (let i = 0; i < 50 && !targets; i++) {
     await sleep(200);
   }
 }
-const ws = new WebSocket(targets.find((t) => t.type === 'page').webSocketDebuggerUrl);
+const page = targets?.find((t) => t.type === 'page');
+if (!page) {
+  chrome.kill();
+  throw new Error('Chrome không mở trang CDP');
+}
+const ws = new WebSocket(page.webSocketDebuggerUrl);
 await new Promise((r) => (ws.onopen = r));
 let seq = 0;
 const pending = new Map();
@@ -214,9 +219,11 @@ for (const [i, raw] of spec.steps.entries()) {
       if (!/^\d\d-[a-z0-9-]+$/.test(s.shot)) throw new Error(`tên shot "${s.shot}" phải là <nn>-<chữ thường không dấu>`);
       await sleep(s.settle ?? 400);
       await capture(s.shot);
-      const route = await inPage(() => location.pathname + location.search);
+      // Bảng chỉ ghi giá trị cố định giữa các lần chạy: route bỏ query (?as=, ?draft=…), id newId (<tiền tố>-<Date.now base36>-<n>) → <tiền tố>-<id>;
+      // thao tác / kết quả lấy bản gốc trong steps.json (giữ "${code}", không chép mã mời ngẫu nhiên của lần chạy này).
+      const route = (await inPage(() => location.pathname)).replace(/\b([a-z]+)-[0-9a-z]{8}-[0-9a-z]+\b/g, '$1-<id>');
       const img = `[sáng](${spec.flow}/${sid(s.shot)}.light.png) · [tối](${spec.flow}/${sid(s.shot)}.dark.png)`;
-      rows.push({ shot: s.shot, row: `| ${s.shot.slice(0, 2)} | ${account} | \`${route}\` | ${s.do} | ${s.see} | ${img} |` });
+      rows.push({ shot: s.shot, row: `| ${s.shot.slice(0, 2)} | ${account} | \`${route}\` | ${raw.do} | ${raw.see} | ${img} |` });
     } else throw new Error('bước không có khoá hợp lệ');
     console.log(`✓ ${i + 1} ${JSON.stringify(raw)}`);
   } catch (err) {

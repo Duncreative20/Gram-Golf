@@ -3,6 +3,7 @@
 13 luồng F1–F13, kiểm được 3 cách: trên điện thoại (Expo Go), trong **Storybook app** (màn thật, từng bước, cả trạng thái khó bấm tới), và lượt đi
 tự động trên web. Mỗi luồng gồm:
 - `F<nn>.md`: tài khoản, bảng bước (route · thao tác · kết quả mong đợi · ảnh), bảng "Trạng thái khác" (story biến thể), mục "Đã biết / chưa làm";
+  bảng bước do `flow-web.mjs` ghi, chạy lại không đổi: route bỏ query, id sinh trong luồng ghi `<tiền tố>-<id>`, mã mời giữ `${code}`;
 - `F<nn>/`: ảnh storyboard 390×844 sáng + tối, **sinh từ story** của Storybook app (`<story-id>.light.png` / `.dark.png`; ảnh của bước `nn` là
   `f<nn>--b-<nn>-<bước>.*.png`), và `steps.json` — kịch bản lượt đi tự động.
 

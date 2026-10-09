@@ -6,7 +6,7 @@
     "typecheck": "pnpm -r typecheck && tsc -p storybook-app --noEmit",
     "storybook:app": "storybook dev -c storybook-app/.storybook -p 6007",
     "test": "pnpm -r test",
-    "check:literals": "grep -rEn \"#[0-9a-fA-F]{6}|fontSize:\\s*[1-9]|(padding|margin)[A-Za-z]*:\\s*[1-9]|gap:\\s*[1-9]\" apps/golf/app apps/golf/components packages/ds/src/ui packages/ds/src/stories packages/ds/.storybook packages/ds/src/icons/Icon.tsx storybook-app/.storybook storybook-app/stubs storybook-app/lib storybook-app/flows && exit 1 || echo OK"
+    "check:literals": "grep -rEn \"#[0-9a-fA-F]{6}|fontSize:\\s*[1-9]|(padding|margin)[A-Za-z]*:\\s*[1-9]|gap:\\s*[1-9]\" apps/golf/app apps/golf/components packages/ds/src/ui packages/ds/src/stories packages/ds/.storybook packages/ds/src/icons/Icon.tsx storybook-app/.storybook storybook-app/stubs storybook-app/lib storybook-app/flows; [ $? -eq 1 ] && echo OK"
   },
   "devDependencies": {
     "typescript": "~5.9.2"
