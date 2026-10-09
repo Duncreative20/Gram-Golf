@@ -34,7 +34,7 @@
  *  ✓ 24 · HLV Hà nhận thông báo                  (coach)/inbox                 as c-ha
  *  ✓ 25 · Roster của Hà có Huy                   (coach)/roster                as c-ha
  *  ✓ 26 · Học viên huỷ HLV Hà → toast            (player)/coach                as p-huy
- *  ✓ 26a–26b · dialog / đã huỷ HLV chính
+ *  ✓ 26a–26c · dialog / đã huỷ HLV chính / Tổng quan còn HLV phụ (chọn HLV chính ở tab HLV)
  *  ✓ 27 · Roster của Hà mất Huy                  (coach)/roster                as c-ha
  *  ✓ 28 · HLV Hà mở lại học viên → 403           students/[id] p-huy           as c-ha
  *  ✓ 29 · HLV Tuấn huỷ kết nối — dialog          students/[id] p-huy           as c-tuan
@@ -50,6 +50,7 @@ import type { Action } from '../../apps/golf/lib/reducer';
 import CreateInvite from '../../apps/golf/app/connect/invite';
 import AcceptInvite from '../../apps/golf/app/connect/accept';
 import PlayerCoach from '../../apps/golf/app/(player)/coach';
+import PlayerHome from '../../apps/golf/app/(player)/home';
 import CoachPublicProfile from '../../apps/golf/app/coaches/[id]';
 import CoachRoster from '../../apps/golf/app/(coach)/roster';
 import CoachInbox from '../../apps/golf/app/(coach)/inbox';
@@ -430,4 +431,10 @@ export const DaHuyHlvChinh: Story = {
   name: '26b · Đã huỷ HLV chính',
   render: () => <PlayerCoach />,
   ...appStory({ as: 'p-minh', tabs: COACH_TAB, setup: [{ type: 'revokeConnection', id: 'cn-tuan-minh', at: NOW }] }),
+};
+
+export const TongQuanConHlvPhu: Story = {
+  name: '26c · Tổng quan — huỷ HLV chính, còn HLV phụ',
+  render: () => <PlayerHome />,
+  ...appStory({ as: 'p-minh', tabs: { role: 'player', active: 'home' }, setup: [{ type: 'revokeConnection', id: 'cn-tuan-minh', at: NOW }] }),
 };

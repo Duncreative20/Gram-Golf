@@ -8,7 +8,7 @@ export function StatTile({ label, value, unit, delta }: { label: string; value: 
     <Card theme="Border" spacing="Small" style={{ flex: 1 }}>
       <View
         accessible
-        accessibilityLabel={[label, unit ? `${value} ${unit}` : value, delta?.text].filter(Boolean).join(', ')}
+        accessibilityLabel={[label, unit ? `${value} ${unit}` : value, delta && `chênh lệch ${delta.text} so với phiên trước`].filter(Boolean).join(', ')}
         style={{ gap: t.space('Spacing/Gap/2XSmall') }}
       >
         <Text variant="Body/XSmall/Medium" color="Color/Content/Neutral/Light" numberOfLines={1}>{label}</Text>

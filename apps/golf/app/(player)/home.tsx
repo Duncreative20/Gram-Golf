@@ -6,14 +6,15 @@ import { SOURCE_LABELS } from '../../lib/domain';
 import { NOW } from '../../lib/mock';
 import { useStore } from '../../lib/store';
 import {
-  carryByClub, clubById, clubLabel, followerCount, followingCount, latestNote, latestSwing, prefsOf, previousSwing, primaryCoach, profileById, speedTrend, swingsOf,
+  activeCoaches, carryByClub, clubById, clubLabel, latestNote, latestSwing, prefsOf, previousSwing, primaryCoach, profileById, speedTrend, swingsOf,
 } from '../../lib/selectors';
-import { formatDate, formatDistance, formatNumber, formatSec, formatSpeed, initials, relativeTime, swingTiles } from '../../lib/format';
+import { formatDate, formatDistance, formatSec, formatSpeed, formatValue, initials, relativeTime, swingTiles } from '../../lib/format';
 import { TabHeader } from '../../components/TabHeader';
 import { StatTile } from '../../components/StatTile';
 import { TrendChart } from '../../components/charts/TrendChart';
 import { ConcentricRings } from '../../components/charts/ConcentricRings';
 import { useFirstLoad } from '../../components/ListSkeleton';
+import { FollowCounts } from '../../components/People';
 
 function Section({ title, caption, children }: PropsWithChildren<{ title: string; caption?: string }>) {
   const t = useTheme();
@@ -77,13 +78,10 @@ export default function PlayerHome() {
   const trend = speedTrend(state, me.id).map((p) => ({ x: formatDate(p.date).slice(0, 5), y: p.clubSpeedMph }));
   const carry = carryByClub(state, me.id).map((c) => ({ label: clubLabel(c.club), value: c.carryM, display: formatDistance(c.carryM, units) }));
   const coach = primaryCoach(state, me.id);
+  const hasCoach = activeCoaches(state, me.id).length > 0;
   const note = latestNote(state, me.id);
   const noteCoach = note && profileById(state, note.coachId);
   const noteClub = clubById(state, note && swingsOf(state, me.id).find((w) => w.id === note.swingId)?.clubId);
-  const counts = [
-    { n: followerCount(state, me.id, me.id), label: 'Người theo dõi' },
-    { n: followingCount(state, me.id, me.id), label: 'Đang theo dõi' },
-  ];
   return (
     <Screen edges={['top']}>
       <TabHeader />
@@ -108,18 +106,11 @@ export default function PlayerHome() {
             <View style={{ flex: 1, gap: t.space('Spacing/Gap/2XSmall') }}>
               <Text variant="Heading/4" numberOfLines={2}>{me.name}</Text>
               {me.handicap !== undefined && (
-                <Text variant="Body/Base/Medium" color="Color/Content/Neutral/Base">{`Handicap ${formatNumber(me.handicap, Number.isInteger(me.handicap) ? 0 : 1)}`}</Text>
+                <Text variant="Body/Base/Medium" color="Color/Content/Neutral/Base">{`Handicap ${formatValue(me.handicap)}`}</Text>
               )}
             </View>
           </View>
-          <View style={{ flexDirection: 'row', gap: t.space('Spacing/Gap/XLarge') }}>
-            {counts.map((c) => (
-              <View key={c.label} accessible accessibilityLabel={`${c.n} ${c.label}`}>
-                <Text variant="Heading/4">{String(c.n)}</Text>
-                <Text variant="Caption/Regular" color="Color/Content/Neutral/Light">{c.label}</Text>
-              </View>
-            ))}
-          </View>
+          <FollowCounts userId={me.id} />
           <View style={{ backgroundColor: t.color('Color/Background/Surface/Default'), borderRadius: t.radius('Corner-Radius/Base') }}>
             {coach ? (
               <ListItem
@@ -138,9 +129,10 @@ export default function PlayerHome() {
               <ListItem
                 type="Grouped"
                 title="Chưa có HLV chính"
-                caption="Nhập mã mời từ HLV để kết nối"
+                // bị huỷ HLV chính nhưng còn HLV phụ → đã kết nối, chỉ cần chọn HLV chính
+                caption={hasCoach ? 'Chọn HLV chính ở tab HLV' : 'Nhập mã mời từ HLV để kết nối'}
                 trailing={<Icon name="chevron-right-line-medium" size={t.size('Element-Size/Popular/Base')} color="Color/Content/Neutral/Light" />}
-                onPress={() => router.push('/connect/accept')}
+                onPress={() => router.push(hasCoach ? '/(player)/coach' : '/connect/accept')}
               />
             )}
           </View>
@@ -182,7 +174,7 @@ export default function PlayerHome() {
             </Section>
 
             {carry.length > 0 && (
-              <Section title="Carry theo gậy" caption={`Carry trung bình của ${carry.length} gậy xa nhất`}>
+              <Section title="Carry theo gậy" caption={carry.length > 1 ? `Carry trung bình của ${carry.length} gậy xa nhất` : 'Carry trung bình'}>
                 <Card theme="Border">
                   <ConcentricRings items={carry} accessibilityLabel={`Carry trung bình theo gậy: ${carry.map((c) => `${c.label} ${c.display}`).join(', ')}`} />
                 </Card>

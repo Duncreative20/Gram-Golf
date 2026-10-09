@@ -129,7 +129,7 @@ Ngoài các bước: thêm story cho trạng thái khó bấm tới (rỗng / đ
 
 ## Phủ route
 
-Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **47/47 route có story** (351 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
+Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **47/47 route có story** (352 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
 
 | Route | Story id | Ghi chú |
 | --- | --- | --- |
@@ -142,7 +142,7 @@ Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **47/47 route có story**
 | `(auth)/login` | `f03--b-01-dang-nhap-sai`, `f03--b-05-ve-dang-nhap`, `f03--dang-nhap`, `f03--dang-nhap-bo-trong` | `?reset=1` = thông báo đã đặt lại mật khẩu (`f03--b-05-ve-dang-nhap`) |
 | `(auth)/forgot-password` | `f03--b-02-quen-mk-loi`, `f03--b-03-da-gui-link`, `f03--quen-mat-khau` | “Mở link (thử)” chỉ `__DEV__` |
 | `(auth)/reset-password` | `f03--b-04-dat-lai-loi`, `f03--b-11-link-het-han`, `f03--b-12-link-sai`, `f03--dat-lai-mat-khau`, `f03--dat-lai-mat-khau-bo-trong` | `?token=GG-RESET-OK` hợp lệ, `GG-RESET-EXPIRED` hết hạn, thiếu / sai = không hợp lệ |
-| `(player)/home` | `f01--b-07-tong-quan-trong`, `f01--b-10-tong-quan-co-du-lieu`, `f03--b-06-vao-app`, `f05--b-01-tong-quan-truoc`, `f05--b-20-tong-quan-sau`, `f11--b-06-chuong-het-so`, `f12--b-08-tong-quan-yard`, `f13--chua-dang-nhap`, `f13--dang-tai-tong-quan`, `f13--b-14-quay-lai-tu-403` | `f13--chua-dang-nhap` = guard chưa đăng nhập; `f13--dang-tai-tong-quan` = skeleton (`hold: ['firstLoad']`); `f13--b-14-quay-lai-tu-403` = Quay lại từ 403 không có lịch sử |
+| `(player)/home` | `f01--b-07-tong-quan-trong`, `f01--b-10-tong-quan-co-du-lieu`, `f03--b-06-vao-app`, `f05--b-01-tong-quan-truoc`, `f05--b-20-tong-quan-sau`, `f11--b-06-chuong-het-so`, `f12--b-08-tong-quan-yard`, `f13--chua-dang-nhap`, `f13--dang-tai-tong-quan`, `f13--b-14-quay-lai-tu-403`, `f04--tong-quan-con-hlv-phu` | `f04--tong-quan-con-hlv-phu` = huỷ HLV chính, còn HLV phụ → “Chọn HLV chính ở tab HLV”; `f13--chua-dang-nhap` = guard chưa đăng nhập; `f13--dang-tai-tong-quan` = skeleton (`hold: ['firstLoad']`); `f13--b-14-quay-lai-tu-403` = Quay lại từ 403 không có lịch sử |
 | `(player)/metrics` | `f05--b-02-lich-su`, `f05--b-06-da-luu`, `f05--b-10-the-luc`, `f05--b-18-yard-lich-su`, `f05--b-19-sau-xoa`, `f05--danh-sach-rong`, `f06--b-01-bo-gay`, `f06--b-04-them-xong`, `f06--b-09-sau-luu-tru`, `f13--b-03-skeleton-thong-so`, `f13--b-05-trong-thong-so`, `f13--b-06-trong-bo-gay`, `f13--b-12-xoa-thanh-cong` | `f06--b-09-sau-luu-tru` = dòng “Gậy đã lưu trữ” trên lưới; `f13--b-03-skeleton-thong-so` = khung xương lần đầu mở (`hold: ['firstLoad']`) |
 | `(player)/swings` | `f07--b-01-danh-sach`, `f07--b-02-luoi`, `f07--b-03-loc-sap-xep`, `f07--b-15-sau-xoa`, `f07--danh-sach`, `f07--danh-sach-rong`, `f07--loc-7-ngay-rong`, `f13--b-02-skeleton-swing`, `f13--b-04-trong-swing` | Danh sách / Lưới, lọc 7 / 30 ngày, sắp xếp theo ngày quay; `f13--b-02-skeleton-swing` = khung xương lần đầu mở |
 | `(player)/community` | `f10--b-01-bang-tin`, `f10--b-06-kham-pha`, `f10--b-09-sau-chan`, `f10--bang-tin-rong`, `f10--chia-se-gui`, `f10--kham-pha`, `f10--kham-pha-khong-thay` | `f10--b-09-sau-chan` = sau khi chặn Khoa, bài mới của Minh Anh ở đầu; `f10--chia-se-gui` = toast “Đã sao chép bài viết để gửi” (`hold: ['toast']`) |
