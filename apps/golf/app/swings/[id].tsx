@@ -231,8 +231,10 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
   const pad = { paddingHorizontal: t.layout('Margin-Small') };
   const seek = (sec: number) => {
     setPlaying(false);
-    setPositionSec(sec);
+    setPositionSec(Math.min(sec, duration)); // mốc gõ tay có thể quá độ dài video
   };
+  // mốc của ghi chú = mốc đầu tiên HLV chèn vào nội dung; không chèn → vị trí đang phát (như Task 9); quá độ dài video → cuối video
+  const noteAt = (text: string) => Math.min(noteMarks(text)[0] ?? Math.round(positionSec * 100) / 100, duration);
   const removeSwing = () =>
     run(
       () => {
@@ -266,8 +268,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
       setSent('Đã lưu ghi chú');
       return;
     }
-    // mốc của ghi chú = mốc đầu tiên HLV chèn vào nội dung; không chèn → vị trí đang phát (như Task 9)
-    const atSec = noteMarks(body)[0] ?? Math.round(positionSec * 100) / 100;
+    const atSec = noteAt(body);
     dispatch({ type: 'addNote', note: { id: newId('note'), swingId: swing.id, coachId: me.id, atSec, text: body, createdAt: NOW }, notificationId: newId('nt') });
     setNote('');
     setSent(`Đã gửi ghi chú tại ${formatSec(atSec)}`);
@@ -509,7 +510,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
                 onSend={sendNote}
                 maxLength={500}
                 error={noteError}
-                helpText={sent ?? (note && !editing ? `Ghi chú tại ${formatSec(noteMarks(note)[0] ?? positionSec)}` : undefined)}
+                helpText={sent ?? (note && !editing ? `Ghi chú tại ${formatSec(noteAt(note))}` : undefined)}
               />
             </View>
           </>

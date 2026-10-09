@@ -314,6 +314,26 @@ describe('sửa / xoá ghi chú HLV (chỉ tác giả còn kết nối active)',
     expect(reduce(revoked, { type: 'editNote', id: 'note-1', coachId: 'c-tuan', text: 'Sau khi huỷ', at: NOW })).toBe(revoked);
     expect(reduce(revoked, { type: 'deleteNote', id: 'note-1', coachId: 'c-tuan' })).toBe(revoked);
   });
+  it('lưu mà không đổi chữ (chỉ thêm khoảng trắng hai đầu) → không đổi, không gắn "đã sửa"', () => {
+    const b = s0();
+    const text = b.notes.find((n) => n.id === 'note-1')!.text;
+    expect(reduce(b, { type: 'editNote', id: 'note-1', coachId: 'c-tuan', text: ` ${text} `, at: NOW })).toBe(b);
+  });
+  it('mốc quá độ dài video kẹp về cuối video (sw-minh-1 dài 4,2 s)', () => {
+    const e = reduce(s0(), { type: 'editNote', id: 'note-1', coachId: 'c-tuan', text: 'Xem lại [99 s]', at: NOW });
+    expect(e.notes.find((n) => n.id === 'note-1')!.atSec).toBe(4.2);
+    const a = reduce(s0(), { type: 'addNote', note: { id: 'note-x', swingId: 'sw-minh-1', coachId: 'c-tuan', atSec: 9, text: '[9 s] Xem lại', createdAt: NOW }, notificationId: 'n' });
+    expect(a.notes.find((n) => n.id === 'note-x')!.atSec).toBe(4.2);
+  });
+  it('thêm ghi chú: chỉ HLV còn kết nối active — người chơi tự ghi chú, HLV đã bị huỷ kết nối → không đổi, không thông báo', () => {
+    const add = (s: AppState, coachId: string) =>
+      reduce(s, { type: 'addNote', note: { id: 'note-x', swingId: 'sw-minh-1', coachId, atSec: 1, text: 'Ghi chú', createdAt: NOW }, notificationId: 'n-x' });
+    const b = s0();
+    expect(add(b, 'p-minh')).toBe(b);
+    const revoked = reduce(b, { type: 'revokeConnection', id: 'cn-tuan-minh', at: NOW });
+    expect(add(revoked, 'c-tuan')).toBe(revoked);
+    expect(add(b, 'c-ha').notes.some((n) => n.id === 'note-x')).toBe(true); // HLV phụ active vẫn ghi được
+  });
   it('tác giả xoá: chỉ ghi chú đó mất', () => {
     expect(reduce(s0(), { type: 'deleteNote', id: 'note-2', coachId: 'c-tuan' }).notes.map((n) => n.id)).toEqual(['note-1', 'note-3']);
   });

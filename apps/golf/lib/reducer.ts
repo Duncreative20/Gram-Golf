@@ -1,5 +1,5 @@
 import type { AppNotification, AppState, Club, CoachConnection, CoachInvite, CoachNote, Comment, ID, ISO, JobStatus, MetricSession, NotificationType, Post, Preferences, Profile, Report, Role, Swing, SwingAnalysis, UploadStatus } from './domain';
-import { canViewPrivate, clubLinkCount, isBlocked, openConnection, validateInvite } from './selectors';
+import { canViewPrivate, clubLinkCount, isBlocked, openConnection, profileById, validateInvite } from './selectors';
 import { noteMarks } from './format';
 import { DEFAULT_PREFS, seedState } from './mock';
 
@@ -37,6 +37,8 @@ export type Action =
 
 const notify = (s: AppState, n: { id: ID; userId: ID; type: NotificationType; actorId?: ID; refId?: ID; createdAt: ISO }): AppNotification[] =>
   n.userId === n.actorId ? s.notifications : [n, ...s.notifications];
+/** Mốc ghi chú gõ tay ("[9 s]") quá độ dài video → cuối video. */
+const clampAt = (sec: number | undefined, sw: Swing) => (sec === undefined ? sec : Math.min(sec, sw.durationSec));
 
 export function reduce(s: AppState, a: Action): AppState {
   switch (a.type) {
@@ -75,8 +77,9 @@ export function reduce(s: AppState, a: Action): AppState {
     case 'deleteSwing': return { ...s, swings: s.swings.filter((w) => w.id !== a.id), notes: s.notes.filter((n) => n.swingId !== a.id), notifications: s.notifications.filter((n) => n.refId !== a.id) };
     case 'addNote': {
       const sw = s.swings.find((w) => w.id === a.note.swingId);
-      if (!sw) return s;
-      return { ...s, notes: [...s.notes, a.note], notifications: notify(s, { id: a.notificationId, userId: sw.playerId, type: 'coach_note', actorId: a.note.coachId, refId: sw.id, createdAt: a.note.createdAt }) };
+      // Quyền ghi như editNote/deleteNote (mô phỏng RLS): chỉ HLV còn kết nối active với chủ swing
+      if (!sw || profileById(s, a.note.coachId)?.role !== 'coach' || !canViewPrivate(s, a.note.coachId, sw.playerId)) return s;
+      return { ...s, notes: [...s.notes, { ...a.note, atSec: clampAt(a.note.atSec, sw) }], notifications: notify(s, { id: a.notificationId, userId: sw.playerId, type: 'coach_note', actorId: a.note.coachId, refId: sw.id, createdAt: a.note.createdAt }) };
     }
     case 'createInvite': return { ...s, invites: [a.invite, ...s.invites] };
     case 'revokeInvite': return { ...s, invites: s.invites.map((i) => (i.code === a.code ? { ...i, revoked: true } : i)) };
@@ -145,8 +148,8 @@ export function reduce(s: AppState, a: Action): AppState {
       if (!n || !sw || n.coachId !== a.coachId || !canViewPrivate(s, a.coachId, sw.playerId)) return s;
       if (a.type === 'deleteNote') return { ...s, notes: s.notes.filter((x) => x !== n) };
       const text = a.text.trim();
-      if (!text) return s;
-      return { ...s, notes: s.notes.map((x) => (x === n ? { ...x, text, atSec: noteMarks(text)[0] ?? x.atSec, editedAt: a.at } : x)) };
+      if (!text || text === n.text) return s; // lưu mà không đổi chữ → không gắn "đã sửa"
+      return { ...s, notes: s.notes.map((x) => (x === n ? { ...x, text, atSec: clampAt(noteMarks(text)[0] ?? x.atSec, sw), editedAt: a.at } : x)) };
     }
     case 'requestConnection': {
       const roleOf = (id: ID) => s.profiles.find((p) => p.id === id)?.role;
