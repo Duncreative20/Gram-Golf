@@ -32,6 +32,14 @@ describe('validation', () => {
     expect(r.errors.launchDeg).toBe('Trong khoảng -10–45°');
     expect(validateFitnessMetrics({ weightKg: '72', flexibility: '11', gripStrengthKg: '45', verticalJumpCm: '48' }).errors.flexibility).toBe('Trong khoảng 0–10/10');
   });
+  it('ô số nguyên gõ dấu ngăn nghìn ("2.650") → báo đúng nguyên nhân thay vì "Trong khoảng"; số thập phân thường vẫn hợp lệ', () => {
+    const base = { clubSpeedMph: '104', ballSpeedMph: '152', smash: '1,46', spinRpm: '2650', launchDeg: '12,5', carryM: '228' };
+    expect(validateSwingMetrics({ ...base, spinRpm: '2.650' }).errors).toEqual({ spinRpm: 'Không dùng dấu chấm ngăn nghìn (vd 2650)' });
+    expect(validateSwingMetrics({ ...base, spinRpm: '12,000' }).errors).toEqual({ spinRpm: 'Không dùng dấu chấm ngăn nghìn (vd 12000)' });
+    expect(validateSwingMetrics({ ...base, clubSpeedMph: '104,8' }).value?.clubSpeedMph).toBe(104.8);
+    // ô có số lẻ (cân nặng 1 chữ số thập phân): "72.500" vẫn là 72,5
+    expect(validateFitnessMetrics({ weightKg: '72.500', flexibility: '7', gripStrengthKg: '45', verticalJumpCm: '48' }).value?.weightKg).toBe(72.5);
+  });
 });
 
 describe('carry theo đơn vị hiển thị (D9: luôn lưu mét)', () => {
@@ -177,6 +185,9 @@ describe('validateAccount', () => {
     expect(validateAccount('coach', { ...coach, academy: '', yearsExperience: '2,5', ratePerHourVnd: '45k' }, others).errors).toEqual({
       academy: 'Bắt buộc', yearsExperience: 'Số nguyên 0–60', ratePerHourVnd: 'Số tiền không hợp lệ',
     });
+    // vượt tối đa báo giới hạn (lỗi thay chỗ trợ giúp "Tối đa 10.000.000 đ" của ô); sai định dạng giữ câu cũ
+    expect(validateAccount('coach', { ...coach, ratePerHourVnd: '12.000.000' }, others).errors).toEqual({ ratePerHourVnd: 'Tối đa 10.000.000 đ' });
+    expect(validateAccount('coach', { ...coach, ratePerHourVnd: '10.000.000' }, others).value?.ratePerHourVnd).toBe(10_000_000);
   });
 });
 

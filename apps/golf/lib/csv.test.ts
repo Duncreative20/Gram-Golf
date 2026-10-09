@@ -17,6 +17,11 @@ describe('parseLaunchMonitorCsv', () => {
     expect(r.vendor).toBe('foresight');
     expect(r.rows.every((x) => x.value)).toBe(true);
   });
+  it('header có BOM UTF-8 (file lưu từ Excel) vẫn nhận diện hãng và đọc được cột Club', () => {
+    const r = parseLaunchMonitorCsv('\uFEFF' + SAMPLE_FILES.find((f) => f.vendor === 'trackman')!.content);
+    expect(r.vendor).toBe('trackman');
+    expect(r.rows[0]!.club).toBe('Driver');
+  });
   it('file lạ → vendor null, không dòng', () => {
     expect(parseLaunchMonitorCsv('a,b\n1,2')).toEqual({ vendor: null, rows: [] });
   });

@@ -1,5 +1,5 @@
 import type { Club, ClubType, FitnessMetrics, Profile, Role, ShaftFlex, SwingMetrics, Units } from './domain';
-import { formatValue, mToYd, parseNumberVN, ydToM } from './format';
+import { formatValue, formatVnd, mToYd, parseNumberVN, ydToM } from './format';
 
 /** `optional`: ô để trống là hợp lệ (không có giá trị). */
 export interface FieldSpec<K extends string> { key: K; label: string; unit: string; min: number; max: number; digits: number; optional?: boolean }
@@ -38,7 +38,9 @@ function validateFields<K extends string>(specs: FieldSpec<K>[], raw: Raw<K>): V
   for (const f of specs) {
     const s = raw[f.key] ?? '';
     const n = parseNumberVN(s);
-    if (n === null) {
+    // ô số nguyên mà gõ kiểu ngăn nghìn VN ("2.650") — parseNumberVN hiểu là 2,65 → báo đúng nguyên nhân thay vì "Trong khoảng"
+    if (f.digits === 0 && /^\d{1,3}([.,]\d{3})+$/.test(s.trim())) errors[f.key] = `Không dùng dấu chấm ngăn nghìn (vd ${s.trim().replace(/[.,]/g, '')})`;
+    else if (n === null) {
       if (s.trim()) errors[f.key] = 'Không phải số';
       else if (!f.optional) errors[f.key] = 'Bắt buộc';
     } else if (n < f.min || n > f.max) errors[f.key] = `Trong khoảng ${rangeText(f)}`;
@@ -197,7 +199,8 @@ export function validateAccount(role: Role, raw: AccountRaw, others: Pick<Profil
     const rate = raw.ratePerHourVnd.replace(/[.\s]/g, '');
     if (!academy) e.academy = 'Bắt buộc';
     if (typeof years === 'string') e.yearsExperience = years;
-    if (rate && (!/^\d+$/.test(rate) || Number(rate) > RATE_MAX_VND)) e.ratePerHourVnd = 'Số tiền không hợp lệ';
+    if (rate && !/^\d+$/.test(rate)) e.ratePerHourVnd = 'Số tiền không hợp lệ';
+    else if (Number(rate) > RATE_MAX_VND) e.ratePerHourVnd = `Tối đa ${formatVnd(RATE_MAX_VND)}`; // lỗi thay chỗ trợ giúp của ô → nói rõ giới hạn
     value = { ...base, academy, yearsExperience: years as number, ratePerHourVnd: rate ? Number(rate) : undefined };
   }
   const errors = onlyErrors(e);

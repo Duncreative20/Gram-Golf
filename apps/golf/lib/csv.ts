@@ -10,6 +10,7 @@ const COLS: Record<Vendor, { sep: string; club: string; map: Record<keyof SwingM
   foresight: { sep: ';', club: 'Club', carryYards: false, map: { clubSpeedMph: 'ClubSpeed (mph)', ballSpeedMph: 'BallSpeed (mph)', smash: 'Smash', spinRpm: 'BackSpin (rpm)', launchDeg: 'VLA (deg)', carryM: 'Carry (m)' } },
 };
 
+// ponytail: tách theo dấu phân cách, không hiểu ô có nháy kép chứa dấu phân cách — file máy đo thật cần parser CSV. BOM UTF-8 đầu file: trim() đã bỏ.
 export function parseLaunchMonitorCsv(text: string): CsvResult {
   const lines = text.trim().split(/\r?\n/);
   const head = lines[0] ?? '';
