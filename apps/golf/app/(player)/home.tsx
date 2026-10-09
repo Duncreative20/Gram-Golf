@@ -81,8 +81,8 @@ export default function PlayerHome() {
   const noteCoach = note && profileById(state, note.coachId);
   const noteClub = clubById(state, note && swingsOf(state, me.id).find((w) => w.id === note.swingId)?.clubId);
   const counts = [
-    { n: followerCount(state, me.id), label: 'Người theo dõi' },
-    { n: followingCount(state, me.id), label: 'Đang theo dõi' },
+    { n: followerCount(state, me.id, me.id), label: 'Người theo dõi' },
+    { n: followingCount(state, me.id, me.id), label: 'Đang theo dõi' },
   ];
   return (
     <Screen edges={['top']}>

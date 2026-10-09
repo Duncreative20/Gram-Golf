@@ -68,12 +68,14 @@ export const needsFeedback = (s: AppState, coachId: ID) => roster(s, coachId).fi
 
 export const isBlocked = (s: AppState, a: ID, b: ID) => s.blocks.some((x) => (x.blockerId === a && x.blockedId === b) || (x.blockerId === b && x.blockedId === a));
 export const isFollowing = (s: AppState, a: ID, b: ID) => s.follows.some((f) => f.followerId === a && f.followedId === b);
-export const followerCount = (s: AppState, id: ID) => s.follows.filter((f) => f.followedId === id).length;
-export const followingCount = (s: AppState, id: ID) => s.follows.filter((f) => f.followerId === id).length;
+/** Số người theo dõi / đang theo dõi `id` mà người xem `viewerId` thấy: bỏ người đã chặn / bị chặn với người xem (như danh sách ở people). */
+export const followerCount = (s: AppState, id: ID, viewerId: ID) => s.follows.filter((f) => f.followedId === id && !isBlocked(s, viewerId, f.followerId)).length;
+export const followingCount = (s: AppState, id: ID, viewerId: ID) => s.follows.filter((f) => f.followerId === id && !isBlocked(s, viewerId, f.followedId)).length;
 export const feed = (s: AppState, userId: ID): Post[] =>
   s.posts.filter((p) => (p.authorId === userId || isFollowing(s, userId, p.authorId)) && !isBlocked(s, userId, p.authorId)).sort(byDateDesc);
 export const postsBy = (s: AppState, authorId: ID) => s.posts.filter((p) => p.authorId === authorId).sort(byDateDesc);
-export const likeCount = (s: AppState, postId: ID) => s.likes.filter((l) => l.postId === postId).length;
+/** Lượt thích người xem `viewerId` thấy: bỏ người đã chặn / bị chặn với người xem (như danh sách "Ai đã thích"). */
+export const likeCount = (s: AppState, postId: ID, viewerId: ID) => s.likes.filter((l) => l.postId === postId && !isBlocked(s, viewerId, l.userId)).length;
 export const likedBy = (s: AppState, userId: ID, postId: ID) => s.likes.some((l) => l.userId === userId && l.postId === postId);
 /** Bình luận của bài theo thứ tự thời gian; ẩn bình luận của người đã chặn / bị chặn với người xem `viewerId` (Review Focus 5). */
 export const commentsOf = (s: AppState, postId: ID, viewerId: ID) =>

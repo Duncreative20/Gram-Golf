@@ -48,8 +48,8 @@ export default function CoachRoster() {
   );
   const counts = [
     { n: students.length, label: 'Học viên' },
-    { n: followerCount(state, me.id), label: 'Người theo dõi' },
-    { n: followingCount(state, me.id), label: 'Đang theo dõi' },
+    { n: followerCount(state, me.id, me.id), label: 'Người theo dõi' },
+    { n: followingCount(state, me.id, me.id), label: 'Đang theo dõi' },
   ];
   const studentRow = (p: Profile) => {
     const latest = swingsOf(state, p.id)[0];

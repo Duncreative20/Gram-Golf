@@ -125,7 +125,7 @@ export default function PostDetail() {
               )}
             </View>
           )}
-          {likeCount(state, post.id) > 0 && (
+          {likeCount(state, post.id, me.id) > 0 && (
             <View style={[pad, { alignItems: 'flex-start' }]}>
               <Button type="Flat" level="Primary" size="Small" leadingIcon="heart-line" text="Ai đã thích" onPress={() => setLikesOpen(true)} />
             </View>
@@ -164,7 +164,7 @@ export default function PostDetail() {
       <LikesSheet
         visible={likesOpen}
         onClose={() => setLikesOpen(false)}
-        heading={`${likeCount(state, post.id)} lượt thích`}
+        heading={`${likeCount(state, post.id, me.id)} lượt thích`}
         search={false}
         users={likers.map((p) => ({ id: p.id, name: p.name, handle: p.role === 'coach' ? 'HLV' : undefined, verified: p.verified, avatar: p.avatarUrl ? { uri: p.avatarUrl } : undefined }))}
         onPressUser={(u) => {

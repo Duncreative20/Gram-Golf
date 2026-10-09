@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { seedState, NOW } from './mock';
+import { reduce } from './reducer';
 import type { AppState, Club, ClubType } from './domain';
-import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, awaitsFeedback, discover, likeCount, likedBy, clubsOf, previousSwing, latestNote, groupClubs, commentsOf, isBlocked, openConnection, connectionRequests, findPlayers, swingsByReview, filterSwings, swingsOf, notificationsOf } from './selectors';
+import { speedTrend, carryByClub, latestSwing, unreadCount, needsFeedback, awaitsFeedback, discover, followerCount, followingCount, likeCount, likedBy, clubsOf, previousSwing, latestNote, groupClubs, commentsOf, isBlocked, openConnection, connectionRequests, findPlayers, swingsByReview, filterSwings, swingsOf, notificationsOf } from './selectors';
 
 describe('selectors', () => {
   const s = seedState();
@@ -61,8 +62,17 @@ describe('selectors', () => {
   });
   it('like', () => {
     const p = s.posts[0]!;
-    expect(likeCount(s, p.id)).toBe(s.likes.filter((l) => l.postId === p.id).length);
+    expect(likeCount(s, p.id, 'p-huy')).toBe(s.likes.filter((l) => l.postId === p.id).length);
     expect(typeof likedBy(s, 'p-minh', p.id)).toBe('boolean');
+  });
+  it('số theo dõi / lượt thích theo người xem: bỏ người đã chặn / bị chặn với người xem (khớp danh sách đang ẩn họ)', () => {
+    let b = reduce(s, { type: 'toggleFollow', followerId: 'p-khoa', followedId: 'c-tuan', at: NOW, notificationId: 'n-1' });
+    b = reduce(b, { type: 'toggleFollow', followerId: 'c-tuan', followedId: 'p-khoa', at: NOW, notificationId: 'n-2' });
+    b = reduce(b, { type: 'block', blockerId: 'p-minh', blockedId: 'p-khoa' });
+    // hồ sơ HLV Tuấn: người theo dõi p-minh + p-khoa, đang theo dõi c-ha + p-khoa; post-4 được c-tuan + p-khoa thích
+    expect([followerCount(b, 'c-tuan', 'p-minh'), followingCount(b, 'c-tuan', 'p-minh'), likeCount(b, 'post-4', 'p-minh')]).toEqual([1, 1, 1]);
+    expect([followerCount(b, 'c-tuan', 'c-ha'), followingCount(b, 'c-tuan', 'c-ha'), likeCount(b, 'post-4', 'c-ha')]).toEqual([2, 2, 2]); // người thứ ba thấy đủ
+    expect(likeCount(b, 'post-1', 'p-khoa')).toBe(1); // bị chặn cũng không đếm p-minh (post-1: p-minh + p-lan)
   });
   it('gậy đã lưu trữ không hiện', () => {
     expect(clubsOf(s, 'p-minh').every((c) => !c.archivedAt)).toBe(true);
@@ -126,5 +136,8 @@ describe('thông báo và chặn', () => {
     const s = { ...seedState(), blocks: [{ blockerId: 'p-minh', blockedId: 'p-khoa' }] };
     expect(notificationsOf(s, 'p-minh').map((n) => n.id)).toEqual(['nt-1', 'nt-3', 'nt-4']); // mới → cũ, bỏ nt-2 (Khoa theo dõi)
     expect(unreadCount(s, 'p-minh')).toBe(1);
+    const r = { ...seedState(), blocks: [{ blockerId: 'p-khoa', blockedId: 'p-minh' }] }; // chiều ngược lại: Minh Anh bị Khoa chặn
+    expect(notificationsOf(r, 'p-minh').map((n) => n.id)).toEqual(['nt-1', 'nt-3', 'nt-4']);
+    expect(unreadCount(r, 'p-minh')).toBe(1);
   });
 });

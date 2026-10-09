@@ -38,10 +38,11 @@ export function FollowButton({ userId, size = 'Small' }: { userId: ID; size?: Bu
 /** Số người theo dõi / đang theo dõi của `userId`; chạm → danh sách tương ứng (people). `centered`: căn giữa (hồ sơ của tôi). */
 export function FollowCounts({ userId, centered }: { userId: ID; centered?: boolean }) {
   const t = useTheme();
-  const { state } = useStore();
+  const { state, me } = useStore();
+  if (!me) return null;
   const counts = [
-    { tab: 'followers', n: followerCount(state, userId), label: 'Người theo dõi' },
-    { tab: 'following', n: followingCount(state, userId), label: 'Đang theo dõi' },
+    { tab: 'followers', n: followerCount(state, userId, me.id), label: 'Người theo dõi' },
+    { tab: 'following', n: followingCount(state, userId, me.id), label: 'Đang theo dõi' },
   ];
   return (
     <View style={{ flexDirection: 'row', justifyContent: centered ? 'center' : 'flex-start', gap: t.space(centered ? 'Spacing/Gap/2XLarge' : 'Spacing/Gap/XLarge') }}>

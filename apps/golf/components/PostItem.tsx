@@ -30,7 +30,7 @@ export function PostItem({ post, onOpen }: { post: Post; onOpen?: () => void }) 
   const coach = author?.role === 'coach';
   const time = relativeTime(post.createdAt, NOW);
   const liked = likedBy(state, me.id, post.id);
-  const likes = likeCount(state, post.id);
+  const likes = likeCount(state, post.id, me.id);
   const comments = commentsOf(state, post.id, me.id).length;
   const pad = { paddingHorizontal: t.layout('Margin-Small') };
   const closeShare = () => {
