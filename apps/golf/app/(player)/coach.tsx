@@ -114,7 +114,7 @@ export default function PlayerCoach() {
               primaryText="Nhập mã mời"
               onPrimary={enterCode}
               secondaryText="Tìm HLV"
-              onSecondary={() => router.push('/(player)/community')}
+              onSecondary={() => router.push({ pathname: '/(player)/community', params: { tab: 'kham-pha' } })}
             />
           </View>
         ) : (

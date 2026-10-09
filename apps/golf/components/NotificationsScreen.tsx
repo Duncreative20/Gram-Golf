@@ -51,7 +51,7 @@ function target(n: AppNotification, actor: Profile | undefined, role?: Role): Hr
   }
 }
 
-function NotificationRow({ n }: { n: AppNotification }) {
+function NotificationRow({ n, tab }: { n: AppNotification; tab?: boolean }) {
   const t = useTheme();
   const { state, dispatch, me } = useStore();
   const actor = n.actorId ? profileById(state, n.actorId) : undefined;
@@ -62,7 +62,11 @@ function NotificationRow({ n }: { n: AppNotification }) {
   const open = () => {
     dispatch({ type: 'markRead', userId: n.userId, at: NOW, ids: [n.id] });
     const href = target(n, actor, me?.role);
-    if (href) router.push(href);
+    if (!href) return;
+    // /notifications là màn stack đè lên nhóm tab: tới một tab thì quay về nhóm tab có sẵn (dismissTo), push sẽ chồng thêm một bản nhóm tab
+    const path = typeof href === 'string' ? href : href.pathname;
+    if (!tab && /^\/\((player|coach)\)\//.test(path)) router.dismissTo(href);
+    else router.push(href);
   };
   return (
     <Pressable
@@ -129,7 +133,7 @@ export default function NotificationsScreen({ tab }: { tab?: boolean }) {
             .map((g) => (
               <Section key={g.title} title={g.title}>
                 {g.items.map((n) => (
-                  <NotificationRow key={n.id} n={n} />
+                  <NotificationRow key={n.id} n={n} tab={tab} />
                 ))}
               </Section>
             ))}

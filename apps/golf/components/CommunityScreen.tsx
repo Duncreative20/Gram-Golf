@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList, ScrollView, View } from 'react-native';
-import { Redirect, router } from 'expo-router';
+import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { Button, EmptyState, Screen, SearchField, Skeleton, SkeletonText, TabBar, Text, useTheme } from '@gr/ds';
 import { useStore } from '../lib/store';
 import { discover, feed } from '../lib/selectors';
@@ -16,7 +16,14 @@ const TABS = [{ label: 'Bảng tin' }, { label: 'Khám phá' }];
 export default function CommunityScreen() {
   const t = useTheme();
   const { state, me } = useStore();
-  const [tab, setTab] = useState(0);
+  const { tab: tabParam } = useLocalSearchParams<{ tab?: string }>();
+  const [tab, setTab] = useState(tabParam === 'kham-pha' ? 1 : 0);
+  // "Tìm HLV" (tab HLV) mở thẳng Khám phá, kể cả khi tab đã mở sẵn (useState không chạy lại); xoá param sau khi dùng để lần bấm sau vẫn đổi được
+  useEffect(() => {
+    if (tabParam !== 'kham-pha') return;
+    setTab(1);
+    router.setParams({ tab: undefined });
+  }, [tabParam]);
   const [query, setQuery] = useState('');
   // Lần đầu mở trong phiên: giả lập tải bảng tin → khung xương bài viết (bản thật: chờ API)
   const loading = useFirstLoad('feed');
