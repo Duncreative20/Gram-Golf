@@ -5,12 +5,13 @@ import { Avatar, Badge, Button, Card, EmptyState, Icon, ListItem, Screen, Search
 import type { CoachConnection, Profile } from '../../lib/domain';
 import { NOW } from '../../lib/mock';
 import { useStore } from '../../lib/store';
-import { connectionRequests, fold, followerCount, followingCount, needsFeedback, pendingInvites, profileById, roster, swingsOf } from '../../lib/selectors';
+import { connectionRequests, fold, needsFeedback, pendingInvites, profileById, roster, swingsOf } from '../../lib/selectors';
 import { formatDate, formatNumber, formatValue, initials, relativeTime, timeLeft } from '../../lib/format';
 import { newId } from '../../lib/ids';
 import { TabHeader } from '../../components/TabHeader';
 import { Section } from '../../components/Section';
 import { SavedToast } from '../../components/Feedback';
+import { FollowCounts } from '../../components/People';
 import { ListSkeleton, useFirstLoad } from '../../components/ListSkeleton';
 
 /** Tab Học viên của HLV: hero HLV; lọc Tất cả / Cần phản hồi / Lời mời; tìm học viên theo tên không dấu → chi tiết học viên;
@@ -46,11 +47,6 @@ export default function CoachRoster() {
   const note = (text: string) => (
     <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Light" style={pad}>{text}</Text>
   );
-  const counts = [
-    { n: students.length, label: 'Học viên' },
-    { n: followerCount(state, me.id, me.id), label: 'Người theo dõi' },
-    { n: followingCount(state, me.id, me.id), label: 'Đang theo dõi' },
-  ];
   const studentRow = (p: Profile) => {
     const latest = swingsOf(state, p.id)[0];
     return (
@@ -84,7 +80,8 @@ export default function CoachRoster() {
       <View key={c.id}>
         <ListItem
           title={p.name}
-          caption={kind === 'incoming' ? `Muốn kết nối · ${when} · ${becomes}` : `Bạn mời · ${when} · chờ học viên trả lời`}
+          // khoảng trắng không ngắt trong từng cụm → hàng xuống dòng ở " · ", không tách "HLV | chính" (như studentRow)
+          caption={(kind === 'incoming' ? ['Muốn kết nối', when, becomes] : ['Bạn mời', when, 'chờ học viên trả lời']).map((x) => x.replace(/ /g, '\u00a0')).join(' · ')}
           leading={
             <View aria-hidden>
               <Avatar size="Medium" theme={p.avatarUrl ? 'Photo' : 'Accent'} source={p.avatarUrl ? { uri: p.avatarUrl } : undefined} initials={initials(p.name)} />
@@ -146,12 +143,12 @@ export default function CoachRoster() {
               </View>
             </View>
             <View style={{ flexDirection: 'row', gap: t.space('Spacing/Gap/XLarge') }}>
-              {counts.map((c) => (
-                <View key={c.label} accessible accessibilityLabel={`${c.n} ${c.label}`}>
-                  <Text variant="Heading/4">{String(c.n)}</Text>
-                  <Text variant="Caption/Regular" color="Color/Content/Neutral/Light">{c.label}</Text>
-                </View>
-              ))}
+              <View accessible accessibilityLabel={`${students.length} Học viên`}>
+                <Text variant="Heading/4">{String(students.length)}</Text>
+                <Text variant="Caption/Regular" color="Color/Content/Neutral/Light">Học viên</Text>
+              </View>
+              {/* chạm → danh sách người theo dõi / đang theo dõi (như Hồ sơ) */}
+              <FollowCounts userId={me.id} />
             </View>
           </Card>
         </View>
