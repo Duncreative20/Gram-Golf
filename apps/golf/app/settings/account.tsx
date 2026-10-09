@@ -60,7 +60,7 @@ export default function AccountSettings() {
           contentContainerStyle={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Medium') }}
         >
           <View style={{ alignItems: 'center', gap: t.space('Spacing/Gap/Small') }}>
-            <Avatar size="2XLarge" theme={avatarUrl ? 'Photo' : 'Accent'} source={avatarUrl ? { uri: avatarUrl } : undefined} initials={initials(me.name)} accessibilityLabel={`Ảnh đại diện ${me.name}`} />
+            <Avatar size="2XLarge" theme={avatarUrl ? 'Photo' : 'Accent'} source={avatarUrl ? { uri: avatarUrl } : undefined} initials={initials(raw.name.trim() || me.name)} accessibilityLabel={`Ảnh đại diện ${me.name}`} />
             <View style={{ flexDirection: 'row', gap: t.space('Spacing/Gap/Small') }}>
               {/* ponytail: ảnh mẫu thay thư viện ảnh/camera (như onboarding) — bản thật dùng expo-image-picker + upload */}
               <Button level="Secondary" size="Medium (Base)" leadingIcon="image-plus-line" text={avatarUrl ? 'Đổi ảnh' : 'Chọn ảnh'} onPress={() => setAvatarUrl(nextSampleAvatar(avatarUrl))} />

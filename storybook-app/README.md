@@ -129,7 +129,7 @@ Ngoài các bước: thêm story cho trạng thái khó bấm tới (rỗng / đ
 
 ## Phủ route
 
-Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **47/47 route có story** (353 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
+Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **47/47 route có story** (355 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
 
 | Route | Story id | Ghi chú |
 | --- | --- | --- |
@@ -173,10 +173,10 @@ Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **47/47 route có story**
 | `people` | `f10--nguoi-theo-doi`, `f10--dang-theo-doi`, `f10--theo-doi-rong`, `f10--theo-doi-nguoi-da-chan` |  |
 | `notifications` | `f04--b-06-thong-bao-loi-moi`, `f08--b-14-hoc-vien-nhan-thong-bao`, `f11--b-01-trung-tam`, `f11--b-03-da-doc`, `f11--b-07-binh-luan-moi`, `f11--b-08-doc-tat-ca`, `f11--rong`, `f13--dang-tai-thong-bao` |  |
 | `profile` | `f03--b-09-dang-xuat`, `f03--ho-so`, `f12--b-01-ho-so`, `f12--b-03-ho-so-sau-sua`, `f12--ho-so-hlv` | Đăng xuất (dialog) ở F03 |
-| `settings/index` | `f03--cai-dat`, `f12--b-04-cai-dat` |  |
+| `settings/index` | `f03--cai-dat`, `f12--b-04-cai-dat`, `f12--cai-dat-hlv` |  |
 | `settings/account` | `f12--b-02-sua-tai-khoan`, `f12--b-11-bio-hlv-loi`, `f12--tai-khoan-hlv`, `f12--tai-khoan-loi`, `f12--tai-khoan-da-luu`, `f02--tai-khoan-bio-ngan`, `f13--dang-luu-tai-khoan` | Ảnh đại diện = ảnh mẫu (Chọn ảnh / Đổi ảnh / Dùng chữ tắt), lưu khi bấm Lưu; `f12--b-11-bio-hlv-loi`, `f02--tai-khoan-bio-ngan` = HLV giới thiệu dưới 20 ký tự |
 | `settings/password` | `f03--b-07-doi-mk-loi`, `f03--b-08-doi-mk-xong`, `f03--doi-mat-khau`, `f12--mat-khau` | Trạng thái lỗi / đã đổi ở F03; chưa đăng nhập → `/` |
-| `settings/privacy` | `f12--b-05-quyen-rieng-tu`, `f12--b-09-nguoi-da-chan`, `f12--b-10-bo-chan`, `f12--b-13-xoa-tai-khoan`, `f12--xoa-tai-khoan-lan-cuoi`, `f12--quyen-rieng-tu-hlv` |  |
+| `settings/privacy` | `f12--b-05-quyen-rieng-tu`, `f12--b-09-nguoi-da-chan`, `f12--b-10-bo-chan`, `f12--b-13-xoa-tai-khoan`, `f12--xoa-tai-khoan-lan-cuoi`, `f12--quyen-rieng-tu-hlv`, `f12--xoa-tai-khoan-hlv` |  |
 | `settings/notifications` | `f12--b-06-cai-dat-thong-bao`, `f12--cai-dat-thong-bao-hlv` |  |
 | `settings/units` | `f12--b-07-don-vi`, `f12--don-vi-met` |  |
 | `settings/dev` | `f12--dev`, `f12--dev-dat-lai`, `f12--dev-kiem-tra-theo-luong`, `f13--b-07-bat-gia-lap-loi` | Chỉ `__DEV__`; Storybook luôn `__DEV__ = true`; “Kiểm tra theo luồng” 13 mục (đầu màn, `docs/flows/README.md`); công tắc “Giả lập lỗi khi lưu/xoá” (F13) |

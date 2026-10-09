@@ -1,6 +1,7 @@
 import { ScrollView } from 'react-native';
 import { router, type Href } from 'expo-router';
 import { Icon, ListItem, Screen, type IconName } from '@gr/ds';
+import { useStore } from '../../lib/store';
 import { StackHeader } from '../../components/StackHeader';
 
 const ROWS: { title: string; caption?: string; icon: IconName; href: Href }[] = [
@@ -13,6 +14,7 @@ const ROWS: { title: string; caption?: string; icon: IconName; href: Href }[] = 
 ];
 
 export default function Settings() {
+  const { me } = useStore();
   return (
     <Screen>
       <StackHeader title="Cài đặt" />
@@ -21,7 +23,8 @@ export default function Settings() {
           <ListItem
             key={r.title}
             title={r.title}
-            caption={r.caption}
+            // HLV không có công tắc công khai bộ gậy / swing (settings/privacy)
+            caption={me?.role === 'coach' && r.href === '/settings/privacy' ? 'Người đã chặn, xoá tài khoản' : r.caption}
             leading={<Icon name={r.icon} />}
             trailing={<Icon name="chevron-right-line-medium" color="Color/Content/Neutral/Light" />}
             onPress={() => router.push(r.href)}

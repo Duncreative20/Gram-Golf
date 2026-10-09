@@ -26,11 +26,13 @@
  *  ✓ 04a · Mật khẩu                               settings/password
  *  ✓ 04b · Dev / 04c · Dev — đặt lại dữ liệu mẫu  settings/dev           04b cuộn tới nhóm hồ sơ mẫu
  *  ✓ 04d · Dev — Kiểm tra theo luồng              settings/dev           13 luồng F1–F13 (đầu màn)
+ *  ✓ 04e · Cài đặt — HLV                          as c-tuan (Quyền riêng tư: "Người đã chặn, xoá tài khoản")
  *  ✓ 05a · Quyền riêng tư — HLV                   as c-tuan (không có mục công khai dữ liệu)
  *  ✓ 06a · Cài đặt thông báo — HLV                đã tắt một số + giờ yên lặng
  *  ✓ 07a · Đơn vị đo — mét
  *  ✓ 12a · Hồ sơ HLV — màn hồ sơ                  profile as c-tuan
  *  ✓ 13a · Xoá tài khoản — xác nhận lần cuối      Dialog bước 2
+ *  ✓ 13b · Xoá tài khoản — HLV                    as c-tuan, Dialog bước 1 chữ của HLV (hồ sơ, bài đăng, kết nối với học viên)
  *
  * Trùng F03 — không nhân bản: lỗi / đã đổi mật khẩu = f03--b-07-doi-mk-loi, f03--b-08-doi-mk-xong;
  * đăng xuất (Dialog ở profile) = f03--b-09-dang-xuat.
@@ -133,6 +135,12 @@ export const B04CaiDat: Story = {
   name: '04 · Cài đặt',
   render: () => <Settings />,
   ...appStory({ as: 'p-minh' }),
+};
+
+export const CaiDatHlv: Story = {
+  name: '04e · Cài đặt — HLV',
+  render: () => <Settings />,
+  ...appStory({ as: 'c-tuan' }),
 };
 
 export const MatKhau: Story = {
@@ -267,6 +275,16 @@ export const XoaTaiKhoanLanCuoi: Story = {
   play: async ({ canvas }) => {
     await click(canvas, /Xoá tài khoản/);
     await userEvent.click(await screen.findByRole('button', { name: 'Tiếp tục' }));
+  },
+};
+
+export const XoaTaiKhoanHlv: Story = {
+  name: '13b · Xoá tài khoản — HLV',
+  render: () => <Privacy />,
+  ...appStory({ as: 'c-tuan' }),
+  play: async ({ canvas }) => {
+    await click(canvas, /Xoá tài khoản/);
+    await screen.findByText('Xoá tài khoản?');
   },
 };
 

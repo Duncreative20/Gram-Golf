@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect } from 'expo-router';
 import { Avatar, Button, Dialog, ListItem, Screen, Text, ToggleRow, useTheme } from '@gr/ds';
@@ -14,6 +14,7 @@ const DELETE_STEPS = [
   {
     title: 'Xoá tài khoản?',
     body: 'Hồ sơ, thông số, swing, bộ gậy, bài đăng và kết nối với HLV sẽ bị xoá vĩnh viễn.',
+    coachBody: 'Hồ sơ, bài đăng và kết nối với học viên sẽ bị xoá vĩnh viễn.',
     primaryText: 'Tiếp tục',
   },
   {
@@ -29,6 +30,7 @@ export default function PrivacySettings() {
   const { state, dispatch, me } = useStore();
   const [deleteStep, setDeleteStep] = useState(-1); // -1 đóng; 0, 1 = bước trong DELETE_STEPS (một Dialog đổi nội dung, không mở Dialog chồng)
   const [toast, setToast] = useState<{ key: number; title: string }>();
+  const shown = useRef(0); // bước cuối đã hiện — đóng (-1) vẫn giữ chữ bước đó trong lúc Dialog mờ dần, không nhảy về bước 1
   if (!me) return <Redirect href="/" />;
   const prefs = prefsOf(state, me.id);
   const setPref = (patch: Partial<Preferences>) => dispatch({ type: 'setPrefs', userId: me.id, patch });
@@ -36,7 +38,8 @@ export default function PrivacySettings() {
     .filter((b) => b.blockerId === me.id)
     .map((b) => profileById(state, b.blockedId))
     .filter((p): p is Profile => !!p);
-  const step = DELETE_STEPS[Math.max(deleteStep, 0)]!; // đóng (-1) vẫn giữ chữ bước đầu trong lúc Dialog mờ dần
+  if (deleteStep >= 0) shown.current = deleteStep;
+  const step = DELETE_STEPS[shown.current]!;
   return (
     <Screen>
       <StackHeader title="Quyền riêng tư" />
@@ -44,6 +47,7 @@ export default function PrivacySettings() {
         {me.role === 'player' && (
           <Section title="Ai xem được dữ liệu của bạn" caption="Mặc định chỉ bạn và HLV đã kết nối xem được">
             <View style={{ paddingHorizontal: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/XSmall') }}>
+              {/* ponytail: chỉ lưu tuỳ chọn — chưa có màn xem bộ gậy / swing công khai; nâng cấp: users/[id] hiện bộ gậy / swing khi publicClubs / publicSwings bật (canViewPrivate theo từng loại). */}
               <ToggleRow label="Công khai bộ gậy" select={prefs.publicClubs} onChange={(publicClubs) => setPref({ publicClubs })} />
               <ToggleRow label="Công khai danh sách swing" select={prefs.publicSwings} onChange={(publicSwings) => setPref({ publicSwings })} />
             </View>
@@ -88,7 +92,7 @@ export default function PrivacySettings() {
         onRequestClose={() => setDeleteStep(-1)}
         theme="Negative"
         title={step.title}
-        body={step.body}
+        body={me.role === 'coach' ? (step.coachBody ?? step.body) : step.body}
         primaryText={step.primaryText}
         destructive
         onPrimary={() => {
