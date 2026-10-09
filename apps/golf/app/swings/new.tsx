@@ -209,7 +209,7 @@ export default function SwingNew() {
           !rejected
             ? ''
             : videoFileError(rejected) === 'too_large'
-              ? `${rejected.fileName} nặng ${formatSize(rejected.sizeMb)} — tối đa ${MAX_VIDEO_MB} MB. Cắt ngắn đoạn swing hoặc quay ở 1080p rồi chọn lại.`
+              ? `${rejected.fileName} nặng ${formatSize(rejected.sizeMb)} — tối đa ${MAX_VIDEO_MB} MB. Cắt ngắn đoạn swing hoặc quay ở 1080p rồi chọn lại.`
               : `${rejected.fileName} là ảnh, không phân tích swing được. Chọn một video (.mp4, .mov).`
         }
         primaryText="Chọn video khác"

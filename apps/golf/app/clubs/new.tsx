@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Redirect, router } from 'expo-router';
 import { BottomSheet, Button, Chip, Divider, PopoverItem, Screen, SelectField, Text, TextField, useTheme } from '@gr/ds';
@@ -31,7 +31,10 @@ export function ClubForm({ initial, onSubmit }: { initial?: Club; onSubmit: (clu
   const errors = submitted ? result.errors : {};
   const invalid = Object.keys(result.errors).length;
   const suggested = raw.type ? defaultLoft(raw.type) : undefined;
-  const showBounce = (raw.type !== undefined && WEDGES.includes(raw.type)) || raw.bounceDeg.trim() !== '';
+  // gậy không phải wedge có bounce: ô đã hiện thì giữ — xoá trống ô không làm ô biến mất (mất focus / bàn phím)
+  const bounceTyped = useRef(false);
+  bounceTyped.current ||= raw.bounceDeg.trim() !== '';
+  const showBounce = (raw.type !== undefined && WEDGES.includes(raw.type)) || bounceTyped.current;
   const set = (key: InputKey, v: string) => setRaw((r) => ({ ...r, [key]: v }));
   const pickType = (type: ClubType) => {
     setRaw((r) => ({ ...r, type, loftDeg: loftOnTypeChange(r.loftDeg, r.type, type) }));
@@ -39,6 +42,7 @@ export function ClubForm({ initial, onSubmit }: { initial?: Club; onSubmit: (clu
   };
   const save = () => {
     setSubmitted(true);
+    setFailed(false); // toast lỗi lần trước gỡ ra → lỗi lần này hiện lại đủ giờ
     if (!result.value || !me) return;
     const club = { ...initial, id, playerId: initial?.playerId ?? me.id, ...result.value };
     run(
@@ -74,7 +78,7 @@ export function ClubForm({ initial, onSubmit }: { initial?: Club; onSubmit: (clu
           {text('shaftBrand', 'Hãng cán', 'VD: Fujikura Ventus Blue 6')}
           <View style={{ gap: t.size('Input/Spacing-Regt/Medium/Outside-Field-Gap') }}>
             <Text variant="Label/Small/DemiBold" color="Color/Content/Neutral/Light">Flex</Text>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space('Spacing/Gap/XSmall') }}>
+            <View accessibilityRole="radiogroup" accessibilityLabel="Flex" style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space('Spacing/Gap/XSmall') }}>
               {SHAFT_FLEXES.map((f) => (
                 <Chip key={f} size="Medium" text={f} select={raw.shaftFlex === f} onPress={() => setRaw((r) => ({ ...r, shaftFlex: f }))} />
               ))}
@@ -130,10 +134,7 @@ export function ClubForm({ initial, onSubmit }: { initial?: Club; onSubmit: (clu
           title="Lưu thất bại"
           caption="Mất kết nối — gậy chưa được lưu, form giữ nguyên."
           actionText="Thử lại"
-          onAction={() => {
-            setFailed(false);
-            save();
-          }}
+          onAction={save}
           onDone={() => setFailed(false)}
         />
       )}

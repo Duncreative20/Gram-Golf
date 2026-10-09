@@ -30,7 +30,8 @@ export default function ClubDetail() {
   if (!me) return <Redirect href="/" />;
   const club = clubById(state, id);
   const back = () => (router.canGoBack() ? router.back() : router.replace('/clubs'));
-  const removeClub = () =>
+  const removeClub = () => {
+    setFailed(false); // toast lỗi lần trước gỡ ra → lỗi lần này hiện lại đủ giờ
     run(
       () => {
         deleteOnLeave();
@@ -38,6 +39,7 @@ export default function ClubDetail() {
       },
       () => setFailed(true),
     );
+  };
   if (!club || !canViewPrivate(state, me.id, club.playerId)) {
     return (
       <Screen>
@@ -85,7 +87,7 @@ export default function ClubDetail() {
       <ScrollView contentContainerStyle={{ paddingVertical: t.space('Spacing/Padding/Medium'), gap: t.space('Spacing/Gap/Large') }}>
         {club.archivedAt && (
           <View style={{ paddingHorizontal: t.layout('Margin-Small') }}>
-            <InlineMessage text={`Đã lưu trữ ngày ${formatDate(club.archivedAt)} — gậy ẩn khỏi danh sách và chọn gậy, dữ liệu cũ giữ nguyên. Khôi phục để dùng lại.`} />
+            <InlineMessage text={`Đã lưu trữ ngày ${formatDate(club.archivedAt)} — gậy ẩn khỏi danh sách và chọn gậy, dữ liệu cũ giữ nguyên.${own ? ' Khôi phục để dùng lại.' : ''}`} />
           </View>
         )}
         <Section title="Thông số">
@@ -201,10 +203,7 @@ export default function ClubDetail() {
           title="Xoá thất bại"
           caption="Mất kết nối — gậy vẫn còn."
           actionText="Thử lại"
-          onAction={() => {
-            setFailed(false);
-            removeClub();
-          }}
+          onAction={removeClub}
           onDone={() => setFailed(false)}
         />
       )}
