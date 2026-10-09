@@ -18,9 +18,13 @@ export const FITNESS_FIELDS: FieldSpec<keyof FitnessMetrics>[] = [
   { key: 'verticalJumpCm', label: 'Bật cao', unit: 'cm', min: 5, max: 120, digits: 0 },
 ];
 
-/** Ô nhập swing theo đơn vị hiển thị: imperial → carry nhập yard, khoảng làm tròn vào trong để đổi về mét vẫn hợp lệ. */
+const CARRY = SWING_FIELDS.find((f) => f.key === 'carryM')!;
+/** Ô nhập swing theo đơn vị hiển thị: imperial → carry nhập yard; khoảng mét đổi sang yard nới ra theo 0,1 yd (đúng số `carryYd` hiện ở biên:
+ *  10 m → "10,9", 350 m → "382,8"), lưu xong kẹp lại vào khoảng mét (`validateSwingMetrics`). */
 export const swingFields = (units: Units): FieldSpec<keyof SwingMetrics>[] =>
-  units === 'metric' ? SWING_FIELDS : SWING_FIELDS.map((f) => (f.key === 'carryM' ? { ...f, unit: 'yd', min: Math.ceil(mToYd(f.min)), max: Math.floor(mToYd(f.max)) } : f));
+  units === 'metric' ? SWING_FIELDS : SWING_FIELDS.map((f) => (f === CARRY ? { ...f, unit: 'yd', min: Math.floor(mToYd(f.min) * 10) / 10, max: Math.ceil(mToYd(f.max) * 10) / 10 } : f));
+/** Carry (mét) → chữ cho ô "Carry (yd)": 1 chữ số thập phân, lưu lại về mét (làm tròn 0,1 m) không trôi (sửa phiên, điền sẵn OCR). */
+export const carryYd = (m: number) => formatValue(Math.round(mToYd(m) * 10) / 10);
 /** Khoảng hợp lệ viết kiểu VN: "40–150 mph", "1–1,56", "-10–45°" (gợi ý dưới ô nhập + thông báo lỗi). */
 export const rangeText = (f: FieldSpec<string>) => `${formatValue(f.min)}–${formatValue(f.max, f.unit)}`;
 
@@ -45,7 +49,7 @@ function validateFields<K extends string>(specs: FieldSpec<K>[], raw: Raw<K>): V
 /** `units` = đơn vị người dùng nhập carry (prefs); giá trị trả về luôn ở mét (D9). */
 export const validateSwingMetrics = (raw: Raw<keyof SwingMetrics>, units: Units = 'metric') => {
   const r = validateFields(swingFields(units), raw) as Validated<SwingMetrics>;
-  if (r.value && units === 'imperial') r.value.carryM = ydToM(r.value.carryM);
+  if (r.value && units === 'imperial') r.value.carryM = Math.min(CARRY.max, Math.max(CARRY.min, Math.round(ydToM(r.value.carryM) * 10) / 10));
   return r;
 };
 export const validateFitnessMetrics = (raw: Raw<keyof FitnessMetrics>) => validateFields(FITNESS_FIELDS, raw) as Validated<FitnessMetrics>;
@@ -243,12 +247,10 @@ export type VideoFileError = 'not_video' | 'too_large';
 export const videoFileError = (f: { mimeType: string; sizeMb: number }): VideoFileError | undefined =>
   !f.mimeType.startsWith('video/') ? 'not_video' : f.sizeMb > MAX_VIDEO_MB ? 'too_large' : undefined;
 
-/** Giá trị form sửa phiên swing từ số đã lưu (mét, D9): số kiểu VN giữ nguyên chữ số; carry theo đơn vị hiển thị — imperial đổi sang yard
- *  1 chữ số thập phân để lưu lại không trôi quá 0,05 m. Lưu bằng `validateSwingMetrics(raw, units)`. */
+/** Giá trị form sửa phiên swing từ số đã lưu (mét, D9): số kiểu VN giữ nguyên chữ số; carry theo đơn vị hiển thị — imperial = `carryYd`.
+ *  Lưu bằng `validateSwingMetrics(raw, units)`. */
 export const swingRaw = (m: SwingMetrics, units: Units): Raw<keyof SwingMetrics> =>
-  Object.fromEntries(
-    SWING_FIELDS.map((f) => [f.key, formatValue(f.key === 'carryM' && units === 'imperial' ? Math.round(mToYd(m.carryM) * 10) / 10 : m[f.key])]),
-  ) as Raw<keyof SwingMetrics>;
+  Object.fromEntries(SWING_FIELDS.map((f) => [f.key, f === CARRY && units === 'imperial' ? carryYd(m.carryM) : formatValue(m[f.key])])) as Raw<keyof SwingMetrics>;
 /** Giá trị form sửa phiên thể lực. */
 export const fitnessRaw = (m: FitnessMetrics): Raw<keyof FitnessMetrics> =>
   Object.fromEntries(FITNESS_FIELDS.map((f) => [f.key, formatValue(m[f.key])])) as Raw<keyof FitnessMetrics>;

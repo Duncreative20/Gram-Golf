@@ -40,15 +40,18 @@ describe('carry theo đơn vị hiển thị (D9: luôn lưu mét)', () => {
     expect(swingFields('metric')).toBe(SWING_FIELDS);
     expect(validateSwingMetrics(raw, 'metric').value?.carryM).toBe(250);
   });
-  it('imperial: carry nhập yard, khoảng đổi sang yard mà vẫn nằm trong 10–350 m', () => {
-    expect(swingFields('imperial').find((f) => f.key === 'carryM')).toMatchObject({ unit: 'yd', min: 11, max: 382 });
+  it('imperial: carry nhập yard, khoảng 10–350 m đổi sang yard theo 0,1 yd (đúng số swingRaw hiện ở biên)', () => {
+    expect(swingFields('imperial').find((f) => f.key === 'carryM')).toMatchObject({ unit: 'yd', min: 10.9, max: 382.8 });
     expect(swingFields('imperial').filter((f) => f.key !== 'carryM')).toEqual(SWING_FIELDS.filter((f) => f.key !== 'carryM'));
   });
-  it('imperial: lưu carry đã đổi về mét; ngoài khoảng yard báo lỗi bằng yard', () => {
-    expect(validateSwingMetrics(raw, 'imperial').value?.carryM).toBeCloseTo(228.6, 1);
+  it('imperial: lưu carry đã đổi về mét, làm tròn 0,1 m, kẹp vào 10–350 m; ngoài khoảng yard báo lỗi bằng yard', () => {
+    expect(validateSwingMetrics(raw, 'imperial').value?.carryM).toBe(228.6);
+    expect(swingRaw(validateSwingMetrics(raw, 'imperial').value!, 'metric').carryM).toBe('228,6'); // đổi sang mét rồi "Sửa phiên"
+    expect(validateSwingMetrics({ ...raw, carryM: '10,9' }, 'imperial').value?.carryM).toBe(10);
+    expect(validateSwingMetrics({ ...raw, carryM: '382,8' }, 'imperial').value?.carryM).toBe(350);
     const r = validateSwingMetrics({ ...raw, carryM: '383' }, 'imperial');
     expect(r.value).toBeNull();
-    expect(r.errors.carryM).toBe('Trong khoảng 11–382 yd');
+    expect(r.errors.carryM).toBe('Trong khoảng 10,9–382,8 yd');
   });
 });
 
@@ -243,6 +246,13 @@ describe('sửa phiên: giá trị form từ phiên đã lưu', () => {
   it('imperial: carry hiện yard 1 chữ số; lưu lại về mét lệch dưới 0,05 m', () => {
     expect(swingRaw(sw, 'imperial').carryM).toBe('250,4');
     expect(validateSwingMetrics(swingRaw(sw, 'imperial'), 'imperial').value!.carryM).toBeCloseTo(229, 1);
+  });
+  it('imperial: carry ở biên 10 m / 350 m mở form rồi lưu nguyên → y hệt (không báo lỗi ô không đụng)', () => {
+    for (const carryM of [10, 350]) {
+      const r = validateSwingMetrics(swingRaw({ ...sw, carryM }, 'imperial'), 'imperial');
+      expect(r.errors).toEqual({});
+      expect(r.value).toEqual({ ...sw, carryM });
+    }
   });
   it('thể lực: mở form rồi lưu nguyên → y hệt', () => {
     const f = { weightKg: 72.5, flexibility: 7, gripStrengthKg: 45, verticalJumpCm: 48 };

@@ -1,6 +1,6 @@
 import type { CameraView, JobStatus, SwingAnalysis, SwingMetrics, UploadStatus, Units, Vendor } from './domain';
-import { formatNumber, mToYd, parseNumberVN } from './format';
-import { SWING_FIELDS } from './validation';
+import { parseNumberVN } from './format';
+import { carryYd, SWING_FIELDS } from './validation';
 
 /** File CSV mẫu cho màn nhập (bản thử chưa mở file thật). `vendor: null` = file không phải của máy đo hỗ trợ → nhánh lỗi. */
 export const SAMPLE_FILES: { name: string; vendor: Vendor | null; content: string }[] = [
@@ -113,7 +113,7 @@ export function ocrPrefill(fields: OcrField[], units: Units) {
   const highlight: Partial<Record<keyof SwingMetrics, boolean>> = {};
   for (const f of fields) {
     const m = f.key === 'carryM' && units === 'imperial' ? parseNumberVN(f.raw) : null;
-    values[f.key] = m === null ? f.raw : formatNumber(mToYd(m));
+    values[f.key] = m === null ? f.raw : carryYd(m);
     if (f.confidence < LOW_CONFIDENCE) highlight[f.key] = true;
   }
   return { values, highlight };

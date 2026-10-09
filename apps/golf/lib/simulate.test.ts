@@ -97,12 +97,14 @@ describe('simulate', () => {
     expect(r.values).toEqual({ clubSpeedMph: '104,8', ballSpeedMph: '153,2', smash: '1,46', spinRpm: '2B10', launchDeg: '12,1', carryM: '231' });
     expect(r.highlight).toEqual({ spinRpm: true });
   });
-  it('ocrPrefill: imperial → carry (mét) đổi sang yard cho ô "Carry (yd)"', () => {
+  it('ocrPrefill: imperial → carry (mét) đổi sang yard 1 chữ số thập phân cho ô "Carry (yd)" (như swingRaw)', () => {
     const r = ocrPrefill(mockOcr('trackman'), 'imperial');
-    expect(r.values.carryM).toBe('253');
+    expect(r.values.carryM).toBe('252,6');
     expect(r.values.clubSpeedMph).toBe('104,8');
     // lưu bằng cùng đơn vị → về lại mét (D9), không lưu nhầm yard thành mét
-    expect(validateSwingMetrics({ ...r.values, spinRpm: '2610' }, 'imperial').value!.carryM).toBeCloseTo(231, 0);
+    expect(validateSwingMetrics({ ...r.values, spinRpm: '2610' }, 'imperial').value!.carryM).toBe(231);
+    const half = ocrPrefill(mockOcr('trackman').map((f) => (f.key === 'carryM' ? { ...f, raw: '198,5' } : f)), 'imperial');
+    expect(validateSwingMetrics({ ...half.values, spinRpm: '2610' }, 'imperial').value!.carryM).toBeCloseTo(198.5, 1); // lệch < 0,05 m
   });
   it('ocrPrefill: carry không phải số giữ nguyên để form báo lỗi; trường OCR thiếu → trống', () => {
     const r = ocrPrefill([{ key: 'carryM', raw: '2B1', confidence: 0.5 }], 'imperial');
