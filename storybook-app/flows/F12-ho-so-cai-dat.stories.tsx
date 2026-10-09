@@ -90,7 +90,7 @@ export const B02SuaTaiKhoan: Story = {
   play: async ({ canvas }) => {
     await click(canvas, 'Chọn ảnh');
     const [avatar] = await canvas.findAllByRole('img', { name: /^Ảnh đại diện/ }); // khung Avatar (ngoài) + ảnh bên trong
-    await avatar?.querySelector('img')?.decode(); // ảnh mẫu tải từ mạng → chờ xong mới chụp
+    await avatar?.querySelector('img')?.decode().catch(() => {}); // ảnh mẫu tải từ mạng → chờ xong mới chụp; mạng lỗi thì vẫn chụp, play không ném
     await fill(canvas, { 'Họ tên': 'Nguyễn Thị Minh Anh', Handicap: '13,5', 'CLB / sân tập (tuỳ chọn)': 'Sân tập Hồ Tây' });
   },
 };

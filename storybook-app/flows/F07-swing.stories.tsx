@@ -348,7 +348,8 @@ export const DaXoa: Story = {
 export const B16CanXemLai: Story = {
   name: '16 · Đăng driver_nguoc_sang.mp4 — cần xem lại',
   render: () => <SwingDetail />,
-  ...appStory(detail('sw-sb-review')),
+  // Luồng thật đăng video lúc NOW → ngày 07/10 như ảnh CDP; 01a vẫn dùng sw-sb-review ngày 04/10 trong SWINGS.
+  ...appStory({ as: 'p-minh', params: { id: 'sw-sb-review' }, setup: [{ type: 'addSwing', swing: { ...SWINGS.find((x) => x.id === 'sw-sb-review')!, capturedAt: NOW } }] }),
   play: ({ canvas }) => reveal(canvas.findByRole('button', { name: 'Quay lại hướng dẫn' })),
 };
 
