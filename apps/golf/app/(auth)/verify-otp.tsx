@@ -5,26 +5,17 @@ import { Button, EmptyState, OtpField, Screen, Text, useTheme } from '@gr/ds';
 import { useStore } from '../../lib/store';
 import { newId } from '../../lib/ids';
 import { NOW } from '../../lib/mock';
-import type { Registration } from '../../lib/validation';
+import { parseRegistrationDraft } from '../../lib/validation';
 import { resetTo, StackHeader } from '../../components/StackHeader';
 
 // ponytail: mã OTP cố định cho bản mock — gửi/kiểm mã thật ở backend.
 const MOCK_OTP = '123456';
 const RESEND_SEC = 60;
 
-function parseDraft(raw?: string): Registration | null {
-  try {
-    const d = raw ? (JSON.parse(raw) as Registration) : null;
-    return d && (d.role === 'player' || d.role === 'coach') && d.name && d.email && d.phone ? d : null;
-  } catch {
-    return null;
-  }
-}
-
 export default function VerifyOtp() {
   const t = useTheme();
   const { dispatch } = useStore();
-  const draft = parseDraft(useLocalSearchParams<{ draft?: string }>().draft);
+  const draft = parseRegistrationDraft(useLocalSearchParams<{ draft?: string }>().draft);
   const [code, setCode] = useState('');
   const [wrong, setWrong] = useState(false);
   const [wait, setWait] = useState(RESEND_SEC);

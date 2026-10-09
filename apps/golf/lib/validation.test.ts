@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CLUB_TYPES } from './domain';
 import { seedState } from './mock';
-import { validateSwingMetrics, validateFitnessMetrics, validateClub, validateRegistration, validateAccount, validatePasswordChange, validatePost, addTags, SWING_FIELDS, swingFields, rangeText, defaultLoft, loftOnTypeChange, clubRaw, type ClubRaw, validateNewPassword, PASSWORD_RULE, validateBio, BIO_MAX, videoFileError, MAX_VIDEO_MB, swingRaw, fitnessRaw } from './validation';
+import { validateSwingMetrics, validateFitnessMetrics, validateClub, validateRegistration, parseRegistrationDraft, validateAccount, validatePasswordChange, validatePost, addTags, SWING_FIELDS, swingFields, rangeText, defaultLoft, loftOnTypeChange, clubRaw, type ClubRaw, validateNewPassword, PASSWORD_RULE, validateBio, BIO_MAX, videoFileError, MAX_VIDEO_MB, swingRaw, fitnessRaw } from './validation';
 import { SAMPLE_VIDEOS } from './simulate';
 
 describe('validation', () => {
@@ -158,6 +158,22 @@ describe('validateRegistration', () => {
     const r = validateRegistration('player', { ...base, email: ' minh@gramgolf.VN', phone: '0901234567' }, profiles);
     expect(r.value).toBeNull();
     expect(Object.keys(r.errors).sort()).toEqual(['email', 'phone']);
+  });
+});
+
+describe('parseRegistrationDraft (bản nháp đăng ký qua URL của verify-otp)', () => {
+  const player = { role: 'player', name: 'Lê Văn Hải', email: 'hai@vidu.vn', phone: '0911222333', handicap: 24.5 };
+  it('chỉ lấy khoá Registration — link sửa tay không chèn được verified, rating, id…', () => {
+    expect(parseRegistrationDraft(JSON.stringify({ ...player, verified: true, rating: 5, id: 'c-tuan', ratePerHourVnd: 1 }))).toEqual(player);
+    const coach = { role: 'coach', name: 'Đỗ Hà', email: 'ha@vidu.vn', phone: '0911222444', academy: 'Học viện ABC', yearsExperience: 8 };
+    expect(parseRegistrationDraft(JSON.stringify({ ...coach, avatarUrl: 'https://x' }))).toEqual(coach);
+  });
+  it('thiếu vai / họ tên / email / SĐT, vai lạ, JSON hỏng → null', () => {
+    expect(parseRegistrationDraft(undefined)).toBeNull();
+    expect(parseRegistrationDraft('{')).toBeNull();
+    expect(parseRegistrationDraft('null')).toBeNull();
+    expect(parseRegistrationDraft(JSON.stringify({ ...player, role: 'admin' }))).toBeNull();
+    expect(parseRegistrationDraft(JSON.stringify({ ...player, phone: '' }))).toBeNull();
   });
 });
 

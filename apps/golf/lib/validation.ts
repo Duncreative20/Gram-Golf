@@ -163,6 +163,19 @@ export function validateRegistration(role: Role, raw: RegistrationRaw, profiles:
   return { errors, value };
 }
 
+/** Bản nháp đăng ký đi qua URL (`?draft=` của verify-otp): chỉ lấy đúng khoá `Registration` — link sửa tay không chèn được `verified`,
+ *  `rating`, `id`… vào hồ sơ. Thiếu vai / họ tên / email / SĐT hoặc JSON hỏng → null. */
+export function parseRegistrationDraft(raw?: string): Registration | null {
+  try {
+    const d = raw ? (JSON.parse(raw) as Registration | null) : null;
+    if (!d || (d.role !== 'player' && d.role !== 'coach') || !d.name || !d.email || !d.phone) return null;
+    const { role, name, email, phone, handicap, academy, yearsExperience } = d;
+    return { role, name, email, phone, handicap, academy, yearsExperience };
+  } catch {
+    return null;
+  }
+}
+
 export const BIO_MAX = 300;
 export const BIO_MIN = 20;
 /** Giới thiệu nghề nghiệp của HLV (bước onboarding, Tài khoản): bắt buộc, 20–300 ký tự tính sau khi bỏ khoảng trắng hai đầu. */
