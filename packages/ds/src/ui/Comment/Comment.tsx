@@ -144,7 +144,7 @@ export function CommentComposer({ value, onChangeText, onSend, placeholder = 'Vi
         </View>
       ) : null}
       <View style={s.row}>
-        {!expanded ? (leading ?? <IconButton level="Tertiary" size="XSmall" icon="plus-line" accessibilityLabel="Thêm" onPress={onAddMedia} />) : null}
+        {!expanded ? (leading ?? (onAddMedia ? <IconButton level="Tertiary" size="XSmall" icon="plus-line" accessibilityLabel="Thêm" onPress={onAddMedia} /> : null)) : null}
         <TextInput value={value} onChangeText={onChangeText} placeholder={placeholder} placeholderTextColor={s.placeholder} multiline style={s.input} accessibilityLabel="Bình luận" />
         {!expanded ? send : null}
       </View>

@@ -17,7 +17,7 @@ export default function CommentGallery() {
     <Screen>
       <ScrollView contentContainerStyle={{ padding: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Large') }} keyboardShouldPersistTaps="handled">
         <Text variant="Heading/Subheading">Comment-Item</Text>
-        <CommentItem comment={ROOT} onReply={(c) => setReply(c.user.name)} />
+        <CommentItem comment={ROOT} onReply={(c) => setReply(c.user.name)} onMore={() => {}} />
         <Text variant="Heading/Subheading">Comment-Thread · Preview → Expand</Text>
         <CommentThread root={{ ...ROOT, media: undefined, attachment: undefined }} replies={REPLIES} onReply={(c) => setReply(c.user.name)} />
         <Text variant="Heading/Subheading">Comment-Media-Item</Text>
@@ -25,9 +25,9 @@ export default function CommentGallery() {
           <CommentMediaItem source={IMG(4)} /><CommentMediaItem type="Video" source={IMG(5)} duration="00:12" /><CommentMediaItem type="More" source={IMG(6)} more={5} /><CommentMediaItem type="Loading" />
         </View>
         <Text variant="Heading/Subheading">Comment-Composer · Default → Typing → Attachment</Text>
-        <CommentComposer value={val} onChangeText={setVal} replyTo={reply} onCancelReply={() => setReply(undefined)} attachments={att ? [{ source: IMG(7) }, { type: 'Video', source: IMG(8) }] : undefined} onAddMedia={() => setAtt(!att)} onSend={() => { setVal(''); setAtt(false); setReply(undefined); }} />
+        <CommentComposer value={val} onChangeText={setVal} replyTo={reply} onCancelReply={() => setReply(undefined)} attachments={att ? [{ source: IMG(7) }, { type: 'Video', source: IMG(8) }] : undefined} onAddMedia={() => setAtt(!att)} onAddLocation={() => {}} onSend={() => { setVal(''); setAtt(false); setReply(undefined); }} />
         <Button level="Tertiary" size="Medium (Base)" text="Mở Comments-Sheet" onPress={() => setOpen(true)} />
-        <CommentsSheet visible={open} onClose={() => setOpen(false)} threads={[{ root: ROOT, replies: REPLIES }, { root: { ...ROOT, id: 'r2', media: undefined, text: 'Bình luận thứ hai không có ảnh.' } }]} composer={{ value: val, onChangeText: setVal, replyTo: reply, onCancelReply: () => setReply(undefined), onSend: () => setVal('') }} onReply={(c) => setReply(c.user.name)} />
+        <CommentsSheet visible={open} onClose={() => setOpen(false)} threads={[{ root: ROOT, replies: REPLIES }, { root: { ...ROOT, id: 'r2', media: undefined, text: 'Bình luận thứ hai không có ảnh.' } }]} composer={{ value: val, onChangeText: setVal, replyTo: reply, onCancelReply: () => setReply(undefined), onAddMedia: () => {}, onSend: () => setVal('') }} onReply={(c) => setReply(c.user.name)} />
       </ScrollView>
     </Screen>
   );

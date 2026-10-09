@@ -16,7 +16,7 @@ const THEME: Record<BottomNavTheme, { off: ItemPaint; on: ItemPaint }> = {
   'Neutral-Surface': { off: { icon: 'Color/Content/Neutral/Light', label: 'Color/Content/Neutral/Light' }, on: { bg: 'Color/Background/Surface/Default', icon: 'Color/Content/Neutral/Strongest', label: 'Color/Content/Neutral/Strongest', shadow: true } },
   'Accent-Surface': { off: { icon: 'Color/Content/Neutral/Light', label: 'Color/Content/Neutral/Light' }, on: { bg: 'Color/Background/Surface/Default', icon: 'Color/Content/Accent/Base', label: 'Color/Content/Accent/Base', shadow: true } },
   'Neutral-Solid': { off: { icon: 'Color/Content/Neutral/Light', label: 'Color/Content/Placeholder' }, on: { bg: 'Color/Background/Active/Neutral/Solid', icon: 'Color/Content/Inverse/Strongest', label: 'Color/Content/Inverse/Strongest', shadow: true } },
-  'Accent-Solid': { off: { icon: 'Color/Content/Neutral/Light', label: 'Color/Content/Neutral/Light' }, on: { bg: 'Color/Background/Active/Accent/Solid', icon: 'Color/Content/On-Accent/Default', label: 'Color/Content/On-Accent/Default', shadow: true } }, // brand fixup: Figma bind Inverse/Strongest (trắng 2.18:1 trên teal)
+  'Accent-Solid': { off: { icon: 'Color/Content/Neutral/Light', label: 'Color/Content/Neutral/Light' }, on: { bg: 'Color/Background/Active/Accent/Solid', icon: 'Color/Content/On-Accent/Default', label: 'Color/Content/On-Accent/Default', shadow: true } }, // NỢ BRAND F-brand-4: Figma bind Inverse/Strongest (trắng 2.18:1 trên teal)
   Overlay: { off: { icon: 'Color/Content/Accent/Strongest', label: 'Color/Content/Accent/Strongest' }, on: { bg: 'Color/Background/Surface/Default', icon: 'Color/Content/Accent/Strongest', label: 'Color/Content/Accent/Strongest', shadow: true } },
 };
 

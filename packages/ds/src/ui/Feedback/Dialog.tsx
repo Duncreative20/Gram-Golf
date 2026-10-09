@@ -36,7 +36,7 @@ export function Dialog({ visible, onRequestClose, theme = 'Default', title, body
           </View>
           <View style={s.actions}>
             {secondaryText ? <Button type="Main" level="Tertiary" size="Medium (Base)" text={secondaryText} onPress={onSecondary ?? onRequestClose} /> : null}
-            <Button type="Main" level={destructive ? 'Danger' : 'Accent'} size="Medium (Base)" text={primaryText} onPress={onPrimary} />
+            <Button type="Main" level={destructive ? 'Danger' : 'Accent'} size="Medium (Base)" text={primaryText} onPress={() => { if (visible) onPrimary(); }} />
           </View>
         </Pressable>
       </Pressable>

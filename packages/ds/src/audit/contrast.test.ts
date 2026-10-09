@@ -196,7 +196,7 @@ describe('contrast audit', () => {
       const bad = res.filter((r) => !r.ok && !r.exempt);
       const soft = res.filter((r) => !r.ok && r.exempt);
       const fmt = (r: (typeof res)[number]) => `${r.ratio.toFixed(2).padStart(6)} <${r.min}  ${r.name}`;
-      console.log(`\n[${scheme}] ${res.length} cặp · dưới ngưỡng (thiết kế) ${bad.length} · miễn ${soft.length}\n` + bad.map(fmt).join('\n') + (soft.length ? '\n-- miễn (disabled/placeholder/dot off):\n' + soft.map(fmt).join('\n') : ''));
+      console.log(`\n[${scheme}/${emphasis}] ${res.length} cặp · dưới ngưỡng (thiết kế) ${bad.length} · miễn ${soft.length}\n` + bad.map(fmt).join('\n') + (soft.length ? '\n-- miễn (disabled/placeholder/dot off):\n' + soft.map(fmt).join('\n') : ''));
       const unknown = bad.filter((r) => !KNOWN_DESIGN.some((re) => re.test(r.name)));
       // < 1.5 = coi như tàng hình; bỏ qua nhóm miễn (dot off, placeholder…) và KNOWN_DESIGN (viền 5 %, toggle off — có bóng/shape).
       const invisible = res.filter((r) => !(r.ratio >= 1.5) && !r.exempt && !KNOWN_DESIGN.some((re) => re.test(r.name)));
