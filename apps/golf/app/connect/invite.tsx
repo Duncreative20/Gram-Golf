@@ -117,7 +117,7 @@ export default function CreateInvite() {
               ))
             ) : (
               <Text variant="Body/Base/Regular" color="Color/Content/Neutral/Light" style={{ paddingHorizontal: t.layout('Margin-Small') }}>
-                Không có người chơi phù hợp — hoặc người đó đã kết nối / đang chờ trả lời lời mời của bạn.
+                {'Không có người chơi phù hợp — hoặc người đó đã kết nối hoặc đang có lời mời / yêu cầu kết nối chờ trả lời (xem\u00a0Học\u00a0viên\u00a0›\u00a0Lời\u00a0mời).'}
               </Text>
             ))}
         </Section>
@@ -128,6 +128,10 @@ export default function CreateInvite() {
                 key={i.code}
                 title={i.code}
                 caption={`${timeLeft(i.expiresAt, NOW)} · tạo ${formatDate(i.createdAt)}`}
+                // chạm → hiện lại thẻ mã ở đầu màn để sao chép / chia sẻ (như tab Học viên). Nhãn đánh vần: web đọc khi dòng nhận focus;
+                // native bỏ qua vì dòng có nút Thu hồi (trailingInteractive) — trình đọc tới mã đánh vần ở thẻ mã.
+                accessibilityLabel={`Mã mời ${i.code.split('').join(' ')}`}
+                onPress={() => setCurrent(i.code)}
                 trailing={
                   <Button
                     level="Tertiary"
