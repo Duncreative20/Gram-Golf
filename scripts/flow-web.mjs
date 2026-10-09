@@ -220,10 +220,11 @@ for (const [i, raw] of spec.steps.entries()) {
       await sleep(s.settle ?? 400);
       await capture(s.shot);
       // Bảng chỉ ghi giá trị cố định giữa các lần chạy: route bỏ query (?as=, ?draft=…), id newId (<tiền tố>-<Date.now base36>-<n>) → <tiền tố>-<id>;
-      // thao tác / kết quả lấy bản gốc trong steps.json (giữ "${code}", không chép mã mời ngẫu nhiên của lần chạy này).
+      // thao tác / kết quả lấy bản gốc trong steps.json, biến "${code}" ghi thành "‹mã vừa tạo›" (không chép mã mời ngẫu nhiên của lần chạy này).
       const route = (await inPage(() => location.pathname)).replace(/\b([a-z]+)-[0-9a-z]{8}-[0-9a-z]+\b/g, '$1-<id>');
       const img = `[sáng](${spec.flow}/${sid(s.shot)}.light.png) · [tối](${spec.flow}/${sid(s.shot)}.dark.png)`;
-      rows.push({ shot: s.shot, row: `| ${s.shot.slice(0, 2)} | ${account} | \`${route}\` | ${raw.do} | ${raw.see} | ${img} |` });
+      const text = (t) => t.replace(/\$\{\w+\}/g, '‹mã vừa tạo›'); // ponytail: mọi biến hiện là mã mời; thêm nhãn riêng khi có loại biến khác
+      rows.push({ shot: s.shot, row: `| ${s.shot.slice(0, 2)} | ${account} | \`${route}\` | ${text(raw.do)} | ${text(raw.see)} | ${img} |` });
     } else throw new Error('bước không có khoá hợp lệ');
     console.log(`✓ ${i + 1} ${JSON.stringify(raw)}`);
   } catch (err) {
