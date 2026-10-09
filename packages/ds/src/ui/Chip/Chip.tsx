@@ -21,12 +21,14 @@ export interface ChipProps {
   counter?: string;
   select?: boolean;
   onPress?: () => void;
+  /** Nhãn trình đọc màn hình khi chữ trên chip không nói hết việc bấm làm (vd chip tag bấm để bỏ) */
+  accessibilityLabel?: string;
 }
 
-export function Chip({ variant = 'Normal', text, size = 'Small', level = 'Secondary', icon, photo, counter, select = false, onPress }: ChipProps) {
+export function Chip({ variant = 'Normal', text, size = 'Small', level = 'Secondary', icon, photo, counter, select = false, onPress, accessibilityLabel }: ChipProps) {
   const t = useTheme();
   return (
-    <Pressable accessibilityRole="button" {...a11yState({ selected: select }, 'button')} onPress={onPress} style={({ pressed }) => chipStyles(t, { variant, size, level, select, pressed }).container}>
+    <Pressable accessibilityRole="button" accessibilityLabel={accessibilityLabel} {...a11yState({ selected: select }, 'button')} onPress={onPress} style={({ pressed }) => chipStyles(t, { variant, size, level, select, pressed }).container}>
       {({ pressed }) => {
         const s = chipStyles(t, { variant, size, level, select, pressed });
         return (

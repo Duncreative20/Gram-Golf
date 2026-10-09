@@ -62,7 +62,8 @@ sửa (bước code nằm sẵn trong task sở hữu, cột “Bước”); thu
 - `FollowCounts` / tiêu đề `LikesSheet` đếm cả người bị chặn trong khi danh sách ẩn họ (review Task 12 #4) — chỉ lệch khi người xem đã chặn một
   người trong danh sách; ẩn là có chủ đích. → Đã sửa (nhánh fix/gramgolf-minors, nhóm lib): số đếm bỏ người đã chặn / bị chặn với người xem.
 - Hồ sơ bị chặn vẫn hiện "Handicap · CLB" (review Task 12 #6) — thông tin công khai.
-- DS `Chip` không nhận `accessibilityLabel` (report Task 12) — trợ giúp của ô tag đã nói "chạm tag để bỏ".
+- DS `Chip` không nhận `accessibilityLabel` (report Task 12) — trợ giúp của ô tag đã nói "chạm tag để bỏ". → Đã sửa (nhánh
+  fix/gramgolf-minors, nhóm social): `Chip` nhận `accessibilityLabel`, chip tag ở Đăng bài đọc "Bỏ tag #…".
 - `BottomSheet` primary / `ShareSheet` "Gửi (N)" màu khác nút app (review Task 12 #10) — DS dùng `level` theo Figma Share-Sheet; đổi là quyết
   định Figma, chủ dự án xem ảnh `f04--hlv-chia-se-ma` rồi quyết.
 - Đơn giá vượt 10.000.000 báo "Số tiền không hợp lệ" (review Task 13 #4, nửa sau) — trợ giúp ô đã ghi "Tối đa 10.000.000 đ". → Đã sửa (nhánh

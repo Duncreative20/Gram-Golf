@@ -90,7 +90,7 @@ export default function ComposePost() {
         {tags.length > 0 && (
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space('Spacing/Gap/XSmall') }}>
             {tags.map((tag) => (
-              <Chip key={tag} size="Small" icon="x-small-line" text={`#${tag}`} onPress={() => setTags(tags.filter((x) => x !== tag))} />
+              <Chip key={tag} size="Small" icon="x-small-line" text={`#${tag}`} accessibilityLabel={`Bỏ tag #${tag}`} onPress={() => setTags(tags.filter((x) => x !== tag))} />
             ))}
           </View>
         )}
