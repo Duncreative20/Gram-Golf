@@ -5,7 +5,7 @@ import { Button, EmptyState, Screen, SearchField, Skeleton, SkeletonText, TabBar
 import { useStore } from '../lib/store';
 import { discover, feed } from '../lib/selectors';
 import { TabHeader } from './TabHeader';
-import { PostItem } from './PostItem';
+import { PostItem, useShareToast } from './PostItem';
 import { PersonRow } from './People';
 import { useFirstLoad } from './ListSkeleton';
 
@@ -27,6 +27,7 @@ export default function CommunityScreen() {
   const [query, setQuery] = useState('');
   // Lần đầu mở trong phiên: giả lập tải bảng tin → khung xương bài viết (bản thật: chờ API)
   const loading = useFirstLoad('feed');
+  const share = useShareToast();
   if (!me) return <Redirect href="/" />;
   const posts = feed(state, me.id);
   const people = discover(state, me.id, query);
@@ -56,7 +57,7 @@ export default function CommunityScreen() {
             <FlatList
               data={posts}
               keyExtractor={(p) => p.id}
-              renderItem={({ item }) => <PostItem post={item} onOpen={() => router.push(`/posts/${item.id}`)} />}
+              renderItem={({ item }) => <PostItem post={item} onOpen={() => router.push(`/posts/${item.id}`)} onShared={share.onShared} />}
               // chừa chỗ cho nút nổi "Đăng bài"
               contentContainerStyle={{ paddingTop: t.space('Spacing/Gap/Small'), paddingBottom: t.size('Button/Size/Medium') + 2 * t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Small') }}
             />
@@ -91,6 +92,7 @@ export default function CommunityScreen() {
           </ScrollView>
         </>
       )}
+      {share.toast}
     </Screen>
   );
 }

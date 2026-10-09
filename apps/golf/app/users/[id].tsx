@@ -5,7 +5,7 @@ import { useStore } from '../../lib/store';
 import { canViewPrivate, isBlocked, profileById } from '../../lib/selectors';
 import { formatValue, initials } from '../../lib/format';
 import { StackHeader } from '../../components/StackHeader';
-import { PostsSection } from '../../components/PostItem';
+import { PostsSection, useShareToast } from '../../components/PostItem';
 import { BlockedNotice, FollowButton, FollowCounts, ProfileScreen } from '../../components/People';
 
 const back = () => (router.canGoBack() ? router.back() : router.replace('/'));
@@ -16,6 +16,7 @@ export default function UserProfile() {
   const t = useTheme();
   const { state, me } = useStore();
   const { id } = useLocalSearchParams<{ id: string }>();
+  const share = useShareToast();
   if (!me) return <Redirect href="/" />;
   const user = profileById(state, id);
   if (user?.role === 'coach') return <Redirect href={`/coaches/${user.id}`} />;
@@ -63,8 +64,9 @@ export default function UserProfile() {
             </>
           )}
         </View>
-        {!blocked && <PostsSection authorId={user.id} />}
+        {!blocked && <PostsSection authorId={user.id} onShared={share.onShared} />}
       </ScrollView>
+      {share.toast}
     </ProfileScreen>
   );
 }

@@ -4,13 +4,14 @@ import { Button, Screen, Text, useTheme } from '@gr/ds';
 import { useStore } from '../../lib/store';
 import { TabHeader } from '../../components/TabHeader';
 import { CoachSummary } from '../../components/CoachSummary';
-import { PostsSection } from '../../components/PostItem';
+import { PostsSection, useShareToast } from '../../components/PostItem';
 import { FollowCounts } from '../../components/People';
 
 /** Tab Hồ sơ của HLV: hồ sơ công khai của chính mình (như người khác thấy ở coaches/[id]) + sửa hồ sơ, cài đặt; bài đã đăng. */
 export default function CoachMe() {
   const t = useTheme();
   const { me } = useStore();
+  const share = useShareToast();
   if (!me) return <Redirect href="/" />;
   return (
     <Screen edges={['top']}>
@@ -29,8 +30,9 @@ export default function CoachMe() {
             </View>
           </View>
         </View>
-        <PostsSection authorId={me.id} />
+        <PostsSection authorId={me.id} onShared={share.onShared} />
       </ScrollView>
+      {share.toast}
     </Screen>
   );
 }

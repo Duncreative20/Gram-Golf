@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AccessibilityInfo, Clipboard, Pressable, View } from 'react-native';
+import { Clipboard, Pressable, View } from 'react-native';
 import { router } from 'expo-router';
 import { Badge, Identity, ShareSheet, SocialAction, Tag, Text, useTheme } from '@gr/ds';
 import type { ID, Post } from '../lib/domain';
@@ -10,14 +10,16 @@ import { relativeTime } from '../lib/format';
 import { newId } from '../lib/ids';
 import { profileHref } from './People';
 import { Section } from './Section';
+import { SavedToast } from './Feedback';
 
 // ponytail: link bài giả (chưa có domain / deep link thật) — có backend thì lấy link chia sẻ từ server, mở app bằng universal link.
 const postLink = (id: string) => `https://gramgolf.app/p/${id}`;
 
 /** Bài cộng đồng (DS Identity + SocialAction; PostCard bắt buộc khung ảnh nên không dùng cho bài chữ): tác giả + Badge HLV
  *  (+ xác minh) → hồ sơ, thời gian tương đối, tiêu đề, nội dung, tag; Thích · Bình luận · Chia sẻ (ShareSheet).
- *  Có `onOpen` (bảng tin, hồ sơ): nội dung rút gọn 4 dòng, chạm bài / Bình luận → mở bài. Không có (posts/[id]): bài đầy đủ. */
-export function PostItem({ post, onOpen }: { post: Post; onOpen?: () => void }) {
+ *  Có `onOpen` (bảng tin, hồ sơ): nội dung rút gọn 4 dòng, chạm bài / Bình luận → mở bài. Không có (posts/[id]): bài đầy đủ.
+ *  `onShared`: "Gửi" trong sheet đã chép bài → màn chủ hiện toast (SavedToast position:absolute nên không đặt trong hàng). */
+export function PostItem({ post, onOpen, onShared }: { post: Post; onOpen?: () => void; onShared: () => void }) {
   const t = useTheme();
   const { state, dispatch, me } = useStore();
   const [sharing, setSharing] = useState(false);
@@ -95,7 +97,7 @@ export function PostItem({ post, onOpen }: { post: Post; onOpen?: () => void }) 
         onSend={() => {
           // ponytail: chưa có tin nhắn trong app — "Gửi" chép lời nhắn + link bài để dán vào ứng dụng nhắn tin; có hộp thư thì gửi thật cho người đã chọn.
           Clipboard.setString([message.trim(), postLink(post.id)].filter(Boolean).join('\n'));
-          AccessibilityInfo.announceForAccessibility('Đã sao chép bài viết để gửi');
+          onShared();
           closeShare();
         }}
         actions={[
@@ -115,8 +117,14 @@ export function PostItem({ post, onOpen }: { post: Post; onOpen?: () => void }) 
   );
 }
 
+/** Toast "Đã sao chép bài viết để gửi" ở cấp màn cho `onShared` của PostItem / PostsSection; gửi tiếp khi toast còn hiện → key mới, hiện lại từ đầu. */
+export function useShareToast() {
+  const [key, setKey] = useState(0);
+  return { onShared: () => setKey((k) => k + 1), toast: key > 0 && <SavedToast key={key} title="Đã sao chép bài viết để gửi" onDone={() => setKey(0)} /> };
+}
+
 /** Mục "Bài đăng" của một người (hồ sơ HLV, hồ sơ người dùng, tab Hồ sơ của HLV): bài mới → cũ, chạm → chi tiết bài. */
-export function PostsSection({ authorId }: { authorId: ID }) {
+export function PostsSection({ authorId, onShared }: { authorId: ID; onShared: () => void }) {
   const t = useTheme();
   const { state } = useStore();
   const posts = postsBy(state, authorId);
@@ -125,7 +133,7 @@ export function PostsSection({ authorId }: { authorId: ID }) {
       {posts.length ? (
         <View style={{ gap: t.space('Spacing/Gap/Small') }}>
           {posts.map((p) => (
-            <PostItem key={p.id} post={p} onOpen={() => router.push(`/posts/${p.id}`)} />
+            <PostItem key={p.id} post={p} onOpen={() => router.push(`/posts/${p.id}`)} onShared={onShared} />
           ))}
         </View>
       ) : (

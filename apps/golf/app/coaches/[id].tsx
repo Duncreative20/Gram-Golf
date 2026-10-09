@@ -7,7 +7,7 @@ import { activeCoaches, isBlocked, openConnection, profileById } from '../../lib
 import { newId } from '../../lib/ids';
 import { StackHeader } from '../../components/StackHeader';
 import { CoachSummary } from '../../components/CoachSummary';
-import { PostsSection } from '../../components/PostItem';
+import { PostsSection, useShareToast } from '../../components/PostItem';
 import { BlockedNotice, FollowButton, FollowCounts, ProfileScreen } from '../../components/People';
 
 /** Hồ sơ công khai HLV: ai cũng xem được; theo dõi KHÔNG mở dữ liệu riêng (D6). Một trong hai đã chặn người kia → không theo dõi, không xem bài.
@@ -16,6 +16,7 @@ export default function CoachPublicProfile() {
   const t = useTheme();
   const { state, dispatch, me } = useStore();
   const { id } = useLocalSearchParams<{ id: string }>();
+  const share = useShareToast();
   if (!me) return <Redirect href="/" />;
   const coach = profileById(state, id);
   if (coach?.role !== 'coach') {
@@ -88,8 +89,9 @@ export default function CoachPublicProfile() {
             </>
           )}
         </View>
-        {!blocked && <PostsSection authorId={coach.id} />}
+        {!blocked && <PostsSection authorId={coach.id} onShared={share.onShared} />}
       </ScrollView>
+      {share.toast}
     </ProfileScreen>
   );
 }

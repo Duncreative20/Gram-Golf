@@ -107,7 +107,7 @@ export default function PostDetail() {
           }}
           contentContainerStyle={{ paddingBottom: t.layout('Margin-Small'), gap: t.space('Spacing/Gap/Large') }}
         >
-          <PostItem post={post} />
+          <PostItem post={post} onShared={() => setToast((prev) => ({ key: (prev?.key ?? 0) + 1, title: 'Đã sao chép bài viết để gửi' }))} />
           {swing && (
             <View style={pad}>
               {canViewPrivate(state, me.id, swing.playerId) ? (

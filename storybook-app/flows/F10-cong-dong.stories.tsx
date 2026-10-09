@@ -19,6 +19,7 @@
  * Biến thể:
  *  ✓ 01a · Bảng tin — rỗng                   (player)/community        as p-huy
  *  ✓ 01b · Bảng tin của HLV                  (coach)/community         as c-tuan, tab coach/community
+ *  ✓ 01c · Chia sẻ bài → Gửi → toast         (player)/community        play: Chia sẻ bài đầu → chọn Lan → Gửi (1), hold toast
  *  ✓ 02a · Chi tiết bài + bình luận          posts/[id]  post-1
  *  ✓ 02b · Chi tiết bài của mình             posts/[id]  post-4
  *  ✓ 02c · Trả lời bình luận                 bấm “Trả lời” + gõ
@@ -108,6 +109,20 @@ export const BangTinHlv: Story = {
   name: '01b · Bảng tin của HLV',
   render: () => <CoachCommunity />,
   ...appStory({ as: 'c-tuan', tabs: { role: 'coach', active: 'community' } }),
+};
+
+// "Gửi" trong sheet chép lời nhắn + link bài (chưa có tin nhắn trong app) → toast ở cấp màn cho người nhìn thấy đã chép.
+export const ChiaSeGui: Story = {
+  name: '01c · Chia sẻ bài → Gửi → toast',
+  render: () => <Community />,
+  ...appStory({ ...playerFeed, hold: ['toast'] }),
+  play: async ({ canvas }) => {
+    await userEvent.click((await canvas.findAllByLabelText('Chia sẻ'))[0]!);
+    await userEvent.click(await screen.findByRole('checkbox', { name: /Trần Thu Lan/ }));
+    await userEvent.click(await screen.findByRole('button', { name: 'Gửi (1)' }));
+    await sheetClosed();
+    await canvas.findByText('Đã sao chép bài viết để gửi');
+  },
 };
 
 // ── 02 · Chi tiết bài + bình luận ─────────────────────────────
