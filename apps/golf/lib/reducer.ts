@@ -124,11 +124,16 @@ export function reduce(s: AppState, a: Action): AppState {
       const post = s.posts.find((p) => p.id === a.comment.postId);
       return { ...s, comments: [...s.comments, a.comment], notifications: post ? notify(s, { id: a.notificationId, userId: post.authorId, type: 'comment', actorId: a.comment.authorId, refId: post.id, createdAt: a.comment.createdAt }) : s.notifications };
     }
-    case 'block': return {
-      ...s,
-      blocks: [...s.blocks, { blockerId: a.blockerId, blockedId: a.blockedId }],
-      follows: s.follows.filter((f) => !((f.followerId === a.blockerId && f.followedId === a.blockedId) || (f.followerId === a.blockedId && f.followedId === a.blockerId))),
-    };
+    case 'block': {
+      const pair = (x: ID, y: ID) => (x === a.blockerId && y === a.blockedId) || (x === a.blockedId && y === a.blockerId);
+      return {
+        ...s,
+        blocks: [...s.blocks, { blockerId: a.blockerId, blockedId: a.blockedId }],
+        follows: s.follows.filter((f) => !pair(f.followerId, f.followedId)),
+        // lời mời/yêu cầu đang chờ của cặp đóng luôn — bỏ chặn không làm chúng hiện lại
+        connections: s.connections.map((c) => (c.status === 'pending' && pair(c.coachId, c.playerId) ? { ...c, status: 'revoked' as const } : c)),
+      };
+    }
     // chỉ gỡ chiều mình chặn; follow đã gỡ lúc chặn không tự quay lại
     case 'unblock': return { ...s, blocks: s.blocks.filter((b) => !(b.blockerId === a.blockerId && b.blockedId === a.blockedId)) };
     case 'report': return { ...s, reports: [...s.reports, a.report] };

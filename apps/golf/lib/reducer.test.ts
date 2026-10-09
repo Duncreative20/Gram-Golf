@@ -268,6 +268,18 @@ describe('lời mời / yêu cầu kết nối 2 chiều (D5 xét lúc kích ho�
       expect(reduce(s, { type: 'respondConnection', id: 'rq-1', accept: false, at: NOW, notificationId: 'n' })).toBe(s);
     }
   });
+  it('chặn đóng lời mời/yêu cầu đang chờ của cặp (cả 2 chiều chặn); bỏ chặn không hiện lại, gửi mới vẫn được', () => {
+    for (const [blockerId, blockedId] of [['c-tuan', 'p-huy'], ['p-huy', 'c-tuan']]) {
+      const blocked = reduce(req(s0(), 'c-tuan', 'p-huy', 'coach'), { type: 'block', blockerId, blockedId });
+      expect(blocked.connections.find((c) => c.id === 'rq-1')!.status).toBe('revoked');
+      expect(blocked.connections.find((c) => c.id === 'cn-ha-huy')!.status).toBe('pending'); // cặp khác giữ nguyên
+      const s = reduce(blocked, { type: 'unblock', blockerId, blockedId });
+      expect(connectionRequests(s, 'p-huy').incoming).toEqual([]);
+      expect(connectionRequests(s, 'c-tuan').outgoing).toEqual([]);
+      expect(reduce(s, { type: 'respondConnection', id: 'rq-1', accept: true, at: NOW, notificationId: 'n' })).toBe(s);
+      expect(req(s, 'c-tuan', 'p-huy', 'coach', 'rq-2').connections.find((c) => c.id === 'rq-2')!.status).toBe('pending');
+    }
+  });
   it('huỷ lời mời/yêu cầu đang chờ bằng revokeConnection; trả lời kết nối không còn chờ → không đổi', () => {
     const s = reduce(req(s0(), 'c-tuan', 'p-huy', 'coach'), { type: 'revokeConnection', id: 'rq-1', at: NOW });
     expect(connectionRequests(s, 'p-huy').incoming).toEqual([]);
