@@ -40,7 +40,8 @@ export default function MetricSessionDetail() {
   }
   const units = prefsOf(state, me.id).units;
   const club = clubById(state, session.clubId);
-  const remove = () =>
+  const remove = () => {
+    setFailed(false); // toast lỗi lần trước gỡ ra → lỗi lần này hiện lại đủ giờ
     run(
       () => {
         deleteOnLeave(); // xoá khi màn đã rời (Task 21)
@@ -48,6 +49,7 @@ export default function MetricSessionDetail() {
       },
       () => setFailed(true),
     );
+  };
   const info = [
     { label: 'Ngày', value: formatDate(session.capturedAt) },
     ...(session.kind === 'swing' ? [{ label: 'Gậy', value: club ? `${clubLabel(club)} · ${club.brand} ${club.model}` : 'Chưa gắn gậy' }] : []),
@@ -117,10 +119,7 @@ export default function MetricSessionDetail() {
           title="Xoá thất bại"
           caption="Mất kết nối — phiên vẫn còn."
           actionText="Thử lại"
-          onAction={() => {
-            setFailed(false);
-            remove();
-          }}
+          onAction={remove}
           onDone={() => setFailed(false)}
         />
       )}

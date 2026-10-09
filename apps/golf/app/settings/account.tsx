@@ -40,6 +40,7 @@ export default function AccountSettings() {
   );
   const save = () => {
     setSubmitted(true);
+    setFailed(false); // toast lỗi lần trước gỡ ra → lỗi lần này hiện lại đủ giờ
     if (!result.value) return;
     const patch = { ...result.value, avatarUrl };
     run(
@@ -105,10 +106,7 @@ export default function AccountSettings() {
           title="Lưu thất bại"
           caption="Mất kết nối — thông tin tài khoản chưa được lưu."
           actionText="Thử lại"
-          onAction={() => {
-            setFailed(false);
-            save();
-          }}
+          onAction={save}
           onDone={() => setFailed(false)}
         />
       )}

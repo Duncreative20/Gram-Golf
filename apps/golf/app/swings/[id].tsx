@@ -241,7 +241,8 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
   };
   // mốc của ghi chú = mốc đầu tiên HLV chèn vào nội dung; không chèn → vị trí đang phát (như Task 9); quá độ dài video → cuối video
   const noteAt = (text: string) => Math.min(noteMarks(text)[0] ?? Math.round(positionSec * 100) / 100, duration);
-  const removeSwing = () =>
+  const removeSwing = () => {
+    setFailed(undefined); // toast lỗi lần trước gỡ ra → lỗi lần này hiện lại đủ giờ
     run(
       () => {
         deleteOnLeave(); // xoá khi màn đã rời (Task 21)
@@ -250,7 +251,9 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
       },
       () => setFailed({ title: 'Xoá thất bại', caption: 'Mất kết nối — swing vẫn còn.', retry: removeSwing }),
     );
-  const removeNote = (n: CoachNote) =>
+  };
+  const removeNote = (n: CoachNote) => {
+    setFailed(undefined);
     run(
       () => {
         dispatch({ type: 'deleteNote', id: n.id, coachId: me.id });
@@ -259,6 +262,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
       },
       () => setFailed({ title: 'Xoá thất bại', caption: 'Mất kết nối — ghi chú vẫn còn.', retry: () => removeNote(n) }),
     );
+  };
   // Thử lại sau lỗi: job chạy tiếp từ tiến độ lúc lỗi (lần đầu: 0)
   const analyze = () => dispatch({ type: 'jobUpdate', id: swing.id, status: 'queued', progress: swing.job.progress, at: NOW, notificationId: newId('nt') });
   const sendNote = (text: string) => {
@@ -561,11 +565,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
           title={failed.title}
           caption={failed.caption}
           actionText="Thử lại"
-          onAction={() => {
-            const retry = failed.retry;
-            setFailed(undefined);
-            retry();
-          }}
+          onAction={failed.retry}
           onDone={() => setFailed(undefined)}
         />
       )}

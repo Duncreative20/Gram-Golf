@@ -58,7 +58,8 @@ export function SavingRow({ text = 'Đang lưu…' }: { text?: string }) {
   const t = useTheme();
   return (
     <View accessibilityRole="alert" accessibilityLiveRegion="polite" style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: t.space('Spacing/Gap/XSmall') }}>
-      <ActivityIndicator color={t.color('Color/Content/Accent/Base')} accessibilityLabel={text} />
+      {/* chữ bên cạnh đã đọc trạng thái — spinner ẩn khỏi trình đọc (giữ nhãn thì đọc 2 lần; bỏ nhãn mà không ẩn thì progressbar không tên) */}
+      <ActivityIndicator color={t.color('Color/Content/Accent/Base')} aria-hidden />
       <Text variant="Body/Small/Regular" color="Color/Content/Neutral/Base">{text}</Text>
     </View>
   );

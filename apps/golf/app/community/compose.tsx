@@ -45,6 +45,7 @@ export default function ComposePost() {
   };
   const submit = () => {
     setSubmitted(true);
+    setFailed(false); // toast lỗi lần trước gỡ ra → lỗi lần này hiện lại đủ giờ
     if (!result.value) return;
     // tag còn trong ô (chưa Enter / dấu phẩy) vẫn được tính
     const post = { id: newId('post'), authorId: me.id, createdAt: NOW, ...result.value, tags: addTags(tags, tagInput), swingId };
@@ -132,10 +133,7 @@ export default function ComposePost() {
           title="Đăng bài thất bại"
           caption="Mất kết nối — bài chưa được đăng, nội dung giữ nguyên."
           actionText="Thử lại"
-          onAction={() => {
-            setFailed(false);
-            submit();
-          }}
+          onAction={submit}
           onDone={() => setFailed(false)}
         />
       )}
