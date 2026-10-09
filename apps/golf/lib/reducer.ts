@@ -66,10 +66,13 @@ export function reduce(s: AppState, a: Action): AppState {
       const sw = s.swings.find((w) => w.id === a.id);
       if (!sw) return s;
       const swings = s.swings.map((w) => (w.id === a.id ? { ...w, job: { status: a.status, progress: a.progress }, analysis: a.analysis ?? w.analysis } : w));
-      const done = a.status === 'succeeded' || a.status === 'needs_review';
+      // báo 1 lần khi job vừa xong — 2 màn cùng swing cùng chạy job (nhận trạng thái cuối 2 lần) không báo lặp, như uploadUpdate
+      const final = (st: JobStatus) => st === 'succeeded' || st === 'needs_review';
+      const done = final(a.status) && !final(sw.job.status);
       return { ...s, swings, notifications: done ? notify(s, { id: a.notificationId, userId: sw.playerId, type: 'analysis_done', refId: sw.id, createdAt: a.at }) : s.notifications };
     }
-    case 'deleteSwing': return { ...s, swings: s.swings.filter((w) => w.id !== a.id), notes: s.notes.filter((n) => n.swingId !== a.id) };
+    // thông báo trỏ tới swing/bài đã xoá cũng bỏ (tiền tố id sw-/post-/cn- không trùng nhau)
+    case 'deleteSwing': return { ...s, swings: s.swings.filter((w) => w.id !== a.id), notes: s.notes.filter((n) => n.swingId !== a.id), notifications: s.notifications.filter((n) => n.refId !== a.id) };
     case 'addNote': {
       const sw = s.swings.find((w) => w.id === a.note.swingId);
       if (!sw) return s;
@@ -105,12 +108,14 @@ export function reduce(s: AppState, a: Action): AppState {
         : { ...s, follows: [...s.follows, { followerId: a.followerId, followedId: a.followedId }], notifications: notify(s, { id: a.notificationId, userId: a.followedId, type: 'follow', actorId: a.followerId, createdAt: a.at }) };
     }
     case 'addPost': return { ...s, posts: [a.post, ...s.posts] };
-    case 'deletePost': return { ...s, posts: s.posts.filter((p) => p.id !== a.id), likes: s.likes.filter((l) => l.postId !== a.id), comments: s.comments.filter((c) => c.postId !== a.id) };
+    case 'deletePost': return { ...s, posts: s.posts.filter((p) => p.id !== a.id), likes: s.likes.filter((l) => l.postId !== a.id), comments: s.comments.filter((c) => c.postId !== a.id), notifications: s.notifications.filter((n) => n.refId !== a.id) };
     case 'toggleLike': {
       const on = s.likes.some((l) => l.userId === a.userId && l.postId === a.postId);
       if (on) return { ...s, likes: s.likes.filter((l) => !(l.userId === a.userId && l.postId === a.postId)) };
       const post = s.posts.find((p) => p.id === a.postId);
-      return { ...s, likes: [...s.likes, { userId: a.userId, postId: a.postId }], notifications: post ? notify(s, { id: a.notificationId, userId: post.authorId, type: 'like', actorId: a.userId, refId: a.postId, createdAt: a.at }) : s.notifications };
+      // thích lại sau khi bỏ thích không báo lần 2
+      const notified = s.notifications.some((n) => n.type === 'like' && n.actorId === a.userId && n.refId === a.postId);
+      return { ...s, likes: [...s.likes, { userId: a.userId, postId: a.postId }], notifications: post && !notified ? notify(s, { id: a.notificationId, userId: post.authorId, type: 'like', actorId: a.userId, refId: a.postId, createdAt: a.at }) : s.notifications };
     }
     case 'addComment': {
       const post = s.posts.find((p) => p.id === a.comment.postId);

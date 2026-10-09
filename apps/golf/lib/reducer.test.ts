@@ -122,6 +122,20 @@ describe('xã hội', () => {
     expect(s.likes.filter((l) => l.userId === 'p-huy' && l.postId === post.id).length).toBe(1);
     expect(s2.likes.some((l) => l.userId === 'p-huy' && l.postId === post.id)).toBe(false);
   });
+  it('thích → bỏ thích → thích lại: tác giả nhận đúng 1 thông báo like', () => {
+    const like = (s: AppState, nid: string) => reduce(s, { type: 'toggleLike', userId: 'p-huy', postId: 'post-1', at: NOW, notificationId: nid });
+    const s = like(like(like(s0(), 'n-1'), 'n-2'), 'n-3');
+    expect(s.notifications.filter((n) => n.type === 'like' && n.actorId === 'p-huy' && n.refId === 'post-1').map((n) => n.id)).toEqual(['n-1']);
+  });
+  it('xoá bài: mất lượt thích, bình luận và thông báo trỏ tới bài', () => {
+    const before = s0();
+    const s = reduce(before, { type: 'deletePost', id: 'post-4' });
+    expect(s.posts.some((p) => p.id === 'post-4')).toBe(false);
+    expect(s.likes).toEqual(before.likes.filter((l) => l.postId !== 'post-4'));
+    expect(s.likes).toHaveLength(before.likes.length - 2);
+    expect(s.comments.map((c) => c.id)).toEqual(['cm-1', 'cm-4']);
+    expect(s.notifications.map((n) => n.id)).toEqual(before.notifications.filter((n) => n.id !== 'nt-3').map((n) => n.id)); // nt-3: like post-4
+  });
 });
 
 describe('swing', () => {
@@ -152,6 +166,19 @@ describe('swing', () => {
     expect(s.swings.some((w) => w.id === 'sw-minh-2')).toBe(false);
     expect(s.notes.map((n) => n.id)).toEqual(['note-1']);
     expect(before.notes.filter((n) => n.swingId === 'sw-minh-2')).toHaveLength(2);
+  });
+  it('xoá swing xoá thông báo trỏ tới nó (chạm thông báo không mở "Không tìm thấy")', () => {
+    const before = s0();
+    const s = reduce(before, { type: 'deleteSwing', id: 'sw-minh-1' });
+    expect(s.notifications.map((n) => n.id)).toEqual(before.notifications.filter((n) => n.refId !== 'sw-minh-1').map((n) => n.id));
+    expect(s.notifications).toHaveLength(before.notifications.length - 2); // nt-1 coach_note, nt-4 analysis_done
+  });
+  it('job xong báo analysis_done 1 lần dù nhận trạng thái cuối 2 lần (2 màn cùng swing cùng chạy job)', () => {
+    const sw = s0().swings.find((x) => x.job.status === 'none')!;
+    const analysis = s0().swings.find((x) => x.analysis)!.analysis;
+    const done = (s: AppState, nid: string) => reduce(s, { type: 'jobUpdate', id: sw.id, status: 'succeeded', progress: 1, analysis, at: NOW, notificationId: nid });
+    const s = done(done(s0(), 'n-1'), 'n-2');
+    expect(s.notifications.filter((n) => n.type === 'analysis_done' && n.refId === sw.id).map((n) => n.id)).toEqual(['n-1']);
   });
 });
 
