@@ -1,5 +1,5 @@
-import { useEffect, useState, type PropsWithChildren } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
+import { AccessibilityInfo, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import {
   AlertBanner, Avatar, Button, Chip, Dialog, Divider, EmptyState, Icon, InlineMessage, ListItem, MessageInput, ProgressBar, Screen, Tag, Text, VideoControlOverlay, useTheme,
@@ -179,12 +179,18 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
   const [noteError, setNoteError] = useState<string>();
   const [sent, setSent] = useState<string>();
   const [editing, setEditing] = useState<CoachNote>(); // ghi chú của chính HLV đang sửa trong ô dưới cùng
+  const draft = useRef(''); // ghi chú mới chưa gửi, cất lại khi bấm Sửa — Huỷ sửa / lưu / xoá ghi chú đang sửa thì trả về ô nhập
   const [deleting, setDeleting] = useState<CoachNote>(); // giữ ghi chú để Dialog không trống khi mờ dần
   const [confirmNoteDelete, setConfirmNoteDelete] = useState(false);
   // Xoá sau khi màn đã rời (unmount) — xoá trước khi quay lại thì màn đang rời nháy "Không tìm thấy swing".
   const deleteOnLeave = useOnLeave(() => dispatch({ type: 'deleteSwing', id: swing.id }));
   const { busy, run } = useSimulatedWrite();
   const [failed, setFailed] = useState<{ title: string; caption: string; retry: () => void }>();
+  // xác nhận / lỗi nằm ở helpText của MessageInput (không phải live region) → đọc cho VoiceOver / TalkBack
+  useEffect(() => {
+    const msg = sent ?? noteError;
+    if (msg) AccessibilityInfo.announceForAccessibility(msg);
+  }, [sent, noteError]);
 
   // Phát giả lập (chưa có video thật): vị trí chạy theo thời gian thực tới hết video.
   useEffect(() => {
@@ -248,10 +254,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
     run(
       () => {
         dispatch({ type: 'deleteNote', id: n.id, coachId: me.id });
-        if (editing?.id === n.id) {
-          setEditing(undefined);
-          setNote('');
-        }
+        if (editing?.id === n.id) endEdit();
         setSent('Đã xoá ghi chú');
       },
       () => setFailed({ title: 'Xoá thất bại', caption: 'Mất kết nối — ghi chú vẫn còn.', retry: () => removeNote(n) }),
@@ -263,8 +266,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
     if (!body) return setNoteError('Nhập nội dung ghi chú');
     if (editing) {
       dispatch({ type: 'editNote', id: editing.id, coachId: me.id, text: body, at: NOW });
-      setEditing(undefined);
-      setNote('');
+      endEdit();
       setSent('Đã lưu ghi chú');
       return;
     }
@@ -274,10 +276,17 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
     setSent(`Đã gửi ghi chú tại ${formatSec(atSec)}`);
   };
   const startEdit = (n: CoachNote) => {
+    if (!editing) draft.current = note; // đang sửa ghi chú khác → ô nhập là chữ sửa, nháp đã cất từ trước
     setEditing(n);
     setNote(n.text);
     setNoteError(undefined);
     setSent(undefined);
+  };
+  const endEdit = () => {
+    setEditing(undefined);
+    setNote(draft.current);
+    draft.current = '';
+    setNoteError(undefined);
   };
   const askDeleteNote = (n: CoachNote) => {
     setDeleting(n);
@@ -371,7 +380,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
         title={club ? clubLabel(club) : 'Swing'}
         subtitle={[own ? undefined : profileById(state, swing.playerId)?.name, formatDate(swing.capturedAt), CAMERA_VIEW_LABELS[swing.cameraView]].filter(Boolean).join(' · ')}
         // ponytail: "menu" của chủ swing chỉ có 1 mục (Xoá) → action thẳng trên header; thêm mục thì đổi sang BottomSheet menu
-        actions={own ? [{ icon: 'trash-line', accessibilityLabel: 'Xoá swing', onPress: () => setConfirmDelete(true) }] : undefined}
+        actions={own ? [{ icon: 'trash-line', accessibilityLabel: 'Xoá swing', onPress: () => !busy && setConfirmDelete(true) }] : undefined}
       />
       {busy && <SavingRow text="Đang xoá…" />}
       <KeyboardAvoid>
@@ -446,8 +455,9 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
                               ))}
                               {mine && (
                                 <>
-                                  <Button level="Tertiary" size="XSmall" leadingIcon="edit-02-line" text="Sửa" accessibilityLabel={`Sửa ghi chú ${when}`} onPress={() => startEdit(n)} />
-                                  <Button level="Tertiary" size="XSmall" leadingIcon="trash-line" text="Xoá" accessibilityLabel={`Xoá ghi chú ${when}`} onPress={() => askDeleteNote(n)} />
+                                  {/* trích đoạn: 2 ghi chú cùng mốc + cùng lúc vẫn có nhãn khác nhau; khoá khi đang xoá (một lần xoá chờ một lúc) */}
+                                  <Button level="Tertiary" size="XSmall" leadingIcon="edit-02-line" text="Sửa" accessibilityLabel={`Sửa ghi chú ${when}: ${n.text.slice(0, 30)}`} disabled={busy} onPress={() => startEdit(n)} />
+                                  <Button level="Tertiary" size="XSmall" leadingIcon="trash-line" text="Xoá" accessibilityLabel={`Xoá ghi chú ${when}: ${n.text.slice(0, 30)}`} disabled={busy} onPress={() => askDeleteNote(n)} />
                                 </>
                               )}
                             </View>
@@ -480,10 +490,7 @@ function SwingView({ swing, me }: { swing: Swing; me: Profile }) {
                   theme="Info"
                   text={`Đang sửa ghi chú${editing.atSec !== undefined ? ` tại ${formatSec(editing.atSec)}` : ''}`}
                   actionText="Huỷ sửa"
-                  onAction={() => {
-                    setEditing(undefined);
-                    setNote('');
-                  }}
+                  onAction={endEdit}
                 />
               )}
               <View style={{ flexDirection: 'row' }}>
