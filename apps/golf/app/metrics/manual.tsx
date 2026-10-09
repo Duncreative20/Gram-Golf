@@ -43,22 +43,33 @@ export default function MetricsManual() {
   const isSwing = tab === 0;
   const swingResult = validateSwingMetrics(swing, units);
   const fitnessResult = validateFitnessMetrics(fitness);
-  const invalid = isSwing ? Object.keys(swingResult.errors).length + (clubId ? 0 : 1) : Object.keys(fitnessResult.errors).length;
+  // gậy bắt buộc, trừ khi sửa phiên vốn chưa gắn gậy (CSV không khớp gậy nào) — không thì không sửa được số nếu chưa chọn gậy
+  const noClub = isSwing && !clubId && (!editing || !!editing.clubId);
+  const invalid = isSwing ? Object.keys(swingResult.errors).length + (noClub ? 1 : 0) : Object.keys(fitnessResult.errors).length;
+  // sửa phiên mà form y như lúc mở → không gửi (không gắn "đã sửa", carry yard không đổi qua lại)
+  const unchanged =
+    editing &&
+    capturedAt === editing.capturedAt &&
+    clubId === editing.clubId &&
+    JSON.stringify(editing.kind === 'swing' ? swing : fitness) === JSON.stringify(editing.kind === 'swing' ? swingRaw(editing.swing, units) : fitnessRaw(editing.fitness));
   const save = () => {
     setSubmitted(true);
+    setFailed(false); // toast lỗi lần trước gỡ ra → lỗi lần này hiện lại đủ giờ
     const base = editing ?? { id: newId('ss'), playerId: me.id, source: 'manual' as const };
     let session: MetricSession;
     if (isSwing) {
-      if (!swingResult.value || !clubId) return;
+      if (!swingResult.value || noClub) return;
       session = { ...base, capturedAt, kind: 'swing', clubId, swing: swingResult.value };
     } else {
       if (!fitnessResult.value) return;
       session = { ...base, capturedAt, kind: 'fitness', fitness: fitnessResult.value };
     }
+    const caption = `Phiên ${isSwing ? 'swing' : 'thể lực'} ngày ${formatDate(capturedAt)}`;
+    if (unchanged) return setSaved(caption);
     run(
       () => {
         dispatch(editing ? { type: 'updateSession', session, at: NOW } : { type: 'addSession', session });
-        setSaved(`Phiên ${isSwing ? 'swing' : 'thể lực'} ngày ${formatDate(capturedAt)}`);
+        setSaved(caption);
       },
       () => setFailed(true),
     );
@@ -81,7 +92,7 @@ export default function MetricsManual() {
           <SessionDateField value={capturedAt} onChange={setCapturedAt} />
           {isSwing ? (
             <>
-              <ClubPicker playerId={me.id} value={clubId} onChange={setClubId} error={submitted && !clubId ? 'Bắt buộc' : undefined} />
+              <ClubPicker playerId={me.id} value={clubId} onChange={setClubId} error={submitted && noClub ? 'Bắt buộc' : undefined} />
               <SwingMetricsForm values={swing} onChange={setSwing} errors={submitted ? swingResult.errors : {}} />
             </>
           ) : (
@@ -102,10 +113,7 @@ export default function MetricsManual() {
           title="Lưu thất bại"
           caption="Mất kết nối — số liệu chưa được lưu, form giữ nguyên."
           actionText="Thử lại"
-          onAction={() => {
-            setFailed(false);
-            save();
-          }}
+          onAction={save}
           onDone={() => setFailed(false)}
         />
       )}

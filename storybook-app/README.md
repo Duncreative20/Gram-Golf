@@ -129,7 +129,7 @@ Ngoài các bước: thêm story cho trạng thái khó bấm tới (rỗng / đ
 
 ## Phủ route
 
-Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **47/47 route có story** (352 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
+Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **47/47 route có story** (353 story; chỉ `f13--muc-luc` không gắn route — trang mục lục). Rà lần cuối 2026-10-08: id nào trong bảng cũng có trong `index.json`, thêm story mới thì thêm id vào đây.
 
 | Route | Story id | Ghi chú |
 | --- | --- | --- |
@@ -155,7 +155,7 @@ Route `apps/golf/app/**` (bỏ `_layout`, `(dev)/**`): **47/47 route có story**
 | `connect/accept` | `f04--b-16-ma-sai`, `f04--b-17-ma-het-han`, `f04--b-18-ma-da-dung`, `f04--b-19-ma-thu-hoi`, `f04--b-20-da-ket-noi-ma`, `f04--b-22-xem-truoc-hlv-phu`, `f04--nhap-ma-de-trong`, `f04--xem-truoc-hlv-chinh`, `f04--chap-nhan-ket-noi` |  |
 | `coaches/[id]` | `f04--b-11-ho-so-hlv`, `f04--b-12-da-gui-yeu-cau`, `f04--ho-so-hlv`, `f04--ho-so-hlv-dang-moi`, `f04--ho-so-hlv-khong-co`, `f04--ho-so-hlv-chan`, `f10--ho-so-hlv-bi-chan` | `f10--ho-so-hlv-bi-chan` = trạng thái bị chặn; `f04--ho-so-hlv-chan` = Báo cáo / Chặn trên header (dialog) |
 | `metrics/add` | `f01--chon-nguon-so-lieu`, `f05--b-03-chon-nguon` | `presentation: modal` của layout không thể hiện |
-| `metrics/manual` | `f01--b-08-chua-co-gay`, `f01--b-09-gay-chon-san`, `f01--nhap-tay-loi`, `f01--nhap-tay-da-luu`, `f05--b-04-loi-truong`, `f05--b-05-ngoai-khoang`, `f05--b-08-sua-loi`, `f05--nhap-tay`, `f05--nhap-tay-the-luc`, `f05--nhap-tay-yard`, `f05--nhap-tay-da-luu`, `f05--sua-phien-yard`, `f05--sua-phien-the-luc`, `f06--b-05-gay-moi-trong-picker`, `f06--b-06-chon-san-gay-moi`, `f13--toast-da-luu`, `f13--b-08-dang-luu`, `f13--b-09-luu-that-bai` | `?id=<phiên>` = sửa phiên (`f05--b-08-sua-loi`, `f05--sua-phien-*`); `f05--nhap-tay-da-luu`, `f13--toast-da-luu` = toast giữ nguyên (`hold: ['toast']`); `f13--b-08-dang-luu` = spinner (`hold: ['save']`), `f13--b-09-luu-that-bai` = toast lỗi + Thử lại (`hold: ['toastError']`) |
+| `metrics/manual` | `f01--b-08-chua-co-gay`, `f01--b-09-gay-chon-san`, `f01--nhap-tay-loi`, `f01--nhap-tay-da-luu`, `f05--b-04-loi-truong`, `f05--b-05-ngoai-khoang`, `f05--b-08-sua-loi`, `f05--nhap-tay`, `f05--nhap-tay-the-luc`, `f05--nhap-tay-yard`, `f05--nhap-tay-da-luu`, `f05--sua-phien-yard`, `f05--sua-phien-the-luc`, `f05--sua-phien-csv-khong-gay`, `f06--b-05-gay-moi-trong-picker`, `f06--b-06-chon-san-gay-moi`, `f13--toast-da-luu`, `f13--b-08-dang-luu`, `f13--b-09-luu-that-bai` | `?id=<phiên>` = sửa phiên (`f05--b-08-sua-loi`, `f05--sua-phien-*`; phiên CSV chưa gắn gậy không bắt chọn gậy — `f05--sua-phien-csv-khong-gay`); `f05--nhap-tay-da-luu`, `f13--toast-da-luu` = toast giữ nguyên (`hold: ['toast']`); `f13--b-08-dang-luu` = spinner (`hold: ['save']`), `f13--b-09-luu-that-bai` = toast lỗi + Thử lại (`hold: ['toastError']`) |
 | `metrics/import-csv` | `f05--b-12-csv-xem-truoc`, `f05--b-13-csv-da-nhap`, `f05--csv-chon-file`, `f05--csv-file-la`, `f05--csv-xac-nhan`, `f05--csv-thieu-gay` | Chọn file mẫu ngay trong màn (chưa mở file hệ điều hành) |
 | `metrics/import-photo` | `f05--b-14-ocr-dang-doc`, `f05--b-15-ocr-loi`, `f05--b-16-ocr-kiem-tra`, `f05--anh-chon-hang` | OCR giả lập `DELAYS.ocr` 1,5 s — `hold: ['ocr']` giữ “Đang đọc…”, story khác chờ kết quả trong `play` |
 | `metrics/scan-qr` | `f05--b-17-qr`, `f05--quet-qr` | Thử nghiệm: nút mô phỏng quét |

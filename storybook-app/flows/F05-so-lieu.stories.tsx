@@ -35,6 +35,7 @@
  *  ✓ 07c · Chi tiết — 403                       metrics/[id] ss-d6           as c-ha, kết nối cn-ha-minh đã huỷ
  *  ✓ 07d · Chi tiết — không tìm thấy            metrics/[id] ss-khong-co
  *  ✓ 08a · Sửa phiên — theo yard                metrics/manual?id=ss-sb-sat7 SAT7 + YARD (Carry (yd) điền sẵn)
+ *  ✓ 08b · Sửa phiên CSV chưa gắn gậy → Lưu      metrics/manual?id=ss-sb-csv-khong-gay  hold toast; play: Spin 2700 → Lưu (không bắt chọn gậy)
  *  ✓ 11a · Sửa phiên thể lực — điền sẵn         metrics/manual?id=ss-f2
  *  ✓ 12a · CSV — chọn file                      metrics/import-csv
  *  ✓ 12b · CSV — file lạ                        metrics/import-csv?file=Ghi_chep_tu_nhap.csv
@@ -80,6 +81,8 @@ const CSV: Action = {
     .map((r, i) => ({ id: `ss-sb-csv-${i}`, playerId: 'p-minh', capturedAt: NOW, source: 'csv', vendor: 'trackman', clubId: 'cl-driver', kind: 'swing', swing: r.value! })),
 };
 const OCR = { type: 'addSession', session: { id: 'ss-sb-ocr', playerId: 'p-minh', capturedAt: NOW, source: 'photo', vendor: 'trackman', clubId: 'cl-driver', kind: 'swing', swing: { clubSpeedMph: 104.8, ballSpeedMph: 153.2, smash: 1.46, spinRpm: 2610, launchDeg: 12.1, carryM: 231 } } } as const;
+// Phiên CSV không khớp gậy nào (import-csv lưu clubId trống).
+const CSV_KHONG_GAY = { type: 'addSession', session: { id: 'ss-sb-csv-khong-gay', playerId: 'p-minh', capturedAt: NOW, source: 'csv', vendor: 'trackman', kind: 'swing', swing: { clubSpeedMph: 104, ballSpeedMph: 151, smash: 1.45, spinRpm: 2650, launchDeg: 12, carryM: 228 } } } as const;
 const YARD = { type: 'setPrefs', userId: 'p-minh', patch: { units: 'imperial' } } as const;
 // Bước 18–20: mọi thao tác ghi của lượt đi tới đó (CSV + OCR làm danh sách / Tổng quan giống màn thật).
 const DEN_18: Action[] = [SAT7, SAT7_SUA, THE_LUC_SUA, CSV, OCR, YARD];
@@ -256,6 +259,17 @@ export const SuaPhienYard: Story = {
   render: () => <MetricsManual />,
   ...appStory({ as: 'p-minh', params: { id: 'ss-sb-sat7' }, setup: [SAT7, YARD] }),
   play: revealCarryYd,
+};
+
+export const SuaPhienCsvKhongGay: Story = {
+  name: '08b · Sửa phiên CSV chưa gắn gậy → Lưu',
+  render: () => <MetricsManual />,
+  ...appStory({ as: 'p-minh', params: { id: 'ss-sb-csv-khong-gay' }, setup: [CSV_KHONG_GAY], hold: ['toast'] }),
+  play: async (ctx) => {
+    await typeAll(ctx.canvas, [['Spin (rpm)', '2700']]);
+    await save(ctx);
+    await ctx.canvas.findByText('Đã lưu thay đổi');
+  },
 };
 
 export const B09SauSua: Story = {
